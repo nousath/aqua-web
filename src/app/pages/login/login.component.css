@@ -1,0 +1,254 @@
+.custmNav {
+    padding-right: 7%;
+}
+
+.nav>li>a {
+    color: white !important;
+    background-color: transparent;
+}
+
+.nav>li>a:focus,
+.nav>li>a:hover {
+    color: #00A8c6;
+    background-color: transparent;
+}
+
+video {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+    transform: translateX(-50%) translateY(-50%);
+    background: url(../../../assets/images/login/bg.png) no-repeat;
+    background-size: cover;
+    transition: 1s opacity;
+}
+
+.rowBody {
+    position: fixed;
+    /* width: 100%; */
+    top: 0px;
+    right: 0;
+    left: 0;
+    height: 100%;
+    background-color: rgba(14, 46, 71, 0.8) !important;
+    overflow-y: auto;
+}
+
+.fontSubheading {
+    color: white;
+    font-size: 20px;
+}
+
+.buttonSend {
+    background-color: #00A8c6 !important;
+    font-size: 16px;
+    padding: 10px 0px 30px 0px;
+    border-radius: 0;
+}
+
+.buttonConnect {
+    background-color: #00A8c6 !important;
+    border-radius: 0;
+}
+
+.otpHeading {
+    color: white;
+    font-size: 29px;
+    text-align: center;
+    margin-top: -3%;
+}
+
+.otpSubtxt {
+    color: gray;
+    font-size: 22px;
+}
+
+.signinForm {
+    background-color: rgba(29, 72, 109, 0.5) !important;
+    padding-top: 3%;
+    padding-bottom: 2%;
+    margin-top: 3%;
+    width: 43%;
+}
+
+.SignupContainer {
+    /* height: 100%;
+    background-color: rgba(14, 46, 71, 0.8) !important; */
+}
+
+.signuphome {
+    /* height: 100%; */
+    text-align: center;
+    margin-top: 13%;
+    /* background-color: rgba(14, 46, 71, 0.8) !important; */
+}
+
+.logoMarginsignup {
+    margin-top: 5%;
+}
+
+.headr_btn {
+    position: absolute;
+    top: -5%;
+    right: 0px;
+    /*left: 34%;*/
+}
+
+.btnReg {
+    margin-left: -1%;
+    border-radius: 0px !important;
+    width: 30%;
+}
+
+.paddingRight {
+    padding-right: 3px;
+}
+
+.paddingLeft {
+    padding-left: 3px;
+}
+
+.btncolor {
+    background-color: #00A8c6 !important;
+}
+
+.marginForgotpass {
+    margin-top: 3%;
+}
+
+.forgotpassword {
+    font-size: 19px;
+    color: white;
+}
+
+.forgotpassword:hover {
+    color: #00A8c6;
+}
+
+.signUPForm {
+    margin-top: 1%;
+    background-color: rgba(29, 72, 109, 0.5) !important;
+    padding-top: 4%;
+    padding-bottom: 2%;
+}
+
+#signup {
+    display: none;
+}
+
+#signup {
+    margin-top: 7%;
+    display: none;
+}
+
+.txtBox {
+    border-radius: 0;
+}
+
+input::-webkit-input-placeholder {
+    color: #494949 !important;
+}
+
+input:-moz-placeholder {
+    /* Firefox 18- */
+    color: #494949 !important;
+}
+
+input::-moz-placeholder {
+    /* Firefox 19+ */
+    color: #494949 !important;
+}
+
+input:-ms-input-placeholder {
+    color: #494949 !important;
+}
+
+.grayBtn {
+    background-color: #dddddd !important;
+    color: black;
+}
+
+.btn {
+    border: 0px solid transparent !important;
+}
+
+.headerSignupbtn {
+    position: absolute;
+    top: -3%;
+    right: 0px;
+    /* left: 34%; */
+}
+
+.otpTxt {
+    height: 65px;
+    font-size: 35px;
+    color: white;
+    width: 48px;
+    background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.otpSpace {
+    /*margin: 2%;*/
+    right: 6%;
+    /* margin: 1%; */
+    padding-right: 9%;
+}
+
+.otpSpace {
+    right: 6%;
+    padding-right: 9%;
+}
+
+.otpTxt {
+    height: 65px;
+    font-size: 35px;
+    color: white;
+    width: 48px;
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.cle_white {
+    color: white !important;
+}
+
+.linksBtn {
+    color: white !important;
+    background: transparent;
+    border: none;
+    outline: none;
+}
+
+.linksBtn:hover {
+    border-bottom: 1px solid;
+}
+
+.otpHeading {
+    color: white;
+    font-size: 29px;
+    margin: 0;
+}
+
+.otpSubtxt {
+    color: gray;
+    font-size: 22px;
+}
+
+.otpverify {
+    position: absolute;
+    top: -4%;
+    right: 0px;
+    /* left: 34%; */
+}
+
+.otpSpaceimg {
+    margin-top: 29px;
+    height: 3px;
+    margin-left: 10px;
+    width: 28px;
+}

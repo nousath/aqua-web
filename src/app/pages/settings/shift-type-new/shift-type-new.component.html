@@ -1,0 +1,179 @@
+<div class="row page_header">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+        <h5><b>{{shiftId ? 'Edit': 'New'}} Shift Type</b></h5>
+    </div>
+</div>
+<md-spinner class="custom_spinner" *ngIf="shifType?.isProcessing" mode="indeterminate"></md-spinner>
+
+<div class="row">
+    <md-card>
+        <div class="table-responsive">
+            <form #shiftForm="ngForm">
+                <table class="table table-condensed">
+                    <tr>
+                        <td class="labelWidth">
+                            <label>Name<span class="asterisk">*</span></label>
+                        </td>
+                        <td class="valueWidth">
+                            <input type="text" class="form-control" [maxlength]="validatorService.textLength" name="shiftName" [(ngModel)]="shifType.properties.name" required>
+                        </td>
+                        <td class="labelWidth">
+                            <label>Code<span class="asterisk">*</span></label>
+                        </td>
+                        <td class="valueWidth">
+                            <input type="text" class="form-control" [maxlength]="validatorService.textLength" name="shiftcode" [(ngModel)]="shifType.properties.code" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Start Time<span class="asterisk">*</span></label>
+                        </td>
+                        <td>
+                            <input type="time" class="form-control" name="startTime" [(ngModel)]="shifType.properties.startTime" required>
+                        </td>
+                        <td>
+                            <label>End Time<span class="asterisk">*</span></label>
+                        </td>
+                        <td>
+                            <input type="time" class="form-control" name="endTime" [(ngModel)]="shifType.properties.endTime" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Days</label>
+                        </td>
+                        <td>
+                            <label>Type</label>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Monady<span class="asterisk">*</span></label>
+                        </td>
+                        <td>
+                            <select class="form-control" name="monday" [(ngModel)]="shifType.properties.monday" required>
+                                <option [ngValue]="null">select an option</option>
+                                <option value="off">Off</option>
+                                <option value="full">Full</option>
+                                <option value="half">Half</option>
+                                <option value="alternate">Alternate</option>
+                            </select>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label>Tuesday<span class="asterisk">*</span></label>
+                        </td>
+                        <td>
+                            <select class="form-control" name="tuesday" [(ngModel)]="shifType.properties.tuesday" required>
+                                <option [ngValue]="null">select an option</option>
+                                <option value="off">Off</option>
+                                <option value="full">Full</option>
+                                <option value="half">Half</option>
+                                <option value="alternate">Alternate</option>
+                            </select>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Wednesday<span class="asterisk">*</span></label>
+                        </td>
+                        <td>
+                            <select class="form-control" name="wednesday" [(ngModel)]="shifType.properties.wednesday" required>
+                                <option [ngValue]="null">select an option</option>
+                                <option value="off">Off</option>
+                                <option value="full">Full</option>
+                                <option value="half">Half</option>
+                                <option value="alternate">Alternate</option>
+                            </select>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Thursday<span class="asterisk">*</span></label>
+                        </td>
+                        <td>
+                            <select class="form-control" name="thrusday" [(ngModel)]="shifType.properties.thursday" required>
+                                <option [ngValue]="null">select an option</option>
+                                <option value="off">Off</option>
+                                <option value="full">Full</option>
+                                <option value="half">Half</option>
+                                <option value="alternate">Alternate</option>
+                            </select>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Friday<span class="asterisk">*</span></label>
+                        </td>
+                        <td>
+                            <select class="form-control" name="friday" [(ngModel)]="shifType.properties.friday" required>
+                                <option [ngValue]="null">select an option</option>
+                                <option value="off">Off</option>
+                                <option value="full">Full</option>
+                                <option value="half">Half</option>
+                                <option value="alternate">Alternate</option>
+                            </select>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Saturday<span class="asterisk">*</span></label>
+                        </td>
+                        <td>
+                            <select class="form-control" name="saturday" [(ngModel)]="shifType.properties.saturday" required>
+                                <option [ngValue]="null">select an option</option>
+                                <option value="off">Off</option>
+                                <option value="full">Full</option>
+                                <option value="half">Half</option>
+                                <option value="alternate">Alternate</option>
+                            </select>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Sunday<span class="asterisk">*</span></label>
+                        </td>
+                        <td>
+                            <select class="form-control" name="sunday" [(ngModel)]="shifType.properties.sunday" required>
+                                <option [ngValue]="null">select an option</option>
+                                <option value="off">Off</option>
+                                <option value="full">Full</option>
+                                <option value="half">Half</option>
+                                <option value="alternate">Alternate</option>
+                            </select>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td> </td>
+                        <td> </td>
+                        <td></td>
+                        <td class="rightBtn">
+                            <button md-raised-button type="submit" [disabled]="shifType?.isProcessing" color="primary" (click)="save(shiftForm.valid)">Save</button>
+                            <button md-raised-button [disabled]="shifType?.isProcessing" [routerLink]="['/pages/settings/shifts']">Cancel</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </md-card>
+</div>

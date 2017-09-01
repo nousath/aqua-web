@@ -1,0 +1,17 @@
+<div class="row text-center header">
+    <h5><b>Reason</b></h5>
+</div>
+<br>
+<br>
+<div class="row text-center">
+    <form #dayForm="ngForm">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <textarea class="form-control" type="text" [(ngModel)]="leave.rejectionReason" name="Time" required></textarea>
+        </div>
+    </form>
+</div>
+<br>
+<div class="row text-center">
+    <button md-raised-button color="primary" (click)="save()">Save</button>
+    <button md-raised-button class="btn_grey" md-dialog-close>Cancel</button>
+</div>

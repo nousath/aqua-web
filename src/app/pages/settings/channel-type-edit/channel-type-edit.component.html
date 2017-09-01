@@ -1,0 +1,92 @@
+<div>
+    <div>
+        <h5><b>Channel Configuration</b></h5>
+    </div>
+    <div class="margin">
+        <md-card>
+            <div class="row">
+                <div class="col-md-2">
+                    <img [src]="channelType?.picUrl">
+                </div>
+                <div class="col-md-10">
+                    <h5><b>{{channelType?.name.toUpperCase()}}</b></h5>
+                    <br>
+                    <br>
+                    <div>
+                        <span>{{channelType?.description}}</span>
+                    </div>
+                </div>
+            </div>
+        </md-card>
+    </div>
+    <div>
+
+        <md-card>
+            <div class="row">
+
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <h5><b>Configurations</b></h5>
+                </div>
+                <div *ngFor="let item of channelType?.parameters">
+
+                    <div class="col-xs-7 col-sm-9 col-md-9 col-lg-9">
+                        <h5><b>{{item?.title}}</b></h5>
+                        <p>{{item?.description}}</p>
+                    </div>
+
+                    <!--<div *ngIf="item.type.toLowerCase() == 'number' && item.expectedValues.length == 0" class="col-xs-5 col-sm-3 col-md-3 col-lg-3">
+                        <input type="number" class="form-control" [name]="item?.name">
+                    </div>-->
+
+                    <div *ngIf="item.type.toLowerCase() == 'string' && item.expectedValues.length == 0" class="col-xs-5 col-sm-3 col-md-3 col-lg-3">
+                        <input type="text" class="form-control" [name]="item?.name" [(ngModel)]="item.value" required>
+                    </div>
+
+                    <!--<div *ngIf="item.expectedValues.length != 0" class="col-xs-5 col-sm-3 col-md-3 col-lg-3">
+                        <select class="form-control" [name]="item?.name" [(ngModel)]="item.value">
+                      <option [ngValue]="null"></option>
+                      <option *ngFor="let i of item.expectedValues" [value]="i">{{i}}</option>
+                    </select>
+                    </div>-->
+
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 pull-left rbtns" *ngIf="channelType?.channel?.status">
+                    <div class="text-center">
+                        <!--<md-card-actions>
+                            <button md-raised-button (click)="channelType.status = 'active'" [ngClass]="{'mat-primary':alert?.properties?.status == 'active'}">Active</button>
+                            <button md-raised-button (click)="channelType.status = 'inactive'" [ngClass]="{'mat-primary':alert?.properties?.status == 'inactive'}">Disable</button>
+                        </md-card-actions>-->
+                        <md-radio-group [(ngModel)]="channelType.channel.status">
+
+                            <md-radio-button value="active">
+                                Active
+                            </md-radio-button>
+                            <md-radio-button value="inactive">
+                                Deactive
+                            </md-radio-button>
+                        </md-radio-group>
+                    </div>
+                </div>
+
+
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 pull-right">
+                    <div class="text-center">
+                        <md-card-actions *ngIf="channelType?.channel?.status">
+                            <button md-button color="primary" (click)="updateChannel(channelType)">Update</button>
+                            <button md-button color="primary" [routerLink]="['../']">Cancel</button>
+                        </md-card-actions>
+
+                        <md-card-actions *ngIf="!channelType?.channel?.status">
+                            <button md-button color="primary" (click)="configureChannel(channelType)">Save</button>
+                            <button md-button color="primary" [routerLink]="['../']">Cancel</button>
+                        </md-card-actions>
+                    </div>
+                </div>
+            </div>
+        </md-card>
+    </div>
+</div>

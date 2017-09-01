@@ -1,1 +1,282 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+body {
+  background-color: #f5f5f5;
+  overflow-x: hidden;
+}
+
+.mat-primary {
+  background: #00A8c6 !important;
+  color: white !important;
+}
+
+.mat-toolbar {
+  font-size: 100% !important;
+  font-weight: 300 !important;
+}
+
+.container {
+  width: 100%;
+}
+
+.section {
+  border: 1px solid #d0cdcd;
+  margin-top: 15px;
+}
+
+.primary_thead {
+  background-color: #dadada;
+  color: black;
+}
+
+.hiddenHorScroll {
+  overflow-x: hidden;
+}
+
+.card {
+  /* margin-top: 1% !important; */
+  padding: 0 !important;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.mat-progress-bar-fill::after {
+  background-color: #00A8c6;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.non_editAble {
+  border: none;
+  background-color: white !important;
+  outline: none;
+  box-shadow: none;
+}
+
+.fixedSideNav {
+  top: 0;
+  position: fixed;
+  background-color: #3f4766;
+  width: 16%;
+  height: 100%;
+  left: 0;
+}
+
+.fixedSideNav a {
+  padding: 3% 0 3% 0px;
+}
+
+.calendar {
+  background-image: url(assets/images/calendar-with-spring-binder-and-date-blocks.png);
+  background-repeat: no-repeat;
+  background-position: right;
+  background-color: white !important;
+  /*padding-left: 20px;*/
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+.btn_grey {
+  background-color: #6b6b6b;
+  color: white !important;
+}
+
+.page_header {
+  background-color: #e4e4e4;
+  padding-top: 0.5%;
+  padding-bottom: 0.5%;
+  padding-left: 0.5%;
+  padding-right: 2.5%;
+  border-bottom: 1px solid #d0cdcd;
+}
+
+.headr_bar {
+  background-color: #dadada;
+  margin: -1% 0px 2% 0%;
+}
+
+.headerInpts {
+  position: absolute;
+  right: 12%;
+  width: 26%;
+  top: 2px;
+}
+
+.headerBtns {
+  position: absolute;
+  width: 21%;
+  right: -11%;
+  top: -3px;
+  color: #6b6b6b;
+}
+
+.actionBtns {
+  position: absolute;
+  top: -2px;
+  right: 23px;
+}
+
+.no-spin::-webkit-inner-spin-button,
+.no-spin::-webkit-outer-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+  -moz-appearance: textfield !important;
+}
+
+
+/*input::-webkit-calendar-picker-indicator {
+    display: none;
+}*/
+
+.no-spin::-ms-expand,
+.no-spin::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+.ngx-pagination a,
+.ngx-pagination button,
+.ngui-auto-complete>ul li {
+  cursor: pointer;
+}
+
+pagination-controls {
+  float: right !important;
+}
+
+.custom_pagination {
+  margin: 1% 1% 0px 0px;
+}
+
+.pageSize {
+  float: right;
+  margin-top: 0.3%;
+}
+
+.button_align {
+  margin-top: -8px !important;
+  color: #6b6b6b !important;
+}
+
+.asterisk {
+  color: red;
+}
+
+.ng-untouched {
+  border-color: #ccc !important;
+}
+
+.logo_container {
+  background: #444c6f;
+  margin-top: -3%;
+}
+
+.logo {
+  width: 69%;
+  margin-bottom: 6%;
+  margin-top: 5%;
+}
+
+.dialog_Header {
+  background-color: #bfbdbd!important;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+}
+
+.ng-invalid,
+.ng-invalid:focus {
+  border-color: red;
+}
+
+.search {
+  background-image: url(assets/images/search.png);
+  background-repeat: no-repeat;
+  background-position: right;
+  /*padding-left: 20px;*/
+}
+
+.custom_spinner {
+  position: fixed;
+  z-index: 99999999999999;
+  left: 49%;
+  bottom: 50%;
+  width: 63px !important;
+  background: white !important;
+  height: 63px !important;
+  border-radius: 73%;
+  box-shadow: 0px 0px 0px 0 #00a8c6;
+}
+
+.mat-progress-spinner path,
+.mat-spinner path {
+  stroke: #00A8c6 !important;
+}
+
+.ngui-auto-complete {
+  color: black !important;
+  cursor: pointer !important;
+}
+
+.apporve {
+  color: green !important;
+}
+
+.reject {
+  color: red !important;
+}
+
+.datepicker-days>table>tbody>tr>td>.active>.day {
+  background-color: #00a8c6 !important;
+}
+
+.datepicker table tr td span.active,
+.datepicker table tr td span.active:hover,
+.datepicker table tr td span.active.disabled,
+.datepicker table tr td span.active.disabled:hover,
+.datepicker table tr td.active,
+.datepicker table tr td.active:hover,
+.datepicker table tr td.active.disabled,
+.datepicker table tr td.active.disabled:hover {
+  background-image: linear-gradient(to bottom, #00a8c6, #00a8c6) !important;
+  background-repeat: repeat-x !important;
+}
+
+.noData {
+  padding: 7%;
+}
+
+.profieCrd {
+  word-break: break-all;
+}
+
+.mat-radio-button.mat-accent .mat-radio-inner-circle {
+  background-color: #00a8c6;
+}
+
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+  border-color: #00a8c6;
+}
+
+.input-element>select::-ms-expand {
+  display: none;
+}
+
+.input-element>select {
+  border-radius: 0px;
+  -webkit-appearance: none;
+}
+
+.input-element>span {
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  z-index: 99;
+}

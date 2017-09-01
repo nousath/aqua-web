@@ -1,0 +1,13 @@
+.rightBtns {
+    float: right;
+}
+
+.setting {
+    position: absolute;
+    top: 1px;
+    right: 3px;
+}
+
+.bottom_row {
+    margin-bottom: 2%;
+}

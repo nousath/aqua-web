@@ -1,0 +1,136 @@
+<div class="row page_header">
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        <a md-raised-button class="reply" color="primary" [routerLink]="['../../']">
+            <md-icon>reply</md-icon> Details
+        </a>
+        <h5><b>Time Logs</b></h5>
+    </div>
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        <h5><b>Date: </b> {{ofDate | date}}</h5>
+    </div>
+</div>
+<md-spinner class="custom_spinner" *ngIf="employee?.isProcessing" mode="indeterminate"></md-spinner>
+<br>
+<div class="row">
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <md-card>
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 capitalize">
+                    <h4>{{employee?.properties?.name}}</h4>
+                    <h5>{{employee?.properties?.code}}</h5>
+                    <h5>{{employee?.properties?.designation}}</h5>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <div class="row profileImage">
+                        <img *ngIf="employee?.properties?.picUrl" [src]="employee?.properties?.picUrl" width="100%" onError="this.src='/assets/images/blank.png'">
+                        <img *ngIf="!employee?.properties?.picUrl" alt="img" src="assets/images/blank.png" width="100%">
+                    </div>
+                </div>
+                <br>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <table class="table">
+                        <tr class="capitalize">
+                            <td> Shift : </td>
+                            <td> {{employee?.properties?.shiftType?.name}}</td>
+                        </tr>
+                        <tr class="capitalize">
+                            <td> Shift Time: </td>
+                            <td> {{employee?.properties?.shiftType?.startTime | date:'shortTime'}} - {{employee?.properties?.shiftType?.endTime | date:'shortTime'}}</td>
+                        </tr>
+                        <tr class="capitalize">
+                            <td> CheckIn : </td>
+                            <td> {{attendance?.checkIn | date: 'shortTime'}}</td>
+                        </tr>
+                        <tr class="capitalize">
+                            <td> CheckOut : </td>
+                            <td> {{attendance?.checkOut | date: 'shortTime'}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </md-card>
+    </div>
+    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+        <md-card>
+            <div class="table-responsive">
+                <table class="table table-condensed table-hover">
+                    <thead class="primary_thead">
+                        <tr>
+                            <th>S.No</th>
+                            <th class="tdWidth">Type</th>
+                            <th class="tdWidth">Time</th>
+                            <th class="tdWidth">Device</th>
+                            <th class="tdWidth">IP Address</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr class="capitalize" *ngFor="let item of logs.items; let i=index">
+                            <td *ngIf="!item?.location?.show" class="tdWidth">{{i+1}}</td>
+                            <td *ngIf="!item?.location?.show" class="tdWidth">{{item?.type || '--'}}</td>
+                            <td *ngIf="!item?.location?.show" class="tdWidth">{{item?.time | date : 'shortTime' || '--'}}</td>
+                            <td *ngIf="!item?.location?.show" class="tdWidth">{{item?.source || '--'}}</td>
+                            <td *ngIf="!item?.location?.show" class="tdWidth">{{item?.ipAddress || '--'}}</td>
+                            <td *ngIf="!item?.location?.show">
+                                <button *ngIf="item?.location?.has" (click)="toggleLocation(item?.location)" md-icon-button class="button_align cursor" mdTooltip="See Location on Map" [mdTooltipPosition]="'above'">
+                                <md-icon>location_on</md-icon>
+                            </button>
+                            </td>
+                            <td *ngIf="item?.location?.show" colspan="6">
+                                <div class="row hdrrow">
+                                    <div class="indexCl">{{i+1}}</div>
+                                    <div class="type">{{item?.type || '--'}}</div>
+                                    <div class="time">{{item?.time | date : 'shortTime' || '--'}}</div>
+                                    <div class="device">{{item?.source || '--'}}</div>
+                                    <div class="ip">{{item?.ipAddress || '--'}}</div>
+                                    <div class="iconClass">
+                                        <button md-icon-button class="button_alignOff cursor" (click)="toggleLocation(item?.location)" mdTooltip="Off Location on Map" [mdTooltipPosition]="'above'">
+                                            <md-icon>location_off</md-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <agm-map [latitude]="item?.location?.coordinates[1]" [longitude]="item?.location?.coordinates[0]">
+                                        <!-- <agm-map [latitude]="lat" [longitude]="lat"> -->
+                                        <agm-marker [latitude]="item?.location?.coordinates[1]" [longitude]="item?.location?.coordinates[0]"></agm-marker>
+                                        <!-- <agm-info-window [disableAutoPan]="true" [isOpen]="true">
+                                            * Hi, this is the content of the <strong>info window</strong> *
+                                        </agm-info-window> -->
+                                    </agm-map>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row" *ngIf="!isButton">
+                <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                    <!-- <input class="form-control" type="text"> -->
+                    <input class="form-control" type="time" [(ngModel)]="checkTime" (ngModelChange)="checkTime = $event" required>
+                </div>
+                <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                    <!-- <input class="form-control" type="text"> -->
+                    <select class="form-control" [(ngModel)]="checkStatus">
+            <option value='checkIn'>Check In</option>
+            <option value='checkOut'>Check Out</option>
+          </select>
+                </div>
+                <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                    <button md-icon-button class="doneButton" (click)="isButton= true; checkUpdate()">
+            <md-icon> done </md-icon>
+        </button>
+                </div>
+                <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                    <button md-icon-button class="doneButton" (click)="isButton= true">
+            <md-icon> close </md-icon>
+        </button>
+
+                </div>
+            </div>
+            <div class="row text-center">
+                <button *ngIf="isButton" md-raised-button color="primary" (click)="isButton= false">ADD ROW</button>
+            </div>
+        </md-card>
+    </div>
+</div>

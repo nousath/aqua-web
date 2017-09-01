@@ -1,0 +1,95 @@
+import { Injectable } from '@angular/core';
+import { Http, Response, Headers, URLSearchParams, RequestOptions } from '@angular/http';
+import { Observable } from 'rxjs/Rx';
+import { User } from '../models/user';
+import { ServerPageInput } from '../common/contracts/api/page-input';
+import * as _ from 'lodash';
+import { LocalStorageService } from "app/services/local-storage.service";
+
+
+@Injectable()
+export class AutoCompleteService {
+
+  constructor(public http: Http, private store: LocalStorageService) {
+  }
+
+  private getHeaders(baseApi: string): Headers {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    let externalToken = this.store.getItem('external-token');
+    let amsToken = this.store.getItem('ams_token');
+    let orgCode = this.store.getItem('orgCode');
+
+
+    // let externalToken = this.store.getItem('externalToken');
+
+    if (baseApi == 'ams/api') {
+      if (amsToken)
+        headers.append('x-access-token', amsToken);
+      if (externalToken)
+        headers.append('external-token', externalToken)
+      // else if (emsToken)
+      //   headers.append('external-token', emsToken);
+
+    } else if (baseApi == 'ems/api') {
+      // if (externalToken)
+      //   headers.append('external-token', externalToken)
+      if (externalToken)
+        headers.append('x-access-token', externalToken);
+    }
+
+
+    headers.append('org-code', orgCode || 'msas'); // TODO
+    return headers;
+  }
+
+  private getQueryParams(input: ServerPageInput): URLSearchParams {
+
+    let params: URLSearchParams = new URLSearchParams();
+    _.each(input, (value, key, obj) => {
+      if (key == "query") {
+        _.each(value, (keyVal, keyKey) => {
+          if (keyVal)
+            params.set(keyKey, keyVal);
+        })
+      }
+    });
+    return params
+  }
+
+  searchByKey<TModel>(key: string, value: string, baseApi: string, apiKey: string, input?: ServerPageInput): Observable<TModel[]> {
+    let params: URLSearchParams = new URLSearchParams();
+
+    if (input) {
+      _.each(input, (item, itemKey) => {
+        if (itemKey == "query") {
+          _.each(item, (keyVal, keyKey) => {
+            if (keyVal)
+              params.set(keyKey, keyVal);
+          })
+        }
+      });
+    }
+
+    // if (value) {
+    value = value == 'init' ? null : value;
+
+
+    params.set(key, value);
+    return this.http.get(`/${baseApi}/${apiKey}`, { headers: this.getHeaders(baseApi), search: params })
+      .map(res => {
+        let json = res.json().items as TModel[];
+        return json;
+      }).catch(
+      err => {
+        return Observable.of([]);
+      }
+      );
+    // } else {
+    //   return Observable.of([]);
+    // }
+  }
+}
+
+
+

@@ -1,0 +1,127 @@
+<div class="row page_header">
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <h5><b>Holidays</b></h5>
+    </div>
+    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+        <div class="headerBtns">
+            <!--<button [disabled]="holidays?.isLoading   || holiday?.isProcessing  " md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>-->
+            <button md-icon-button [disabled]="holidays?.isLoading   || holiday?.isProcessing  " mdTooltip="Add" class="marginLetf" [mdTooltipPosition]="'above'" (click)="toggleHoliday(true)"><md-icon >add_circle_outline</md-icon></button>
+        </div>
+    </div>
+</div>
+<md-spinner class="custom_spinner" *ngIf="holidays?.isLoading   || holiday?.isProcessing  " mode="indeterminate"></md-spinner>
+
+<!--<div class="row" *ngIf="isFilter">
+    <br>
+    <md-card class="card">
+        <div class="row text-center headr_bar">
+            <h5><b>Filters</b></h5>
+            <div class="actionBtns">
+                <button md-icon-button mdTooltip="Close" [mdTooltipPosition]="'above'" (click)="isFilter = !isFilter"><md-icon >highlight_off</md-icon></button>
+            </div>
+        </div>
+        <br>
+        <form class="row">
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  form-group">
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <label for="email">Name</label>
+                </div>
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                    <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" [(ngModel)]="dailyAttendnace.filters.properties['name']['value']" name="Name">
+                </div>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  form-group">
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <label for="pwd">Code</label>
+                </div>
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                    <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" [(ngModel)]="dailyAttendnace.filters.properties['code']['value']" name="Code">
+                </div>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 form-group">
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <label>Shift</label>
+                </div>
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                    <select class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" [(ngModel)]="dailyAttendnace.filters.properties['shiftType']['value']" placeholder="Shift" name="shift">
+                   <option *ngFor="let item of shiftTypes.items" [value]="item.id">
+                    {{item?.name}}
+                </option>
+                </select>
+                </div>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 button_align form-group text-center">
+                <button [disabled]="dailyAttendnace?.isLoading || isDownloading" md-mini-fab color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="getAttendance(dailyAttendnace.filters.properties['ofDate']['value']);"><md-icon >done</md-icon></button>
+                <button [disabled]="dailyAttendnace?.isLoading || isDownloading" md-mini-fab color="primary" mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()"><md-icon >undo</md-icon></button>
+            </div>
+
+        </form>
+    </md-card>
+    <br>
+</div>-->
+<div class="row" *ngIf="isNew">
+    <md-card class="card">
+        <div class="row text-center headr_bar">
+            <h5><b>New Holiday</b></h5>
+            <div class="actionBtns">
+                <button md-icon-button mdTooltip="Close" [mdTooltipPosition]="'above'" (click)="toggleHoliday()"><md-icon >highlight_off</md-icon></button>
+            </div>
+        </div>
+        <br>
+        <form class="row">
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  form-group">
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <label for="email">Name<span class="asterisk">*</span></label>
+                </div>
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                    <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="holidays?.isLoading   || holiday?.isProcessing  " [(ngModel)]="holiday.properties.name" name="Name" required>
+                </div>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  form-group">
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <label for="pwd">Date<span class="asterisk">*</span></label>
+                </div>
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                    <input id="dateSelector" type="text" class="form-control input-sm calendar no-spin">
+
+                    <!--<input type="date" class="form-control  calendar no-spin" [disabled]="holidays?.isLoading   || holiday?.isProcessing  " [ngModel]="holiday.properties.date" (ngModelChange)="holiday.properties.date = $event" name="Code" required>-->
+                </div>
+            </div>
+
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 button_align form-group text-center">
+                <button [disabled]="holidays?.isLoading   || holiday?.isProcessing  " type="submit" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="saveHoliday();">Save</button>&nbsp;&nbsp;
+                <button [disabled]="holidays?.isLoading   || holiday?.isProcessing  " md-raised-button class="btn_grey" mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="toggleHoliday(true)">Reset</button>
+            </div>
+
+        </form>
+    </md-card>
+</div>
+
+
+<div class="row">
+    <md-card class="card">
+        <div class="table-responsive">
+            <table class="table table-condensed table-hover">
+                <thead class="primary_thead">
+                    <tr>
+                        <th class="tdWidth">Name</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of holidays.items | paginate: { id: 'foo',
+                                                      itemsPerPage: holidays.pageSize,
+                                                      currentPage: holidays.pageNo,
+                                                      totalItems: holidays.totalRecords };" class="capitalize">
+
+                        <td class="tdWidth">{{item?.name}}</td>
+                        <td>{{item?.date | date}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <pagination-controls id="foo" (pageChange)="holidays.pageNo = $event;fetchHolidays();"></pagination-controls>
+        </div> -->
+    </md-card>
+</div>

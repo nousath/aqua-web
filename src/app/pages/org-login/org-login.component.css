@@ -1,0 +1,25 @@
+video {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+    transform: translateX(-50%) translateY(-50%);
+    background: url(../../../assets/images/login/bg.png) no-repeat;
+    background-size: cover;
+    transition: 1s opacity;
+}
+
+.rowBody {
+    position: fixed;
+    /* width: 100%; */
+    top: 0px;
+    right: 0;
+    left: 0;
+    height: 100%;
+    background-color: rgba(14, 46, 71, 0.8) !important;
+    overflow-y: auto;
+}

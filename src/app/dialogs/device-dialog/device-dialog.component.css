@@ -1,0 +1,36 @@
+.full-width {
+    width: 100%;
+    /*margin-top: 2%;*/
+    color: black !important;
+    background-color: white !important;
+}
+
+.selectTag {
+    margin-bottom: 4%;
+    width: 100%;
+    color: black !important;
+    background-color: white !important;
+}
+
+.header {
+    color: white;
+    background-color: #2d3349 !important;
+    /* position: fixed;
+    top: 0;
+    right: 0;
+    left: 0; */
+}
+
+.lable_w {
+    width: 24% !important;
+}
+
+table.table-bordered>tbody>tr>td,
+table.table-bordered>tbody>tr>th,
+table.table-bordered>tfoot>tr>td,
+table.table-bordered>tfoot>tr>th,
+table.table-bordered>thead>tr>td,
+table.table-bordered>thead>tr>th,
+table.table-bordered>tbody>tr>td {
+    border: 1px solid white;
+}

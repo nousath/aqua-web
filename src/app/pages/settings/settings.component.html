@@ -1,0 +1,32 @@
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="hidden-xs col-sm-2 col-md-2 col-lg-2">
+        <md-nav-list dense class="fixedSideNav">
+            <div class="logo_container text-center">
+                <img class="logo" src="assets/images/splash_logo.png">
+                <br>
+            </div>
+            <md-divider></md-divider>
+            <a md-list-item [routerLink]="['/pages/settings/shifts']" routerLinkActive="activeTab" #rla1="routerLinkActive">
+                <h5>Shifts</h5>
+            </a>
+            <a md-list-item [routerLink]="['/pages/settings/holidays']" routerLinkActive="activeTab" #rla2="routerLinkActive">
+                <h5>Holidays</h5>
+            </a>
+            <a md-list-item [routerLink]="['/pages/settings/alerts']" routerLinkActive="activeTab" #rla3="routerLinkActive">
+                <h5>Alerts</h5>
+            </a>
+            <a md-list-item [routerLink]="['/pages/settings/devices']" routerLinkActive="activeTab" #rla4="routerLinkActive">
+                <h5>Devices</h5>
+            </a>
+            <a md-list-item [routerLink]="['/pages/settings/deviceLogs']" routerLinkActive="activeTab" #rla5="routerLinkActive">
+                <h5>Devices Logs</h5>
+            </a>
+            <a md-list-item routerLink="/pages/settings/channelTypes" routerLinkActive="activeTab">
+                <h5>Communication Apps</h5>
+            </a>
+        </md-nav-list>
+    </div>
+    <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10 section hiddenHorScroll">
+        <router-outlet></router-outlet>
+    </div>
+</div>

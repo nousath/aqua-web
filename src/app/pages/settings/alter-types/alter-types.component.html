@@ -1,0 +1,44 @@
+<div class="row page_header">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <a md-raised-button class="reply" color="primary" [routerLink]="['../']">
+            <md-icon>reply</md-icon> Alerts
+        </a>
+        <h5><b>&nbsp;&nbsp;Alert List</b></h5>
+    </div>
+    <!--<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+        <div class="headerBtns">
+            <button md-icon-button [disabled]="devices?.isLoading || isDownloading || device?.isProcessing || categories?.isLoading" mdTooltip="Download Sync App" class="marginLetf" [mdTooltipPosition]="'above'" (click)="downloadSyncApp()"><md-icon >cloud_download</md-icon></button>
+            <button md-icon-button [disabled]="devices?.isLoading || isDownloading || device?.isProcessing || categories?.isLoading" (click)="saveDevice()" mdTooltip="Add" class="marginLetf" [mdTooltipPosition]="'above'"><md-icon >add_circle_outline</md-icon></button>
+        </div>
+    </div>-->
+</div>
+<md-spinner class="custom_spinner" *ngIf="alterTypes?.isLoading || isSubscribing" mode="indeterminate"></md-spinner>
+<div *ngIf="!alterTypes?.isLoading && alterTypes.items.length == 0" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+    <h5><b>no alert found !</b></h5>
+</div>
+<div class="row">
+    <div class="alertBox col-xs-12 col-sm-6 col-md-4 col-lg-4" *ngFor="let item of alterTypes.items">
+
+        <md-card>
+            <md-card-header>
+                <md-card-title>
+                    <h5><b>{{item?.name}}</b></h5>
+                </md-card-title>
+            </md-card-header>
+            <img md-card-image [src]="item?.picUrl">
+            <md-card-content>
+                <p>{{item?.description}}
+                </p>
+                <div>
+                </div>
+            </md-card-content>
+            <md-card-actions class="text-center">
+                <!--<button [disabled]="isSubscribing" md-button class="cardBtn2">COST: {{item?.cost | currency:'USD':true}}</button>-->
+                <button [disabled]="isSubscribing" md-button color="primary" (click)="subscribe(item.id)">Add</button>
+                <!--cardBtn for 2nd button -->
+            </md-card-actions>
+        </md-card>
+    </div>
+    <br>
+    <br>
+</div>

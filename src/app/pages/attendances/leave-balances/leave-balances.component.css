@@ -1,0 +1,20 @@
+.tdWidth {
+    width: 10%;
+    text-align: center;
+}
+
+.btnClmWidth {
+    width: 96px !important;
+    text-align: center;
+}
+
+.number {
+    width: 67px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.filtrEmpName {
+    width: 36%;
+    float: right;
+}

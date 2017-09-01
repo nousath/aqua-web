@@ -1,0 +1,132 @@
+.example-icon {
+    padding: 0 14px;
+}
+
+.logout {
+    position: absolute;
+    right: 0;
+    top: 0;
+    color: black;
+}
+
+.loginHeader {
+    background-color: #ffffff !important;
+    color: #8b9caf!important;
+    position: fixed;
+    width: 84%;
+    right: 0;
+    /* left: 0; */
+    top: 0;
+    z-index: 3;
+    box-shadow: 0 0 9px 0px black;
+}
+
+.bodyPart {
+    margin-top: 5.1%;
+    overflow-y: auto;
+    max-height: 100%;
+    /*width: 100%;*/
+    /*overflow-x: hidden;*/
+}
+
+.activeTab {
+    border-bottom: 2px solid #00a8c6;
+    color: #00a8c6;
+}
+
+.logo {
+    margin-right: 2%;
+    width: 7%;
+}
+
+.searchXs {
+    display: none !important;
+}
+
+.searchbar {
+    width: 18%;
+    margin-right: 1%;
+}
+
+.loginFormXS {
+    width: 100%;
+}
+
+.example-full-width-input {
+    margin-top: 6%;
+}
+
+.loginFormXS td,
+.loginFormXS .example-full-width-input {
+    width: 100%;
+    margin-top: 6%;
+}
+
+@media only screen and (max-width:1359px) {
+    .bodyPart {
+        margin-top: 6%;
+    }
+}
+
+@media only screen and (max-width:1359px) {
+    .bodyPart {
+        margin-top: 8%;
+    }
+}
+
+@media only screen and (max-width:852px) {
+    .bodyPart {
+        margin-top: 10%;
+    }
+}
+
+@media only screen and (max-width:676px) {
+    .bodyPart {
+        margin-top: 13%;
+    }
+}
+
+@media only screen and (max-width:520px) {
+    .loginForm {
+        display: none;
+    }
+    .searchXs {
+        display: flex !important;
+    }
+    .bodyPart {
+        margin-top: 24%;
+    }
+}
+
+@media only screen and (max-width:520px) {
+    .bodyPart {
+        margin-top: 25%;
+    }
+}
+
+@media only screen and (max-width:480px) {
+    .bodyPart {
+        margin-top: 27%;
+    }
+    .logo {
+        margin-right: 5px;
+    }
+}
+
+@media only screen and (max-width:450px) {
+    .bodyPart {
+        margin-top: 30%;
+    }
+}
+
+@media only screen and (max-width:407px) {
+    .bodyPart {
+        margin-top: 35%;
+    }
+}
+
+@media only screen and (max-width:350px) {
+    .bodyPart {
+        margin-top: 40%;
+    }
+}

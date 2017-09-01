@@ -1,0 +1,122 @@
+<div class="row page_header">
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <h5><b>Daily Attendance</b></h5>
+    </div>
+    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+        <div class="headerInpts">
+            <div class="input-group">
+                <span class="input-group-addon" id="basic-addon1">Select Date</span>
+                <input id="dateSelector" type="text" class="form-control input-sm calendar no-spin">
+
+                <!--<input class="form-control input-sm calendar no-spin" type="date" [disabled]="dailyAttendnace?.isLoading  || isDownloading" [ngModel]="date  | date:'yyyy-MM-dd'" (ngModelChange)="date = $event;getAttendance($event)" aria-describedby="basic-addon1">-->
+            </div>
+        </div>
+        <div class="headerBtns">
+            <button [disabled]="dailyAttendnace?.isLoading || employee?.isProcessing" md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
+            <button [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" (click)="download()"><md-icon >cloud_download</md-icon></button>
+        </div>
+
+    </div>
+</div>
+<md-spinner class="custom_spinner" *ngIf="dailyAttendnace?.isLoading || isDownloading" mode="indeterminate"></md-spinner>
+
+
+<div class="row" *ngIf="isFilter">
+    <md-card class="card">
+        <div class="row text-center headr_bar">
+            <h5><b>Filters</b></h5>
+            <div class="actionBtns">
+                <button md-icon-button mdTooltip="Close" [mdTooltipPosition]="'above'" (click)="isFilter = !isFilter"><md-icon >highlight_off</md-icon></button>
+            </div>
+        </div>
+        <br>
+        <form class="row">
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  form-group">
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <label for="email">Name</label>
+                </div>
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                    <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" [(ngModel)]="dailyAttendnace.filters.properties['name']['value']" name="Name">
+                </div>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  form-group">
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <label for="pwd">Code</label>
+                </div>
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                    <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" [(ngModel)]="dailyAttendnace.filters.properties['code']['value']" name="Code">
+                </div>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 form-group">
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <label>Shift</label>
+                </div>
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                    <select class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" [(ngModel)]="dailyAttendnace.filters.properties['shiftType']['value']" placeholder="Shift" name="shift">
+                   <option *ngFor="let item of shiftTypes.items" [value]="item.id">
+                    {{item?.name}}
+                </option>
+                </select>
+                </div>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 button_align form-group text-center">
+                <button [disabled]="dailyAttendnace?.isLoading || isDownloading" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="getAttendance(dailyAttendnace.filters.properties['ofDate']['value']);">Apply</button>
+                <button [disabled]="dailyAttendnace?.isLoading || isDownloading" md-raised-button class="btn_grey" mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()">Reset</button>
+            </div>
+
+        </form>
+    </md-card>
+</div>
+
+<div class="row">
+    <md-card class="card">
+        <div class="table-responsive">
+            <table class="table table-condensed table-hover">
+                <thead class="primary_thead">
+                    <tr>
+                        <th>Name</th>
+                        <th class="tdWidth">Code</th>
+                        <th class="tdWidth">Shift</th>
+                        <th class="tdWidth">Hours</th>
+                        <th class="tdWidth">Status</th>
+                        <th class="tdWidth">Check In</th>
+                        <th class="tdWidth">Check Out</th>
+                        <!-- <th></th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of dailyAttendnace.items | paginate: { id: 'foo',
+                                                      itemsPerPage: dailyAttendnace.pageSize,
+                                                      currentPage: dailyAttendnace.pageNo,
+                                                      totalItems: dailyAttendnace.totalRecords };" class="capitalize">
+                        <td>
+                            <img *ngIf="item?.picUrl" class="img-circle profile_pic" alt="img" [src]="item?.picUrl" onError="this.src='/assets/images/blank.png'">
+                            <img *ngIf="!item?.picUrl" class="img-circle profile_pic" alt="img" src="assets/images/blank.png"> &nbsp;<a [routerLink]="[item.id]">{{item?.name  || '--'}}</a>
+                        </td>
+                        <td class="tdWidth">{{item?.code || '--'}}</td>
+                        <td class="tdWidth">{{item?.shiftType?.name || '--'}}</td>
+                        <td class="tdWidth">{{item?.attendance?.hoursWorked || '--'}}</td>
+                        <td class="tdWidth">{{item?.attendance?.status?.toLowerCase() == 'checkedin' ? 'Present' : item?.attendance?.status}}</td>
+                        <td class="tdWidth">{{(item?.attendance?.checkIn | date:'shortTime') || '--'}}</td>
+                        <td class="tdWidth">{{(item?.attendance?.checkOut | date:'shortTime') || '--'}}</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="custom_pagination">
+                <pagination-controls id="foo" (pageChange)="dailyAttendnace.pageNo = $event;getAttendance(dailyAttendnace.filters.properties['ofDate']['value']);"></pagination-controls>
+                <div class="pageSize">
+                    <label>Page Size:</label>
+                    <select name="pageSize" [(ngModel)]="dailyAttendnace.pageSize" (change)="dailyAttendnace.pageNo = 1;getAttendance(dailyAttendnace.filters.properties['ofDate']['value']);">
+                      <option value=10>10</option>
+                      <option value=20>20</option>
+                      <option value=50>50</option>
+                      <option value=100>100</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </md-card>
+</div>

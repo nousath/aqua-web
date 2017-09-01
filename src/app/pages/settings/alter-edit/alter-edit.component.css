@@ -1,0 +1,12 @@
+.rightBtn {
+    float: right;
+}
+
+.reply {
+    float: left;
+    /* margin-left: 1%; */
+}
+
+.spacer {
+    margin: 10px;
+}

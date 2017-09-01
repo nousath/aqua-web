@@ -1,0 +1,22 @@
+<div class="row">
+    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2"></div>
+    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+        <md-toolbar class="loginHeader" color="primary">
+            <!-- <img class="logo" src="assets/images/splash_logo.png"> -->
+            <button md-button *ngIf="isShowEmployeeTab" [routerLink]="['/pages/employees']" routerLinkActive="activeTab"><b>EMPLOYEE</b></button>
+            <button md-button [routerLink]="['/pages/attendances']" routerLinkActive="activeTab"><b>ATTENDANCE</b></button>
+            <button md-button [routerLink]="['/pages/settings']" routerLinkActive="activeTab"><b>SETTINGS</b></button>
+            <span class="example-spacer"></span>
+            <div class="searchbar">
+                <input ngui-auto-complete [min-chars]="1" placeholder="Employee search" [(ngModel)]="selectedEmp" (valueChanged)="onSelectEmp($event)" [source]="empSource.bind(this)" [value-formatter]="empFormatter" [list-formatter]="empListFormatter" class="form-control search"
+                    name="roleId" />
+            </div>
+            <button md-icon-button (click)="syncEmployees()" [disabled]="isSyncing" mdTooltip="Sync Employees" class="marginLetf" [mdTooltipPosition]="'below'"><i class="fa fa-refresh  fa-lg" [ngClass]="{'fa-spin':isSyncing}"  aria-hidden="true"></i></button>
+            <button md-button (click)="logout()" class="capitalize" mdTooltip="Logout" class="marginLetf" [mdTooltipPosition]="'below'">{{currentUser?.name}}<md-icon class="example-icon">exit_to_app</md-icon></button>
+
+        </md-toolbar>
+    </div>
+</div>
+<div class="bodyPart row">
+    <router-outlet></router-outlet>
+</div>
