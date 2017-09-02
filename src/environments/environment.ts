@@ -7,8 +7,8 @@ export const environment = {
   production: false,
   silent: false,
   apiUrls: {
-    ems: 'ems/api',
-    ams: 'ams/api'
+    ems: 'http://ems.m-sas.com/api',
+    ams: 'http://ams.m-sas.com/api'
   },
   name: 'dev'
 };
