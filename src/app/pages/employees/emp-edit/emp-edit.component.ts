@@ -76,7 +76,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
       let res: any = JSON.parse(response);
       if (!res.isSuccess)
         return toastyService.error({ title: 'Error', msg: 'Image upload failed' })
-      this.employee.properties.picUrl = `${res.message.picUrl}?time=${new Date().toString()}`;
+      this.employee.properties.picUrl = `${res.message.picUrl}?time=${new Date().toString().replace(/ /g, "")}`;
       this.isChangeImage = false;
 
     };
@@ -136,7 +136,9 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
       this.employee.properties.status = 'activate';
 
     if (this.employee.properties.picUrl)
-      this.employee.properties.picUrl = this.employee.properties.picUrl.slice(0, this.employee.properties.picUrl.indexOf('.jpeg') + 5);
+      this.employee.properties.picUrl = this.employee.properties.picUrl.indexOf('?time=') == -1 ?
+        this.employee.properties.picUrl :
+        this.employee.properties.picUrl.slice(0, this.employee.properties.picUrl.indexOf('?time='));
 
     this.employee.save().then(
       data => {

@@ -12,7 +12,7 @@ export class AmsAlertService {
   subscribe: IApi<AmsAlert>
 
   constructor(private http: Http) {
-    const baseApi: string = 'ams';
+    const baseApi = 'ams';
 
     this.alerts = new GenericApi<AmsAlert>('alerts', http, baseApi);
     this.subscribe = new GenericApi<AmsAlert>('alerts/subscribe', http, baseApi);

@@ -7,8 +7,8 @@ export const environment = {
   production: false,
   silent: false,
   apiUrls: {
-    ems: 'http://employee-web.mindfulsas.dev/ems/api',
-    ams: 'http://employee-web.mindfulsas.dev/ams/api'
+    ems: 'http://ems.m-sas.com/api',
+    ams: 'http://ams.m-sas.com/api'
   },
   name: 'local'
 };
