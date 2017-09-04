@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
-import { Employee, TimeLogs, DayEvent } from "app/models";
-import { Model } from "app/common/contracts/model";
-import { AmsEmployeeService, AmsAttendanceService } from "app/services";
 import { Subscription } from "rxjs/Rx";
 import { ToastyService } from "ng2-toasty";
-import { Page } from "app/common/contracts/page";
-import { AmsTimelogsService } from "app/services/ams/ams-timelogs.service";
 import * as _ from "lodash";
-import { TimeLogsLocation } from '../../../models/time-logs';
+import { TimeLogsLocation, TimeLogs } from '../../../models/time-logs';
+import { Employee } from '../../../models/employee';
+import { Model } from '../../../common/contracts/model';
+import { DayEvent } from '../../../models/day-event';
+import { Page } from '../../../common/contracts/page';
+import { AmsAttendanceService } from '../../../services/ams/ams-attendance.service';
+import { AmsTimelogsService } from '../../../services/ams/ams-timelogs.service';
+import { AmsEmployeeService } from '../../../services/ams/ams-employee.service';
 
 @Component({
   selector: 'aqua-attendance-logs',
@@ -19,15 +21,15 @@ export class AttendanceLogsComponent implements OnInit {
   employee: Model<Employee>;
   logs: Page<TimeLogs>;
   attendances: Page<DayEvent>;
-  timeLogs: Model<TimeLogs>;
+  timeLog: Model<TimeLogs>;
   subscription: Subscription;
-  empId: any;
+  empId: string;
   ofDate: any;
   attendance: any
   date: any;
   isButton = true;
   checkTime: any;
-  checkStatus: any;
+  // checkStatus: any;
 
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -39,7 +41,7 @@ export class AttendanceLogsComponent implements OnInit {
       api: amsEmployeeService.employeesForAdmin,
       properties: new Employee()
     })
-    this.timeLogs = new Model({
+    this.timeLog = new Model({
       api: amsTimelogsService.timeLogs,
       properties: new TimeLogs()
     })
@@ -69,8 +71,11 @@ export class AttendanceLogsComponent implements OnInit {
 
     this.subscription = this.activatedRoute.params.subscribe(
       params => {
-        this.empId = params['empId']
-        this.ofDate = params['ofDate']
+        this.empId = params['empId'];
+        this.ofDate = params['ofDate'];
+        this.attendances.filters.properties['employee'].value = this.empId;
+        this.attendances.filters.properties['ofDate'].value = new Date(this.ofDate).toISOString();
+        this.logs.filters.properties['fromDate'].value = new Date(this.ofDate).toISOString();
         this.logs.filters.properties['employeeId'].value = this.empId;
         this.employee.fetch(this.empId).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
         this.getAttendance();
@@ -81,8 +86,6 @@ export class AttendanceLogsComponent implements OnInit {
   }
 
   getAttendance() {
-    this.attendances.filters.properties['employee'].value = this.empId;
-    this.attendances.filters.properties['ofDate'].value =  new Date(this.ofDate).toISOString();
     this.attendances.fetch().then(
       (data) => {
         this.attendance = data.items[0];
@@ -92,7 +95,6 @@ export class AttendanceLogsComponent implements OnInit {
   }
 
   getLogs() {
-    this.logs.filters.properties['fromDate'].value = new Date(this.ofDate).toISOString();
     this.logs.fetch().then(
       data => {
         _.each(this.logs.items, (log: TimeLogs) => {
@@ -112,21 +114,21 @@ export class AttendanceLogsComponent implements OnInit {
 
   checkUpdate() {
     let h: number, m: number;
-    if (this.checkStatus === 'checkIn') {
-      this.timeLogs.properties.employee.id = this.empId;
-      this.timeLogs.properties.type = this.checkStatus;
-      let checkIns: string[] = this.checkTime.split(':');
-      this.timeLogs.properties.time = new Date(new Date(this.attendance.ofDate).setHours(parseInt(checkIns[0]), parseInt(checkIns[1]))).toISOString();
-      this.timeLogs.properties.source = 'byAdmin';
-    }
-    if (this.checkStatus === 'checkOut') {
-      this.timeLogs.properties.employee.id = this.empId;
-      this.timeLogs.properties.type = this.checkStatus;
-      let checkOuts: string[] = this.checkTime.split(':');
-      this.timeLogs.properties.time = new Date(new Date(this.attendance.ofDate).setHours(parseInt(checkOuts[0]), parseInt(checkOuts[1]))).toISOString();      this.timeLogs.properties.source = 'byAdmin';
-    }
-    this.timeLogs.save().then(data => {this.getAttendance(); }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+    this.timeLog.properties.employee.id = this.empId;
+    let checkTimes: string[] = this.checkTime.split(':');
+    this.timeLog.properties.time = new Date(new Date(this.attendance.ofDate).setHours(parseInt(checkTimes[0]), parseInt(checkTimes[1]))).toISOString();
+    this.timeLog.properties.source = 'byAdmin';
+    this.timeLog.save().then(data => {
+      this.toggleRow();
+      this.getAttendance();
+    }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
 
+  }
+
+  toggleRow() {
+    this.isButton = !this.isButton;
+    this.checkTime = null;
+    this.timeLog.properties = new TimeLogs();
   }
 
   toggleLocation(loc: TimeLogsLocation) {
