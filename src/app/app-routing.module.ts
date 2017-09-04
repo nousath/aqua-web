@@ -17,31 +17,8 @@ import { ManageLeavesComponent } from './pages/attendances/manage-leaves/manage-
 import { ApplyLeaveComponent } from './pages/attendances/apply-leave/apply-leave.component';
 import { AppDownloadComponent } from './pages/app-download/app-download.component';
 import { DesignationsComponent } from './pages/employees/designations/designations.component';
-import { AttendanceLogsComponent } from "app/pages/attendances/attendance-logs/attendance-logs.component";
+import { AttendanceLogsComponent } from "./pages/attendances/attendance-logs/attendance-logs.component";
 
-// const attdendance_routes: Routes = [
-//   { path: '', redirectTo: 'daily', pathMatch: 'full' },
-//   { path: 'monthly', component: MonthlyComponent },
-//   { path: 'daily', component: DailyComponent },
-
-//   { path: 'daily/:empId', component: AttendanceDetailsComponent },
-//   { path: 'details/:empId', component: AttendanceDetailsComponent },
-//   { path: 'monthly/:empId', component: AttendanceDetailsComponent },
-//   { path: 'leaves/:empId', component: AttendanceDetailsComponent },
-
-//   { path: 'details/:empId/apply-leave', component: ApplyLeaveComponent },
-//   { path: 'daily/:empId/apply-leave', component: ApplyLeaveComponent },
-//   { path: 'daily/:empId/attendance-logs/:ofDate', component: AttendanceLogsComponent },
-//   { path: 'monthly/:empId/apply-leave', component: ApplyLeaveComponent },
-//   { path: 'leaves/:empId/apply-leave', component: ApplyLeaveComponent },
-//   { path: 'leaves/new/apply', component: ApplyLeaveComponent },
-
-//   { path: 'leaves', component: LeavesComponent },
-//   { path: 'leave-balances', component: LeaveBalancesComponent },
-//   { path: 'leave-balances/:empId', component: AttendanceDetailsComponent },
-//   { path: 'manage-leaves', component: ManageLeavesComponent },
-
-// ];
 
 const emp_routes: Routes = [
   { path: '', redirectTo: 'list', pathMatch: 'full' },
