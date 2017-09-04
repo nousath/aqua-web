@@ -4,7 +4,7 @@ import { Subscription } from "rxjs/Rx";
 import { AmsEmployeeService } from '../../services/ams';
 import { EmsEmployeeService } from '../../services/ems';
 import { ToastyService } from 'ng2-toasty';
-import { LocalStorageService } from "app/services/local-storage.service";
+import { LocalStorageService } from '../../services/local-storage.service';
 
 @Component({
   selector: 'aqua-org-login',
@@ -36,31 +36,12 @@ export class OrgLoginComponent implements OnInit, OnDestroy {
 
       this.amsEmployeeService.signInViaExternalToken.create(tempData).then(
         (amsUser) => {
-          // this.store.removeItem('externalToken');
-          // if (!amsUser.isAdmin) {
-          //   this.store.clear();
-          //   return this.toastyService.info({ title: 'Info', msg: 'You are not authorized to use this application. Please contact the system administrator if you need to access this application' })
-          // }
           this.store.setItem('ams_token', amsUser.token);
           this.store.setObject('user', amsUser);
           this.store.setItem('orgCode', amsUser.organization.code ? amsUser.organization.code.toLowerCase() : orgCode);
           this.router.navigate(['/pages']);
         }
       ).catch(err => { this.toastyService.error({ title: 'Error', msg: err }) });
-
-      // this.emsEmployeeService.signInViaExternalToken.create(tempData).then(
-      //   emsUser => {
-      //     this.store.removeItem('externalToken');
-      //     this.store.setItem('ems_token', emsUser.token);
-      //     this.amsEmployeeService.employees.create(tempData).then(
-      //       (amsUser) => {
-      //         this.store.setItem('ams_token', amsUser.token);
-      //         this.store.setItem('orgCode', amsUser.organization.code ? amsUser.organization.code.toLowerCase() : 'msas');
-      //         this.router.navigate(['/pages']);
-      //       }
-      //     ).catch(err => { this.toastyService.error({ title: 'Error', msg: err }) });
-      //   }
-      // ).catch(err => { this.toastyService.error({ title: 'Error', msg: err }) });
     })
 
   }

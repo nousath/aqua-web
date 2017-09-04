@@ -1,15 +1,16 @@
-import { Component, OnInit, } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Model } from '../../common/contracts/model';
 import { User } from '../../models';
 import { EmsEmployeeService } from '../../services/ems';
 import { ToastyService } from 'ng2-toasty';
 import { AmsEmployeeService } from '../../services/ams';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ValidatorService, EmsOrganizationService, EmsAuthService } from '../../services';
 import { EmsEmployee } from '../../models/ems/employee';
 import { Organization } from '../../models/organization';
 import { Page } from '../../common/contracts/page';
-import { LocalStorageService } from "app/services/local-storage.service";
+import { LocalStorageService } from '../../services/local-storage.service';
+import { Subscription } from 'rxjs/Rx';
 declare var $: any;
 
 
@@ -34,7 +35,7 @@ enum FormSections { SIGNIN, SIGNUP, OTP, COMPLETE }
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   user: Model<User>;
   otpModel: EmsEmployee;
@@ -45,8 +46,11 @@ export class LoginComponent implements OnInit {
   organizations: Page<Organization>;
   newOrg: boolean = false;
   profileModel: EmsEmployee = new EmsEmployee();
+  subscription: Subscription;
 
-  constructor(private emsEmployeeService: EmsEmployeeService,
+
+  constructor(private activatedRoute: ActivatedRoute,
+    private emsEmployeeService: EmsEmployeeService,
     private amsEmployeeService: AmsEmployeeService,
     private emsOrganizationService: EmsOrganizationService,
     private emsAuthService: EmsAuthService,
@@ -54,6 +58,19 @@ export class LoginComponent implements OnInit {
     private store: LocalStorageService,
     private router: Router,
     private toastyService: ToastyService) {
+
+    this.subscription = activatedRoute.queryParams.subscribe(queryParams => {
+      let token: string = queryParams['user_access_token'];
+      let orgCode: string = queryParams['org_code'];
+      if (token && orgCode) {
+        orgCode = orgCode.toLowerCase();
+        this.store.setItem('external-token', token);
+        this.store.setItem('orgCode', orgCode);
+        return this.loginToAms();
+      }
+    })
+
+
     this.user = new Model({
       api: emsAuthService.signin,
       properties: new User()
@@ -216,6 +233,9 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
 }
