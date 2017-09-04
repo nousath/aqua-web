@@ -5,10 +5,10 @@ import { MonthlyComponent } from './monthly/monthly.component';
 import { DailyComponent } from './daily/daily.component';
 import { AttendanceDetailsComponent } from './attendance-details/attendance-details.component';
 import { ApplyLeaveComponent } from './apply-leave/apply-leave.component';
-import { AttendanceLogsComponent } from 'app/pages/attendances/attendance-logs/attendance-logs.component';
 import { LeavesComponent } from './leaves/leaves.component';
 import { LeaveBalancesComponent } from './leave-balances/leave-balances.component';
 import { ManageLeavesComponent } from './manage-leaves/manage-leaves.component';
+import { AttendanceLogsComponent } from './attendance-logs/attendance-logs.component';
 
 const routes: Routes = [
   {

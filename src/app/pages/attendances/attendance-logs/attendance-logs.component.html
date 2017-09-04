@@ -9,7 +9,7 @@
         <h5><b>Date: </b> {{ofDate | date}}</h5>
     </div>
 </div>
-<md-spinner class="custom_spinner" *ngIf="employee?.isProcessing" mode="indeterminate"></md-spinner>
+<md-spinner class="custom_spinner" *ngIf="employee?.isProcessing || logs?.isLoading || attendances?.isLoading || timeLog?.isProcessing" mode="indeterminate"></md-spinner>
 <br>
 <div class="row">
     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
@@ -111,25 +111,25 @@
                 </div>
                 <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
                     <!-- <input class="form-control" type="text"> -->
-                    <select class="form-control" [(ngModel)]="checkStatus">
+                    <select class="form-control" [(ngModel)]="timeLog.properties.type">
             <option value='checkIn'>Check In</option>
             <option value='checkOut'>Check Out</option>
           </select>
                 </div>
                 <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                    <button md-icon-button class="doneButton" (click)="isButton= true; checkUpdate()">
+                    <button md-icon-button [disabled]="timeLog?.isProcessing" class="doneButton" (click)="checkUpdate()">
             <md-icon> done </md-icon>
         </button>
                 </div>
                 <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                    <button md-icon-button class="doneButton" (click)="isButton= true">
+                    <button md-icon-button [disabled]="timeLog?.isProcessing" class="doneButton" (click)="toggleRow()">
             <md-icon> close </md-icon>
         </button>
 
                 </div>
             </div>
             <div class="row text-center">
-                <button *ngIf="isButton" md-raised-button color="primary" (click)="isButton= false">ADD ROW</button>
+                <button *ngIf="isButton" md-raised-button color="primary" (click)="toggleRow()">ADD ROW</button>
             </div>
         </md-card>
     </div>

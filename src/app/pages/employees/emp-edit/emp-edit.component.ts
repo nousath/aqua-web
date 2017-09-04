@@ -14,7 +14,8 @@ import { MdDialog } from '@angular/material';
 import { ResetPasswordDialogComponent } from '../../../dialogs/reset-password-dialog/reset-password-dialog.component';
 import { FileUploader, ParsedResponseHeaders, FileItem, FileLikeObject } from 'ng2-file-upload';
 import * as _ from "lodash";
-import { LocalStorageService } from "app/services/local-storage.service";
+import { LocalStorageService } from '../../../services/local-storage.service';
+import { environment } from '../../../../environments/environment.qa';
 declare var $: any;
 
 
@@ -30,6 +31,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
   subscription: Subscription;
   uploader: FileUploader;
   isChangeImage: boolean = false;
+  imgUploadUrl: string = environment.apiUrls.ems;
 
   isNew: boolean = false;
 
