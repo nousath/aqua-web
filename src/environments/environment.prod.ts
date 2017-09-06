@@ -1,8 +1,8 @@
 export const environment = {
   production: true,
   apiUrls: {
-    ems: 'http://ems.mindfulsas.com/api',
-    ams: 'http://ams.mindfulsas.com/api'
+    ems: 'http://ems.aquateams.com',
+    ams: 'http://ams.aquateams.com'
   },
   name: 'prod'
 };
