@@ -273,7 +273,6 @@ export class GenericApi<TModel> implements IApi<TModel> {
     private http: Http,
     private apiName: 'ems' | 'ams', // ems or ams
     private token?: string) {
-    this.rootUrl = environment.apiUrls[apiName] || `${apiName}/api`;
-    // this.rootUrl = `${apiName}/api`;
+    this.rootUrl = `${environment.apiUrls[apiName]}/api` || `${apiName}/api`;
   }
 }
