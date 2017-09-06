@@ -4,7 +4,7 @@ import { Router, ActivatedRoute, Params } from "@angular/router";
 import { ToastyService } from 'ng2-toasty';
 import { Channel, ChannelType, ChannelTypeParams } from '../../../models';
 import { Subscription } from "rxjs/Subscription";
-import { Model } from "app/common/contracts/model";
+import { Model } from "../../../common/contracts/model";
 import * as _ from 'lodash';
 
 
@@ -15,10 +15,6 @@ import * as _ from 'lodash';
   providers: [AmsCommunicationAppsService]
 })
 export class ChannelTypeEditComponent implements OnInit {
-
-  // subscription: Subscription;
-  // channelType: Model<ChannelType>;
-  // channel: Model<Channel>;
 
   channelType: ChannelType;
   channel: Channel = new Channel();

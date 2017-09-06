@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AmsCommunicationAppsService } from "../../../services/ams/ams-communication-apps.service";
 import { Channel, ChannelType } from '../../../models';
-import { Page } from "app/common/contracts/page";
+import { Page } from "../../../common/contracts/page";
 import { ToastyService } from 'ng2-toasty';
 import { Router } from "@angular/router";
 
