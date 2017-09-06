@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
+import { Angulartics2GoogleAnalytics } from 'angulartics2';
 
 
 @Component({
@@ -9,7 +10,9 @@ import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty
 })
 export class AppComponent {
   title = 'aqua';
-  constructor(private toastyService: ToastyService, private toastyConfig: ToastyConfig) {
+  constructor(private toastyService: ToastyService,
+    angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+    private toastyConfig: ToastyConfig) {
     this.toastyConfig.theme = 'material';
     this.toastyConfig.timeout = 5000;
     this.toastyConfig.showClose = true;

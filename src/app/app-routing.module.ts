@@ -30,7 +30,7 @@ const emp_routes: Routes = [
 
 
 const page_routes: Routes = [
-  { path: '', redirectTo: 'settings', pathMatch: 'full' },
+  { path: '', redirectTo: 'attendances', pathMatch: 'full' },
   { path: 'employees', loadChildren: 'app/pages/employees/employees.module#EmployeesModule' },
   { path: 'attendances', loadChildren: 'app/pages/attendances/attendances.module#AttendancesModule' },
   { path: 'settings', loadChildren: 'app/pages/settings/settings.module#SettingsModule' },

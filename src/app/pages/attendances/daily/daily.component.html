@@ -52,14 +52,30 @@
                     <label>Shift</label>
                 </div>
                 <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                    <select class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" [(ngModel)]="dailyAttendnace.filters.properties['shiftType']['value']" placeholder="Shift" name="shift">
+                    <select class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" [(ngModel)]="dailyAttendnace.filters.properties['shiftTypeId']['value']" placeholder="Shift" name="shift">
                    <option *ngFor="let item of shiftTypes.items" [value]="item.id">
                     {{item?.name}}
                 </option>
                 </select>
                 </div>
             </div>
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 button_align form-group text-center">
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 form-group">
+                <div class="col-xs-3 col-sm-3 col-md col-lg-3 formSets">
+                    <label class="setStatus">Status</label>
+                </div>
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                <select class="form-control boxStatus" [disabled]="dailyAttendnace?.isLoading  || isDownloading" [(ngModel)]="dailyAttendnace.filters.properties['status']['value']"
+                    placeholder="Status" name="Status">
+                    <option value="">All</option>
+                    <option value="present">Present</option>
+                    <option value="absent">Absent</option>
+                    <option value="missSwipe">Present</option>
+                    <option value="halfday">Half Day</option>
+                    <option value="onLeave">On Leave</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 button_align form-group text-center setButton">
                 <button [disabled]="dailyAttendnace?.isLoading || isDownloading" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="getAttendance(dailyAttendnace.filters.properties['ofDate']['value']);">Apply</button>
                 <button [disabled]="dailyAttendnace?.isLoading || isDownloading" md-raised-button class="btn_grey" mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()">Reset</button>
             </div>

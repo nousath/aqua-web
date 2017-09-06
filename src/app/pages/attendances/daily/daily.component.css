@@ -47,6 +47,9 @@
     margin-left: 1%;
 }
 
+.setButton{
+    margin-left: 77%;
+}
 @media only screen and (max-width:539px) {
     .toolBarRow {
         display: flex !important;
