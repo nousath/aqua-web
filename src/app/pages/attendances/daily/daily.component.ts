@@ -60,7 +60,10 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
         field: 'code',
         value: null
       }, {
-        field: 'shiftType',
+        field: 'shiftTypeId',
+        value: null
+      }, {
+        field: 'status',
         value: null
       }],
     });
@@ -89,8 +92,8 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
       // this.dailyAttendnace.filters.properties['ofDate']['value'] = filters['ofDate'] || new Date();
       this.dailyAttendnace.filters.properties['name']['value'] = filters['name'] || null;
       this.dailyAttendnace.filters.properties['code']['value'] = filters['code'] || null;
-      this.dailyAttendnace.filters.properties['shiftType']['value'] = filters['shiftType'] || null;
-    }
+      this.dailyAttendnace.filters.properties['shiftTypeId']['value'] = filters['shiftTypeId'] || null;
+      }
     this.getAttendance(this.dailyAttendnace.filters.properties['ofDate']['value'] || new Date());
   }
 

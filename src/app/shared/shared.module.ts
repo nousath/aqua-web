@@ -30,6 +30,7 @@ import {
 import { ValidatorService } from '../services/validator.service';
 import { LocalStorageService } from "../services/local-storage.service";
 import { TimePipe } from './time.pipe';
+import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
 
 
 import {
@@ -125,6 +126,7 @@ export const MaterialModules = [
   ],
   imports: [
     HttpModule,
+    Angulartics2Module.forChild(),
     ToastyModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyA3-BQmJVYB6_soLJPv7cx2lFUMAuELlkM'
@@ -133,6 +135,7 @@ export const MaterialModules = [
   exports: [
     CommonModule,
     MaterialModules,
+    Angulartics2Module,
     FormsModule,
     HttpModule,
     ToastyModule,

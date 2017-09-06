@@ -105,12 +105,14 @@
                     <p *ngIf="item?.status === 'present'
                      || item?.status === 'checkedin'
                      || item?.status === 'missswipe'
+                     || item?.status === 'checked-in-again'
                      || item?.status === 'halfday'">
                         In - {{item?.checkIn | date:'shortTime'}}
                     </p>
                     <p *ngIf="item?.status === 'present'
                     || item?.status === 'checkedin'
                     || item?.status === 'missswipe'
+                    || item?.status === 'checked-in-again'
                     || item?.status === 'halfday'">
                         Out - {{item?.checkOut | date:'shortTime'}}
                     </p>
