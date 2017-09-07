@@ -1,29 +1,3 @@
-<!-- <md-toolbar class="loginHeader" color="primary">
-    <img class="logo1" src="assets/images/splash_logo2.png">
-
-    <span class="example-spacer"></span>
-    <form #loginForm="ngForm" class="loginForm">
-        <table class="example-full-width">
-            <tr>
-                <td>
-                    <md-input-container class="example-full-width-input">
-                        <input type="text" [maxlength]="validatorService.textLength" name="username" mdInput [(ngModel)]="user.properties.email" placeholder="Username">
-                    </md-input-container>
-                </td>
-                <td>
-                    <md-input-container class="example-full-width-input">
-                        <input type="password" [maxlength]="validatorService.textLength" name="password" mdInput [(ngModel)]="user.properties.password" placeholder="Password">
-                    </md-input-container>
-                </td>
-                <td>
-                    <button md-raised-button color="primary" type="submit" > <span *ngIf="!isLoggingIn">LOGIN</span> <md-spinner *ngIf="isLoggingIn"  class="loginSpinner"></md-spinner></button>
-                </td>
-            </tr>
-        </table>
-    </form>
-</md-toolbar> -->
-
-
 <video poster="assets/images/login/bg.png" id="bgvid" playsinline autoplay muted loop>
         <!-- <source src="images/bgvideo.mp4" type="video/mp4"> -->
   </video>
@@ -40,10 +14,12 @@
                 <div id="nav">
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a href="http://qa.www.hrms.aqua.m-sas.com/index.html#header" target="_blank">Home</a></li>
-                            <li><a href="http://qa.www.hrms.aqua.m-sas.com/index.html#feature" target="_blank">Features</a></li>
-                            <li><a href="http://qa.www.hrms.aqua.m-sas.com/index.html#about" target="_blank">About Us</a></li>
-                            <li><a href="http://qa.www.hrms.aqua.m-sas.com/index.html#contact" target="_blank">Contact</a></li>
+                            <li><a href="{{webSiteUrl}}/index.html#header" target="_blank">Home</a></li>
+                            <li><a href="{{webSiteUrl}}/blogs.html"><b>Blogs</b></a></li>
+                            <li><a href="{{webSiteUrl}}/prices.html"><b>Pricing</b></a></li>
+                            <li><a href="{{webSiteUrl}}/index.html#feature" target="_blank">Features</a></li>
+                            <li><a href="{{webSiteUrl}}/index.html#about" target="_blank">About Us</a></li>
+                            <li><a href="{{webSiteUrl}}/index.html#contact" target="_blank">Contact</a></li>
                             <li><a>Login</a></li>
                         </ul>
                     </div>
