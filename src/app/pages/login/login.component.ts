@@ -11,6 +11,7 @@ import { Organization } from '../../models/organization';
 import { Page } from '../../common/contracts/page';
 import { LocalStorageService } from '../../services/local-storage.service';
 import { Subscription } from 'rxjs/Rx';
+import { environment } from '../../../environments/environment';
 declare var $: any;
 
 
@@ -36,6 +37,9 @@ enum FormSections { SIGNIN, SIGNUP, OTP, COMPLETE }
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit, OnDestroy {
+
+  webSiteUrl: string = environment.apiUrls.website;
+  registerUrl: string = environment.apiUrls.register;
 
   user: Model<User>;
   otpModel: EmsEmployee;
@@ -124,22 +128,32 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (!this.signupEmail) {
       return this.toastyService.info({ title: 'Info', msg: 'Please enter Email' })
     }
-    this.isLoggingIn = true;
-    let model: any = {
-      email: this.signupEmail
+
+    // window.location.href = `${this.registerUrl}/#/signup/${this.signupEmail}`;
+    var win = window.open(`${this.registerUrl}/#/signup/${this.signupEmail}`, '_blank');
+    if (win) {
+      //Browser has allowed it to be opened
+      win.focus();
+    } else {
+      //Browser has blocked it
+      alert('Please allow popups for this website');
     }
-    this.emsAuthService.signup.create(model).then(
-      data => {
-        this.isLoggingIn = false;
-        if (data.status.toLowerCase() == 'verified') {
-          this.section = 'COMPLETE';
-          this.profileModel.id = data.id;
-        } else {
-          this.section = 'OTP';
-          this.otpModel = data;
-        }
-      }
-    ).catch(err => { this.isLoggingIn = false; this.toastyService.error({ title: 'Error', msg: err }) });
+    // this.isLoggingIn = true;
+    // let model: any = {
+    //   email: this.signupEmail
+    // }
+    // this.emsAuthService.signup.create(model).then(
+    //   data => {
+    //     this.isLoggingIn = false;
+    //     if (data.status.toLowerCase() == 'verified') {
+    //       this.section = 'COMPLETE';
+    //       this.profileModel.id = data.id;
+    //     } else {
+    //       this.section = 'OTP';
+    //       this.otpModel = data;
+    //     }
+    //   }
+    // ).catch(err => { this.isLoggingIn = false; this.toastyService.error({ title: 'Error', msg: err }) });
 
   }
 

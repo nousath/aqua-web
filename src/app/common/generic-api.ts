@@ -176,14 +176,14 @@ export class GenericApi<TModel> implements IApi<TModel> {
         let contentType = resposne.headers.get("content-type") || 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
         // get the headers' content disposition
-        let cd = resposne.headers.get("content-disposition");
+        let cd = resposne.headers.get("content-disposition") || resposne.headers.get("Content-Disposition");
 
         // get the file name with regex
         let regex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
         let match = regex.exec(cd);
 
         // is there a fiel name?
-        let fileName = match[1] || "report";
+        let fileName = match && match[1] || "report";
 
         // replace leading and trailing slashes that C# added to your file name
         fileName = fileName.replace(/\"/g, "");
