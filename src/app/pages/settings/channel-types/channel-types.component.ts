@@ -6,6 +6,8 @@ import { ToastyService } from 'ng2-toasty';
 import { Router } from "@angular/router";
 
 
+
+
 @Component({
   selector: 'aqua-channel-types',
   templateUrl: './channel-types.component.html',
@@ -25,8 +27,8 @@ export class ChannelTypesComponent implements OnInit {
 
   constructor(private amsCommunicationAppService: AmsCommunicationAppsService,
     private toastyService: ToastyService,
-    private route: Router
-  ) {
+    private route: Router,
+    ) {
 
     this.emailChannelTypes = new Page({
       api: amsCommunicationAppService.channelType,
@@ -55,8 +57,8 @@ export class ChannelTypesComponent implements OnInit {
     this.getChatChannelTypes();
   }
 
-  getSMSChannelTypes() {
-    this.smsChannelTypes
+  getSMSChannelTypes() {    
+   this.smsChannelTypes
       .fetch()
       .catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }

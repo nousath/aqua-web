@@ -37,16 +37,16 @@
         <a class="newEmp" md-icon-button [routerLink]="['new']" mdTooltip="New Employee" [mdTooltipPosition]="'above'">
             <md-icon>add_circle_outline</md-icon>
         </a>
-        <a class="exl" md-icon-button (click)="excel()" mdTooltip="Excel Upload" [mdTooltipPosition]="'above'">
+        <a class="exl" md-icon-button (click)="excel()" mdTooltip="Excel Upload" [mdTooltipPosition]="'above'"  angulartics2On="click" angularticsEvent="excelUploadClick" angularticsCategory="employee " [angularticsProperties]="{label: 'Fall Campaign'}">
             <md-icon>cloud_upload</md-icon>
         </a>
 
     </div>
     <div *ngIf="isUpload" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <span style="float: left"><b>Excel Upload</b></span>&nbsp;&nbsp;
-        <input class="file" id="uploader" type="file" ng2FileSelect [uploader]="uploader" />
+        <input class="file" id="uploader" type="file" ng2FileSelect [uploader]="uploader"  angulartics2On="click" angularticsEvent="chooseFileClick" angularticsCategory="employee" [angularticsProperties]="{label: 'Fall Campaign'}"/>
         <div *ngFor="let item of uploader.queue" class="queue">
-            <button md-icon-button class="uploadBtn" (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+            <button md-icon-button class="uploadBtn" (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess" >
                             <md-icon>cloud_upload</md-icon>
                         </button>
             <button md-icon-button class="uploadBtn" (click)="excel()" [disabled]="item.isReady || item.isUploading  || uploader.isUploading">

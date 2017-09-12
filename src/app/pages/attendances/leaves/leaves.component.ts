@@ -9,6 +9,7 @@ import { MdDialog } from '@angular/material';
 import { Filter } from '../../../common/contracts/filters';
 import * as _ from "lodash";
 import { LocalStorageService } from "app/services/local-storage.service";
+import { Angulartics2 } from 'angulartics2';
 
 @Component({
   selector: 'aqua-leaves',
@@ -26,7 +27,8 @@ export class LeavesComponent implements OnInit {
     private amsLeaveService: AmsLeaveService,
     public dialog: MdDialog,
     private store: LocalStorageService,
-    private toastyService: ToastyService) {
+    private toastyService: ToastyService,
+    private angulartics2: Angulartics2) {
 
     this.leaves = new Page({
       api: amsLeaveService.allLeavesOfOrg,
@@ -116,8 +118,10 @@ export class LeavesComponent implements OnInit {
     if (status !== 'rejected') {
       leave.status = status;
       this.updateStatus(leave);
+      this.angulartics2.eventTrack.next({ action: 'approveLeaveClick', properties: { category: 'allLeave', label: 'myLabel' }});
 
     } else {
+      this.angulartics2.eventTrack.next({ action: 'rejectLeaveClick', properties: { category: 'allLeave', label: 'myLabel' }});
       let dialogRef = this.dialog.open(LeaveActionDialogComponent, {
         width: '35%'
       });
@@ -127,6 +131,7 @@ export class LeavesComponent implements OnInit {
           leave.rejectionReason = reason;
           leave.status = status;
           this.updateStatus(leave)
+          
         }
       });
     }

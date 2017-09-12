@@ -11,6 +11,8 @@ import { Page } from '../../../common/contracts/page';
 import { AmsAttendanceService } from '../../../services/ams/ams-attendance.service';
 import { AmsTimelogsService } from '../../../services/ams/ams-timelogs.service';
 import { AmsEmployeeService } from '../../../services/ams/ams-employee.service';
+import { Angulartics2 } from 'angulartics2';
+
 
 @Component({
   selector: 'aqua-attendance-logs',
@@ -36,6 +38,7 @@ export class AttendanceLogsComponent implements OnInit {
     private toastyService: ToastyService,
     private amsAttendanceService: AmsAttendanceService,
     private amsTimelogsService: AmsTimelogsService,
+    private angulartics2: Angulartics2,
     private amsEmployeeService: AmsEmployeeService) {
     this.employee = new Model({
       api: amsEmployeeService.employeesForAdmin,
@@ -126,6 +129,7 @@ export class AttendanceLogsComponent implements OnInit {
   }
 
   toggleRow() {
+    this.angulartics2.eventTrack.next({ action: 'updateAttendanceClcik', properties: { category: 'timeLog' }});
     this.isButton = !this.isButton;
     this.checkTime = null;
     this.timeLog.properties = new TimeLogs();
