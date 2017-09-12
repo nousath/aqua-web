@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs/Rx';
 import * as _ from 'lodash';
 import { AlertParameter } from '../../../models/alert';
 import { ValidatorService } from '../../../services/validator.service';
+import { Angulartics2 } from 'angulartics2';
 
 interface IValue {
   prop: string
@@ -33,6 +34,7 @@ export class AlterEditComponent implements OnInit {
     private toastyService: ToastyService,
     public validatorService: ValidatorService,
     private activatedRoute: ActivatedRoute,
+    private angulartics2: Angulartics2,
     private router: Router) {
 
     this.alert = new Model({
@@ -69,11 +71,11 @@ export class AlterEditComponent implements OnInit {
   }
 
   configure() {
+    this.angulartics2.eventTrack.next({ action: 'alertClick', properties: { category: 'alertConfigurations' }});
     let trigger: any = {};
     _.each(this.alert.properties.alertType.trigger.parameters, (i: AlertParameter) => {
       trigger[i.name] = i.value
     });
-
     this.alert.properties.config.trigger = trigger;
     this.alert.save().then(
       data => {

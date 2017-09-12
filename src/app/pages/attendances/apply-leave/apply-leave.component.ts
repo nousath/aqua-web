@@ -7,6 +7,7 @@ import { Model } from '../../../common/contracts/model';
 import { LeaveBalance } from '../../../models/leave-balance';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, Observable } from 'rxjs/Rx';
+import { Angulartics2 } from 'angulartics2';
 declare var $: any;
 
 @Component({
@@ -29,7 +30,9 @@ export class ApplyLeaveComponent implements OnInit {
     private autoCompleteService: AutoCompleteService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private toastyService: ToastyService) {
+    private toastyService: ToastyService,
+    private angulartics2: Angulartics2)
+     {
 
     this.employee = new Model({
       api: amsEmployeeService.employeesForAdmin,
@@ -105,6 +108,7 @@ export class ApplyLeaveComponent implements OnInit {
   }
 
   applyLeave(isFormValid: boolean) {
+    this.angulartics2.eventTrack.next({ action: 'applyLeaveClick', properties: { category: 'allLeave', label: 'myLabel' }});
     if (!isFormValid) {
       return this.toastyService.info({ title: 'Info', msg: 'Fill all required fields' })
     }

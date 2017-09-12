@@ -17,7 +17,7 @@
                 <h5>All Leaves</h5>
             </a>
             <a md-list-item [routerLink]="['/pages/attendances/leave-balances']" routerLinkActive="activeTab" #rla4="routerLinkActive">
-                <h5>Leave Balance</h5>
+                <h5 angulartics2On="click" angularticsEvent="leaveBalanceClick" angularticsCategory="leaveBalance" >Leave Balance</h5>
             </a>
             <a md-list-item [routerLink]="['/pages/attendances/manage-leaves']" routerLinkActive="activeTab" #rla5="routerLinkActive">
                 <h5>Manage Leaves</h5>

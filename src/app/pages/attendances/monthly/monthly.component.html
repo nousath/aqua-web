@@ -11,7 +11,7 @@
         </div>
         <div class="headerBtns">
             <button [disabled]="monthlyAttendnace?.isLoading || employee?.isProcessing" md-icon-button mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'" (click)="isFilter = !isFilter"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
-            <button [disabled]="monthlyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" (click)="download()"><md-icon >cloud_download</md-icon></button>
+            <button [disabled]="monthlyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" (click)="download()"angulartics2On="click" angularticsEvent="monthyAttendnaceDownloadClick" angularticsCategory="monthyAttendnace" [angularticsProperties]="{label: 'Fall Campaign'}"><md-icon >cloud_download</md-icon></button>
         </div>
 
     </div>

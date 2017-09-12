@@ -63,13 +63,13 @@
                             </div>
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                                    <button type="submit" class="btn btn-primary buttonSend form-control" [disabled]="isLoggingIn" (click)="login()"><p class="btntxt">SIGN IN</p></button>
+                                    <button type="submit" class="btn btn-primary buttonSend form-control" [disabled]="isLoggingIn" (click)="login()"><p class="btntxt" angulartics2On="click" angularticsEvent="signInClick" angularticsCategory="signIn" [angularticsProperties]="{label: user.properties.email }">SIGN IN</p></button>
                                 </div>
                             </div>
                         </form>
                         <div class="row">
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 marginForgotpass">
-                                <a class="forgotpassword" (click)="switch('FORGOTPASSWORD')">Forgot Password?</a>
+                                <a class="forgotpassword" (click)="switch('FORGOTPASSWORD')" angulartics2On="click" angularticsEvent="forgotPasswordClick" angularticsCategory="signIn" [angularticsProperties]="{label: user.properties.email}">Forgot Password?</a>
                             </div>
                         </div>
                     </div>
@@ -81,7 +81,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                     <div class="form-group ">
                                         <input type="email" class="form-control txtBox" #emailAddress="ngModel" email [(ngModel)]="signupEmail" placeholder="Email Address" [maxlength]="validatorService.textLength" name="Email" required>
-                                        <span class="asterisk" *ngIf="!emailAddress.valid && emailAddress.touched">Enter a valid Email</span>
+                                        <span class="asterisk" *ngIf="!emailAddress.valid && emailAddress.touched" angulartics2On="click" angularticsEvent="entervalidEmail" angularticsCategory="signIn" [angularticsProperties]="{label:  user.properties.email}">Enter a valid Email</span>
 
                                     </div>
                                 </div>
@@ -182,7 +182,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                                    <button type="submit" class="btn btn-primary buttonSend form-control" [disabled]="isLoggingIn || signupForm.invalid" (click)="signUp()"><p class="btntxt">SIGN UP</p></button>
+                                    <button type="submit" class="btn btn-primary buttonSend form-control" [disabled]="isLoggingIn || signupForm.invalid" (click)="signUp()"><p class="btntxt" angulartics2On="click" angularticsEvent="signUpClick" angularticsCategory="signUp" [angularticsProperties]="{label: signupEmail }">SIGN UP</p></button>
                                 </div>
                             </div>
                         </form>
@@ -245,7 +245,7 @@
                         </form>
                         <div class="row">
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 marginForgotpass">
-                                <button class="cle_white linksBtn" [disabled]="isLoggingIn" (click)="resendOTP()">Resend Code?</button> &nbsp;<span class="cle_white">OR</span>&nbsp;
+                                <button class="cle_white linksBtn" [disabled]="isLoggingIn" (click)="resendOTP()" >Resend Code?</button> &nbsp;<span class="cle_white">OR</span>&nbsp;
                                 <button class="cle_white linksBtn" (click)="switch('SIGNIN')">Cancel</button>
                             </div>
                         </div>
