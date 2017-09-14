@@ -130,7 +130,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     let d: any = _.find(this.designations.items, (item: Designation) => {
-      return item.name.toLowerCase() == this.employee.properties.designation
+      return item.name.toLowerCase() == this.employee.properties.designation.toLowerCase()
     });
     this.employee.properties.designation = d ? d : null;
 
