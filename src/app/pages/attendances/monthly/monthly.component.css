@@ -43,6 +43,10 @@
     margin-left: 1%;
 }
 
+.setDesignation{
+    margin-left: -35px;
+}
+
 @media only screen and (max-width:539px) {
     .toolBarRow {
         display: flex !important;
