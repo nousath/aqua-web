@@ -113,3 +113,7 @@
     top: -3px;
     right: 0;
 }
+
+.nameFormat{
+    word-break: break-word;
+}
