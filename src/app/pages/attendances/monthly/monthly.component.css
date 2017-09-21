@@ -47,6 +47,10 @@
     margin-left: -35px;
 }
 
+.setIcon{
+    margin-right: 20px;
+}
+
 @media only screen and (max-width:539px) {
     .toolBarRow {
         display: flex !important;

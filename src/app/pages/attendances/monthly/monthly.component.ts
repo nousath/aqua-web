@@ -73,6 +73,9 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
       }, {
         field: 'shiftType',
         value: null
+      },{
+        field: 'extraHours',
+        value: false
       }]
     });
 
