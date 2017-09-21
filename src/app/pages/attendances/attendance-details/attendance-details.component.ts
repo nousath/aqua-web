@@ -49,6 +49,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
   emptyStartDays: any[] = [];
   emptyEndDays: any[] = [];
   date: Date = null;
+  extraHours = false;
 
 
 
@@ -326,6 +327,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
     let serverPageInput: ServerPageInput = new ServerPageInput();
     serverPageInput.query['ofDate'] = this.selectedDate;
     serverPageInput.query['employee'] = this.empId;
+    serverPageInput.query['extraHours'] = this.extraHours;
     this.amsAttendanceService.donwloadSingleEmpMonthAtte.exportReport(serverPageInput).then(
       data => this.isDownloading = false
     ).catch(err => {

@@ -10,6 +10,7 @@
             </div>
         </div>
         <div class="headerBtns">
+            <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading || isProcessingAttendance" md-icon-button mdTooltip="Download Attendance extraHours" [mdTooltipPosition]="'above'" (click)="extraHours= true; download()"><md-icon>cloud_download</md-icon></button>
             <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading  || isProcessingAttendance" md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" (click)="download()" angulartics2On="click" angularticsEvent="dialyAttendnaceDownloadClick" angularticsCategory="dialyAttendance" [angularticsProperties]="{label: 'Fall Campaign'}"><md-icon >cloud_download</md-icon></button>
         </div>
 

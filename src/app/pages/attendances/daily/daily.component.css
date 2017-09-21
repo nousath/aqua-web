@@ -47,8 +47,8 @@
     margin-left: 1%;
 }
 
-.setButton{
-    /* margin-left: 77%; */
+.setIcon{
+    margin-right: 20px;
 }
 @media only screen and (max-width:539px) {
     .toolBarRow {

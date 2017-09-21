@@ -65,6 +65,9 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
       }, {
         field: 'status',
         value: null
+      },{
+        field: 'extraHours',
+        value: false
       }],
     });
 
