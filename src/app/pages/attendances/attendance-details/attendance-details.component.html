@@ -1,5 +1,8 @@
 <div class="row page_header">
     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <a md-raised-button class="reply" color="primary" [routerLink]="['/pages/attendances/daily']">
+            <md-icon>reply</md-icon>List
+        </a>
         <h5><b>Details</b></h5>
     </div>
     <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
@@ -10,7 +13,8 @@
             </div>
         </div>
         <div class="headerBtns">
-            <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading  || isProcessingAttendance" md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" (click)="download()" angulartics2On="click" angularticsEvent="dialyAttendnaceDownloadClick"
+            <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading || isProcessingAttendance" md-icon-button mdTooltip="Download Attendance extraHours" [mdTooltipPosition]="'above'" (click)="download(true)"><md-icon>cloud_download</md-icon></button>
+            <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading  || isProcessingAttendance" md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" (click)="download(false)" angulartics2On="click" angularticsEvent="dialyAttendnaceDownloadClick"
                 angularticsCategory="dialyAttendance" [angularticsProperties]="{label: 'Fall Campaign'}"><md-icon >cloud_download</md-icon></button>
         </div>
 

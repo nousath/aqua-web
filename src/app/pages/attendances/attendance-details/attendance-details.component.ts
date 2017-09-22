@@ -19,6 +19,7 @@ import { LeaveActionDialogComponent } from '../../../dialogs/leave-action-dialog
 import { Shift } from '../../../models/shift';
 import { ShiftType } from '../../../models/shift-type';
 import { AmsShiftService } from "app/services";
+import * as moment from 'moment';
 declare var $: any;
 
 
@@ -49,9 +50,6 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
   emptyStartDays: any[] = [];
   emptyEndDays: any[] = [];
   date: Date = null;
-  extraHours = false;
-
-
 
   constructor(private amsEmployeeService: AmsEmployeeService,
     private amsLeaveService: AmsLeaveService,
@@ -351,13 +349,15 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
   }
 
 
-  download() {
+  download(extraHours: boolean) {
     this.isDownloading = true;
     let serverPageInput: ServerPageInput = new ServerPageInput();
     serverPageInput.query['ofDate'] = this.selectedDate;
     serverPageInput.query['employee'] = this.empId;
-    serverPageInput.query['extraHours'] = this.extraHours;
-    this.amsAttendanceService.donwloadSingleEmpMonthAtte.exportReport(serverPageInput).then(
+    serverPageInput.query['extraHours'] = extraHours;
+    let reportName: string = `${this.employee.properties.name}_${moment(this.selectedDate).format('MMM_YY')}_monthlyReport`;
+    reportName = extraHours ? `${reportName}_extraHours` : reportName;
+    this.amsAttendanceService.donwloadSingleEmpMonthAtte.exportReport(serverPageInput, null, reportName).then(
       data => this.isDownloading = false
     ).catch(err => {
       this.toastyService.error({ title: 'Error', msg: err });

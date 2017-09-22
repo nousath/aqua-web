@@ -122,3 +122,9 @@
     display: inline-flex;
     flex-direction: column;
 }
+
+.reply {
+    float: left;
+    margin-left: 0;
+    margin-right: 1%;
+}

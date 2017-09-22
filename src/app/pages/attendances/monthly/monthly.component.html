@@ -10,9 +10,10 @@
             </div>
         </div>
         <div class="headerBtns setIcon">
-            <button  [disabled]="monthlyAttendnace?.isLoading || employee?.isProcessing" md-icon-button mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'" (click)="isFilter = !isFilter"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
-            <button [disabled]="monthlyAttendnace?.isLoading || isDownloading || emloyee?.isProcessing" md-icon-button mdTooltip="Download Attendance extraHours" [mdTooltipPosition]="'above'" (click)="monthlyAttendnace.filters.properties.extraHours.value= true;download()"><md-icon>cloud_download</md-icon> </button>
-            <button [disabled]="monthlyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" (click)="download()"angulartics2On="click" angularticsEvent="monthyAttendnaceDownloadClick" angularticsCategory="monthyAttendnace" [angularticsProperties]="{label: 'Fall Campaign'}"><md-icon >cloud_download</md-icon></button>
+            <button [disabled]="monthlyAttendnace?.isLoading || employee?.isProcessing" md-icon-button mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'" (click)="isFilter = !isFilter"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
+            <button [disabled]="monthlyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button mdTooltip="Download Attendance extraHours" [mdTooltipPosition]="'above'" (click)="monthlyAttendnace.filters.properties.extraHours.value= true;download()"><md-icon>cloud_download</md-icon> </button>
+            <button [disabled]="monthlyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" (click)="download()" angulartics2On="click" angularticsEvent="monthyAttendnaceDownloadClick"
+                angularticsCategory="monthyAttendnace" [angularticsProperties]="{label: 'Fall Campaign'}"><md-icon >cloud_download</md-icon></button>
         </div>
 
     </div>
@@ -28,49 +29,49 @@
             </div>
         </div>
         <form class="row">
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  form-group">
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-lg-3">
-                        <label for="email">Name</label>
-                    </div>
-                    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                        <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="monthlyAttendnace?.isLoading  || isDownloading" [(ngModel)]="monthlyAttendnace.filters.properties['name']['value']" name="Name">
-                    </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  form-group">
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-lg-3">
+                    <label for="email">Name</label>
                 </div>
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  form-group">
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        <label for="pwd">Code</label>
-                    </div>
-                    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                        <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="monthlyAttendnace?.isLoading  || isDownloading" [(ngModel)]="monthlyAttendnace.filters.properties['code']['value']" name="Code">
-                    </div>
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                    <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="monthlyAttendnace?.isLoading  || isDownloading" [(ngModel)]="monthlyAttendnace.filters.properties['name']['value']" name="Name">
                 </div>
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 form-group">
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        <label>Shift</label>
-                    </div>
-                    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                        <select class="form-control" [disabled]="monthlyAttendnace?.isLoading  || isDownloading" [(ngModel)]="monthlyAttendnace.filters.properties['shiftType']['value']" placeholder="Shift" name="shift">
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  form-group">
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <label for="pwd">Code</label>
+                </div>
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                    <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="monthlyAttendnace?.isLoading  || isDownloading" [(ngModel)]="monthlyAttendnace.filters.properties['code']['value']" name="Code">
+                </div>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 form-group">
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <label>Shift</label>
+                </div>
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                    <select class="form-control" [disabled]="monthlyAttendnace?.isLoading  || isDownloading" [(ngModel)]="monthlyAttendnace.filters.properties['shiftType']['value']" placeholder="Shift" name="shift">
                    <option *ngFor="let item of shiftTypes.items" [value]="item.id">
                     {{item?.name}}
                 </option>
                 </select>
-                    </div>
                 </div>
-            
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  form-group ">
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        <label class="setDesignation" for="pwd">Designation</label>
-                    </div>
-                    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                        <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="monthlyAttendnace?.isLoading  || isDownloading" [(ngModel)]="monthlyAttendnace.filters.properties['designation']['value']" name="Code">
-                    </div>
+            </div>
+
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  form-group ">
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <label class="setDesignation" for="pwd">Designation</label>
                 </div>
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  form-group"></div>
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 button_align form-group text-center">
-                    <button [disabled]="monthlyAttendnace?.isLoading || isDownloading" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="getAttendance(monthlyAttendnace.filters.properties['ofDate']['value']);">Apply</button>
-                    <button [disabled]="monthlyAttendnace?.isLoading || isDownloading" md-raised-button class="btn_grey" mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()">Reset</button>
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                    <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="monthlyAttendnace?.isLoading  || isDownloading" [(ngModel)]="monthlyAttendnace.filters.properties['designation']['value']" name="Code">
                 </div>
-           
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  form-group"></div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 button_align form-group text-center">
+                <button [disabled]="monthlyAttendnace?.isLoading || isDownloading" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="getAttendance(monthlyAttendnace.filters.properties['ofDate']['value']);">Apply</button>
+                <button [disabled]="monthlyAttendnace?.isLoading || isDownloading" md-raised-button class="btn_grey" mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()">Reset</button>
+            </div>
+
         </form>
     </md-card>
 </div>

@@ -13,8 +13,9 @@
         </div>
         <div class="headerBtns setIcon">
             <button [disabled]="dailyAttendnace?.isLoading || employee?.isProcessing" md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
-            <button [disabled]="dailyAttendnace?.isLoading || isDownloading || emloyee?.isProcessing" md-icon-button mdTooltip="Download Attendance extraHours" [mdTooltipPosition]="'above'" (click)="dailyAttendnace.filters.properties.extraHours.value= true;download()"><md-icon>cloud_download</md-icon> </button>
-            <button [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" (click)="download()" angulartics2On="click" angularticsEvent="dialyAttendnaceDownloadClick" angularticsCategory="dialyAttendnace" [angularticsProperties]="{label: 'Fall Campaign'}"><md-icon >cloud_download</md-icon></button>
+            <button [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button mdTooltip="Download Attendance extraHours" [mdTooltipPosition]="'above'" (click)="dailyAttendnace.filters.properties.extraHours.value= true;download()"><md-icon>cloud_download</md-icon> </button>
+            <button [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" (click)="download()" angulartics2On="click" angularticsEvent="dialyAttendnaceDownloadClick"
+                angularticsCategory="dialyAttendnace" [angularticsProperties]="{label: 'Fall Campaign'}"><md-icon >cloud_download</md-icon></button>
         </div>
 
     </div>
@@ -65,8 +66,7 @@
                     <label class="setStatus">Status</label>
                 </div>
                 <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                <select class="form-control boxStatus" [disabled]="dailyAttendnace?.isLoading  || isDownloading" [(ngModel)]="dailyAttendnace.filters.properties['status']['value']"
-                    placeholder="Status" name="Status">
+                    <select class="form-control boxStatus" [disabled]="dailyAttendnace?.isLoading  || isDownloading" [(ngModel)]="dailyAttendnace.filters.properties['status']['value']" placeholder="Status" name="Status">
                     <option value="">All</option>
                     <option value="present">Present</option>
                     <option value="absent">Absent</option>

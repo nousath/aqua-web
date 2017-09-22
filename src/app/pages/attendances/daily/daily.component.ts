@@ -14,7 +14,7 @@ import { MdDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Filter } from '../../../common/contracts/filters';
 import * as _ from "lodash";
-import { LocalStorageService } from "app/services/local-storage.service";
+import { LocalStorageService } from '../../../services/local-storage.service';
 declare var $: any;
 
 @Component({
@@ -132,7 +132,10 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
     serverPageInput.query = queryParams;
-    this.amsAttendanceService.donwloadDailyAttendances.exportReport(serverPageInput).then(
+    let reportName: string = `${moment(queryParams['ofDate']).format('DD_MMM_YY')}_DailyReport`;
+    reportName = queryParams['extraHours'] ? `${reportName}_extraHours` : reportName;
+
+    this.amsAttendanceService.donwloadDailyAttendances.exportReport(serverPageInput, null, reportName).then(
       data => this.isDownloading = false
     ).catch(err => {
       this.toastyService.error({ title: 'Error', msg: err });
