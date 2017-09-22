@@ -50,7 +50,6 @@ body {
 
 .capitalize {
     text-transform: capitalize;
-    word-break: break-word;
 }
 
 .non_editAble {

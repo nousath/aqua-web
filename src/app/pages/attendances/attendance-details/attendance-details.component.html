@@ -13,9 +13,15 @@
             </div>
         </div>
         <div class="headerBtns">
-            <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading || isProcessingAttendance" md-icon-button mdTooltip="Download Attendance extraHours" [mdTooltipPosition]="'above'" (click)="download(true)"><md-icon>cloud_download</md-icon></button>
-            <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading  || isProcessingAttendance" md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" (click)="download(false)" angulartics2On="click" angularticsEvent="dialyAttendnaceDownloadClick"
-                angularticsCategory="dialyAttendance" [angularticsProperties]="{label: 'Fall Campaign'}"><md-icon >cloud_download</md-icon></button>
+            <button md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" [mdMenuTriggerFor]="menu"><md-icon>cloud_download</md-icon></button>
+            <!-- <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading  || isProcessingAttendance" md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" (click)="download(false)" angulartics2On="click" angularticsEvent="dialyAttendnaceDownloadClick"
+                angularticsCategory="dialyAttendance" [angularticsProperties]="{label: 'Fall Campaign'}"><md-icon >cloud_download</md-icon></button> -->
+                <!-- <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading || isProcessingAttendance" md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" [mdMenuTriggerFor]="menu"><md-icon>cloud_download</md-icon> </button> -->
+                <md-menu #menu="mdMenu">
+                    <button md-menu-item [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading  || isProcessingAttendance"   (click)="download(false)"> Download Attendance</button>
+                    <button md-menu-item [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading || isProcessingAttendance" (click)="download(true)">Download Attendance with extraHours</button>
+                  </md-menu>
+
         </div>
 
     </div>

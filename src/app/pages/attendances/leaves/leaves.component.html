@@ -52,7 +52,7 @@
                 </select>
                 </div>
             </div>
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 button_align form-group text-center">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 button_align form-group text-center setButton">
                 <button [disabled]="leaves?.isLoading || isUpdatingLeaveStatus" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="fetchLeaves()">Apply</button>
                 <button [disabled]="leaves?.isLoading || isUpdatingLeaveStatus" md-raised-button class="btn_grey" mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()">Reset</button>
             </div>

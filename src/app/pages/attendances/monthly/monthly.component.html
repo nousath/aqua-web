@@ -9,11 +9,16 @@
                 <input id="monthSelector" type="text" class="form-control input-sm calendar no-spin">
             </div>
         </div>
-        <div class="headerBtns setIcon">
+        <div class="headerBtns">
             <button [disabled]="monthlyAttendnace?.isLoading || employee?.isProcessing" md-icon-button mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'" (click)="isFilter = !isFilter"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
-            <button [disabled]="monthlyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button mdTooltip="Download Attendance extraHours" [mdTooltipPosition]="'above'" (click)="download(true)"><md-icon>cloud_download</md-icon> </button>
+            <!-- <button [disabled]="monthlyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button mdTooltip="Download Attendance extraHours" [mdTooltipPosition]="'above'" (click)="download(true)"><md-icon>cloud_download</md-icon> </button>
             <button [disabled]="monthlyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" (click)="download(false)" angulartics2On="click" angularticsEvent="monthyAttendnaceDownloadClick"
-                angularticsCategory="monthyAttendnace" [angularticsProperties]="{label: 'Fall Campaign'}"><md-icon >cloud_download</md-icon></button>
+                angularticsCategory="monthyAttendnace" [angularticsProperties]="{label: 'Fall Campaign'}"><md-icon >cloud_download</md-icon></button> -->
+                <button md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" [mdMenuTriggerFor]="menu"><md-icon>cloud_download</md-icon></button>
+                <md-menu #menu="mdMenu">
+                    <button md-menu-item [disabled]="monthlyAttendnace?.isLoading || isDownloading || employee?.isProcessing"   (click)="download(false)"> Download Attendance</button>
+                    <button md-menu-item [disabled]="monthlyAttendnace?.isLoading || isDownloading || employee?.isProcessing" (click)="download(true)">Download Attendance with extraHours</button>
+                  </md-menu>
         </div>
 
     </div>

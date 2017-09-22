@@ -11,11 +11,16 @@
                 <!--<input class="form-control input-sm calendar no-spin" type="date" [disabled]="dailyAttendnace?.isLoading  || isDownloading" [ngModel]="date  | date:'yyyy-MM-dd'" (ngModelChange)="date = $event;getAttendance($event)" aria-describedby="basic-addon1">-->
             </div>
         </div>
-        <div class="headerBtns setIcon">
+        <div class="headerBtns ">
             <button [disabled]="dailyAttendnace?.isLoading || employee?.isProcessing" md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
-            <button [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button mdTooltip="Download Attendance extraHours" [mdTooltipPosition]="'above'" (click)="download(true)"><md-icon>cloud_download</md-icon> </button>
+            <!-- <button [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button mdTooltip="Download Attendance extraHours" [mdTooltipPosition]="'above'" (click)="download(true)"><md-icon>cloud_download</md-icon> </button>
             <button [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" (click)="download(false)" angulartics2On="click" angularticsEvent="dialyAttendnaceDownloadClick"
-                angularticsCategory="dialyAttendnace" [angularticsProperties]="{label: 'Fall Campaign'}"><md-icon >cloud_download</md-icon></button>
+                angularticsCategory="dialyAttendnace" [angularticsProperties]="{label: 'Fall Campaign'}"><md-icon >cloud_download</md-icon></button> -->
+                <button md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" [mdMenuTriggerFor]="menu"><md-icon>cloud_download</md-icon></button>
+                <md-menu #menu="mdMenu">
+                    <button md-menu-item [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing"   (click)="download(false)"> Download Attendance</button>
+                    <button md-menu-item [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" (click)="download(true)">Download Attendance with extraHours</button>
+                  </md-menu>
         </div>
 
     </div>
@@ -76,7 +81,8 @@
                     </select>
                 </div>
             </div>
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 button_align form-group text-center setButton">
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  form-group"></div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 button_align form-group text-center">
                 <button [disabled]="dailyAttendnace?.isLoading || isDownloading" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="getAttendance(dailyAttendnace.filters.properties['ofDate']['value']);">Apply</button>
                 <button [disabled]="dailyAttendnace?.isLoading || isDownloading" md-raised-button class="btn_grey" mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()">Reset</button>
             </div>
