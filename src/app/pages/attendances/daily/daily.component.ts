@@ -122,7 +122,7 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   isDownloading: boolean = false;
-  download() {
+  download(extraHours: boolean) {
     this.isDownloading = true;
     let serverPageInput: ServerPageInput = new ServerPageInput();
     let queryParams: any = {};
@@ -131,9 +131,10 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
         queryParams[key] = filter.value;
       }
     });
+    queryParams['extraHours'] = extraHours;
     serverPageInput.query = queryParams;
     let reportName: string = `${moment(queryParams['ofDate']).format('DD_MMM_YY')}_DailyReport`;
-    reportName = queryParams['extraHours'] ? `${reportName}_extraHours` : reportName;
+    reportName = extraHours ? `${reportName}_extraHours` : reportName;
 
     this.amsAttendanceService.donwloadDailyAttendances.exportReport(serverPageInput, null, reportName).then(
       data => this.isDownloading = false
