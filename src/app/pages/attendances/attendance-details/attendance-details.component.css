@@ -114,6 +114,17 @@
     right: 0;
 }
 
-.nameFormat{
+.nameFormat {
     word-break: break-word;
+}
+
+.example-radio-group {
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.reply {
+    float: left;
+    margin-left: 0;
+    margin-right: 1%;
 }

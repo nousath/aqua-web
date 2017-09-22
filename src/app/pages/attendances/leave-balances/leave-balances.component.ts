@@ -6,7 +6,7 @@ import { OrgLeaveBalance, LeaveType, LeaveBalance } from '../../../models';
 import * as _ from 'lodash';
 import { Model } from '../../../common/contracts/model';
 import { Filter } from '../../../common/contracts/filters';
-import { LocalStorageService } from "app/services/local-storage.service";
+import { LocalStorageService } from '../../../services/local-storage.service';
 
 @Component({
   selector: 'aqua-leave-balances',

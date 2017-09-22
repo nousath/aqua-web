@@ -166,7 +166,7 @@ export class GenericApi<TModel> implements IApi<TModel> {
       .catch(this.handleError);
   }
 
-  exportReport(input: ServerPageInput, path?: string): Promise<any> {
+  exportReport(input: ServerPageInput, path?: string, reportName?: string): Promise<any> {
     let parms: URLSearchParams = this.getQueryParams(input);
     let apiPath: string = path ? `${this.rootUrl}/${path}` : `${this.rootUrl}/${this.key}`;
 
@@ -184,6 +184,8 @@ export class GenericApi<TModel> implements IApi<TModel> {
 
         // is there a fiel name?
         let fileName = match && match[1] || "report";
+        if (reportName)
+          fileName = reportName;
 
         // replace leading and trailing slashes that C# added to your file name
         fileName = fileName.replace(/\"/g, "");

@@ -22,10 +22,16 @@ export class Employee {
   token: string = '';
   supervisor: Supervisor = new Supervisor();
   abilities: Abilities = new Abilities();
+  currentAblitiy: 'maualAttendance' | 'manualByBeacon' | 'manualByGeoFencing' | 'manualByWifi' | 'none' = 'none';
 }
 
 export class Abilities {
   maualAttendance: boolean = false;
+  manualByBeacon: boolean = false;
+  manualByGeoFencing: boolean = false;
+  manualByWifi: boolean = false;
+  shiftNotifier: boolean = false;
+  trackLocation: boolean = false;
 }
 
 
