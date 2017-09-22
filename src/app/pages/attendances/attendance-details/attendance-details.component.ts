@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LocalStorageService } from "app/services/local-storage.service";
 import { MdDialog } from '@angular/material';
 import { Model } from '../../../common/contracts/model';
-import { Employee } from '../../../models/employee';
+import { Employee, Abilities } from '../../../models/employee';
 import { Subscription } from 'rxjs/Rx';
 import { AmsLeaveService, AmsAttendanceService, AmsEmployeeService } from '../../../services/ams';
 import { Page } from '../../../common/contracts/page';
@@ -105,6 +105,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
         this.getAttendance(this.selectedDate);
         this.employee.fetch(this.empId).then(
           data => {
+            this.checkCurrentAblity();
             if (!this.employee.properties.shiftType)
               this.employee.properties.shiftType = new ShiftType();
           }
@@ -123,12 +124,39 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
       this.updateEmp(model);
   }
 
-  toggleManual() {
-    this.employee.properties.abilities.maualAttendance = !this.employee.properties.abilities.maualAttendance;
+  toggleManual(abilitie: 'trackLocation' | 'shiftNotifier') {
+    this.employee.properties.abilities[abilitie] = !this.employee.properties.abilities[abilitie];
     let model: any = {
       abilities: this.employee.properties.abilities
     }
     this.updateEmp(model);
+  }
+  selectAbility(type: 'maualAttendance' | 'manualByBeacon' | 'manualByGeoFencing' | 'manualByWifi' | 'none') {
+    this.employee.properties.abilities.maualAttendance = false;
+    this.employee.properties.abilities.manualByGeoFencing = false;
+    this.employee.properties.abilities.manualByBeacon = false;
+    this.employee.properties.abilities.manualByWifi = false;
+    if (type != 'none') {
+      this.employee.properties.abilities[type] = true;
+    }
+
+    let model: any = {
+      abilities: this.employee.properties.abilities
+    }
+    this.updateEmp(model);
+
+  }
+
+  checkCurrentAblity() {
+    this.employee.properties['currentAblitiy'] = 'none'
+    if (this.employee.properties.abilities.maualAttendance)
+      this.employee.properties.currentAblitiy = 'maualAttendance';
+    if (this.employee.properties.abilities.manualByGeoFencing)
+      this.employee.properties.currentAblitiy = 'manualByGeoFencing';
+    if (this.employee.properties.abilities.manualByBeacon)
+      this.employee.properties.currentAblitiy = 'manualByBeacon';
+    if (this.employee.properties.abilities.manualByWifi)
+      this.employee.properties.currentAblitiy = 'manualByWifi';
   }
 
   updateEmp(model: any) {
@@ -136,6 +164,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
     this.amsEmployeeService.employees.update(this.employee.properties.id, model)
       .then(data => {
         this.employee.isProcessing = false;
+        this.checkCurrentAblity();
       })
       .catch(err => { this.employee.isProcessing = false; this.toastyService.error({ title: 'Error', msg: err }) });
   }
@@ -369,10 +398,10 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
         this.fetchSubmittedLeaveBalance();
         this.fetchLeavesBalances();
       }
-    ).catch( err => {
-        this.isUpdatingLeaveStatus = false;
-        this.toastyService.error({ title: 'Error', msg: err });
-      })
+    ).catch(err => {
+      this.isUpdatingLeaveStatus = false;
+      this.toastyService.error({ title: 'Error', msg: err });
+    })
   }
 
   accept_reject_leave(leave: Leave, status: string) {

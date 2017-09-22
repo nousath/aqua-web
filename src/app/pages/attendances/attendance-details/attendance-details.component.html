@@ -10,8 +10,8 @@
             </div>
         </div>
         <div class="headerBtns">
-            <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading || isProcessingAttendance" md-icon-button mdTooltip="Download Attendance extraHours" [mdTooltipPosition]="'above'" (click)="extraHours= true; download()"><md-icon>cloud_download</md-icon></button>
-            <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading  || isProcessingAttendance" md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" (click)="download()" angulartics2On="click" angularticsEvent="dialyAttendnaceDownloadClick" angularticsCategory="dialyAttendance" [angularticsProperties]="{label: 'Fall Campaign'}"><md-icon >cloud_download</md-icon></button>
+            <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading  || isProcessingAttendance" md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" (click)="download()" angulartics2On="click" angularticsEvent="dialyAttendnaceDownloadClick"
+                angularticsCategory="dialyAttendance" [angularticsProperties]="{label: 'Fall Campaign'}"><md-icon >cloud_download</md-icon></button>
         </div>
 
     </div>
@@ -63,9 +63,42 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2" angulartics2On="click" angularticsEvent="manualCheckIn/CheckOutClick" angularticsCategory="dailyAttendance" [angularticsProperties]="{label: 'Fall Campaign'}">
-                                Manual CheckIn/CheckOut:&nbsp;
-                                <md-slide-toggle [checked]="employee?.properties?.abilities?.maualAttendance" (change)="toggleManual()">{{employee?.properties?.abilities?.maualAttendance ? 'Enabled':'Disabled'}}</md-slide-toggle>
+                            <td colspan="2" angulartics2On="click" angularticsEvent="trackLocation" angularticsCategory="dailyAttendance" [angularticsProperties]="{label: 'Fall Campaign'}">
+                                Track Location:&nbsp;
+                                <md-slide-toggle [checked]="employee?.properties?.abilities?.trackLocation" (change)="toggleManual('trackLocation')">{{employee?.properties?.abilities?.trackLocation ? 'Enabled':'Disabled'}}</md-slide-toggle>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" angulartics2On="click" angularticsEvent="shiftNotifier" angularticsCategory="dailyAttendance" [angularticsProperties]="{label: 'Fall Campaign'}">
+                                Shift Notifier:&nbsp;
+                                <md-slide-toggle [checked]="employee?.properties?.abilities?.shiftNotifier" (change)="toggleManual('shiftNotifier')">{{employee?.properties?.abilities?.shiftNotifier ? 'Enabled':'Disabled'}}</md-slide-toggle>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <table class="table">
+                        <tr>
+                            <th>Choose Ability</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <md-radio-group class="example-radio-group" [(ngModel)]="this.employee.properties['currentAblitiy']" (change)="selectAbility(this.employee.properties['currentAblitiy'])">
+                                    <md-radio-button class="example-radio-button" [value]="'maualAttendance'">
+                                        Manual CheckIn/CheckOut
+                                    </md-radio-button>
+                                    <md-radio-button class="example-radio-button" [value]="'manualByBeacon'">
+                                        Manual By Beacon
+                                    </md-radio-button>
+                                    <md-radio-button class="example-radio-button" [value]="'manualByGeoFencing'">
+                                        Manual By Geo Fencing
+                                    </md-radio-button>
+                                    <md-radio-button class="example-radio-button" [value]="'manualByWifi'">
+                                        Manual By Wifi
+                                    </md-radio-button>
+                                    <md-radio-button class="example-radio-button" [value]="'none'">
+                                        None
+                                    </md-radio-button>
+                                </md-radio-group>
                             </td>
                         </tr>
                     </table>
