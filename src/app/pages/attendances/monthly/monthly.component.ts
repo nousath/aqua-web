@@ -66,7 +66,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
       }, {
         field: 'shiftType',
         value: null
-      },{
+      }, {
         field: 'extraHours',
         value: false
       }]
@@ -124,7 +124,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
   }
 
   isDownloading: boolean = false;
-  download() {
+  download(extraHours: boolean) {
     this.isDownloading = true;
     let serverPageInput: ServerPageInput = new ServerPageInput();
     let queryParams: any = {};
@@ -133,9 +133,10 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
         queryParams[key] = filter.value;
       }
     });
+    queryParams['extraHours'] = extraHours;
     serverPageInput.query = queryParams;
     let reportName: string = `${moment(queryParams['ofDate']).format('MMM_YY')}_monthlyReport`;
-    reportName = queryParams['extraHours'] ? `${reportName}_extraHours` : reportName;
+    reportName = extraHours ? `${reportName}_extraHours` : reportName;
     this.amsAttendanceService.donwloadMonthlyAttendances.exportReport(serverPageInput, null, reportName).then(
       data => this.isDownloading = false
     ).catch(err => {

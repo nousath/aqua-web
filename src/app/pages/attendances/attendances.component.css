@@ -18,3 +18,24 @@ h5 {
 .mat-list-item h5 {
     margin: 0 auto;
 }
+
+.menu {
+    background-color: #757575;
+}
+
+h5 {
+    color: white;
+}
+
+.activeTab {
+    border-left: 3px solid #00a8c6;
+    background-color: #444c6f !important;
+}
+
+.activeTab h5 {
+    /* color: #00a8c6 !important; */
+}
+
+.mat-list-item h5 {
+    margin: 0 auto;
+}

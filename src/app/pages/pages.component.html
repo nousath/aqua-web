@@ -3,9 +3,9 @@
     <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
         <md-toolbar class="loginHeader" color="primary">
             <!-- <img class="logo" src="assets/images/splash_logo.png"> -->
-            <button md-button *ngIf="isShowEmployeeTab" [routerLink]="['/pages/employees']" routerLinkActive="activeTab"><b>EMPLOYEE</b></button>
+            <!-- <button md-button *ngIf="isShowEmployeeTab" [routerLink]="['/pages/employees']" routerLinkActive="activeTab"><b>EMPLOYEE</b></button>
             <button md-button [routerLink]="['/pages/attendances']" routerLinkActive="activeTab"><b>ATTENDANCE</b></button>
-            <button md-button [routerLink]="['/pages/settings']" routerLinkActive="activeTab"><b>SETTINGS</b></button>
+            <button md-button [routerLink]="['/pages/settings']" routerLinkActive="activeTab"><b>SETTINGS</b></button> -->
             <span class="example-spacer"></span>
             <div class="searchbar">
                 <input ngui-auto-complete [min-chars]="1" placeholder="Employee search" [(ngModel)]="selectedEmp" (valueChanged)="onSelectEmp($event)" [source]="empSource.bind(this)" [value-formatter]="empFormatter" [list-formatter]="empListFormatter" class="form-control search"
@@ -17,6 +17,61 @@
         </md-toolbar>
     </div>
 </div>
+
 <div class="bodyPart row">
-    <router-outlet></router-outlet>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 rowBody">
+        <div class="hidden-xs col-sm-2 col-md-2 col-lg-2">
+            <md-nav-list dense class="fixedSideNav">
+                <div class="logo_container text-center">
+                    <img class="logo" src="assets/images/splash_logo.png">
+                    <br>
+                </div>
+                <p class="subListHeader">Employee</p>
+                <a *ngIf="isShowEmployeeTab" md-list-item [routerLink]="['/pages/employees/list']" routerLinkActive="activeTab" #rla1="routerLinkActive">
+                    <h5>Employee</h5>
+                </a>
+                <a *ngIf="isShowEmployeeTab" md-list-item [routerLink]="['/pages/employees/designations']" routerLinkActive="activeTab" #rla2="routerLinkActive">
+                    <h5>Designations</h5>
+                </a>
+                <p class="subListHeader">Attendance</p>
+                <a md-list-item [routerLink]="['/pages/attendances/daily']" routerLinkActive="activeTab" #rla2="routerLinkActive">
+                    <h5>Daily Attendance</h5>
+                </a>
+                <a md-list-item [routerLink]="['/pages/attendances/monthly']" routerLinkActive="activeTab" #rla1="routerLinkActive">
+                    <h5>Monthly Attendance</h5>
+                </a>
+                <a md-list-item [routerLink]="['/pages/attendances/leaves']" routerLinkActive="activeTab" #rla3="routerLinkActive">
+                    <h5>All Leaves</h5>
+                </a>
+                <a md-list-item [routerLink]="['/pages/attendances/leave-balances']" routerLinkActive="activeTab" #rla4="routerLinkActive">
+                    <h5 angulartics2On="click" angularticsEvent="leaveBalanceClick" angularticsCategory="leaveBalance">Leave Balance</h5>
+                </a>
+                <a md-list-item [routerLink]="['/pages/attendances/manage-leaves']" routerLinkActive="activeTab" #rla5="routerLinkActive">
+                    <h5>Manage Leaves</h5>
+                </a>
+                <p class="subListHeader">Settings</p>
+                <a md-list-item [routerLink]="['/pages/settings/shifts']" routerLinkActive="activeTab" #rla1="routerLinkActive">
+                    <h5>Shifts</h5>
+                </a>
+                <a md-list-item [routerLink]="['/pages/settings/holidays']" routerLinkActive="activeTab" #rla2="routerLinkActive">
+                    <h5>Holidays</h5>
+                </a>
+                <a md-list-item [routerLink]="['/pages/settings/alerts']" routerLinkActive="activeTab" #rla3="routerLinkActive">
+                    <h5>Alerts</h5>
+                </a>
+                <a md-list-item [routerLink]="['/pages/settings/devices']" routerLinkActive="activeTab" #rla4="routerLinkActive">
+                    <h5>Devices</h5>
+                </a>
+                <a md-list-item [routerLink]="['/pages/settings/deviceLogs']" routerLinkActive="activeTab" #rla5="routerLinkActive">
+                    <h5 angulartics2On="click" angularticsEvent="devicesLogsClick" angularticsCategory="devicesLogs">Devices Logs</h5>
+                </a>
+                <a md-list-item routerLink="/pages/settings/channelTypes" routerLinkActive="activeTab">
+                    <h5>Communication Apps</h5>
+                </a>
+            </md-nav-list>
+        </div>
+        <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10 section hiddenHorScroll">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
 </div>
