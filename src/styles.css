@@ -67,9 +67,25 @@ body {
     width: 16%;
     height: 100%;
     left: 0;
-    padding-top: 76px !important;
+    margin-top: 73px !important;
     padding-bottom: 6% !important;
     overflow-y: scroll;
+}
+
+.fixedSideNav::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #F5F5F5;
+    border-radius: 15px;
+}
+
+.fixedSideNav::-webkit-scrollbar {
+    width: 8px;
+    background-color: #F5F5F5;
+}
+
+.fixedSideNav::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 9px rgb(63, 71, 102);
 }
 
 .calendar {
@@ -179,7 +195,7 @@ pagination-controls {
     position: fixed;
     top: 0;
     left: 0;
-    width: 15%;
+    width: 14.75%;
     z-index: 2;
 }
 
