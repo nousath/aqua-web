@@ -4,7 +4,8 @@ import { Observable } from 'rxjs/Rx';
 import { User } from '../models/user';
 import { ServerPageInput } from '../common/contracts/api/page-input';
 import * as _ from 'lodash';
-import { LocalStorageService } from "app/services/local-storage.service";
+import { LocalStorageService } from './local-storage.service';
+import { environment } from '../../environments/environment';
 
 
 @Injectable()
@@ -13,7 +14,7 @@ export class AutoCompleteService {
   constructor(public http: Http, private store: LocalStorageService) {
   }
 
-  private getHeaders(baseApi: string): Headers {
+  private getHeaders(apiName: string): Headers {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     let externalToken = this.store.getItem('external-token');
@@ -23,7 +24,7 @@ export class AutoCompleteService {
 
     // let externalToken = this.store.getItem('externalToken');
 
-    if (baseApi == 'ams/api') {
+    if (apiName == 'ams') {
       if (amsToken)
         headers.append('x-access-token', amsToken);
       if (externalToken)
@@ -31,7 +32,7 @@ export class AutoCompleteService {
       // else if (emsToken)
       //   headers.append('external-token', emsToken);
 
-    } else if (baseApi == 'ems/api') {
+    } else if (apiName == 'ems') {
       // if (externalToken)
       //   headers.append('external-token', externalToken)
       if (externalToken)
@@ -57,7 +58,7 @@ export class AutoCompleteService {
     return params
   }
 
-  searchByKey<TModel>(key: string, value: string, baseApi: string, apiKey: string, input?: ServerPageInput): Observable<TModel[]> {
+  searchByKey<TModel>(key: string, value: string, apiName: string, apiKey: string, input?: ServerPageInput): Observable<TModel[]> {
     let params: URLSearchParams = new URLSearchParams();
 
     if (input) {
@@ -76,7 +77,7 @@ export class AutoCompleteService {
 
 
     params.set(key, value);
-    return this.http.get(`/${baseApi}/${apiKey}`, { headers: this.getHeaders(baseApi), search: params })
+    return this.http.get(`${environment.apiUrls[apiName]}/api/${apiKey}`, { headers: this.getHeaders(apiName), search: params })
       .map(res => {
         let json = res.json().items as TModel[];
         return json;

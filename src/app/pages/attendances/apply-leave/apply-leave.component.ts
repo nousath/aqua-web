@@ -80,7 +80,7 @@ export class ApplyLeaveComponent implements OnInit {
   }
 
   empSource(keyword: string): Observable<Employee[]> {
-    return this.autoCompleteService.searchByKey<Employee>('name', keyword, 'ams/api', 'employees');
+    return this.autoCompleteService.searchByKey<Employee>('name', keyword, 'ams', 'employees');
   }
 
   empFormatter(data: Employee): string {

@@ -12,7 +12,6 @@ export class Employee {
   picUrl: string = '';
   email: string = '';
   password: string = '';
-  isAdmin: boolean = false;
   phone: string = '';
   organization: Organization = new Organization();
   device: Device = new Device();
@@ -23,6 +22,7 @@ export class Employee {
   supervisor: Supervisor = new Supervisor();
   abilities: Abilities = new Abilities();
   currentAblitiy: 'maualAttendance' | 'manualByBeacon' | 'manualByGeoFencing' | 'manualByWifi' | 'none' = 'none';
+  userType: 'admin' | 'superadmin' | 'normal' = 'normal';
 }
 
 export class Abilities {

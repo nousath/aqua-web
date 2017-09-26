@@ -1,0 +1,81 @@
+<div class="row page_header">
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <h5><b>Employee List</b></h5>
+    </div>
+    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+        <div class="filtrEmpName">
+            <form>
+                <div class="input-group">
+                    <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="employees?.isLoading || employee?.isProcessing" [(ngModel)]="employees.filters.properties['name']['value']" name="Name" placeholder="Search by employee name/code">
+                    <span class="input-group-btn">
+                           <button [disabled]="employees?.isLoading || employee?.isProcessing" class="btn btn-default" type="submit" (click)="fetchEmp()">Search</button>
+
+                  </span>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+<md-spinner class="custom_spinner" *ngIf="employees?.isLoading || employee?.isProcessing" mode="indeterminate"></md-spinner>
+<div class="row">
+    <md-card class="card">
+        <div class="row text-center noData" *ngIf="employees?.items?.length == 0">
+            <h5><b>no data to display !</b></h5>
+        </div>
+        <div class="table-responsive" *ngIf="employees?.items?.length > 0">
+            <table class="table table-condensed table-hover">
+                <thead class="primary_thead">
+                    <tr>
+                        <th>Name</th>
+                        <th class="tdWidth">Code</th>
+                        <th class="tdWidth">Email</th>
+                        <th class="tdWidth">Mobile</th>
+                        <th class="tdWidth">Supervisor</th>
+                        <th class="tdWidth">Designation</th>
+                        <th class="tdWidth  text-center">Shift</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of employees.items | paginate: { id: 'foo',
+                                                    itemsPerPage: employees.pageSize,
+                                                    currentPage: employees.pageNo,
+                                                    totalItems: employees.totalRecords };" class="capitalize">
+
+                        <td class="">
+                            <img *ngIf="item?.picUrl" class="img-circle profile_pic" alt="img" [src]="item?.picUrl">
+                            <img *ngIf="!item?.picUrl" class="img-circle profile_pic" alt="img" src="assets/images/blank.png"> &nbsp; {{item?.name || '--'}}
+                        </td>
+                        <td class="tdWidth">{{item?.code || '--'}}</td>
+                        <td class="tdWidth">{{item?.email || '--'}}</td>
+                        <td class="tdWidth">{{item?.phone || '--'}}</td>
+                        <td class="tdWidth">{{item?.supervisor?.name}} {{item?.supervisor?.code ? '('+item?.supervisor?.code+')':'--'}}</td>
+                        <td class="tdWidth">{{item?.designation || '--'}}</td>
+                        <td class="">
+                            <select [disabled]="employee?.isProcessing" class="capitalize form-control input-sm" [(ngModel)]="item.shiftType.id" (change)="changeShift(item.id, item.shiftType.id)">
+                                <option [ngValue]="null">select an option </option>
+                                <option class="capitalize" *ngFor="let item of shifTypes.items" [value]="item.id">{{item?.name}}</option>
+                          </select>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="custom_pagination">
+                <pagination-controls id="foo" (pageChange)="employees.pageNo = $event;fetchEmp();"></pagination-controls>
+                <div class="pageSize">
+                    <label>Page Size:</label>
+                    <select name="pageSize" [(ngModel)]="employees.pageSize" (change)="employees.pageNo = 1;fetchEmp()">
+                    <option value=10>10</option>
+                    <option value=20>20</option>
+                    <option value=50>50</option>
+                    <option value=100>100</option>
+                  </select>
+                </div>
+            </div>
+        </div>
+    </md-card>
+</div>

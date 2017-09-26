@@ -5,7 +5,7 @@ import { AutoCompleteService } from '../services/auto-complete.service';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { AmsEmployeeService } from '../services/ams/ams-employee.service';
 import { ToastyService } from 'ng2-toasty';
-import { LocalStorageService } from "app/services/local-storage.service";
+import { LocalStorageService } from '../services/local-storage.service';
 
 @Component({
   selector: 'aqua-pages',
@@ -21,6 +21,7 @@ export class PagesComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   isSyncing: boolean = false;
   isShowEmployeeTab: boolean = false;
+  userType: string = 'superadmin';
 
   constructor(private store: LocalStorageService,
     private autoCompleteService: AutoCompleteService,
@@ -28,8 +29,10 @@ export class PagesComponent implements OnInit, OnDestroy {
     private toastyService: ToastyService,
     private router: Router) {
     this.currentUser = store.getObject('user') as Employee;
+    this.userType = this.currentUser.userType;
     this.orgCode = store.getItem('orgCode').toLowerCase();
     this.isShowEmployeeTab = this.orgCode == 'gku' || this.orgCode == 'sus' || this.orgCode == 'kmt' ? false : true;
+
 
     this.subscription = router.events
       .filter(event => event instanceof NavigationEnd)
@@ -46,7 +49,7 @@ export class PagesComponent implements OnInit, OnDestroy {
   }
 
   empSource(keyword: string): Observable<Employee[]> {
-    return this.autoCompleteService.searchByKey<Employee>('name', keyword, 'ams/api', 'employees');
+    return this.autoCompleteService.searchByKey<Employee>('name', keyword, 'ams', 'employees');
   }
 
   empFormatter(data: Employee): string {

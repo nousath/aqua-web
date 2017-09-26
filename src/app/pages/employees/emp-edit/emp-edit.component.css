@@ -15,6 +15,11 @@
     padding: 4%;
 }
 
+.userType {
+    width: 64%;
+    float: right;
+}
+
 .chimg,
 .chimg:active,
 .chimg:focus {
@@ -30,6 +35,7 @@
     padding: 3%;
     margin-bottom: 3%;
 }
-.nameFormat{
+
+.nameFormat {
     word-break: break-word;
 }

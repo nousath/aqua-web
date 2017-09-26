@@ -18,6 +18,7 @@ import { ApplyLeaveComponent } from './pages/attendances/apply-leave/apply-leave
 import { AppDownloadComponent } from './pages/app-download/app-download.component';
 import { DesignationsComponent } from './pages/employees/designations/designations.component';
 import { AttendanceLogsComponent } from "./pages/attendances/attendance-logs/attendance-logs.component";
+import { AdminGuard } from './guards/admin.guard';
 
 
 const emp_routes: Routes = [
@@ -31,9 +32,10 @@ const emp_routes: Routes = [
 
 const page_routes: Routes = [
   { path: '', redirectTo: 'attendances', pathMatch: 'full' },
-  { path: 'employees', loadChildren: 'app/pages/employees/employees.module#EmployeesModule' },
-  { path: 'attendances', loadChildren: 'app/pages/attendances/attendances.module#AttendancesModule' },
-  { path: 'settings', loadChildren: 'app/pages/settings/settings.module#SettingsModule' },
+  { path: 'employees', loadChildren: 'app/pages/employees/employees.module#EmployeesModule', canActivate: [AdminGuard] },
+  { path: 'attendances', loadChildren: 'app/pages/attendances/attendances.module#AttendancesModule', canActivate: [AdminGuard] },
+  { path: 'settings', loadChildren: 'app/pages/settings/settings.module#SettingsModule', canActivate: [AdminGuard] },
+  { path: 'subAdmin', loadChildren: 'app/pages/sub-admin/sub-admin.module#SubAdminModule' }
 ];
 
 // main routes

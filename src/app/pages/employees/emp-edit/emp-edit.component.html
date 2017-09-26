@@ -48,8 +48,12 @@
                 </div>
                 <br>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <br> Admin:&nbsp;
-                    <md-slide-toggle [checked]="employee?.properties?.isAdmin" (change)="toggleAdmin()">{{employee?.properties?.isAdmin ? 'YES':'NO'}}</md-slide-toggle>
+                    <br> User Type:&nbsp;
+                    <select class="form-control userType" [(ngModel)]="employee.properties.userType">
+                      <option value="superadmin">Super Admin</option>
+                      <option value="admin">Admin</option>
+                      <option value="normal">Normal</option>
+                    </select>
                 </div>
             </div>
         </md-card>
