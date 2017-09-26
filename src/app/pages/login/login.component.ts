@@ -112,14 +112,17 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.amsEmployeeService.employees.create(tempData).then(
       (amsUser) => {
         this.isLoggingIn = false;
-        if (!amsUser.isAdmin) {
+        if (amsUser.userType == 'normal') {
           this.router.navigate(['/download']);
           return this.toastyService.info({ title: 'Info', msg: 'You are not authorized to use this application. Please contact the system administrator if you need to access this application' })
         }
         this.store.setItem('ams_token', amsUser.token);
         this.store.setObject('user', amsUser);
         this.store.setItem('orgCode', amsUser.organization.code.toLowerCase());
-        this.router.navigate(['/pages']);
+        if (amsUser.userType == 'superadmin')
+          this.router.navigate(['/pages']);
+        if (amsUser.userType == 'admin')
+          this.router.navigate(['/pages/subAdmin']);
       }
     ).catch(err => { this.isLoggingIn = false; this.toastyService.error({ title: 'Error', msg: err }) });
   }

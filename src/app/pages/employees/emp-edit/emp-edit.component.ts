@@ -120,10 +120,6 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
 
-  toggleAdmin() {
-    this.employee.properties.isAdmin = !this.employee.properties.isAdmin;
-  }
-
   save(form: NgForm) {
     if (form.invalid) {
       return this.toastyService.info({ title: 'Info', msg: 'Please fill all mandatory fields' })
@@ -179,7 +175,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
   empSource(keyword: string): Observable<EmsEmployee[]> {
-    return this.autoCompleteService.searchByKey<EmsEmployee>('name', keyword, 'ems/api', 'employees');
+    return this.autoCompleteService.searchByKey<EmsEmployee>('name', keyword, 'ems', 'employees');
   }
 
   empFormatter(data: Employee): string {

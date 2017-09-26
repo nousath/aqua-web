@@ -18,7 +18,7 @@ export class EmsEmployee {
   dob: string = '';
   email: string = '';
   password: string = '';
-  isAdmin: boolean = false;
+  userType: 'admin' | 'superadmin' | 'normal' = 'normal';
   phone: string = '';
   organization: Organization = new Organization();
   device: Device = new Device();

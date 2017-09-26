@@ -46,8 +46,16 @@
 }
 
 .searchbar {
-    width: 18%;
-    margin-right: 1%;
+    width: 67%;
+    margin-right: 9%;
+}
+
+.searchbarinput {
+    border: 2px solid #afbbc8 !important;
+}
+
+.searchbarinput::-webkit-input-placeholder {
+    color: #afbbc8;
 }
 
 .loginFormXS {
@@ -142,9 +150,9 @@ h5 {
 }
 
 .activeTab {
-    /* border-left: 3px solid #00a8c6; */
+    border-left: 3px solid #00a8c6;
     background-color: #444c6f !important;
-    box-shadow: 3px -2px 6px 0px #030306;
+    /* box-shadow: 3px -2px 6px 0px #030306; */
 }
 
 

@@ -7,6 +7,22 @@ body {
     overflow-y: scroll;
 }
 
+body::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #3f4766;
+    border-radius: 15px;
+}
+
+body::-webkit-scrollbar {
+    width: 8px;
+    background-color: #3f4766;
+}
+
+body::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 4px 1px rgb(245, 245, 245);
+}
+
 .mat-primary {
     background: #00A8c6 !important;
     color: white !important;
@@ -66,9 +82,25 @@ body {
     width: 16%;
     height: 100%;
     left: 0;
-    padding-top: 76px !important;
-    padding-bottom: 6% !important;
+    margin-top: 77px !important;
+    padding-bottom: 10% !important;
     overflow-y: scroll;
+}
+
+.fixedSideNav::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #3f4766;
+    border-radius: 15px;
+}
+
+.fixedSideNav::-webkit-scrollbar {
+    width: 8px;
+    background-color: #3f4766;
+}
+
+.fixedSideNav::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 4px 1px rgb(245, 245, 245);
 }
 
 .calendar {
@@ -178,7 +210,7 @@ pagination-controls {
     position: fixed;
     top: 0;
     left: 0;
-    width: 15%;
+    width: 16%;
     z-index: 2;
 }
 

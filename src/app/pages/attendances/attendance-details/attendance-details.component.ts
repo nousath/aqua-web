@@ -5,7 +5,6 @@ import { ServerPageInput } from '../../../common/contracts/api/page-input';
 import { IGetParams } from '../../../common/contracts/api/get-params.interface';
 import { ToastyService } from 'ng2-toasty';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LocalStorageService } from "app/services/local-storage.service";
 import { MdDialog } from '@angular/material';
 import { Model } from '../../../common/contracts/model';
 import { Employee, Abilities } from '../../../models/employee';
@@ -18,8 +17,9 @@ import { DailyAttendance } from '../../../models/daily-attendance';
 import { LeaveActionDialogComponent } from '../../../dialogs/leave-action-dialog/leave-action-dialog.component';
 import { Shift } from '../../../models/shift';
 import { ShiftType } from '../../../models/shift-type';
-import { AmsShiftService } from "app/services";
 import * as moment from 'moment';
+import { AmsShiftService } from '../../../services/ams/ams-shift.service';
+import { LocalStorageService } from '../../../services/local-storage.service';
 declare var $: any;
 
 
