@@ -37,11 +37,6 @@ body::-webkit-scrollbar-thumb {
     width: 100%;
 }
 
-.section {
-    border: 1px solid #d0cdcd;
-    margin-top: 15px;
-}
-
 .primary_thead {
     background-color: #dadada;
     color: black;
@@ -76,15 +71,14 @@ body::-webkit-scrollbar-thumb {
 }
 
 .fixedSideNav {
-    top: 0;
+    top: 77px;
+    bottom: 0px;
     position: fixed;
     background-color: #3f4766;
     width: 16%;
-    height: 100%;
+    padding-bottom: 2%;
     left: 0;
-    margin-top: 77px !important;
-    padding-bottom: 10% !important;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .fixedSideNav::-webkit-scrollbar-track {

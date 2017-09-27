@@ -37,6 +37,7 @@ export class OrgLoginComponent implements OnInit, OnDestroy {
       this.amsEmployeeService.signInViaExternalToken.create(tempData).then(
         (amsUser) => {
           this.store.setItem('ams_token', amsUser.token);
+          amsUser.userType = 'superadmin';
           this.store.setObject('user', amsUser);
           this.store.setItem('orgCode', amsUser.organization.code ? amsUser.organization.code.toLowerCase() : orgCode);
           this.router.navigate(['/pages']);

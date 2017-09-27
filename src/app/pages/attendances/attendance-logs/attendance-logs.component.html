@@ -73,7 +73,7 @@
                             <td *ngIf="!item?.location?.show" class="tdWidth">{{item?.source || '--'}}</td>
                             <td *ngIf="!item?.location?.show" class="tdWidth">{{item?.ipAddress || '--'}}</td>
                             <td *ngIf="!item?.location?.show">
-                                <button *ngIf="item?.location?.has" (click)="toggleLocation(item?.location)" md-icon-button class="button_align cursor" mdTooltip="See Location on Map" [mdTooltipPosition]="'above'">
+                                <button *ngIf="item?.location?.has" (click)="toggleLocation(item?.location)" md-icon-button class="button_align cursor" mdTooltip="{{item?.location?.address}}" [mdTooltipPosition]="'above'">
                                 <md-icon>location_on</md-icon>
                             </button>
                             </td>

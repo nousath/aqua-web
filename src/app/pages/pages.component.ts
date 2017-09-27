@@ -7,6 +7,15 @@ import { AmsEmployeeService } from '../services/ams/ams-employee.service';
 import { ToastyService } from 'ng2-toasty';
 import { LocalStorageService } from '../services/local-storage.service';
 
+class Sections {
+  employee: boolean = false;
+  attendance: boolean = false;
+  settings: boolean = false;
+  select(section: string) {
+    this[section] = !this[section];
+  }
+}
+
 @Component({
   selector: 'aqua-pages',
   templateUrl: './pages.component.html',
@@ -16,6 +25,7 @@ export class PagesComponent implements OnInit, OnDestroy {
 
   currentUser: Employee = new Employee();
   orgCode: string = '';
+  sections: Sections = new Sections();
 
   selectedEmp: Employee = new Employee();
   subscription: Subscription;
@@ -37,13 +47,24 @@ export class PagesComponent implements OnInit, OnDestroy {
     this.subscription = router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe((event: NavigationEnd) => {
+       this.checkSection(event.url);
         window.scroll(0, 0)
       });
   }
 
+  checkSection(url: string) {
+    if (url.startsWith("/pages/employees"))
+      this.sections.employee = true
+    if (url.startsWith("/pages/attendances"))
+      this.sections.attendance = true
+    if (url.startsWith("/pages/settings"))
+      this.sections.settings = true
+
+  }
+
   onSelectEmp(emp: Employee) {
     if (emp.id) {
-      this.router.navigate(['pages/attendances/details', emp.id]);
+      this.router.navigate(['pages/attendances/daily', emp.id]);
       this.selectedEmp = new Employee();
     }
   }

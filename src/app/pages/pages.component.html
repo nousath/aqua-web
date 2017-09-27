@@ -26,51 +26,67 @@
                     <img class="logo" src="assets/images/splash_logo.png">
                     <br>
                 </div>
-                <p class="subListHeader">Employee</p>
-                <a *ngIf="isShowEmployeeTab" md-list-item [routerLink]="['/pages/employees/list']" routerLinkActive="activeTab" #rla1="routerLinkActive">
-                    <h5>Employee</h5>
-                </a>
-                <a *ngIf="isShowEmployeeTab" md-list-item [routerLink]="['/pages/employees/designations']" routerLinkActive="activeTab" #rla2="routerLinkActive">
-                    <h5>Designations</h5>
-                </a>
-                <p class="subListHeader">Attendance</p>
-                <a md-list-item [routerLink]="['/pages/attendances/daily']" routerLinkActive="activeTab" #rla3="routerLinkActive">
-                    <h5>Daily Attendance</h5>
-                </a>
-                <a md-list-item [routerLink]="['/pages/attendances/monthly']" routerLinkActive="activeTab" #rla4="routerLinkActive">
-                    <h5>Monthly Attendance</h5>
-                </a>
-                <a md-list-item [routerLink]="['/pages/attendances/leaves']" routerLinkActive="activeTab" #rla5="routerLinkActive">
-                    <h5>All Leaves</h5>
-                </a>
-                <a md-list-item [routerLink]="['/pages/attendances/leave-balances']" routerLinkActive="activeTab" #rla6="routerLinkActive">
-                    <h5 angulartics2On="click" angularticsEvent="leaveBalanceClick" angularticsCategory="leaveBalance">Leave Balance</h5>
-                </a>
-                <a md-list-item [routerLink]="['/pages/attendances/manage-leaves']" routerLinkActive="activeTab" #rla7="routerLinkActive">
-                    <h5>Manage Leaves</h5>
-                </a>
-                <p class="subListHeader">Settings</p>
-                <a md-list-item [routerLink]="['/pages/settings/shifts']" routerLinkActive="activeTab" #rla8="routerLinkActive">
-                    <h5>Shifts</h5>
-                </a>
-                <a md-list-item [routerLink]="['/pages/subAdmin/shifts']" routerLinkActive="activeTab" #rla9="routerLinkActive">
-                    <h5>Shifts Changes</h5>
-                </a>
-                <a md-list-item [routerLink]="['/pages/settings/holidays']" routerLinkActive="activeTab" #rla10="routerLinkActive">
-                    <h5>Holidays</h5>
-                </a>
-                <a md-list-item [routerLink]="['/pages/settings/alerts']" routerLinkActive="activeTab" #rla11="routerLinkActive">
-                    <h5>Alerts</h5>
-                </a>
-                <a md-list-item [routerLink]="['/pages/settings/devices']" routerLinkActive="activeTab" #rla12="routerLinkActive">
-                    <h5>Devices</h5>
-                </a>
-                <a md-list-item [routerLink]="['/pages/settings/deviceLogs']" routerLinkActive="activeTab" #rla13="routerLinkActive">
-                    <h5 angulartics2On="click" angularticsEvent="devicesLogsClick" angularticsCategory="devicesLogs">Devices Logs</h5>
-                </a>
-                <a md-list-item routerLink="/pages/settings/channelTypes" routerLinkActive="activeTab" #rla14="routerLinkActive">
-                    <h5>Communication Apps</h5>
-                </a>
+                <p *ngIf="isShowEmployeeTab" class="subListHeader" (click)="sections.select('employee')">Employee
+                    <i *ngIf="!sections.employee" class="material-icons leftIcon">keyboard_arrow_right</i>
+                    <i *ngIf="sections.employee" class="material-icons leftIcon">keyboard_arrow_down</i>
+                </p>
+                <div *ngIf="sections.employee">
+                    <a *ngIf="isShowEmployeeTab" md-list-item [routerLink]="['/pages/employees/list']" routerLinkActive="activeTab" #rla1="routerLinkActive">
+                        <h5>Employee</h5>
+                    </a>
+                    <a *ngIf="isShowEmployeeTab" md-list-item [routerLink]="['/pages/employees/designations']" routerLinkActive="activeTab" #rla2="routerLinkActive">
+                        <h5>Designations</h5>
+                    </a>
+                </div>
+                <p class="subListHeader" (click)="sections.select('attendance')">Attendance
+                    <i *ngIf="!sections.attendance" class="material-icons leftIcon">keyboard_arrow_right</i>
+                    <i *ngIf="sections.attendance" class="material-icons leftIcon">keyboard_arrow_down</i>
+                </p>
+                <!-- <i class="material-icons">keyboard_arrow_down</i> -->
+                <div *ngIf="sections.attendance">
+                    <a md-list-item [routerLink]="['/pages/attendances/daily']" routerLinkActive="activeTab" #rla3="routerLinkActive">
+                        <h5>Daily Attendance</h5>
+                    </a>
+                    <a md-list-item [routerLink]="['/pages/attendances/monthly']" routerLinkActive="activeTab" #rla4="routerLinkActive">
+                        <h5>Monthly Attendance</h5>
+                    </a>
+                    <a md-list-item [routerLink]="['/pages/attendances/leaves']" routerLinkActive="activeTab" #rla5="routerLinkActive">
+                        <h5>All Leaves</h5>
+                    </a>
+                    <a md-list-item [routerLink]="['/pages/attendances/leave-balances']" routerLinkActive="activeTab" #rla6="routerLinkActive">
+                        <h5 angulartics2On="click" angularticsEvent="leaveBalanceClick" angularticsCategory="leaveBalance">Leave Balance</h5>
+                    </a>
+                    <a md-list-item [routerLink]="['/pages/attendances/manage-leaves']" routerLinkActive="activeTab" #rla7="routerLinkActive">
+                        <h5>Manage Leaves</h5>
+                    </a>
+                </div>
+                <p class="subListHeader" (click)="sections.select('settings')">Settings
+                    <i *ngIf="!sections.settings" class="material-icons leftIcon">keyboard_arrow_right</i>
+                    <i *ngIf="sections.settings" class="material-icons leftIcon">keyboard_arrow_down</i>
+                </p>
+                <div *ngIf="sections.settings">
+                    <a md-list-item [routerLink]="['/pages/settings/shifts']" routerLinkActive="activeTab" #rla8="routerLinkActive">
+                        <h5>Shifts</h5>
+                    </a>
+                    <a md-list-item [routerLink]="['/pages/subAdmin/shifts']" routerLinkActive="activeTab" #rla9="routerLinkActive">
+                        <h5>Shifts Changes</h5>
+                    </a>
+                    <a md-list-item [routerLink]="['/pages/settings/holidays']" routerLinkActive="activeTab" #rla10="routerLinkActive">
+                        <h5>Holidays</h5>
+                    </a>
+                    <a md-list-item [routerLink]="['/pages/settings/alerts']" routerLinkActive="activeTab" #rla11="routerLinkActive">
+                        <h5>Alerts</h5>
+                    </a>
+                    <a md-list-item [routerLink]="['/pages/settings/devices']" routerLinkActive="activeTab" #rla12="routerLinkActive">
+                        <h5>Devices</h5>
+                    </a>
+                    <a md-list-item [routerLink]="['/pages/settings/deviceLogs']" routerLinkActive="activeTab" #rla13="routerLinkActive">
+                        <h5 angulartics2On="click" angularticsEvent="devicesLogsClick" angularticsCategory="devicesLogs">Devices Logs</h5>
+                    </a>
+                    <a md-list-item routerLink="/pages/settings/channelTypes" routerLinkActive="activeTab" #rla14="routerLinkActive">
+                        <h5>Communication Apps</h5>
+                    </a>
+                </div>
             </md-nav-list>
             <md-nav-list *ngIf="userType == 'admin'" dense class="fixedSideNav">
                 <div class="logo_container text-center">

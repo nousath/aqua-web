@@ -30,7 +30,6 @@
                     <tr>
                         <th>Name</th>
                         <th class="tdWidth">Code</th>
-                        <th class="tdWidth">Email</th>
                         <th class="tdWidth">Mobile</th>
                         <th class="tdWidth">Supervisor</th>
                         <th class="tdWidth">Designation</th>
@@ -48,11 +47,10 @@
                             <img *ngIf="!item?.picUrl" class="img-circle profile_pic" alt="img" src="assets/images/blank.png"> &nbsp; {{item?.name || '--'}}
                         </td>
                         <td class="tdWidth">{{item?.code || '--'}}</td>
-                        <td class="tdWidth">{{item?.email || '--'}}</td>
                         <td class="tdWidth">{{item?.phone || '--'}}</td>
                         <td class="tdWidth">{{item?.supervisor?.name}} {{item?.supervisor?.code ? '('+item?.supervisor?.code+')':'--'}}</td>
                         <td class="tdWidth">{{item?.designation || '--'}}</td>
-                        <td class="">
+                        <td class="tdWidth">
                             <select [disabled]="employee?.isProcessing" class="capitalize form-control input-sm" [(ngModel)]="item.shiftType.id" (change)="changeShift(item.id, item.shiftType.id)">
                                 <option [ngValue]="null">select an option </option>
                                 <option class="capitalize" *ngFor="let item of shifTypes.items" [value]="item.id">{{item?.name}}</option>

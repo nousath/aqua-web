@@ -13,4 +13,5 @@ export class TimeLogsLocation {
   coordinates: number[] = [];
   has: boolean = false;
   show: boolean = false;
+  address: string = '';
 }

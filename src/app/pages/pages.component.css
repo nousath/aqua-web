@@ -29,6 +29,15 @@
     /*overflow-x: hidden;*/
 }
 
+.section {
+    border: 1px solid #d0cdcd;
+    padding: 0;
+}
+
+.fixedSideNav a {
+    background-color: #283047 !important;
+}
+
 
 /* .activeTab {
     border-bottom: 2px solid #00a8c6;
@@ -162,6 +171,16 @@ h5 {
 
 .subListHeader {
     padding-left: 7%;
-    color: rgb(187, 180, 180);
-    background: #86888e;
+    padding-bottom: 3%;
+    padding-top: 3%;
+    color: rgb(255, 255, 255);
+    background: #444c6f;
+    margin-bottom: 0px;
+    border-bottom: 1px solid #283047;
+    border-top: 1px solid #283047;
+    cursor: pointer;
+}
+
+.leftIcon {
+    float: right;
 }
