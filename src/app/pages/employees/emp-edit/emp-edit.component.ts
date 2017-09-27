@@ -91,7 +91,12 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
       }]
     });
 
-    this.designations.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+    this.designations.fetch().then(() => {
+      _.each(this.designations.items, (item: Designation) => {
+        if (item.name)
+          item.name = item.name.toLowerCase();
+      })
+    }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
 
     this.employee = new Model({
       api: emsEmployeeService.employees,
@@ -111,7 +116,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
               if (this.employee.properties.dob) { $("#dateSelector").datepicker("setDate", new Date(this.employee.properties.dob)); }
               this.employee.properties.supervisor = this.employee.properties.supervisor ? this.employee.properties.supervisor : new Supervisor();
               // this.employee.properties.designation = this.employee.properties.designation ? this.employee.properties.designation : new Designation();
-              this.employee.properties.designation = this.employee.properties.designation ? this.employee.properties.designation : null;
+              this.employee.properties.designation = this.employee.properties.designation ? this.employee.properties.designation.toLowerCase() : null;
             }
           ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
       }
@@ -125,9 +130,9 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
       return this.toastyService.info({ title: 'Info', msg: 'Please fill all mandatory fields' })
     }
 
-    let d: any = _.find(this.designations.items, (item: Designation) => {
+    let d: any = this.employee.properties.designation ? _.find(this.designations.items, (item: Designation) => {
       return item.name.toLowerCase() == this.employee.properties.designation.toLowerCase()
-    });
+    }) : null;
     this.employee.properties.designation = d ? d : null;
 
     if (this.isNew)
@@ -143,7 +148,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.isNew) {
           this.isNew = false;
           this.toastyService.success({ title: 'Success', msg: `${this.employee.properties.name} added successfully` });
-          this.employee.properties.designation = this.employee.properties.designation ? this.employee.properties.designation : null;
+          this.employee.properties.designation = this.employee.properties.designation ? this.employee.properties.designation.toLowerCase() : null;
           this.employee.properties.supervisor = this.employee.properties.supervisor ? this.employee.properties.supervisor : new Supervisor();
           this.router.navigate(['../', this.employee.properties.id], { relativeTo: this.activatedRoute });
         } else {

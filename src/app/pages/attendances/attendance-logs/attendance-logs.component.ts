@@ -12,6 +12,9 @@ import { AmsAttendanceService } from '../../../services/ams/ams-attendance.servi
 import { AmsTimelogsService } from '../../../services/ams/ams-timelogs.service';
 import { AmsEmployeeService } from '../../../services/ams/ams-employee.service';
 import { Angulartics2 } from 'angulartics2';
+import { IGetParams } from '../../../common/contracts/api/get-params.interface';
+import 'rxjs/Rx';
+import { Http } from '@angular/http';
 
 
 @Component({
@@ -39,6 +42,7 @@ export class AttendanceLogsComponent implements OnInit {
     private amsAttendanceService: AmsAttendanceService,
     private amsTimelogsService: AmsTimelogsService,
     private angulartics2: Angulartics2,
+    private http: Http,
     private amsEmployeeService: AmsEmployeeService) {
     this.employee = new Model({
       api: amsEmployeeService.employeesForAdmin,
@@ -88,6 +92,16 @@ export class AttendanceLogsComponent implements OnInit {
 
   }
 
+
+  getLocation(latlng: number[], index: number) {
+    let api: string = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng[1]},${latlng[0]}&key=AIzaSyA3-BQmJVYB6_soLJPv7cx2lFUMAuELlkM`;
+    this.http.get(api).toPromise().then(data => {
+      this.logs.items[index].location.address =  data.json().results[0].formatted_address
+    }).catch(err => {
+      this.logs.items[index].location.address = 'N/A'
+    })
+  }
+
   getAttendance() {
     this.attendances.fetch().then(
       (data) => {
@@ -97,11 +111,14 @@ export class AttendanceLogsComponent implements OnInit {
 
   }
 
+
+
   getLogs() {
     this.logs.fetch().then(
       data => {
-        _.each(this.logs.items, (log: TimeLogs) => {
+        _.each(this.logs.items, (log: TimeLogs, index) => {
           if (log.location && log.location.coordinates) {
+            this.getLocation(log.location.coordinates, index);
             log.location['has'] = true;
             log.location['show'] = false;
             if (!log.location.coordinates[0] || !log.location.coordinates[1]) {
@@ -129,7 +146,7 @@ export class AttendanceLogsComponent implements OnInit {
   }
 
   toggleRow() {
-    this.angulartics2.eventTrack.next({ action: 'updateAttendanceClcik', properties: { category: 'timeLog' }});
+    this.angulartics2.eventTrack.next({ action: 'updateAttendanceClcik', properties: { category: 'timeLog' } });
     this.isButton = !this.isButton;
     this.checkTime = null;
     this.timeLog.properties = new TimeLogs();

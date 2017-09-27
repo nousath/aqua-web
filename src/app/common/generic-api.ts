@@ -104,7 +104,10 @@ export class GenericApi<TModel> implements IApi<TModel> {
       parms = input.serverPageInput ? this.getQueryParams(input.serverPageInput) : null;
       url = input.id ? `${url}/${input.id}` : url;
       url = input.path ? `${url}/${input.path}` : url;
+      if (input.api)
+        url = input.api;
     }
+
 
     return this.http.get(url, { headers: this.getHeaders(), search: parms })
       .toPromise()

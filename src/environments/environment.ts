@@ -7,9 +7,10 @@ export const environment = {
   production: false,
   silent: false,
   apiUrls: {
-    ems: 'http://ems.m-sas.com',
-    // ams: 'http://localhost:3040',
-    ams: 'http://ams.m-sas.com',
+    // ems: 'http://ems.m-sas.com',
+    // ams: 'http://ams.m-sas.com',
+    ems: 'http://ems.aquateams.com',
+    ams: 'http://ams.aquateams.com',
     website: 'http://aquahrms.m-sas.com',
     register: 'http://ams-getting-started.m-sas.com'
   },

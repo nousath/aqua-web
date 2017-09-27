@@ -18,13 +18,13 @@ const routes: Routes = [
       { path: 'daily', component: DailyComponent },
 
       { path: 'daily/:empId', component: AttendanceDetailsComponent },
-      { path: 'details/:empId', component: AttendanceDetailsComponent },
+      // { path: 'details/:empId', component: AttendanceDetailsComponent },
       { path: 'monthly/:empId', component: AttendanceDetailsComponent },
       { path: 'leaves/:empId', component: AttendanceDetailsComponent },
 
-      { path: 'details/:empId/apply-leave', component: ApplyLeaveComponent },
+      // { path: 'details/:empId/apply-leave', component: ApplyLeaveComponent },
       { path: 'daily/:empId/apply-leave', component: ApplyLeaveComponent },
-      { path: 'details/:empId/attendance-logs/:ofDate', component: AttendanceLogsComponent },
+      // { path: 'details/:empId/attendance-logs/:ofDate', component: AttendanceLogsComponent },
       { path: 'daily/:empId/attendance-logs/:ofDate', component: AttendanceLogsComponent },
       { path: 'monthly/:empId/apply-leave', component: ApplyLeaveComponent },
       { path: 'leaves/:empId/apply-leave', component: ApplyLeaveComponent },

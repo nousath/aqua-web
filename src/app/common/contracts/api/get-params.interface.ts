@@ -4,5 +4,6 @@ export interface IGetParams {
   id?: string ;
   serverPageInput?: ServerPageInput;
   path?: string;
+  api?:string;
 
 }
