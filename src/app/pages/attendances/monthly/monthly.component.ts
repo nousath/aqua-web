@@ -137,7 +137,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
     serverPageInput.query = queryParams;
     let reportName: string = `${moment(queryParams['ofDate']).format('MMM_YY')}_monthlyReport`;
     reportName = extraHours ? `${reportName}_extraHours` : reportName;
-    this.amsAttendanceService.donwloadMonthlyAttendances.exportReport(serverPageInput, null, reportName).then(
+    this.amsAttendanceService.donwloadMonthlyAttendances.exportReport(serverPageInput, null, `${reportName}.xlsx`).then(
       data => this.isDownloading = false
     ).catch(err => {
       this.toastyService.error({ title: 'Error', msg: err });

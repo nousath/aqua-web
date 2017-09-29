@@ -3,12 +3,12 @@
         <h5><b>All Leaves</b></h5>
     </div>
     <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-        <!--<div class="headerInpts">
+        <!-- <div class="headerInpts">
             <div class="input-group">
-                <span class="input-group-addon" id="basic-addon1">Select Date</span>
-                <input class="form-control input-sm calendar no-spin" type="date" [disabled]="leaves?.isLoading  || isUpdatingLeaveStatus" [ngModel]="date  | date:'yyyy-MM-dd'" (ngModelChange)="date = $event;getAttendance($event)" aria-describedby="basic-addon1">
+                <span class="input-group-addon" id="basic-addon1">Select Month</span>
+                <input id="monthSelector" type="text" class="form-control input-sm calendar no-spin">
             </div>
-        </div>-->
+        </div> -->
         <div class="headerBtns">
             <button [disabled]="leaves?.isLoading  || isUpdatingLeaveStatus" md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
             <a md-icon-button [routerLink]="['new/apply']" mdTooltip="New Leave" [mdTooltipPosition]="'above'">
@@ -30,34 +30,43 @@
             </div>
         </div>
         <br>
-        <form class="row">
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4  form-group">
-                <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-                    <label for="email">Employee Name</label>
+        <div class="row filerRow">
+            <form>
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-group">
+                    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                        <label for="email">Employee Name</label>
+                    </div>
+                    <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+                        <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="leaves?.isLoading  || isUpdatingLeaveStatus" [(ngModel)]="leaves.filters.properties['name']['value']" name="Name">
+                    </div>
                 </div>
-                <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                    <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="leaves?.isLoading  || isUpdatingLeaveStatus" [(ngModel)]="leaves.filters.properties['name']['value']" name="Name">
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-group">
+                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                        <label>Status</label>
+                    </div>
+                    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                        <select class="form-control" [disabled]="leaves?.isLoading  || isUpdatingLeaveStatus" [(ngModel)]="leaves.filters.properties['status']['value']" name="shift">
+                     <option  value="approved">Approved</option>
+                     <option  value="submitted">Submitted</option>
+                     <option  value="cancelled">Cancelled</option>
+                     <option  value="rejected">Rejected</option>
+                  </select>
+                    </div>
                 </div>
-            </div>
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-group">
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                    <label>Status</label>
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <div class=" input-group">
+                        <span class="input-group-addon" id="basic-addon1">Select Month</span>
+                        <input id="monthSelector" type="text" class="form-control input-sm calendar no-spin">
+                    </div>
                 </div>
-                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                    <select class="form-control" [disabled]="leaves?.isLoading  || isUpdatingLeaveStatus" [(ngModel)]="leaves.filters.properties['status']['value']" name="shift">
-                   <option  value="approved">Approved</option>
-                   <option  value="submitted">Submitted</option>
-                   <option  value="cancelled">Cancelled</option>
-                   <option  value="rejected">Rejected</option>
-                </select>
+                <div class="col-xs-8 col-sm-4 col-md-8 col-lg-8"></div>
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 button_align form-group text-center">
+                    <button [disabled]="leaves?.isLoading || isUpdatingLeaveStatus" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="fetchLeaves(leaves.filters.properties['date']['value'])">Apply</button>
+                    <button [disabled]="leaves?.isLoading || isUpdatingLeaveStatus" md-raised-button class="btn_grey" mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()">Reset</button>
                 </div>
-            </div>
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 button_align form-group text-center setButton">
-                <button [disabled]="leaves?.isLoading || isUpdatingLeaveStatus" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="fetchLeaves()">Apply</button>
-                <button [disabled]="leaves?.isLoading || isUpdatingLeaveStatus" md-raised-button class="btn_grey" mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()">Reset</button>
-            </div>
 
-        </form>
+            </form>
+        </div>
     </md-card>
 </div>
 

@@ -357,7 +357,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
     serverPageInput.query['extraHours'] = extraHours;
     let reportName: string = `${this.employee.properties.name}_${moment(this.selectedDate).format('MMM_YY')}_monthlyReport`;
     reportName = extraHours ? `${reportName}_extraHours` : reportName;
-    this.amsAttendanceService.donwloadSingleEmpMonthAtte.exportReport(serverPageInput, null, reportName).then(
+    this.amsAttendanceService.donwloadSingleEmpMonthAtte.exportReport(serverPageInput, null, `${reportName}.xlsx`).then(
       data => this.isDownloading = false
     ).catch(err => {
       this.toastyService.error({ title: 'Error', msg: err });

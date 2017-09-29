@@ -136,7 +136,7 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
     let reportName: string = `${moment(queryParams['ofDate']).format('DD_MMM_YY')}_DailyReport`;
     reportName = extraHours ? `${reportName}_extraHours` : reportName;
 
-    this.amsAttendanceService.donwloadDailyAttendances.exportReport(serverPageInput, null, reportName).then(
+    this.amsAttendanceService.donwloadDailyAttendances.exportReport(serverPageInput, null, `${reportName}.xlsx`).then(
       data => this.isDownloading = false
     ).catch(err => {
       this.toastyService.error({ title: 'Error', msg: err });

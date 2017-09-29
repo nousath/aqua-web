@@ -43,7 +43,7 @@
     margin-left: 1%;
 }
 
-.setDesignation{
+.setDesignation {
     margin-left: -35px;
 }
 
@@ -66,4 +66,10 @@
         width: 20px;
         height: 20px;
     }
+}
+
+button.mat-menu-item {
+    width: 100%;
+    font-size: 87%;
+    text-align: center;
 }

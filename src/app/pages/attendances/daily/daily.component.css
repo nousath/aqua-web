@@ -50,6 +50,7 @@
 .alignText{
     margin-left: -23px;
 }
+
 @media only screen and (max-width:539px) {
     .toolBarRow {
         display: flex !important;
@@ -65,4 +66,10 @@
         width: 20px;
         height: 20px;
     }
+}
+
+button.mat-menu-item {
+    width: 100%;
+    font-size: 87%;
+    text-align: center;
 }

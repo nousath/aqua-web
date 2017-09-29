@@ -8,9 +8,14 @@
     /*text-align: center;*/
 }
 
+.filerRow {
+    width: 100%;
+}
+
 .setButton{
     margin-left: 0%;
 }
+
 /* .apporve {
     color: green !important;
 }
