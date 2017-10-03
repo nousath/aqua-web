@@ -8,13 +8,23 @@
     /*text-align: center;*/
 }
 
-.setButton{
-    margin-left: 0%;
-}
-/* .apporve {
-    color: green !important;
+.filerRow {
+    width: 100%;
 }
 
-.reject {
-    color: red !important;
-} */
+.setButton {
+    margin-left: 0%;
+}
+
+.chipsBadge {
+    padding: 0px 2%;
+}
+
+.chipsBadge span {
+    font-weight: 100;
+}
+
+.chipsBadge i {
+    font-weight: 100;
+    cursor: pointer;
+}

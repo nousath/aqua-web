@@ -55,7 +55,7 @@ export class PagesComponent implements OnInit, OnDestroy {
   checkSection(url: string) {
     if (url.startsWith("/pages/employees"))
       this.sections.employee = true
-    if (url.startsWith("/pages/attendances"))
+    if (url.startsWith("/pages/attendances") || url == '/pages')
       this.sections.attendance = true
     if (url.startsWith("/pages/settings"))
       this.sections.settings = true

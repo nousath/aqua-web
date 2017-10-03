@@ -128,3 +128,9 @@
     margin-left: 0;
     margin-right: 1%;
 }
+
+button.mat-menu-item {
+    width: 100%;
+    font-size: 87%;
+    text-align: center;
+}

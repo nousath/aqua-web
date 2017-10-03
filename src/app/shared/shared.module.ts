@@ -31,6 +31,7 @@ import { ValidatorService } from '../services/validator.service';
 import { LocalStorageService } from "../services/local-storage.service";
 import { TimePipe } from './time.pipe';
 import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
+import { AmsTagService } from '../services/ams/ams-tag.service';
 
 
 import {
@@ -122,7 +123,8 @@ export const MaterialModules = [
     AmsHolidayService,
     AutoCompleteService,
     AmsTimelogsService,
-    LocalStorageService
+    LocalStorageService,
+    AmsTagService
   ],
   imports: [
     HttpModule,

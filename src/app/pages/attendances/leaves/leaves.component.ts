@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { AmsLeaveService } from '../../../services/ams';
 import { ValidatorService } from '../../../services/validator.service';
 import { ToastyService } from 'ng2-toasty';
@@ -8,19 +8,22 @@ import { LeaveActionDialogComponent } from '../../../dialogs/leave-action-dialog
 import { MdDialog } from '@angular/material';
 import { Filter } from '../../../common/contracts/filters';
 import * as _ from "lodash";
-import { LocalStorageService } from "app/services/local-storage.service";
+import { LocalStorageService } from "../../../services/local-storage.service";
 import { Angulartics2 } from 'angulartics2';
+declare var $: any;
 
 @Component({
   selector: 'aqua-leaves',
   templateUrl: './leaves.component.html',
   styleUrls: ['./leaves.component.css']
 })
-export class LeavesComponent implements OnInit {
+export class LeavesComponent implements OnInit, AfterViewInit {
 
   leaves: Page<Leave>;
   isFilter: boolean = false;
   isShowLeaveAction: boolean = false;
+  date: Date = null
+
 
 
   constructor(public validatorService: ValidatorService,
@@ -38,15 +41,19 @@ export class LeavesComponent implements OnInit {
       }, {
         field: 'status',
         value: null
+      }, {
+        field: 'date',
+        value: null
       }]
     });
-
     this.checkFiltersInStore();
-
   }
 
-  fetchLeaves() {
+  fetchLeaves(date?: Date) {
     this.setFiltersToStore();
+
+
+
     this.leaves.fetch().then(
       data => {
         let i: any = this.leaves.items.find((item: Leave) => {
@@ -118,10 +125,10 @@ export class LeavesComponent implements OnInit {
     if (status !== 'rejected') {
       leave.status = status;
       this.updateStatus(leave);
-      this.angulartics2.eventTrack.next({ action: 'approveLeaveClick', properties: { category: 'allLeave', label: 'myLabel' }});
+      this.angulartics2.eventTrack.next({ action: 'approveLeaveClick', properties: { category: 'allLeave', label: 'myLabel' } });
 
     } else {
-      this.angulartics2.eventTrack.next({ action: 'rejectLeaveClick', properties: { category: 'allLeave', label: 'myLabel' }});
+      this.angulartics2.eventTrack.next({ action: 'rejectLeaveClick', properties: { category: 'allLeave', label: 'myLabel' } });
       let dialogRef = this.dialog.open(LeaveActionDialogComponent, {
         width: '35%'
       });
@@ -131,10 +138,28 @@ export class LeavesComponent implements OnInit {
           leave.rejectionReason = reason;
           leave.status = status;
           this.updateStatus(leave)
-          
+
         }
       });
     }
+  }
+
+  ngAfterViewInit() {
+
+    $('#monthSelector').datepicker({
+      format: 'M, yy',
+      minViewMode: 1,
+      maxViewMode: 2,
+      autoclose: true
+    }).on('changeMonth', (e) => {
+      if (e.date) {
+        this.date = e.date;
+       let date = new Date(e.date);
+        this.leaves.filters.properties['date']['value'] = date.toISOString();
+      }
+      // this.fetchLeaves(e.date);
+    });
+    // $("#monthSelector").datepicker("setDate", null);
   }
 
   ngOnInit() {

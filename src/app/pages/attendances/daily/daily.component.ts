@@ -15,6 +15,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Filter } from '../../../common/contracts/filters';
 import * as _ from "lodash";
 import { LocalStorageService } from '../../../services/local-storage.service';
+import { AmsTagService } from '../../../services/ams/ams-tag.service';
+import { TagType, Tag } from '../../../models/tag';
 declare var $: any;
 
 @Component({
@@ -28,6 +30,9 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
   isFilter: boolean = false;
   shiftTypes: Page<ShiftType>;
   employee: Model<Employee>;
+  tagTypes: Page<TagType>;
+  tags: Tag[] = [];
+  selectedTags: Tag[] = [];
 
   date: Date = null
 
@@ -37,6 +42,7 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
     public activatedRoute: ActivatedRoute,
     public router: Router,
     private store: LocalStorageService,
+    private tagService: AmsTagService,
     private location: Location,
     private amsAttendanceService: AmsAttendanceService,
     private toastyService: ToastyService) {
@@ -65,9 +71,12 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
       }, {
         field: 'status',
         value: null
-      },{
+      }, {
         field: 'extraHours',
         value: false
+      }, {
+        field: 'tagIds',
+        value: ''
       }],
     });
 
@@ -75,16 +84,44 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
       api: amsShiftService.shiftTypes
     });
 
+    this.tagTypes = new Page({
+      api: tagService.tagTypes
+    });
+
     this.shiftTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+    this.tagTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
 
     this.checkFiltersInStore();
 
   }
 
+  selectTagType(id: string) {
+    let tag: HTMLSelectElement = document.getElementById('tag') as HTMLSelectElement;
+    tag.value = '';
+    let tagType = _.find(this.tagTypes.items, (i: TagType) => { return i.id == id });
+    if (tagType)
+      this.tags = tagType['tags'];
+    tag.focus();
+  }
+  addChips(tagId: string) {
+    let tag: Tag = _.find(this.tags, (i: Tag) => { return i.id == tagId });
+    let tag1 = _.find(this.selectedTags, (i: Tag) => { return i.id == tagId });
+    if (tag && !tag1)
+      this.selectedTags.push(tag);
+  }
+
+  removeChip(index) {
+    this.selectedTags.splice(index, 1);
+    let tag: HTMLSelectElement = document.getElementById('tag') as HTMLSelectElement;
+    tag.value = '';
+  }
+
 
   reset() {
     this.dailyAttendnace.filters.reset();
+    this.selectedTags = [];
     this.getAttendance(new Date());
+
     this.store.removeItem("daily-attendance-filter")
   }
 
@@ -96,7 +133,7 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
       this.dailyAttendnace.filters.properties['name']['value'] = filters['name'] || null;
       this.dailyAttendnace.filters.properties['code']['value'] = filters['code'] || null;
       this.dailyAttendnace.filters.properties['shiftTypeId']['value'] = filters['shiftTypeId'] || null;
-      }
+    }
     this.getAttendance(this.dailyAttendnace.filters.properties['ofDate']['value'] || new Date());
   }
 
@@ -117,6 +154,11 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
     this.date = date;
     date = new Date(date);
     this.dailyAttendnace.filters.properties['ofDate']['value'] = date.toISOString();
+    let tags: string[] = [];
+    _.each(this.selectedTags, (tag: Tag) => {
+      tags.push(tag.id)
+    })
+    this.dailyAttendnace.filters.properties['tagIds']['value'] = tags;
     this.dailyAttendnace.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
@@ -136,7 +178,7 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
     let reportName: string = `${moment(queryParams['ofDate']).format('DD_MMM_YY')}_DailyReport`;
     reportName = extraHours ? `${reportName}_extraHours` : reportName;
 
-    this.amsAttendanceService.donwloadDailyAttendances.exportReport(serverPageInput, null, reportName).then(
+    this.amsAttendanceService.donwloadDailyAttendances.exportReport(serverPageInput, null, `${reportName}.xlsx`).then(
       data => this.isDownloading = false
     ).catch(err => {
       this.toastyService.error({ title: 'Error', msg: err });
