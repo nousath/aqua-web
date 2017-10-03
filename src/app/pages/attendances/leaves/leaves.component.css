@@ -12,14 +12,19 @@
     width: 100%;
 }
 
-.setButton{
+.setButton {
     margin-left: 0%;
 }
 
-/* .apporve {
-    color: green !important;
+.chipsBadge {
+    padding: 0px 2%;
 }
 
-.reject {
-    color: red !important;
-} */
+.chipsBadge span {
+    font-weight: 100;
+}
+
+.chipsBadge i {
+    font-weight: 100;
+    cursor: pointer;
+}

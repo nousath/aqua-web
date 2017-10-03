@@ -47,7 +47,7 @@
     margin-left: 1%;
 }
 
-.alignText{
+.alignText {
     margin-left: -23px;
 }
 
@@ -72,4 +72,17 @@ button.mat-menu-item {
     width: 100%;
     font-size: 87%;
     text-align: center;
+}
+
+.chipsBadge {
+    padding: 0px 2%;
+}
+
+.chipsBadge span {
+    font-weight: 100;
+}
+
+.chipsBadge i {
+    font-weight: 100;
+    cursor: pointer;
 }

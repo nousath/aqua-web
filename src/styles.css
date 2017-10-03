@@ -186,9 +186,9 @@ pagination-controls {
 }
 
 .button_align {
-    margin-top: -8px !important;
     color: #6b6b6b !important;
-    margin-left: 77%;
+    text-align: right;
+    padding-right: 3%;
 }
 
 .asterisk {

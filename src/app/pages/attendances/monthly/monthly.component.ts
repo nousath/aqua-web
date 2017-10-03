@@ -16,6 +16,8 @@ import * as _ from "lodash";
 import { Filter } from '../../../common/contracts/filters';
 import { Subscription } from 'rxjs/Rx';
 import { LocalStorageService } from '../../../services/local-storage.service';
+import { TagType, Tag } from '../../../models/tag';
+import { AmsTagService } from '../../../services/ams/ams-tag.service';
 declare var $: any;
 
 @Component({
@@ -33,11 +35,16 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
   showDatePicker: boolean = false;
   subscription: Subscription;
 
+  tagTypes: Page<TagType>;
+  tags: Tag[] = [];
+  selectedTags: Tag[] = [];
+
   constructor(private amsEmployeeService: AmsEmployeeService,
     private amsAttendanceService: AmsAttendanceService,
     public validatorService: ValidatorService,
     private amsShiftService: AmsShiftService,
     private location: Location,
+    private tagService: AmsTagService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private store: LocalStorageService,
@@ -69,6 +76,9 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
       }, {
         field: 'extraHours',
         value: false
+      }, {
+        field: 'tagIds',
+        value: ''
       }]
     });
 
@@ -76,14 +86,41 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
       api: amsShiftService.shiftTypes
     });
 
+    this.tagTypes = new Page({
+      api: tagService.tagTypes
+    });
+
+    this.tagTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
     this.shiftTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
     this.checkFiltersInStore();
 
   }
 
+  selectTagType(id: string) {
+    let tag: HTMLSelectElement = document.getElementById('tag') as HTMLSelectElement;
+    tag.value = '';
+    let tagType = _.find(this.tagTypes.items, (i: TagType) => { return i.id == id });
+    if (tagType)
+      this.tags = tagType['tags'];
+    tag.focus();
+  }
+  addChips(tagId: string) {
+    let tag: Tag = _.find(this.tags, (i: Tag) => { return i.id == tagId });
+    let tag1 = _.find(this.selectedTags, (i: Tag) => { return i.id == tagId });
+    if (tag && !tag1)
+      this.selectedTags.push(tag);
+  }
+
+  removeChip(index) {
+    this.selectedTags.splice(index, 1);
+    let tag: HTMLSelectElement = document.getElementById('tag') as HTMLSelectElement;
+    tag.value = '';
+  }
+
   reset() {
     this.monthlyAttendnace.filters.reset();
     this.getAttendance(new Date());
+    this.selectedTags = [];
     this.store.removeItem('monthly-attendance-filters');
 
   }
@@ -119,6 +156,13 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
     this.date = new Date(date);
     date = new Date(date);
     this.monthlyAttendnace.filters.properties['ofDate']['value'] = date.toISOString();
+
+    let tags: string[] = [];
+    _.each(this.selectedTags, (tag: Tag) => {
+      tags.push(tag.id)
+    })
+    this.monthlyAttendnace.filters.properties['tagIds']['value'] = tags;
+
     this.monthlyAttendnace.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
 
   }
