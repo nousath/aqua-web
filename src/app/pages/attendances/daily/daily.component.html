@@ -15,8 +15,9 @@
             <button [disabled]="dailyAttendnace?.isLoading || employee?.isProcessing" md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
             <button [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" [mdMenuTriggerFor]="appMenu" md-icon-button><md-icon>cloud_download</md-icon> </button>
             <md-menu #appMenu="mdMenu">
-                <button md-menu-item (click)="download(true)">Download Attendance With Extra Hours</button>
-                <button md-menu-item (click)="download(false)">Download Attendance</button>
+                <button md-menu-item (click)="download(true,false)">Attendance With Extra Hours by shiftEnd</button>
+                <button md-menu-item (click)="download(false,true)">Attendance With Extra Hours by shiftLength</button>
+                <button md-menu-item (click)="download(false,false)">Download Attendance</button>
             </md-menu>
             <!-- <button [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button mdTooltip="Download Attendance extraHours" [mdTooltipPosition]="'above'" (click)="download(true)"><md-icon>cloud_download</md-icon> </button>
             <button [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" (click)="download(false)" angulartics2On="click" angularticsEvent="dialyAttendnaceDownloadClick"
