@@ -349,14 +349,15 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
   }
 
 
-  download(extraHours: boolean) {
+  download(byShiftEnd : boolean, byShiftLength : boolean) {
     this.isDownloading = true;
     let serverPageInput: ServerPageInput = new ServerPageInput();
     serverPageInput.query['ofDate'] = this.selectedDate;
     serverPageInput.query['employee'] = this.empId;
-    serverPageInput.query['extraHours'] = extraHours;
+    serverPageInput.query['byShiftEnd'] = byShiftEnd;
+    serverPageInput.query['byShiftLength'] = byShiftLength;
     let reportName: string = `${this.employee.properties.name}_${moment(this.selectedDate).format('MMM_YY')}_monthlyReport`;
-    reportName = extraHours ? `${reportName}_extraHours` : reportName;
+    reportName = byShiftEnd ? `${reportName}_extraHours` : reportName;
     this.amsAttendanceService.donwloadSingleEmpMonthAtte.exportReport(serverPageInput, null, `${reportName}.xlsx`).then(
       data => this.isDownloading = false
     ).catch(err => {

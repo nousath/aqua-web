@@ -72,7 +72,10 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
         field: 'status',
         value: null
       }, {
-        field: 'extraHours',
+        field: 'byShiftEnd',
+        value: false
+      },{
+        field: 'byShiftLength',
         value: false
       }, {
         field: 'tagIds',
@@ -164,7 +167,7 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   isDownloading: boolean = false;
-  download(extraHours: boolean) {
+  download(byShiftEnd : boolean, byShiftLength : boolean) {
     this.isDownloading = true;
     let serverPageInput: ServerPageInput = new ServerPageInput();
     let queryParams: any = {};
@@ -173,10 +176,11 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
         queryParams[key] = filter.value;
       }
     });
-    queryParams['extraHours'] = extraHours;
+    queryParams['byShiftEnd'] = byShiftEnd;
+    queryParams['byShiftLength'] = byShiftLength;
     serverPageInput.query = queryParams;
     let reportName: string = `${moment(queryParams['ofDate']).format('DD_MMM_YY')}_DailyReport`;
-    reportName = extraHours ? `${reportName}_extraHours` : reportName;
+    reportName = byShiftEnd ? `${reportName}_extraHours` : reportName;
 
     this.amsAttendanceService.donwloadDailyAttendances.exportReport(serverPageInput, null, `${reportName}.xlsx`).then(
       data => this.isDownloading = false
