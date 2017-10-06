@@ -12,13 +12,12 @@ import { LeaveBalancesComponent } from './leave-balances/leave-balances.componen
 import { ManageLeavesComponent } from './manage-leaves/manage-leaves.component';
 import { DayEventDialogComponent } from '../../dialogs/day-event-dialog/day-event-dialog.component';
 import { LeaveActionDialogComponent } from '../../dialogs/leave-action-dialog/leave-action-dialog.component';
-import { MaterialModule } from '@angular/material';
+
 import { AttendanceLogsComponent } from './attendance-logs/attendance-logs.component';
 
 @NgModule({
   imports: [
     SharedModule,
-    MaterialModule,
     AttendanceRoutingModule
   ],
   declarations: [
