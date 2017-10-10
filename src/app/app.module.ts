@@ -15,6 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
 import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
 import { AdminGuard } from './guards/admin.guard';
+import { GkuAttendanceComponent } from './pages/gku-attendance/gku-attendance.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { AdminGuard } from './guards/admin.guard';
     PagesComponent,
     LoginComponent,
     OrgLoginComponent,
-    AppDownloadComponent
+    AppDownloadComponent,
+    GkuAttendanceComponent
   ],
   imports: [
     BrowserModule,

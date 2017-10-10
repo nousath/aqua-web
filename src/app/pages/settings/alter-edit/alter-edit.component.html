@@ -70,26 +70,30 @@
                 </div>
 
 
-                <div class="col-xs-12 col-xs-offset-1 
-                col-sm-12 col-sm-offset-1 
+                <div class="col-xs-12 col-xs-offset-1
+                col-sm-12 col-sm-offset-1
                 col-md-12 col-md-offset-1 col-lg-12 col-lg-offset-1">
 
                     <table>
-                        <td style="padding-right: 10px;"><img src="assets/images/default-radio.png"></td>
+                        <td><img src="assets/images/default-radio.png"></td>
                         <td><span style="color:gray;"><h5><b>Push Notifications</b></h5></span></td>
                     </table>
-
+                    <div class="row">
+                        <img src="assets/images/default-radio.png"> <span style="color:gray;"><h5><b>Push Notifications</b></h5></span>
+                    </div>
                     <md-radio-group [(ngModel)]="alert.properties.config.processor['channel']">
+                        <div class="row" *ngFor="let item of alert.properties?.alertType?.processor?.comApp">
+                            <md-radio-button *ngIf="item != 'push'" [value]="item">
+                                {{item | titlecase}}
+                            </md-radio-button>
+                        </div>
 
-                        <md-radio-button value="email">
-                            Email
-                        </md-radio-button><br>
-                        <md-radio-button value="sms">
+                        <!-- <md-radio-button value="sms">
                             SMS
                         </md-radio-button><br>
                         <md-radio-button value="chat">
                             Chat Bot
-                        </md-radio-button>
+                        </md-radio-button> -->
                     </md-radio-group>
                 </div>
             </div>
