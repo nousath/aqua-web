@@ -136,7 +136,7 @@ export class AttendanceLogsComponent implements OnInit {
     let h: number, m: number;
     this.timeLog.properties.employee.id = this.empId;
     let checkTimes: string[] = this.checkTime.split(':');
-    this.timeLog.properties.time = new Date(new Date(this.attendance.ofDate).setHours(parseInt(checkTimes[0]), parseInt(checkTimes[1]))).toISOString();
+    this.timeLog.properties.time = new Date(new Date(this.ofDate).setHours(parseInt(checkTimes[0]), parseInt(checkTimes[1]))).toISOString();
     this.timeLog.properties.source = 'byAdmin';
     this.timeLog.save().then(data => {
       this.toggleRow();

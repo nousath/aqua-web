@@ -7,13 +7,14 @@ export class AlertType {
   picUrl: string = '';
   cost: number = null;
   default: boolean = false;
-  // processor: Processor = new Processor();
+  processor: Processor = new Processor();
   trigger: Trigger = new Trigger();
 }
 
 
 export class Processor {
-  channel: string = ''
+  channel?: string = '';
+  comApp?: string[];
 }
 
 export class Trigger {

@@ -19,6 +19,7 @@ import { AppDownloadComponent } from './pages/app-download/app-download.componen
 import { DesignationsComponent } from './pages/employees/designations/designations.component';
 import { AttendanceLogsComponent } from "./pages/attendances/attendance-logs/attendance-logs.component";
 import { AdminGuard } from './guards/admin.guard';
+import { GkuAttendanceComponent } from './pages/gku-attendance/gku-attendance.component';
 
 
 const emp_routes: Routes = [
@@ -44,6 +45,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
   { path: 'pages', component: PagesComponent, canActivate: [UserGuard], children: page_routes },
   { path: 'loginViaOrg', component: OrgLoginComponent },
+  { path: 'edualaya-attendance/:token/:orgCode', component: GkuAttendanceComponent },
   { path: 'download', component: AppDownloadComponent },
   { path: '**', redirectTo: 'pages' },
 ];
