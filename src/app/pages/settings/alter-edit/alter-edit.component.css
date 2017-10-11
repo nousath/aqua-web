@@ -10,3 +10,8 @@
 .spacer {
     margin: 10px;
 }
+
+.example-radio-group {
+    display: inline-flex;
+    flex-direction: column;
+}

@@ -78,15 +78,15 @@
                         <td><img src="assets/images/default-radio.png"></td>
                         <td><span style="color:gray;"><h5><b>Push Notifications</b></h5></span></td>
                     </table>
-                    <div class="row">
+                    <!-- <div class="row">
                         <img src="assets/images/default-radio.png"> <span style="color:gray;"><h5><b>Push Notifications</b></h5></span>
-                    </div>
-                    <md-radio-group [(ngModel)]="alert.properties.config.processor['channel']">
-                        <div class="row" *ngFor="let item of alert.properties?.alertType?.processor?.comApp">
+                    </div> -->
+                    <md-radio-group class="example-radio-group" [(ngModel)]="alert.properties.config.processor['channel']">
+                        <span *ngFor="let item of alert.properties?.alertType?.processor?.comApp">
                             <md-radio-button *ngIf="item != 'push'" [value]="item">
                                 {{item | titlecase}}
                             </md-radio-button>
-                        </div>
+                        </span>
 
                         <!-- <md-radio-button value="sms">
                             SMS

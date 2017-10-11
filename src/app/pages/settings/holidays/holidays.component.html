@@ -104,6 +104,7 @@
             <table class="table table-condensed table-hover">
                 <thead class="primary_thead">
                     <tr>
+                        <th class="srno">Sr No</th>
                         <th class="tdWidth">Name</th>
                         <th>Date</th>
                     </tr>
@@ -112,16 +113,17 @@
                     <tr *ngFor="let item of holidays.items | paginate: { id: 'foo',
                                                       itemsPerPage: holidays.pageSize,
                                                       currentPage: holidays.pageNo,
-                                                      totalItems: holidays.totalRecords };" class="capitalize">
+                                                      totalItems: holidays.totalRecords };let i = index" class="capitalize">
 
+                        <td class="srno">{{(10 * (holidays.pageNo - 1))+(i+1)}}</td>
                         <td class="tdWidth">{{item?.name}}</td>
                         <td>{{item?.date | date}}</td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <pagination-controls id="foo" (pageChange)="holidays.pageNo = $event;fetchHolidays();"></pagination-controls>
-        </div> -->
+        </div>
     </md-card>
 </div>
