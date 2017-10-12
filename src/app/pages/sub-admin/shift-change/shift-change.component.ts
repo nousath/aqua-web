@@ -8,6 +8,7 @@ import { ShiftType } from '../../../models/shift-type';
 import * as _ from 'lodash';
 import { AmsShiftService } from '../../../services/ams/ams-shift.service';
 import { ValidatorService } from '../../../services/validator.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'aqua-shift-change',
@@ -19,9 +20,10 @@ export class ShiftChangeComponent implements OnInit {
   employees: Page<Employee>
   employee: Model<Employee>
   shifTypes: Page<ShiftType>
+  shiftChangeType: 'now' | 'later' = 'now';
 
   constructor(private amsEmployeeService: AmsEmployeeService,
-    public validatorService:ValidatorService,
+    public validatorService: ValidatorService,
     private amsShiftService: AmsShiftService,
     private toastyService: ToastyService) {
     this.employees = new Page({
@@ -50,16 +52,36 @@ export class ShiftChangeComponent implements OnInit {
       _.each(this.employees.items, (item: Employee) => {
         if (!item.shiftType)
           item.shiftType = new ShiftType();
+        item.shiftType['changeType'] = 'now';
       })
     }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
-  changeShift(id: string, shiftTypeId: string) {
-    let model: any = {
-      shiftType: { id: shiftTypeId }
+
+
+  changeShift(emp: Employee, shiftTypeId: string, date?: Date) {
+
+    if (!shiftTypeId)
+      return this.toastyService.info({ title: 'Info', msg: 'Please select Shift' });
+
+    let model: any = {}
+
+    if (emp.shiftType.changeType == 'now') {
+      model = {
+        shiftType: { id: shiftTypeId }
+      }
     }
-    if (shiftTypeId)
-      this.updateEmp(id, model);
+    if (emp.shiftType.changeType == 'later') {
+      if (!date)
+        return this.toastyService.info({ title: 'Info', msg: 'Please select date in case of later' });
+      if (moment(date).startOf('day') <= moment().startOf('day'))
+        return this.toastyService.info({ title: 'Info', msg: 'Date should be greater than current date' });
+      model = {
+        shiftType: shiftTypeId,
+        date: new Date(date).toISOString()
+      }
+    }
+    this.updateEmp(emp.id, model);
   }
 
   updateEmp(id, model: any) {

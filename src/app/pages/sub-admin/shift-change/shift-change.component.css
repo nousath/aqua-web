@@ -1,5 +1,9 @@
 .tdWidth {
-    width: 15%
+    width: 10%
+}
+
+.profileWidth {
+    width: 27%;
 }
 
 .profile_pic {
@@ -44,4 +48,17 @@
     float: left;
     margin-left: 1%;
     margin-right: 1%;
+}
+
+.infoBlock {
+    padding-left: 15%;
+    font-size: 79%;
+}
+
+.infoBlock p {
+    margin: -1px;
+}
+
+.radioBtn {
+    margin-bottom: 4px;
 }

@@ -12,6 +12,7 @@ export class ShiftType {
   friday: 'off' | 'full' | 'half' | 'alternate' | null = null;
   saturday: 'off' | 'full' | 'half' | 'alternate' | null = null;
   sunday: 'off' | 'full' | 'half' | 'alternate' | null = null;
+  changeType:'now' | 'later' = 'now';
 }
 
 
