@@ -20,11 +20,11 @@
 </div>
 <md-spinner class="custom_spinner" *ngIf="employees?.isLoading || employee?.isProcessing" mode="indeterminate"></md-spinner>
 <div class="row">
-    <md-card class="card">
-        <div class="row text-center noData" *ngIf="employees?.items?.length == 0">
-            <h5><b>no data to display !</b></h5>
-        </div>
-        <div class="table-responsive" *ngIf="employees?.items?.length > 0">
+    <!-- <md-card class="card"> -->
+    <div class="row text-center noData" *ngIf="employees?.items?.length == 0">
+        <h5><b>no data to display !</b></h5>
+    </div>
+    <!-- <div class="table-responsive" *ngIf="employees?.items?.length > 0">
             <table class="table table-condensed table-hover">
                 <thead class="primary_thead">
                     <tr>
@@ -90,20 +90,82 @@
 
                 </tbody>
             </table>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="custom_pagination">
-                <pagination-controls id="foo" (pageChange)="employees.pageNo = $event;fetchEmp();"></pagination-controls>
-                <div class="pageSize">
-                    <label>Page Size:</label>
-                    <select name="pageSize" [(ngModel)]="employees.pageSize" (change)="employees.pageNo = 1;fetchEmp()">
+        </div> -->
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" *ngFor="let item of employees.items | paginate: { id: 'foo',
+        itemsPerPage: employees.pageSize,
+        currentPage: employees.pageNo,
+        totalItems: employees.totalRecords };">
+        <br>
+        <md-card>
+            <div class="row">
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <div class="row profileImage">
+                        <img *ngIf="item?.picUrl" class="img-circle EmpProile" [src]="item?.picUrl" onerror="this.src = 'assets/images/blank.png'" width="100%">
+                        <img *ngIf="!item?.picUrl" class="img-circle EmpProile" alt="img" src="assets/images/blank.png" width="100%">
+                    </div>
+                </div>
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                    <h4>{{item?.name}}</h4>
+                    <div class="info">
+                        <h5>{{item?.code || '--'}}</h5>
+                        <h5>{{item?.designation || '--' | titlecase}}</h5>
+                        <h5>{{item?.phone || '--'}}</h5>
+                        <h5>Supervisor: {{item?.supervisor?.name}} {{item?.supervisor?.code ? '('+item?.supervisor?.code+')':'--'}}</h5>
+                        <h5>Shift: {{item?.shiftType?.name || '--' | titlecase}}</h5>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+                    <h6 class=shiftChnageH><b>Shift Change</b></h6>
+                    <table class="table table-condensed">
+                        <tr>
+                            <td colspan="4">
+                                <md-radio-group class="" [(ngModel)]="item.shiftType.changeType">
+                                    <md-radio-button selected value="now">Now</md-radio-button>
+                                    <md-radio-button value="later">Later</md-radio-button>
+                                </md-radio-group>
+                            </td>
+                        </tr>
+                        <tr class="rowHeight">
+                            <td> <label>Shift:</label></td>
+                            <td>
+                                <select [disabled]="employee?.isProcessing" class="capitalize form-control input-sm" #shift>
+                                    <option  [value]="null">select an option</option>
+                                    <option class="capitalize" *ngFor="let shifType of shifTypes?.items" [value]="shifType?.id">{{shifType?.name}}</option>
+                              </select>
+                            </td>
+                            <td> <label [hidden]="item.shiftType.changeType == 'now'">Date:</label></td>
+                            <td [hidden]="item.shiftType.changeType == 'now'">
+                                <input name="startdate11" class="form-control  calendar no-spin" type="date" #selectedDate="ngModel" ngModel (ngModelChange)="selectedDate.value = $event">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <button md-raised-button color="primary" (click)="changeShift(item, shift, selectedDate)" [disabled]="employee?.isProcessing">Change</button>
+                            </td>
+                        </tr>
+                        <tr class="rowHeight">
+                            <td colspan="4">
+                                <span *ngIf="checkDate(item?.effectiveShift)">Note: The shift will be set to {{getShidtName(item?.effectiveShift) | titlecase}}  on {{item?.effectiveShift?.date | date}}</span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </md-card>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="custom_pagination">
+            <pagination-controls id="foo" (pageChange)="employees.pageNo = $event;fetchEmp();"></pagination-controls>
+            <div class="pageSize">
+                <label>Page Size:</label>
+                <select name="pageSize" [(ngModel)]="employees.pageSize" (change)="employees.pageNo = 1;fetchEmp()">
                     <option value=10>10</option>
                     <option value=20>20</option>
                     <option value=50>50</option>
                     <option value=100>100</option>
                   </select>
-                </div>
             </div>
         </div>
-    </md-card>
+    </div>
+    <!-- </md-card> -->
 </div>

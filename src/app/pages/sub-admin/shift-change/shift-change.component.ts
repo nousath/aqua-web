@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Model } from '../../../common/contracts/model';
-import { Employee } from '../../../models/employee';
+import { Employee, EffectiveShift } from '../../../models/employee';
 import { ToastyService } from 'ng2-toasty';
 import { Page } from '../../../common/contracts/page';
 import { AmsEmployeeService } from '../../../services/ams/ams-employee.service';
@@ -43,8 +43,12 @@ export class ShiftChangeComponent implements OnInit {
       api: amsShiftService.shiftTypes
     });
 
-    this.shifTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
-    this.fetchEmp();
+    this.shifTypes.fetch().then(
+      data => {
+        this.fetchEmp();
+
+      }
+    ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
   fetchEmp() {
@@ -58,27 +62,51 @@ export class ShiftChangeComponent implements OnInit {
   }
 
 
+  checkDate(effectiveShift: EffectiveShift): boolean {
+    if (!effectiveShift || !effectiveShift.date)
+      return false;
+    return moment(effectiveShift.date).isAfter(moment(), 'day')
+  }
 
-  changeShift(emp: Employee, shiftTypeId: string, date?: Date) {
+  getShidtName(effectiveShift: EffectiveShift): string {
+    if (!effectiveShift || !effectiveShift.shiftType)
+      return '';
+    let shiftType: ShiftType = _.find(this.shifTypes.items, (i: ShiftType) => {
+      return i.id == effectiveShift.shiftType
+    });
 
-    if (!shiftTypeId)
+    return shiftType ? shiftType.name : '';
+
+
+  }
+
+  changeShift(emp: Employee, shiftTypeId: HTMLSelectElement, date?: HTMLInputElement) {
+
+    if (!shiftTypeId || shiftTypeId.value == 'null')
       return this.toastyService.info({ title: 'Info', msg: 'Please select Shift' });
+
+    if (emp.shiftType.id == shiftTypeId.value)
+      return this.toastyService.info({ title: 'Info', msg: `${emp.name} already has ${emp.shiftType.name} shift` });
+
 
     let model: any = {}
 
     if (emp.shiftType.changeType == 'now') {
       model = {
-        shiftType: { id: shiftTypeId }
+        shiftType: { id: shiftTypeId.value }
       }
     }
     if (emp.shiftType.changeType == 'later') {
       if (!date)
         return this.toastyService.info({ title: 'Info', msg: 'Please select date in case of later' });
-      if (moment(date).startOf('day') <= moment().startOf('day'))
+      // if (moment(date.value).startOf('day') <= moment().startOf('day'))
+      if (moment(date.value).startOf('day') <= moment().startOf('day'))
         return this.toastyService.info({ title: 'Info', msg: 'Date should be greater than current date' });
       model = {
-        shiftType: shiftTypeId,
-        date: new Date(date).toISOString()
+        effectiveShift: {
+          shiftType: shiftTypeId.value,
+          date: new Date(date.value).toISOString()
+        }
       }
     }
     this.updateEmp(emp.id, model);
@@ -89,6 +117,12 @@ export class ShiftChangeComponent implements OnInit {
     this.amsEmployeeService.employees.update(id, model)
       .then(data => {
         this.employee.isProcessing = false;
+        _.some(this.employees.items, (item: Employee) => {
+          if (item.id == id) {
+            item.effectiveShift = data.effectiveShift;
+            return true;
+          }
+        })
       })
       .catch(err => { this.employee.isProcessing = false; this.toastyService.error({ title: 'Error', msg: err }) });
   }

@@ -1,4 +1,5 @@
 import { ShiftType } from './shift-type';
+import { Shift } from './shift';
 export class DailyAttendance {
   id: string = '';
   name: string = '';
@@ -18,4 +19,5 @@ export class Attendance {
   checkIn: Date = null;
   checkOut: Date = null;
   hoursWorked: number = null;
+  shift: Shift = new Shift()
 }

@@ -18,6 +18,7 @@ import { Subscription } from 'rxjs/Rx';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { TagType, Tag } from '../../../models/tag';
 import { AmsTagService } from '../../../services/ams/ams-tag.service';
+import { Tags, SelectedTag } from '../daily/daily.component';
 declare var $: any;
 
 @Component({
@@ -36,8 +37,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
   subscription: Subscription;
 
   tagTypes: Page<TagType>;
-  tags: Tag[] = [];
-  selectedTags: Tag[] = [];
+  tags: Tags = new Tags();
 
   constructor(private amsEmployeeService: AmsEmployeeService,
     private amsAttendanceService: AmsAttendanceService,
@@ -100,31 +100,12 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
 
   }
 
-  selectTagType(id: string) {
-    let tag: HTMLSelectElement = document.getElementById('tag') as HTMLSelectElement;
-    tag.value = '';
-    let tagType = _.find(this.tagTypes.items, (i: TagType) => { return i.id == id });
-    if (tagType)
-      this.tags = tagType['tags'];
-    tag.focus();
-  }
-  addChips(tagId: string) {
-    let tag: Tag = _.find(this.tags, (i: Tag) => { return i.id == tagId });
-    let tag1 = _.find(this.selectedTags, (i: Tag) => { return i.id == tagId });
-    if (tag && !tag1)
-      this.selectedTags.push(tag);
-  }
 
-  removeChip(index) {
-    this.selectedTags.splice(index, 1);
-    let tag: HTMLSelectElement = document.getElementById('tag') as HTMLSelectElement;
-    tag.value = '';
-  }
 
   reset() {
     this.monthlyAttendnace.filters.reset();
     this.getAttendance(new Date());
-    this.selectedTags = [];
+    this.tags.reset();
     this.store.removeItem('monthly-attendance-filters');
 
   }
@@ -162,8 +143,8 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
     this.monthlyAttendnace.filters.properties['ofDate']['value'] = date.toISOString();
 
     let tags: string[] = [];
-    _.each(this.selectedTags, (tag: Tag) => {
-      tags.push(tag.id)
+    _.each(this.tags.selected, (tag: SelectedTag) => {
+      tags.push(tag.tagId)
     })
     this.monthlyAttendnace.filters.properties['tagIds']['value'] = tags;
 
