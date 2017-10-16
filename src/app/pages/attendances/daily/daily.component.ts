@@ -19,6 +19,28 @@ import { AmsTagService } from '../../../services/ams/ams-tag.service';
 import { TagType, Tag } from '../../../models/tag';
 declare var $: any;
 
+export interface SelectedTag {
+  tagId: string;
+  tagTypeId: string;
+}
+
+export class Tags {
+  selected: SelectedTag[] = [];
+  select(tag: SelectedTag) {
+    let t: SelectedTag = _.find(this.selected, (i: SelectedTag) => {
+      return i.tagTypeId == tag.tagTypeId;
+    });
+    if (t && tag.tagId == 'select an option')
+      return this.selected.splice(this.selected.indexOf(t), 1);
+    if (!t)
+      this.selected.push(tag);
+  }
+  reset() {
+    this.selected = [];
+  }
+}
+
+
 @Component({
   selector: 'aqua-daily',
   templateUrl: './daily.component.html',
@@ -31,9 +53,7 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
   shiftTypes: Page<ShiftType>;
   employee: Model<Employee>;
   tagTypes: Page<TagType>;
-  tags: Tag[] = [];
-  selectedTags: Tag[] = [];
-
+  tags: Tags = new Tags();
   date: Date = null
 
   constructor(private amsEmployeeService: AmsEmployeeService,
@@ -74,7 +94,7 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
       }, {
         field: 'byShiftEnd',
         value: false
-      },{
+      }, {
         field: 'byShiftLength',
         value: false
       }, {
@@ -98,33 +118,16 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
-  selectTagType(id: string) {
-    let tag: HTMLSelectElement = document.getElementById('tag') as HTMLSelectElement;
-    tag.value = '';
-    let tagType = _.find(this.tagTypes.items, (i: TagType) => { return i.id == id });
-    if (tagType)
-      this.tags = tagType['tags'];
-    tag.focus();
-  }
-  addChips(tagId: string) {
-    let tag: Tag = _.find(this.tags, (i: Tag) => { return i.id == tagId });
-    let tag1 = _.find(this.selectedTags, (i: Tag) => { return i.id == tagId });
-    if (tag && !tag1)
-      this.selectedTags.push(tag);
+  addTag(id: string) {
+    console.log(id)
   }
 
-  removeChip(index) {
-    this.selectedTags.splice(index, 1);
-    let tag: HTMLSelectElement = document.getElementById('tag') as HTMLSelectElement;
-    tag.value = '';
-  }
 
 
   reset() {
     this.dailyAttendnace.filters.reset();
-    this.selectedTags = [];
     this.getAttendance(new Date());
-
+    this.tags.reset();
     this.store.removeItem("daily-attendance-filter")
   }
 
@@ -158,8 +161,8 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
     date = new Date(date);
     this.dailyAttendnace.filters.properties['ofDate']['value'] = date.toISOString();
     let tags: string[] = [];
-    _.each(this.selectedTags, (tag: Tag) => {
-      tags.push(tag.id)
+    _.each(this.tags.selected, (tag: SelectedTag) => {
+      tags.push(tag.tagId)
     })
     this.dailyAttendnace.filters.properties['tagIds']['value'] = tags;
     this.dailyAttendnace.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
@@ -167,7 +170,7 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   isDownloading: boolean = false;
-  download(byShiftEnd : boolean, byShiftLength : boolean) {
+  download(byShiftEnd: boolean, byShiftLength: boolean) {
     this.isDownloading = true;
     let serverPageInput: ServerPageInput = new ServerPageInput();
     let queryParams: any = {};

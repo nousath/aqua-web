@@ -137,11 +137,11 @@
                 <div class="calBox dayName" *ngFor="let item of days">{{item}}</div>
                 <div class="calBox" *ngFor="let item of emptyStartDays"></div>
                 <div class="calBox day corners shadow" *ngFor="let item of events;let i = index" (click)="updateDayEvent(item)" [ngClass]="{'present': (item?.status === 'present' || item?.status === 'checkedin'),
-                                                                                           'absent':item?.status === 'absent'  && item?.shift?.status === 'working',
-                                                                                           'leave':item?.status === 'onleave' || item?.status === 'halfday'  && item?.shift?.status === 'working',
-                                                                                           'missedSwipe':item?.status === 'missswipe',
-                                                                                           'weekoff':item?.shift?.status === 'weekoff' && (item?.status !== 'present' && item?.status !== 'checkedin' && item?.status !== 'missswipe'),
-                                                                                           'holiday':item?.shift?.status === 'holiday' && (item?.status !== 'present' && item?.status !== 'checkedin' && item?.status !== 'missswipe')}">
+                 'absent':item?.status === 'absent'  && item?.shift?.status === 'working',
+                  'leave':item?.status === 'onleave' || item?.status === 'halfday'  && item?.shift?.status === 'working',
+                 'missedSwipe':item?.status === 'missswipe',
+                  'weekoff':item?.shift?.status === 'weekoff' && (item?.status !== 'present' && item?.status !== 'checkedin' && item?.status !== 'missswipe'),
+                   'holiday':item?.shift?.status === 'holiday' && (item?.status !== 'present' && item?.status !== 'checkedin' && item?.status !== 'missswipe')}">
                     <h5><b>{{getDate(item?.ofDate)}}</b></h5>
                     <!--<p>{{i}} {{item?.ofDate | date}}</p>-->
                     <!--<p>{{item?.ofDate}}</p>-->
@@ -164,6 +164,10 @@
                     || item?.status === 'absent'
                     && item?.shift?.status === 'working'">
                         <span class="capitalize">{{item?.status}}</span>
+                    </p>
+                    <p *ngIf="item?.status === 'absent'
+                    && item?.shift?.status === 'weekoff'">
+                        <span class="capitalize">{{item?.shift?.status}}</span>
                     </p>
                     <p *ngIf="item?.shift?.status === 'holiday' &&
                       (item?.status !== 'present' && item?.status !== 'checkedin' && item?.status !== 'missswipe')">
