@@ -78,3 +78,13 @@ button.mat-menu-item {
     font-weight: 100;
     cursor: pointer;
 }
+
+.reply {
+    float: left;
+    margin-left: 0;
+    margin-right: 1%;
+}
+
+.alignTagtype {
+    margin-left: -9%
+}

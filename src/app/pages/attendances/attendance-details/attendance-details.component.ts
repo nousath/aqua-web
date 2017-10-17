@@ -349,16 +349,15 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
   }
 
 
-  download(byShiftEnd : boolean, byShiftLength : boolean) {
+  download(byShiftEnd : boolean, byShiftLength : boolean, reportName : string) {
     this.isDownloading = true;
     let serverPageInput: ServerPageInput = new ServerPageInput();
     serverPageInput.query['ofDate'] = this.selectedDate;
     serverPageInput.query['employee'] = this.empId;
     serverPageInput.query['byShiftEnd'] = byShiftEnd;
     serverPageInput.query['byShiftLength'] = byShiftLength;
-    let reportName: string = `${this.employee.properties.name}_${moment(this.selectedDate).format('MMM_YY')}_monthlyReport`;
-    reportName = byShiftEnd ? `${reportName}_extraHours` : reportName;
-    this.amsAttendanceService.donwloadSingleEmpMonthAtte.exportReport(serverPageInput, null, `${reportName}.xlsx`).then(
+     reportName = `${reportName}_${this.employee.properties.name}_${moment(this.selectedDate).format('MMM_YY')}_monthlyReport.xlsx`;
+    this.amsAttendanceService.donwloadSingleEmpMonthAtte.exportReport(serverPageInput, null, reportName).then(
       data => this.isDownloading = false
     ).catch(err => {
       this.toastyService.error({ title: 'Error', msg: err });

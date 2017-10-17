@@ -170,7 +170,7 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   isDownloading: boolean = false;
-  download(byShiftEnd: boolean, byShiftLength: boolean) {
+  download(byShiftEnd : boolean, byShiftLength : boolean, reportName : string) {
     this.isDownloading = true;
     let serverPageInput: ServerPageInput = new ServerPageInput();
     let queryParams: any = {};
@@ -182,10 +182,8 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
     queryParams['byShiftEnd'] = byShiftEnd;
     queryParams['byShiftLength'] = byShiftLength;
     serverPageInput.query = queryParams;
-    let reportName: string = `${moment(queryParams['ofDate']).format('DD_MMM_YY')}_DailyReport`;
-    reportName = byShiftEnd ? `${reportName}_extraHours` : reportName;
-
-    this.amsAttendanceService.donwloadDailyAttendances.exportReport(serverPageInput, null, `${reportName}.xlsx`).then(
+    reportName = `${reportName}_${moment(queryParams['ofDate']).format('DD_MMM_YY')}_DailyReport.xlsx`;
+    this.amsAttendanceService.donwloadDailyAttendances.exportReport(serverPageInput, null, reportName).then(
       data => this.isDownloading = false
     ).catch(err => {
       this.toastyService.error({ title: 'Error', msg: err });

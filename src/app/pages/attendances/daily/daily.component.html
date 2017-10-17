@@ -15,9 +15,10 @@
             <button [disabled]="dailyAttendnace?.isLoading || employee?.isProcessing" md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
             <button [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" [mdMenuTriggerFor]="appMenu" md-icon-button><md-icon>cloud_download</md-icon> </button>
             <md-menu #appMenu="mdMenu">
-                <button md-menu-item (click)="download(true,false)">Attendance With Extra Hours by shiftEnd</button>
-                <button md-menu-item (click)="download(false,true)">Attendance With Extra Hours by shiftLength</button>
-                <button md-menu-item (click)="download(false,false)">Download Attendance</button>
+                <button md-menu-item (click)="download(true,false,'Extra hours - after Shift end time')">Extra hours - after Shift end time</button>
+                <button md-menu-item (click)="download(false,true,'Extra hours - after Shift hours')">Extra hours - after Shift hours
+                </button>
+                <button md-menu-item (click)="download(false,false, 'Day Attendance')">Day's Attendance</button>
             </md-menu>
             <!-- <button [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button mdTooltip="Download Attendance extraHours" [mdTooltipPosition]="'above'" (click)="download(true)"><md-icon>cloud_download</md-icon> </button>
             <button [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" (click)="download(false)" angulartics2On="click" angularticsEvent="dialyAttendnaceDownloadClick"
@@ -39,7 +40,7 @@
         </div>
         <br>
         <form class="row">
-            <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4  form-group">
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                         <label for="email">Name</label>
@@ -83,19 +84,6 @@
                         </select>
                     </div>
                 </div>
-                <!-- <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-group">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <label>Tag Type</label>
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <select class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" #tagType (ngModelChange)="tagType.value = $event" (change)="selectTagType(tagType.value)" placeholder="Tag Type" name="tagtype">
-                            <option selected [ngValue]="">select an option</option>
-                              <option *ngFor="let item of tagTypes.items" [value]="item.id">
-                                {{item?.name | titlecase}}
-                            </option>
-                          </select>
-                    </div>
-                </div> -->
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-group" *ngFor="let item of tagTypes?.items">
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                         <label>{{item?.name | titlecase}}</label>
@@ -113,7 +101,7 @@
             <!-- <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 chipsBadge form-group">
                 <span *ngFor="let item of selectedTags;let i = index" class="badge badge-pill badge-dark"> {{item?.name | titlecase}}&nbsp;<i (click)="removeChip(i)" class="fa fa-times" aria-hidden="true"></i></span>
             </div> -->
-            <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 button_align form-group">
                     <button [disabled]="dailyAttendnace?.isLoading || isDownloading" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="getAttendance(dailyAttendnace.filters.properties['ofDate']['value']);">Apply</button>
                     <button [disabled]="dailyAttendnace?.isLoading || isDownloading" md-raised-button class="btn_grey" mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()">Reset</button>
