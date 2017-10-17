@@ -2,51 +2,47 @@
   <h5><b>Filters </b></h5>
 </div>
 <div class="row">
-  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 width">
       Level
       <div class="input-group">
-        <select class="form-control" [(ngModel)]="deviceLogs.filters.properties['level']['value']" (change)="getDeviceLogs()">
+        <select class="form-control" [(ngModel)]="deviceLogs.filters.properties['level']['value']" >
           <option value="all" [selected]>All</option>
           <option value="info">Info</option>
           <option value="error">Error</option>
         </select>
       </div>
     </div>
-    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 format">
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
       <div class="headerInpts">
         Devices
         <div class="input-group">
-          <select class="form-control" [(ngModel)]="deviceLogs.filters.properties['deviceId']['value']" (change)="getDeviceLogs()">
+          <select class="form-control" [(ngModel)]="deviceLogs.filters.properties['deviceId']['value']">
             <option value="">All</option>
             <option *ngFor="let device of devices.items" value="{{device.id}}">{{device.ip}}</option>
           </select>
         </div>
       </div>
     </div>
-    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 format">
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
       <div class="headerInpts">
         Date
         <div class="input-group">
           <input id="dateSelector" type="text" class="form-control input-sm calendar no-spin">
         </div>
       </div>
+    </div> 
+</div>
+</div>
+<div class="row">
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 format">
+        <button [disabled]="deviceLogs?.isLoading || isDownloading" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="getDeviceLogs()">Apply</button>
+        <button [disabled]="dailyAttendnace?.isLoading || isDownloading" md-raised-button class="btn_grey" mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()">Reset</button>
     </div>
-    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-    </div>
-    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-    </div>
-    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-    </div>
-  </div>
 </div>
 <md-spinner class="custom_spinner" *ngIf="deviceLogs?.isLoading" mode="indeterminate"></md-spinner>
-
-
 <div class="row">
   <md-card class="card">
-
     <div class="table-responsive">
       <table class="table table-condensed table-hover">
         <thead class="primary_thead">
@@ -62,7 +58,6 @@
                                                       itemsPerPage: deviceLogs.pageSize,
                                                       currentPage: deviceLogs.pageNo,
                                                       totalItems: deviceLogs.totalRecords };" class="capitalize" [ngClass]="{'bg-danger': item.status === 'Error'} ">
-
             <td class="cellFormat" [ngSwitch]="item.status">
               <span mdTooltip="{{item.status}}">
                 <i *ngSwitchCase="'Error'" class="fa fa-exclamation-triangle" style="color: #D8000C;" aria-hidden="true"></i>

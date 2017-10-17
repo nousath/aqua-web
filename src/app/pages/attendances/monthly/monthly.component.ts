@@ -153,7 +153,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
   }
 
   isDownloading: boolean = false;
-  download(byShiftEnd : boolean, byShiftLength : boolean) {
+  download(byShiftEnd: boolean, byShiftLength: boolean, reportName: string) {
     this.isDownloading = true;
     let serverPageInput: ServerPageInput = new ServerPageInput();
     let queryParams: any = {};
@@ -166,9 +166,8 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
     queryParams['byShiftEnd'] = byShiftEnd;
     queryParams['byShiftLength'] = byShiftLength;
     serverPageInput.query = queryParams;
-    let reportName: string = `${moment(queryParams['ofDate']).format('MMM_YY')}_monthlyReport`;
-    reportName = byShiftEnd ? `${reportName}_extraHours` : reportName;
-    this.amsAttendanceService.donwloadMonthlyAttendances.exportReport(serverPageInput, null, `${reportName}.xlsx`).then(
+    reportName = `${reportName}_${moment(queryParams['ofDate']).format('MMM_YY')}_monthlyReport.xlsx`;
+    this.amsAttendanceService.donwloadMonthlyAttendances.exportReport(serverPageInput, null, reportName).then(
       data => this.isDownloading = false
     ).catch(err => {
       this.toastyService.error({ title: 'Error', msg: err });

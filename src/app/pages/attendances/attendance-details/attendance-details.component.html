@@ -13,11 +13,14 @@
             </div>
         </div>
         <div class="headerBtns">
-            <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading || isProcessingAttendance" [mdMenuTriggerFor]="appMenu" md-icon-button><md-icon>cloud_download</md-icon> </button>
+            <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading || isProcessingAttendance" [mdMenuTriggerFor]="appMenu"
+                md-icon-button>
+                <md-icon>cloud_download</md-icon>
+            </button>
             <md-menu #appMenu="mdMenu">
-                <button md-menu-item (click)="download(true,false)">Attendance With Extra Hours by shiftEnd</button>
-                <button md-menu-item (click)="download(false,true)">Attendance With Extra Hours by shiftLength</button>
-                <button md-menu-item (click)="download(false,false)">Download Attendance</button>
+                <button md-menu-item (click)="download(true,false,'Extra hours - after Shift end time')">Extra hours - after Shift end time</button>
+                <button md-menu-item (click)="download(false,true,'Extra hours - after Shift hours')">Extra hours - after Shift hours</button>
+                <button md-menu-item (click)="download(false,false,'Day Attendance')">Day's Attendance</button>
             </md-menu>
             <!-- <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading || isProcessingAttendance" md-icon-button mdTooltip="Download Attendance extraHours" [mdTooltipPosition]="'above'" (click)="download(true)"><md-icon>cloud_download</md-icon></button>
             <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading  || isProcessingAttendance" md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" (click)="download(false)" angulartics2On="click" angularticsEvent="dialyAttendnaceDownloadClick"
@@ -26,7 +29,8 @@
 
     </div>
 </div>
-<md-spinner class="custom_spinner" *ngIf="employee?.isProcessing || attendance?.isProcessing || isDownloading || leaveBalances?.isLoading || leavesSubmiited?.isLoading || isProcessingAttendance || isUpdatingLeaveStatus" mode="indeterminate"></md-spinner>
+<md-spinner class="custom_spinner" *ngIf="employee?.isProcessing || attendance?.isProcessing || isDownloading || leaveBalances?.isLoading || leavesSubmiited?.isLoading || isProcessingAttendance || isUpdatingLeaveStatus"
+    mode="indeterminate"></md-spinner>
 <br>
 <div class="row">
     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 profieCrd nameFormat">
@@ -66,10 +70,11 @@
                         <tr class="capitalize">
                             <td>Shift:</td>
                             <td>
-                                <select [disabled]="employee?.isProcessing" class="capitalize form-control input-sm" [(ngModel)]="employee.properties.shiftType.id" (change)="changeShift(employee.properties.shiftType.id)">
+                                <select [disabled]="employee?.isProcessing" class="capitalize form-control input-sm" [(ngModel)]="employee.properties.shiftType.id"
+                                    (change)="changeShift(employee.properties.shiftType.id)">
                                     <option [ngValue]="null">select an option </option>
                                     <option class="capitalize" *ngFor="let item of shifTypes.items" [value]="item.id">{{item?.name}}</option>
-                              </select>
+                                </select>
                             </td>
                         </tr>
                         <tr>
@@ -120,18 +125,25 @@
     <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
         <md-card class="dots">
             <div class="row">
-                <div class="dot"><img src="assets/images/dots/present.png">&nbsp;Present</div>
-                <div class="dot"><img src="assets/images/dots/absent.png">&nbsp;Absent</div>
-                <div class="dot"><img src="assets/images/dots/leave.png">&nbsp;Leave</div>
-                <div class="dot"><img src="assets/images/dots/misswipe.png">&nbsp;Missed Swipe</div>
-                <div class="dot"><img src="assets/images/dots/holiday.png">&nbsp;Holiday</div>
+                <div class="dot">
+                    <img src="assets/images/dots/present.png">&nbsp;Present</div>
+                <div class="dot">
+                    <img src="assets/images/dots/absent.png">&nbsp;Absent</div>
+                <div class="dot">
+                    <img src="assets/images/dots/leave.png">&nbsp;Leave</div>
+                <div class="dot">
+                    <img src="assets/images/dots/misswipe.png">&nbsp;Missed Swipe</div>
+                <div class="dot">
+                    <img src="assets/images/dots/holiday.png">&nbsp;Holiday</div>
             </div>
         </md-card>
         <br>
         <md-card>
             <div class="row" angulartics2On="click" angularticsEvent="dailyTimeLogClick" angularticsCategory="dailyTimelog" [angularticsProperties]="{label: 'Fall Campaign'}">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 calHeader text-center cursor" (click)="openCalnder()">
-                    <h5><b>{{selectedDate | date:'MMMM y'}}</b></h5>
+                    <h5>
+                        <b>{{selectedDate | date:'MMMM y'}}</b>
+                    </h5>
                 </div>
                 <br>
                 <div class="calBox dayName" *ngFor="let item of days">{{item}}</div>
@@ -186,11 +198,14 @@
         <md-card>
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 calHeader text-center">
-                    <h5><b>Leave Submitted</b></h5>
+                    <h5>
+                        <b>Leave Submitted</b>
+                    </h5>
                     <a md-icon-button [routerLink]="['apply-leave']" class="levbtn" mdTooltip="Apply Leave" [mdTooltipPosition]="'above'">
                         <md-icon>add_circle_outline</md-icon>
                     </a>
-                </div><br>
+                </div>
+                <br>
                 <table class="table">
                     <tr>
                         <th>Start Date</th>
@@ -219,10 +234,12 @@
                                       || item?.status == 'cancelled'" (click)="accept_reject_leave(item, 'approved')" mdTooltip="Approve" [mdTooltipPosition]="'above'">
                                 <md-icon>check_cirle</md-icon>
                             </button>-->
-                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status == 'submitted'" (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
+                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status == 'submitted'"
+                                (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
                                 <md-icon>highlight_off</md-icon>
                             </button>
-                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status == 'submitted'" (click)="accept_reject_leave(item, 'approved')" mdTooltip="Approve" [mdTooltipPosition]="'above'">
+                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status == 'submitted'"
+                                (click)="accept_reject_leave(item, 'approved')" mdTooltip="Approve" [mdTooltipPosition]="'above'">
                                 <md-icon>check_cirle</md-icon>
                             </button>
                         </td>
@@ -235,11 +252,11 @@
                     <div class="pageSize">
                         <label>Page Size:</label>
                         <select name="pageSize" [(ngModel)]="leavesSubmiited.pageSize" (change)="leavesSubmiited.pageNo = 1;fetchSubmittedLeaveBalance();">
-                      <option value=10>10</option>
-                      <option value=20>20</option>
-                      <option value=50>50</option>
-                      <option value=100>100</option>
-                    </select>
+                            <option value=10>10</option>
+                            <option value=20>20</option>
+                            <option value=50>50</option>
+                            <option value=100>100</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -249,7 +266,9 @@
         <md-card>
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 calHeader text-center">
-                    <h5><b>Leave Balance</b></h5>
+                    <h5>
+                        <b>Leave Balance</b>
+                    </h5>
                 </div>
                 <br>
                 <table class="table">

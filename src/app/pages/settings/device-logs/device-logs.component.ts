@@ -4,6 +4,7 @@ import { ToastyService } from 'ng2-toasty';
 import { AmsDeviceService, AmsEmployeeService } from "app/services";
 import { DeviceLogs, Device } from "app/models";
 import { Page } from "app/common/contracts/page";
+import { LocalStorageService } from '../../../services/local-storage.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from "rxjs/Rx";
 declare var $: any;
@@ -27,6 +28,7 @@ export class DeviceLogsComponent implements OnInit, OnDestroy, AfterViewInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private location: Location,
+    private store: LocalStorageService,
     private amsEmployeeService: AmsEmployeeService,
     private amsDeviceService: AmsDeviceService) {
 
@@ -89,4 +91,9 @@ export class DeviceLogsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subscription.unsubscribe();
   }
 
+  reset() {
+    this.deviceLogs.filters.reset();
+    this.getDeviceLogs();
+    this.store.removeItem("device-logs-filter")
+  }
 }

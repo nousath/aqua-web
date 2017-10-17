@@ -1,6 +1,6 @@
 <div class="row page_header">
     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <h5><b>Monthly Attendance</b></h5>
+             <h5><b>Monthly Attendance</b></h5>
     </div>
     <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
         <div class="headerInpts">
@@ -10,12 +10,15 @@
             </div>
         </div>
         <div class="headerBtns">
-            <button [disabled]="monthlyAttendnace?.isLoading || employee?.isProcessing" md-icon-button mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'" (click)="isFilter = !isFilter"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
-            <button [disabled]="monthlyAttendnace?.isLoading || isDownloading || employee?.isProcessing" [mdMenuTriggerFor]="appMenu" md-icon-button><md-icon>cloud_download</md-icon> </button>
+            <button [disabled]="monthlyAttendnace?.isLoading || employee?.isProcessing" md-icon-button mdTooltip="Filters" class="marginLetf"
+                [mdTooltipPosition]="'above'" (click)="isFilter = !isFilter"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
+            <button [disabled]="monthlyAttendnace?.isLoading || isDownloading || employee?.isProcessing" [mdMenuTriggerFor]="appMenu"
+                md-icon-button><md-icon>cloud_download</md-icon> </button>
             <md-menu #appMenu="mdMenu">
-                <button md-menu-item (click)="download(true,false)">Attendance With Extra Hours by shiftEnd</button>
-                <button md-menu-item (click)="download(false,true)">Attendance With Extra Hours by shiftLength</button>
-                <button md-menu-item (click)="download(false,false)">Download Attendance</button>
+                <button md-menu-item (click)="download(true, false, 'Extra hours - after Shift end time')">Extra hours - after Shift end time</button>
+                <button md-menu-item (click)="download(false, true, 'Extra hours - after Shift hours')">Extra hours - after Shift hours
+                </button>
+                <button md-menu-item (click)="download(false, false, 'Day Attendance')">Day's Attendance  </button>
             </md-menu>
             <!-- <button [disabled]="monthlyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button mdTooltip="Download Attendance extraHours" [mdTooltipPosition]="'above'" (click)="download(true)"><md-icon>cloud_download</md-icon> </button>
             <button [disabled]="monthlyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" (click)="download(false)" angulartics2On="click" angularticsEvent="monthyAttendnaceDownloadClick"
@@ -126,7 +129,7 @@
                                                       totalItems: monthlyAttendnace.totalRecords };" class="capitalize">
                         <td>
                             <img *ngIf="item?.picUrl" class="img-circle profile_pic" alt="img" [src]="item?.picUrl" onError="this.src='/assets/images/blank.png'">
-                            <img *ngIf="!item?.picUrl" class="img-circle profile_pic" alt="img" src="assets/images/blank.png"> &nbsp;
+                            <img *ngIf="!item?.picUrl" class="img-circle profile_pic" alt="img" src="assets/images/blank.png">                            &nbsp;
                             <a [routerLink]="[item.id]">{{item?.name || '--'}}</a>
                         </td>
                         <td class="tdWidth">{{item?.code || '--'}}</td>
