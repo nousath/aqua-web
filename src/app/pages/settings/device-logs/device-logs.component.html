@@ -1,44 +1,51 @@
-<div class="row heading">
-  <h5><b>Filters </b></h5>
-</div>
 <div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 width">
-      Level
-      <div class="input-group">
-        <select class="form-control" [(ngModel)]="deviceLogs.filters.properties['level']['value']" >
-          <option value="all" [selected]>All</option>
-          <option value="info">Info</option>
-          <option value="error">Error</option>
-        </select>
-      </div>
+  <md-card class="card">
+    <div class="row text-center headr_bar">
+      <h5>
+        <b>Filters</b>
+      </h5>
     </div>
-    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
-      <div class="headerInpts">
-        Devices
-        <div class="input-group">
-          <select class="form-control" [(ngModel)]="deviceLogs.filters.properties['deviceId']['value']">
+    <br>
+    <form class="row">
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4  form-group">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <label for="email">Level</label>
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+          <select class="form-control" name="level" [(ngModel)]="deviceLogs.filters.properties['level']['value']">
+            <option value="all" [selected]>All</option>
+            <option value="info">Info</option>
+            <option value="error">Error</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4  form-group">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <label for="pwd">Devices</label>
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+          <select class="form-control" name="deciecs" [(ngModel)]="deviceLogs.filters.properties['deviceId']['value']">
             <option value="">All</option>
             <option *ngFor="let device of devices.items" value="{{device.id}}">{{device.ip}}</option>
           </select>
         </div>
       </div>
-    </div>
-    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
-      <div class="headerInpts">
-        Date
-        <div class="input-group">
-          <input id="dateSelector" type="text" class="form-control input-sm calendar no-spin">
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-group">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <label>Date</label>
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+          <input id="dateSelector" name="dateSelect" type="text" class="form-control input-sm calendar no-spin">
         </div>
       </div>
-    </div> 
-</div>
-</div>
-<div class="row">
-    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 format">
-        <button [disabled]="deviceLogs?.isLoading || isDownloading" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="getDeviceLogs()">Apply</button>
-        <button [disabled]="dailyAttendnace?.isLoading || isDownloading" md-raised-button class="btn_grey" mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()">Reset</button>
-    </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 button_align form-group text-center">
+        <button [disabled]="deviceLogs?.isLoading || isDownloading" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'"
+          (click)="getDeviceLogs()">Apply</button>
+        <button [disabled]="dailyAttendnace?.isLoading || isDownloading" md-raised-button class="btn_grey" mdTooltip="Reset" [mdTooltipPosition]="'above'"
+          (click)="reset()">Reset</button>
+      </div>
+    </form>
+  </md-card>
 </div>
 <md-spinner class="custom_spinner" *ngIf="deviceLogs?.isLoading" mode="indeterminate"></md-spinner>
 <div class="row">
@@ -66,7 +73,9 @@
               </span>
             </td>
             <td class="cellFormat">{{item?.date | date: "HH:mm"}}</td>
-            <td class="cellFormat"><span mdTooltip="{{item.deviceName}}">{{item?.ipAddress}}</span></td>
+            <td class="cellFormat">
+              <span mdTooltip="{{item.deviceName}}">{{item?.ipAddress}}</span>
+            </td>
             <td class="cellFormat">{{item?.message}}</td>
           </tr>
         </tbody>
@@ -84,11 +93,11 @@
         <div class="pageSize">
           <label>Page Size:</label>
           <select [(ngModel)]="deviceLogs.pageSize" (change)="deviceLogs.pageNo = 1;getDeviceLogs();">
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-            </select>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
         </div>
       </div>
     </div>
