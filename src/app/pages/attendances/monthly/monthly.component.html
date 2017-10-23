@@ -144,6 +144,7 @@
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="custom_pagination">
                 <pagination-controls id="foo" (pageChange)="monthlyAttendnace.pageNo = $event;getAttendance(monthlyAttendnace.filters.properties['ofDate']['value']);"></pagination-controls>
+                <label>Total Records: {{monthlyAttendnace.totalRecords}}</label>
                 <div class="pageSize">
                     <label>Page Size:</label>
                     <select name="pageSize" [(ngModel)]="monthlyAttendnace.pageSize" (change)="monthlyAttendnace.pageNo = 1;getAttendance(monthlyAttendnace.filters.properties['ofDate']['value']);">
