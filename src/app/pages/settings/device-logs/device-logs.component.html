@@ -39,9 +39,9 @@
         </div>
       </div>
       <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 button_align form-group text-center">
-        <button [disabled]="deviceLogs?.isLoading || isDownloading" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'"
+        <button [disabled]="deviceLogs?.isLoading" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'"
           (click)="getDeviceLogs()">Apply</button>
-        <button [disabled]="dailyAttendnace?.isLoading || isDownloading" md-raised-button class="btn_grey" mdTooltip="Reset" [mdTooltipPosition]="'above'"
+        <button [disabled]="deviceLogs?.isLoading" md-raised-button class="btn_grey" mdTooltip="Reset" [mdTooltipPosition]="'above'"
           (click)="reset()">Reset</button>
       </div>
     </form>
