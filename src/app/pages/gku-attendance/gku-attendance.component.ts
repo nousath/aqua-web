@@ -11,6 +11,7 @@ import { Shift } from '../../models/shift';
 import { ServerPageInput } from '../../common/contracts/api/page-input';
 import { IGetParams } from '../../common/contracts/api/get-params.interface';
 import { AmsAttendanceService } from '../../services/ams/ams-attendance.service';
+import { Meta } from '@angular/platform-browser';
 
 @Component({
   selector: 'aqua-gku-attendance',
@@ -32,7 +33,11 @@ export class GkuAttendanceComponent implements OnInit, OnDestroy {
     private amsEmployeeService: AmsEmployeeService,
     private amsAttendanceService: AmsAttendanceService,
     private store: LocalStorageService,
-    private toastyService: ToastyService) {
+    private toastyService: ToastyService,
+    private meta: Meta) {
+
+      // this.meta.addTag({ name: 'viewport', content: 'width=device-width, initial-scale=1' }, true);
+      this.meta.addTag({ name: 'viewport', content: 'width=400' }, true);
 
     this.subscription = activatedRoute.params.subscribe(
       params => {
