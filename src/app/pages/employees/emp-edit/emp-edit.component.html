@@ -119,13 +119,13 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>Phone:<span class="asterisk">*</span></th>
+                        <th>Phone:</th>
                         <td>
-                            <input name="phone" type="text" class="form-control" [maxlength]="validatorService.phoneNumberLength" [minLength]="validatorService.phoneNumberLength" [pattern]="validatorService.onlyNumber" [(ngModel)]="employee.properties.phone" required>
+                            <input name="phone" type="text" class="form-control" [maxlength]="validatorService.phoneNumberLength" [minLength]="validatorService.phoneNumberLength" [pattern]="validatorService.onlyNumber" [(ngModel)]="employee.properties.phone">
                         </td>
-                        <th>Email:<span class="asterisk">*</span></th>
+                        <th>Email:</th>
                         <td>
-                            <input name="email" email type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.email" required>
+                            <input name="email" email type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.email">
                         </td>
                     </tr>
                 </table>
