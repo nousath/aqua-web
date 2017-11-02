@@ -130,6 +130,9 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
       return this.toastyService.info({ title: 'Info', msg: 'Please fill all mandatory fields' })
     }
 
+    if (this.employee.properties.email && !this.validatorService.validateEmail(this.employee.properties.email))
+      return this.toastyService.info({ title: 'Info', msg: 'Please fill valid email' })
+
     let d: any = this.employee.properties.designation ? _.find(this.designations.items, (item: Designation) => {
       return item.name.toLowerCase() == this.employee.properties.designation.toLowerCase()
     }) : null;
