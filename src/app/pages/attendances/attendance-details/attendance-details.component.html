@@ -13,8 +13,7 @@
             </div>
         </div>
         <div class="headerBtns">
-            <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading || isProcessingAttendance" [mdMenuTriggerFor]="appMenu"
-                md-icon-button>
+            <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading || isProcessingAttendance" [mdMenuTriggerFor]="appMenu" md-icon-button>
                 <md-icon>cloud_download</md-icon>
             </button>
             <md-menu #appMenu="mdMenu">
@@ -29,8 +28,7 @@
 
     </div>
 </div>
-<md-spinner class="custom_spinner" *ngIf="employee?.isProcessing || attendance?.isProcessing || isDownloading || leaveBalances?.isLoading || leavesSubmiited?.isLoading || isProcessingAttendance || isUpdatingLeaveStatus"
-    mode="indeterminate"></md-spinner>
+<md-spinner class="custom_spinner" *ngIf="employee?.isProcessing || attendance?.isProcessing || isDownloading || leaveBalances?.isLoading || leavesSubmiited?.isLoading || isProcessingAttendance || isUpdatingLeaveStatus" mode="indeterminate"></md-spinner>
 <br>
 <div class="row">
     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 profieCrd nameFormat">
@@ -70,8 +68,7 @@
                         <tr class="capitalize">
                             <td>Shift:</td>
                             <td>
-                                <select [disabled]="employee?.isProcessing" class="capitalize form-control input-sm" [(ngModel)]="employee.properties.shiftType.id"
-                                    (change)="changeShift(employee.properties.shiftType.id)">
+                                <select [disabled]="employee?.isProcessing" class="capitalize form-control input-sm" [(ngModel)]="employee.properties.shiftType.id" (change)="changeShift(employee.properties.shiftType.id)">
                                     <option [ngValue]="null">select an option </option>
                                     <option class="capitalize" *ngFor="let item of shifTypes.items" [value]="item.id">{{item?.name}}</option>
                                 </select>
@@ -234,14 +231,15 @@
                                       || item?.status == 'cancelled'" (click)="accept_reject_leave(item, 'approved')" mdTooltip="Approve" [mdTooltipPosition]="'above'">
                                 <md-icon>check_cirle</md-icon>
                             </button>-->
-                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status == 'submitted'"
-                                (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
+                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status == 'submitted'" (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
                                 <md-icon>highlight_off</md-icon>
                             </button>
-                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status == 'submitted'"
-                                (click)="accept_reject_leave(item, 'approved')" mdTooltip="Approve" [mdTooltipPosition]="'above'">
+                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status == 'submitted'" (click)="accept_reject_leave(item, 'approved')" mdTooltip="Approve" [mdTooltipPosition]="'above'">
                                 <md-icon>check_cirle</md-icon>
                             </button>
+                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status?.toLowerCase() == 'approved'" (click)="accept_reject_leave(item, 'cancelled')" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
+                              <md-icon>close</md-icon>
+                          </button>
                         </td>
                     </tr>
                 </table>
