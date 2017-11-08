@@ -128,7 +128,8 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dailyAttendnace.filters.reset();
     this.getAttendance(new Date());
     this.tags.reset();
-    this.store.removeItem("daily-attendance-filter")
+    this.store.removeItem("daily-attendance-filter");
+    $("#dateSelector").datepicker("setDate", new Date());
   }
 
   checkFiltersInStore() {
@@ -196,7 +197,6 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    $("#dateSelector").datepicker("setDate", new Date());
     $('#dateSelector').datepicker({
       format: 'dd/mm/yyyy',
       minViewMode: 0,
@@ -209,7 +209,7 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       this.getAttendance(e.date);
     });
-
+    $("#dateSelector").datepicker("setDate", new Date());
   }
 
   ngOnDestroy() {
