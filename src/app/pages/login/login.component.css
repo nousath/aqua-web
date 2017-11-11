@@ -1,4 +1,4 @@
-.custmNav {
+/* .custmNav {
     padding-right: 7%;
 }
 
@@ -30,7 +30,6 @@ video {
 
 .rowBody {
     position: fixed;
-    /* width: 100%; */
     top: 0px;
     right: 0;
     left: 0;
@@ -77,15 +76,11 @@ video {
 }
 
 .SignupContainer {
-    /* height: 100%;
-    background-color: rgba(14, 46, 71, 0.8) !important; */
 }
 
 .signuphome {
-    /* height: 100%; */
     text-align: center;
     margin-top: 13%;
-    /* background-color: rgba(14, 46, 71, 0.8) !important; */
 }
 
 .logoMarginsignup {
@@ -96,7 +91,6 @@ video {
     position: absolute;
     top: -5%;
     right: 0px;
-    /*left: 34%;*/
 }
 
 .btnReg {
@@ -155,12 +149,10 @@ input::-webkit-input-placeholder {
 }
 
 input:-moz-placeholder {
-    /* Firefox 18- */
     color: #494949 !important;
 }
 
 input::-moz-placeholder {
-    /* Firefox 19+ */
     color: #494949 !important;
 }
 
@@ -181,7 +173,6 @@ input:-ms-input-placeholder {
     position: absolute;
     top: -3%;
     right: 0px;
-    /* left: 34%; */
 }
 
 .otpTxt {
@@ -193,9 +184,7 @@ input:-ms-input-placeholder {
 }
 
 .otpSpace {
-    /*margin: 2%;*/
     right: 6%;
-    /* margin: 1%; */
     padding-right: 9%;
 }
 
@@ -243,7 +232,6 @@ input:-ms-input-placeholder {
     position: absolute;
     top: -4%;
     right: 0px;
-    /* left: 34%; */
 }
 
 .otpSpaceimg {
@@ -251,4 +239,75 @@ input:-ms-input-placeholder {
     height: 3px;
     margin-left: 10px;
     width: 28px;
+} */
+
+.loginContainer {
+    width: 47%;
+    margin: 0 auto;
+    margin-top: 2%;
+}
+
+.loginContainer .card {
+    min-height: 501px;
+    overflow-y: auto;
+}
+
+.imgRow {
+    background-color: #404666;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    padding: 3%;
+}
+
+.imgRow img {
+    width: 62%;
+}
+
+.cardBody {
+    width: 100%;
+    margin: 0;
+    padding: 3% 20%;
+}
+
+.full_width {
+    width: 100%;
+}
+
+.custmBtn {
+    width: 100%;
+    background-color: #404666;
+    color: white;
+}
+
+.marginForgotpass {
+    margin-top: 3%;
+}
+
+.marginForgotpass a:last-child {
+    float: right;
+}
+
+.otpHeading {
+    /* color: white; */
+    /* font-size: 29px; */
+    text-align: center;
+    /* margin-top: -3%; */
+}
+
+.otpSubtxt {
+    color: gray;
+    /* font-size: 22px; */
+}
+
+.otpSpace {
+    width: 16%;
+    margin: 0;
+    padding: 4px;
+}
+
+.otpTxt {
+    border-radius: 0;
+    text-align: center;
+    font-weight: 700;
 }
