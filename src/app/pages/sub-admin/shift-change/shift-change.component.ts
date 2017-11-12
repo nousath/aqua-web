@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Model } from '../../../common/contracts/model';
 import { Employee, EffectiveShift } from '../../../models/employee';
 import { ToastyService } from 'ng2-toasty';
@@ -9,23 +9,44 @@ import * as _ from 'lodash';
 import { AmsShiftService } from '../../../services/ams/ams-shift.service';
 import { ValidatorService } from '../../../services/validator.service';
 import * as moment from 'moment';
+import { Meta } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs/Rx';
+import { LocalStorageService } from '../../../services/local-storage.service';
 
 @Component({
   selector: 'aqua-shift-change',
   templateUrl: './shift-change.component.html',
   styleUrls: ['./shift-change.component.css']
 })
-export class ShiftChangeComponent implements OnInit {
+export class ShiftChangeComponent implements OnInit, OnDestroy {
 
   employees: Page<Employee>
   employee: Model<Employee>
   shifTypes: Page<ShiftType>
   shiftChangeType: 'now' | 'later' = 'now';
+  subscription: Subscription;
 
   constructor(private amsEmployeeService: AmsEmployeeService,
     public validatorService: ValidatorService,
     private amsShiftService: AmsShiftService,
-    private toastyService: ToastyService) {
+    private toastyService: ToastyService,
+    private activatedRoute: ActivatedRoute,
+    private store: LocalStorageService,
+    private meta: Meta) {
+
+    this.subscription = activatedRoute.queryParams.subscribe(
+      queryParams => {
+        let token = queryParams['amsToken'];
+        let orgCode = queryParams['orgCode'];
+        if (token && orgCode) {
+          this.meta.addTag({ name: 'viewport', content: 'width=device-width, initial-scale=1' }, true);
+          store.setItem('ams_token', token);
+          store.setItem('orgCode', orgCode);
+        }
+      }
+    );
+    // this.meta.addTag({ name: 'viewport', content: 'width=400' }, true);
     this.employees = new Page({
       api: amsEmployeeService.employees,
       filters: [{
@@ -128,6 +149,10 @@ export class ShiftChangeComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
 }

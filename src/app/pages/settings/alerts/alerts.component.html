@@ -15,12 +15,14 @@
         <br>
         <md-card>
             <div class="row">
-                <div class="col-xs-6 col-sm-8 col-md-7 col-lg-7">
-                    <h5><b>{{item?.alertType?.name}}</b></h5>
-                    <p>{{item?.alertType?.description}}</p>
-                </div>
-                <div class="col-xs-6 col-sm-4 col-md-5 col-lg-5">
-                    <img width="100%" [src]="item?.alertType?.picUrl">
+                <div class="imgCard">
+                    <div class="col-xs-6 col-sm-8 col-md-7 col-lg-7">
+                        <h5><b>{{item?.alertType?.name}}</b></h5>
+                        <p>{{item?.alertType?.description}}</p>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-5 col-lg-5">
+                        <img width="100%" [src]="item?.alertType?.picUrl">
+                    </div>
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12  capitalize">
                     <br>
