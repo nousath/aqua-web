@@ -11,3 +11,8 @@
 .bottom_row {
     margin-bottom: 2%;
 }
+
+.imgCard {
+    height: 200px;
+    overflow: auto;
+}
