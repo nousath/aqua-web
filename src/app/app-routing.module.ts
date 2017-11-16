@@ -17,9 +17,10 @@ import { ManageLeavesComponent } from './pages/attendances/manage-leaves/manage-
 import { ApplyLeaveComponent } from './pages/attendances/apply-leave/apply-leave.component';
 import { AppDownloadComponent } from './pages/app-download/app-download.component';
 import { DesignationsComponent } from './pages/employees/designations/designations.component';
-import { AttendanceLogsComponent } from "./pages/attendances/attendance-logs/attendance-logs.component";
+import { AttendanceLogsComponent } from './pages/attendances/attendance-logs/attendance-logs.component';
 import { AdminGuard } from './guards/admin.guard';
 import { GkuAttendanceComponent } from './pages/gku-attendance/gku-attendance.component';
+import { SystemUsageComponent } from './pages/system-usage/system-usage.component';
 
 
 const emp_routes: Routes = [
@@ -42,6 +43,7 @@ const page_routes: Routes = [
 // main routes
 const routes: Routes = [
   { path: '', redirectTo: 'pages', pathMatch: 'full' },
+  { path: 'system/usage', component: SystemUsageComponent, },
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
   { path: 'pages', component: PagesComponent, canActivate: [UserGuard], children: page_routes },
   { path: 'loginViaOrg', component: OrgLoginComponent },

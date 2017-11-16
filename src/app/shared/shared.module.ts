@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from "@angular/forms";
-import { HttpModule } from "@angular/http";
+import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
 
-import { ToastyModule } from "ng2-toasty";
+import { ToastyModule } from 'ng2-toasty';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FileUploadModule } from 'ng2-file-upload';
 import { NguiAutoCompleteModule } from '@ngui/auto-complete';
 import { AgmCoreModule } from '@agm/core';
-import { RouterModule } from "@angular/router";
+import { RouterModule } from '@angular/router';
 
 import {
   AutoCompleteService,
@@ -24,11 +24,12 @@ import {
   EmsDesignationService,
   EmsOrganizationService,
   EmsAuthService,
-  AmsTimelogsService
-} from "../services";
+  AmsTimelogsService,
+  AmsSystemUsageService
+} from '../services';
 
 import { ValidatorService } from '../services/validator.service';
-import { LocalStorageService } from "../services/local-storage.service";
+import { LocalStorageService } from '../services/local-storage.service';
 import { TimePipe } from './time.pipe';
 import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
 import { AmsTagService } from '../services/ams/ams-tag.service';
@@ -103,7 +104,7 @@ export const MaterialModules = [
   MdTooltipModule,
   MdNativeDateModule,
   StyleModule
-]
+];
 
 @NgModule({
   declarations: [TimePipe],
@@ -124,7 +125,8 @@ export const MaterialModules = [
     AutoCompleteService,
     AmsTimelogsService,
     LocalStorageService,
-    AmsTagService
+    AmsTagService,
+    AmsSystemUsageService
   ],
   imports: [
     HttpModule,
