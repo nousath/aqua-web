@@ -35,7 +35,7 @@ export class Tags {
     if (!t)
       this.selected.push(tag);
   }
-  reset() {
+  reset() {    
     this.selected = [];
   }
 }

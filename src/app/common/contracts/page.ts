@@ -11,7 +11,7 @@ export class PageOptions<TModel> {
     timeStamp: 'timeStamp'
   };
   formatter?: (model: TModel) => TModel;
-  pageSize?= 10;
+  pageSize?= 50;
   serverPaging?= true;
   currentPage?= 1;
   total?= 0;
@@ -74,7 +74,7 @@ export class Page<TModel> extends PageModel<TModel> implements IPage {
     } else {
       params.offset = (this.pageNo - 1) * this.options.pageSize || this.pageSize; // TODO - use skip
       params.limit = this.options.pageSize; // TODO - use take
-      params.pageSize = this.options.pageSize || this.pageSize || 10;
+      params.pageSize = this.options.pageSize || this.pageSize || 50;
       params.pageNo = this.pageNo;
       // params.serverPaging
     }

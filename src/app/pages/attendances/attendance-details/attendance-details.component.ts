@@ -417,7 +417,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
 
       dialogRef.afterClosed().subscribe((reason: string) => {
         if (reason) {
-          leave.rejectionReason = reason;
+          leave.comment = reason;
           leave.status = status;
           this.updateStatus(leave)
         }

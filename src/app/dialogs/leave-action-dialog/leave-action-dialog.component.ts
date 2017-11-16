@@ -20,10 +20,10 @@ export class LeaveActionDialogComponent implements OnInit {
   }
 
   save() {
-    if (!this.leave.rejectionReason) {
-      return this.toastyService.info({ title: 'Info', msg: 'Please fill rejection eason ' });
+    if (!this.leave.comment) {
+      return this.toastyService.info({ title: 'Info', msg: 'Please fill rejection reason ' });
     } else {
-      this.dialogRef.close(this.leave.rejectionReason);
+      this.dialogRef.close(this.leave.comment);
     }
   }
 
