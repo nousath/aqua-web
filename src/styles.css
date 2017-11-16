@@ -59,6 +59,15 @@ body::-webkit-scrollbar-thumb {
     background-color: #00A8c6;
 }
 
+
+/* .mat-focused.mat-form-field-underline{
+    color:  #6c78a8;
+} */
+.mat-form-field-ripple {
+    background-color: #6c78a8;
+}
+
+
 .capitalize {
     text-transform: capitalize;
 }

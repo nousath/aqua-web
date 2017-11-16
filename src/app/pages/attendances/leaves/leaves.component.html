@@ -76,7 +76,7 @@
             <table class="table table-condensed table-hover">
                 <thead class="primary_thead">
                     <tr>
-                        <th>Name</th>
+                        <th class="tdWidth">Name</th>
                         <th class="tdWidth">Code</th>
                         <th class="tdWidth">Start Date</th>
                         <th class="tdWidth">End Date</th>
@@ -84,7 +84,8 @@
                         <th class="tdWidth">Count</th>
                         <th class="tdWidth">Reason</th>
                         <th class="tdWidth">Status</th>
-                        <th class="tdWidth text-center" *ngIf="isShowLeaveAction">Action</th>
+                        <th class="tdWidth">Comment</th>
+                        <th class="tdWidth text-center" *ngIf="isShowLeaveAction">Action</th>               
                     </tr>
                 </thead>
                 <tbody>
@@ -104,6 +105,7 @@
                         <td class="tdWidth">{{item?.days}}</td>
                         <td class="tdWidth">{{item?.reason}}</td>
                         <td class="tdWidth">{{item?.status}}</td>
+                        <td class="tdWidth">{{item?.comment}}</td>
                         <td class="tdWidth text-center" *ngIf="isShowLeaveAction">
                             <!--<button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status?.toLowerCase() == 'approved'
                                       || item?.status?.toLowerCase() == 'submitted'" (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
@@ -123,7 +125,7 @@
                             <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status?.toLowerCase() == 'approved'" (click)="accept_reject_leave(item, 'cancelled')" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
                               <md-icon>close</md-icon>
                           </button>
-                        </td>
+                        </td>                        
                     </tr>
 
                 </tbody>
