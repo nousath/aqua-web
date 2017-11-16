@@ -16,6 +16,7 @@ import { SharedModule } from './shared/shared.module';
 import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
 import { AdminGuard } from './guards/admin.guard';
 import { GkuAttendanceComponent } from './pages/gku-attendance/gku-attendance.component';
+import { SystemUsageComponent } from './pages/system-usage/system-usage.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { GkuAttendanceComponent } from './pages/gku-attendance/gku-attendance.co
     LoginComponent,
     OrgLoginComponent,
     AppDownloadComponent,
-    GkuAttendanceComponent
+    GkuAttendanceComponent,
+    SystemUsageComponent
   ],
   imports: [
     BrowserModule,
