@@ -1,5 +1,4 @@
 <div class="row page_header">
-  <h5 class="text-center"><b>System Usage</b></h5>
 </div>
 <md-spinner class="custom_spinner" *ngIf="systems?.isLoading" mode="indeterminate"></md-spinner>
 
@@ -10,42 +9,34 @@
         <thead class="primary_thead">
             <tr>
                 <th class="tdWidth text-center">S.No.</th>
-                <th class="tdWidth text-center">Organization</th>
+                <th class="tdWidth text-center">Organization Code</th>
+                <th class="tdWidth text-center">Organization Name</th>
                 <th class="tdWidth text-center">Active Employees</th>
+                <th class="tdWidth text-center">Active Alerts</th>
+                <th class="tdWidth text-center">BioMetric Count</th>
+                <th class="tdWidth text-center">Wifi Count</th>
                 <th class="tdWidth text-center">Never Logged In Employees</th>
-                <th class="tdWidth text-center">Last Login By Admin</th>
                 <th class="tdWidth text-center">Time Logs Count</th>               
+                <th class="tdWidth text-center">Last Employee Login</th>
+                <th class="tdWidth text-center">Last Admin Login</th>
             </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of systems.items | paginate: { id: 'foo',
-          itemsPerPage: systems.pageSize,
-          currentPage: systems.pageNo,
-          totalItems: systems.totalRecords }; let i=index">
+          <tr *ngFor="let item of systems.items; let i=index">
             <td class="tdWidth text-center">{{ i + 1 }}</td>
             <td class="tdWidth text-center">{{item?.code | uppercase}}</td>
+            <td class="tdWidth text-center">{{item?.name | titlecase}}</td>
             <td class="tdWidth text-center">{{item?.activeEmployeeCount}}</td>
+            <td class="tdWidth text-center">{{item?.alertsCount}}</td>
+            <td class="tdWidth text-center">{{item?.biometricCount}}</td>
+            <td class="tdWidth text-center">{{item?.wifiCount}}</td>
             <td class="tdWidth text-center">{{item?.neverLoggedInCount}}</td>
-            <td class="tdWidth text-center">{{item?.lastAdminLogin | date:'fullDate' || '--'}}</td>
             <td class="tdWidth text-center">{{item?.timeLogsCount}}</td>          
+            <td class="tdWidth text-center">{{item?.lastEmployeeLogin | date:'dd-MM-yyyy' || '--'}}</td>
+            <td class="tdWidth text-center">{{item?.lastAdminLogin | date:'dd-MM-yyyy' || '--'}}</td>
           </tr>
         </tbody>
       </table>
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <div class="custom_pagination">
-            <pagination-controls id="foo" (pageChange)="systems.pageNo = $event;getSystemDetails();"></pagination-controls>
-            <label>Total Records: {{systems.totalRecords}}</label>
-            <div class="pageSize">
-                <label>Page Size:</label>
-                <select name="pageSize" [(ngModel)]="systems.pageSize" (change)="systems.pageNo = 1;getSystemDetails();">
-                  <option value=10>10</option>
-                  <option value=20>20</option>
-                  <option value=50>50</option>
-                  <option value=100>100</option>
-                </select>
-            </div>
-        </div>
     </div>
   </md-card>
 </div>
