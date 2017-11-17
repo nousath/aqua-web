@@ -13,10 +13,11 @@
                 <th class="tdWidth text-center">Organization Name</th>
                 <th class="tdWidth text-center">Active Employees</th>
                 <th class="tdWidth text-center">Active Alerts</th>
-                <th class="tdWidth text-center">BioMetric Count</th>
+                <th class="tdWidth text-center">Biometric Count</th>
                 <th class="tdWidth text-center">Wifi Count</th>
                 <th class="tdWidth text-center">Never Logged In Employees</th>
-                <th class="tdWidth text-center">Time Logs Count</th>               
+                <th class="tdWidth text-center">TimeLogs Count</th>  
+                <th class="tdWidth text-center">Last TimeLog</th>              
                 <th class="tdWidth text-center">Last Employee Login</th>
                 <th class="tdWidth text-center">Last Admin Login</th>
             </tr>
@@ -31,7 +32,8 @@
             <td class="tdWidth text-center">{{item?.biometricCount}}</td>
             <td class="tdWidth text-center">{{item?.wifiCount}}</td>
             <td class="tdWidth text-center">{{item?.neverLoggedInCount}}</td>
-            <td class="tdWidth text-center">{{item?.timeLogsCount}}</td>          
+            <td class="tdWidth text-center">{{item?.timeLogsCount}}</td>      
+            <td class="tdWidth text-center">{{item?.lastTimeLog | date:'dd-MM-yyyy' || '--'}}</td>    
             <td class="tdWidth text-center">{{item?.lastEmployeeLogin | date:'dd-MM-yyyy' || '--'}}</td>
             <td class="tdWidth text-center">{{item?.lastAdminLogin | date:'dd-MM-yyyy' || '--'}}</td>
           </tr>

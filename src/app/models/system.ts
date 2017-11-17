@@ -10,5 +10,6 @@ export class System {
     alertsCount = '';
     biometricCount = '';
     wifiCount = '';
+    lastTimeLog = '';
 }
 
