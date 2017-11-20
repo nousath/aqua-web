@@ -32,6 +32,7 @@ export class PagesComponent implements OnInit, OnDestroy {
   isSyncing: boolean = false;
   isShowEmployeeTab: boolean = false;
   userType: string = 'superadmin';
+  employeeSearch = true;
 
   constructor(private store: LocalStorageService,
     private autoCompleteService: AutoCompleteService,
@@ -48,19 +49,24 @@ export class PagesComponent implements OnInit, OnDestroy {
       .filter(event => event instanceof NavigationEnd)
       .subscribe((event: NavigationEnd) => {
        this.checkSection(event.url);
-        window.scroll(0, 0)
+        window.scroll(0, 0);
       });
   }
 
   checkSection(url: string) {
-    if (url.startsWith("/pages/employees"))
-      this.sections.employee = true
-    if (url.startsWith("/pages/attendances") || url == '/pages')
-      this.sections.attendance = true
-    if (url.startsWith("/pages/settings"))
-      this.sections.settings = true
-
-  }
+    if (url.startsWith('/pages/employees')) {
+      this.employeeSearch = false;
+      this.sections.employee = true;
+    }
+    if (url.startsWith('/pages/attendances') || url === '/pages') {
+      this.employeeSearch = true;
+      this.sections.attendance = true;
+    }
+    if (url.startsWith('/pages/settings')) {
+      this.employeeSearch = true;
+      this.sections.settings = true;
+    }
+}
 
   onSelectEmp(emp: Employee) {
     if (emp.id) {
@@ -104,10 +110,10 @@ export class PagesComponent implements OnInit, OnDestroy {
     this.store.clear();
     switch (this.orgCode) {
       case 'gku':
-        location.href = 'http://gku.edualaya.com'
+        location.href = 'http://gku.edualaya.com';
         break;
       case 'aqua':
-        location.href = 'http://gku.edualaya.com'
+        location.href = 'http://gku.edualaya.com';
         break;
       default:
         this.router.navigate(['/login']);

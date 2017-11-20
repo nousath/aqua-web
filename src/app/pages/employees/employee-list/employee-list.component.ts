@@ -26,6 +26,7 @@ export class EmployeeListComponent implements OnInit {
   statusFilter: string;
   uploader: FileUploader;
   isUpload: boolean = false;
+  status;
 
 
   constructor(private emsEmployeeService: EmsEmployeeService,
@@ -88,8 +89,11 @@ export class EmployeeListComponent implements OnInit {
   }
 
   fetchEmp(status?: string) {
+    if (status) {
+    this.status = status;
+    }
     this.statusFilter = status ? status : 'activate';
-    this.employees.filters.properties['status'].value = status ? status : 'activate';
+    this.employees.filters.properties['status'].value = this.status ? this.status : 'activate';
     this.employees.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
 
   }

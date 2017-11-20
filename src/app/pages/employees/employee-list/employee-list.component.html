@@ -105,7 +105,7 @@
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="custom_pagination">
-                <pagination-controls id="foo" (pageChange)="employees.pageNo = $event;fetchEmp();"></pagination-controls>
+                <pagination-controls id="foo" (pageChange)="employees.pageNo = $event;fetchEmp(status);"></pagination-controls>
                 <label>Total Records: {{employees.totalRecords}}</label>
                 <div class="pageSize">
                     <label>Page Size:</label>

@@ -7,7 +7,7 @@
             <button md-button [routerLink]="['/pages/attendances']" routerLinkActive="activeTab"><b>ATTENDANCE</b></button>
             <button md-button [routerLink]="['/pages/settings']" routerLinkActive="activeTab"><b>SETTINGS</b></button> -->
             <span class="example-spacer"></span>
-            <div class="searchbar">
+            <div *ngIf="employeeSearch" class="searchbar">
                 <input ngui-auto-complete [min-chars]="1" placeholder="Employee search" [(ngModel)]="selectedEmp" (valueChanged)="onSelectEmp($event)" [source]="empSource.bind(this)" [value-formatter]="empFormatter" [list-formatter]="empListFormatter" class="form-control searchbarinput search"
                     name="roleId" />
             </div>

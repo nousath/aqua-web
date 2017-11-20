@@ -16,6 +16,7 @@ export class DeviceDialogComponent implements OnInit {
   categories: Category[] = [];
   device: Device = new Device();
   machines: Machine[] = [];
+  machineId: any;
   @ViewChild('deviceForm') deviceForm: NgForm;
 
 
@@ -24,15 +25,17 @@ export class DeviceDialogComponent implements OnInit {
     private toastyService: ToastyService) { }
 
   selectCat(id: string) {
-    let cat: Category = this.categories.find((i: Category) => i.id == id);
+    const cat: Category = this.categories.find((i: Category) => i.id === id);
     this.machines = cat ? cat.machines : [];
     this.device.category.name = cat.name;
-  };
+  }
 
   selectMachine(id: string) {
-    let machine: Machine = this.machines.find((i: Machine) => i.id == id);
+    const machine: Machine = this.machines.find((i: Machine) => i.id === id);
     this.device.machine = machine ? machine : new Machine();
-  };
+    this.machineId = this.device.machine.id;
+    this.device.port = this.device.machine.port;
+  }
 
 
   save() {
