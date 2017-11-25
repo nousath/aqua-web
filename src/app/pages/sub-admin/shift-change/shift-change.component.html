@@ -1,8 +1,8 @@
 <div class="row page_header">
     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
         <md-radio-group  class="" [(ngModel)]="basicSelection" (change)="getTeam()">
+        <md-radio-button [value]="'team'">My Team</md-radio-button>        
         <md-radio-button checked [value]="'all'">All</md-radio-button>         
-        <md-radio-button [value]="'team'">My Team</md-radio-button>
         </md-radio-group>      
     </div>
     <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
@@ -20,7 +20,7 @@
     </div>
 
 </div>
-<md-spinner class="custom_spinner" *ngIf="myTeam?.isLoading || myTeam?.isProcessing || employees?.isLoading || employee?.isProcessing" mode="indeterminate"></md-spinner>
+<md-spinner class="custom_spinner" *ngIf="myTeam?.isLoading || employees?.isLoading || employee?.isProcessing" mode="indeterminate"></md-spinner>
 <div *ngIf="basicSelection === 'all'" class="row">
     <!-- <md-card class="card"> -->
     <div class="row text-center noData" *ngIf="employees?.items?.length == 0">
