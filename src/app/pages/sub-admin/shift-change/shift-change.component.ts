@@ -25,7 +25,7 @@ export class ShiftChangeComponent implements OnInit, OnDestroy {
   employee: Model<Employee>;
   shifTypes: Page<ShiftType>;
   myTeam: Page<Employee>;
-  basicSelection = 'all';
+  basicSelection = 'team';
   shiftChangeType: 'now' | 'later' = 'now';
   subscription: Subscription;
 
@@ -76,8 +76,7 @@ export class ShiftChangeComponent implements OnInit, OnDestroy {
 
     this.shifTypes.fetch().then(
       data => {
-        this.fetchEmp();
-
+        this.fetchTeam();
       }
     ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }

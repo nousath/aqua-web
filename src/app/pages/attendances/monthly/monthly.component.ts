@@ -12,13 +12,14 @@ import { MdDialog } from '@angular/material';
 import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-dialog.component';
 import { Model } from '../../../common/contracts/model';
 import { ActivatedRoute, Router, ExtraOptions, NavigationExtras } from '@angular/router';
-import * as _ from "lodash";
+import * as _ from 'lodash';
 import { Filter } from '../../../common/contracts/filters';
 import { Subscription } from 'rxjs/Rx';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { TagType, Tag } from '../../../models/tag';
 import { AmsTagService } from '../../../services/ams/ams-tag.service';
 import { Tags, SelectedTag } from '../daily/daily.component';
+import { Http, ResponseContentType } from '@angular/http';
 declare var $: any;
 
 @Component({
@@ -35,6 +36,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
   date: Date = null;
   showDatePicker: boolean = false;
   subscription: Subscription;
+  org: any;
 
   tagTypes: Page<TagType>;
   tags: Tags = new Tags();
@@ -49,6 +51,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
     private router: Router,
     private store: LocalStorageService,
     private dialog: MdDialog,
+    private http: Http,
     private toastyService: ToastyService) {
 
     this.employee = new Model({
@@ -93,7 +96,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
     this.tagTypes = new Page({
       api: tagService.tagTypes
     });
-
+    this.org = this.store.getItem('orgCode');
     this.tagTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
     this.shiftTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
     this.checkFiltersInStore();
@@ -162,7 +165,6 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
         queryParams[key] = filter.value;
       }
     });
-    // queryParams['extraHours'] = extraHours;
     queryParams['byShiftEnd'] = byShiftEnd;
     queryParams['byShiftLength'] = byShiftLength;
     serverPageInput.query = queryParams;
@@ -171,11 +173,36 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
       data => this.isDownloading = false
     ).catch(err => {
       this.toastyService.error({ title: 'Error', msg: err });
-      this.isDownloading = false
+      this.isDownloading = false;
     });
-  };
+  }
 
-
+  downloadPdf(jobName) {
+    this.isDownloading = true;
+    const queryParams: any = {};
+    _.each(this.monthlyAttendnace.filters.properties, (filter: Filter, key: any, obj: any) => {
+      if (filter.value) {
+        queryParams[key] = filter.value;
+      }
+    });
+    const atomsUrl = `http://atoms-api.m-sas.com/api/docs/${jobName}_${this.org}/${queryParams['ofDate']}.pdf?clientCode=msas`;
+    this.http.get(atomsUrl, { responseType: ResponseContentType.Blob }).toPromise().then(response => {
+      const fileName = `${moment(queryParams['ofDate']).format('MMM_YY')}_monthlyReport.pdf`;
+      const blob = new Blob([response['_body']], { type: 'application/pdf' });
+      const objectUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = objectUrl;
+      a.download = fileName;
+      a.click();
+      URL.revokeObjectURL(objectUrl);
+      document.body.appendChild(a);
+      document.body.removeChild(a);
+      this.isDownloading = false;
+    }).catch(err => {
+      this.toastyService.error({ title: 'Error', msg: err });
+      this.isDownloading = false;
+    });
+  }
 
   ngOnInit() {
   }
@@ -190,7 +217,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
       this.getAttendance(e.date);
     });
 
-    $("#monthSelector").datepicker("setDate", new Date());
+    $('#monthSelector').datepicker('setDate', new Date());
 
   }
 
