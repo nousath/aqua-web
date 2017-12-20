@@ -24,8 +24,8 @@
                     <td>
                         <label>Machine<span class="asterisk">*</span></label>
                     </td>
-                    <td>
-                        <select name="machine" class="form-control" [(ngModel)]="machineId" (change)="selectMachine(machineId)" placeholder="Machine" required>
+                    <td>                     
+                        <select name="machine" class="form-control" [(ngModel)]="device.machine.id" (change)="selectMachine(device.machine.id)" placeholder="Machine" required>
                             <option *ngFor="let item of machines" [value]="item.id">
                                 {{item?.model}}
                             </option>

@@ -18,6 +18,7 @@ export class DeviceDialogComponent implements OnInit {
   categories: Category[] = [];
   device: Device = new Device();
   machines: Machine[] = [];  
+  machineId: any;
   showAvailable : boolean = false;
   isShowMuteOptions = false; 
   @ViewChild('deviceForm') deviceForm: NgForm;
@@ -38,6 +39,8 @@ export class DeviceDialogComponent implements OnInit {
   selectMachine(id: string) {
     let machine: Machine = this.machines.find((i: Machine) => i.id == id);
     this.device.machine = machine ? machine : new Machine();
+    this.machineId = this.device.machine.id;
+    this.device.port = this.device.machine.port;
   };
   
   addTimeSlice(){
