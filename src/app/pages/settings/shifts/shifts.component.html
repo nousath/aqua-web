@@ -5,7 +5,7 @@
     <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
         <div class="headerBtns">
             <!--<button [disabled]="shifTypes?.isLoading   || holiday?.isProcessing  " md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>-->
-            <button md-icon-button [disabled]="shifTypes?.isLoading" class="marginLetf" [routerLink]="['new']">
+            <button md-icon-button [disabled]="shifTypes?.isLoading" mdTooltip="Add"  [mdTooltipPosition]="'above'" class="marginLetf" [routerLink]="['new']">
                 <md-icon>add_circle_outline</md-icon>
             </button>
         </div>
@@ -25,7 +25,7 @@
                         <th class="tdWidth">Start Time</th>
                         <th class="tdWidth">End Time</th>
                         <th class="days text-center">Days</th>
-                        <th class="tdWidth text-center"></th>
+                        <th class="tdWidth text-center"></th>                       
                     </tr>
                 </thead>
                 <tbody>
@@ -36,8 +36,8 @@
 
                         <td class="tdWidth">{{item?.name}}</td>
                         <td class="tdWidth">{{item?.code}}</td>
-                        <td class="tdWidth">{{item?.startTime | date:'shortTime'}}</td>
-                        <td class="tdWidth">{{item?.endTime | date:'shortTime'}}</td>
+                        <td class="tdWidth">{{item?.startTime | date:'HH:mm'}}</td>
+                        <td class="tdWidth">{{item?.endTime | date:'HH:mm'}}</td>
                         <td class="days text-center">
                             <div class="btn-group btn-group-sm">
                                 <button type="button" class="btn btn-sm" [ngClass]="{'btn-danger':item?.sunday?.toLowerCase() == 'off',
@@ -74,7 +74,9 @@
                             <a md-icon-button class="button_align cursor" mdTooltip="Edit" [mdTooltipPosition]="'above'" [routerLink]="['edit',item.id]">
                                 <md-icon>edit</md-icon>
                             </a>
-                        </td>
+                            <button class="button_align" md-icon-button  mdTooltip="Delete" [mdTooltipPosition]="'above'" (click)="remove(item)"><md-icon>delete</md-icon></button>
+                        </td>                        
+                     
                     </tr>
                 </tbody>
             </table>

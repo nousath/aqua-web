@@ -13,6 +13,7 @@ export class ShiftType {
   saturday: 'off' | 'full' | 'half' | 'alternate' | null = null;
   sunday: 'off' | 'full' | 'half' | 'alternate' | null = null;
   changeType:'now' | 'later' = 'now';
+  status: string = '';
 }
 
 
