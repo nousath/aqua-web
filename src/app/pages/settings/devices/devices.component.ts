@@ -18,7 +18,7 @@ export class DevicesComponent implements OnInit {
 
   devices: Page<Device>;
   categories: Page<Category>;
-  device: Model<Device>
+  device: Model<Device>;
 
   constructor(private amsDeviceService: AmsDeviceService,
     private toastyService: ToastyService,

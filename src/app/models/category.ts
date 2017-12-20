@@ -10,4 +10,5 @@ export class Machine {
   model: string = '';
   picData: string = '';
   picUrl: string = '';
+  port: '';
 }

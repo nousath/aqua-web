@@ -21,9 +21,11 @@ import { LocalStorageService } from '../../../services/local-storage.service';
 })
 export class ShiftChangeComponent implements OnInit, OnDestroy {
 
-  employees: Page<Employee>
-  employee: Model<Employee>
-  shifTypes: Page<ShiftType>
+  employees: Page<Employee>;
+  employee: Model<Employee>;
+  shifTypes: Page<ShiftType>;
+  myTeam: Page<Employee>;
+  basicSelection = 'team';
   shiftChangeType: 'now' | 'later' = 'now';
   subscription: Subscription;
 
@@ -55,6 +57,14 @@ export class ShiftChangeComponent implements OnInit, OnDestroy {
       }]
     });
 
+    this.myTeam = new Page({
+      api: amsEmployeeService.teamMembers,
+      filters: [{
+        field: 'name',
+        value: null
+      }]
+    });
+
     this.employee = new Model({
       api: amsEmployeeService.employees,
       properties: new Employee()
@@ -66,8 +76,7 @@ export class ShiftChangeComponent implements OnInit, OnDestroy {
 
     this.shifTypes.fetch().then(
       data => {
-        this.fetchEmp();
-
+        this.fetchTeam();
       }
     ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
@@ -75,10 +84,30 @@ export class ShiftChangeComponent implements OnInit, OnDestroy {
   fetchEmp() {
     this.employees.fetch().then(() => {
       _.each(this.employees.items, (item: Employee) => {
-        if (!item.shiftType)
+        if (!item.shiftType) {
           item.shiftType = new ShiftType();
+        }
         item.shiftType['changeType'] = 'now';
-      })
+      });
+    }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+  }
+
+  getTeam() {
+    if (this.basicSelection === 'team') {
+      this.fetchTeam();
+    }else {
+      this.fetchEmp();
+    }
+  }
+
+  fetchTeam() {
+    this.myTeam.fetch().then(() => {
+      _.each(this.myTeam.items, (item: Employee) => {
+        if (!item.shiftType) {
+          item.shiftType = new ShiftType();
+        }
+        item.shiftType['changeType'] = 'now';
+      });
     }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
