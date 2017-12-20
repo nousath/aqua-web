@@ -46,7 +46,29 @@ export class DevicesComponent implements OnInit {
   }
 
   fetchDevices() {
-    this.devices.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+    this.devices.fetch(
+      function(err,page){
+        if(!err){
+          let h: number, m: number;
+          page.items.forEach(device=>{
+            if(device.mute && device.mute.length >0){
+              device.mute.forEach(dt=>{
+                if(dt.start != null){
+                    h = new Date(dt.start).getHours();
+                    m = new Date(dt.start).getMinutes();
+                    dt.start= `${h < 10 ? '0' + h : h}:${m < 10 ? '0' + m : m}`;
+                }
+                if(dt.end != null){
+                  h = new Date(dt.end).getHours();
+                  m = new Date(dt.end).getMinutes();
+                  dt.end= `${h < 10 ? '0' + h : h}:${m < 10 ? '0' + m : m}`;
+              }
+              })
+            }
+          })
+        }
+      }
+    ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
   saveDevice(device?: Device) {
