@@ -1,0 +1,26 @@
+.tdWidth {
+    width: 8%;
+    text-align: center;
+}
+
+.headerBtn {    
+    margin-left: 70%;
+}
+
+.uploadBtn {
+    margin: -8px 0px 0px 0px;
+}
+
+.queue {
+    width: 13%;
+    float: left;
+}
+
+.file {
+    width: 38%;
+    float: left;
+    margin-left: 1%;
+    margin-right: 1%;
+}
+.dwnldBtn{
+}

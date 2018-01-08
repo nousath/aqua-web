@@ -25,7 +25,8 @@ import {
   EmsOrganizationService,
   EmsAuthService,
   AmsTimelogsService,
-  AmsSystemUsageService
+  AmsSystemUsageService,
+  AmsEffectiveShiftService
 } from '../services';
 
 import { ValidatorService } from '../services/validator.service';
@@ -70,6 +71,7 @@ import {
   StyleModule,
   MaterialModule
 } from '@angular/material';
+import { ShiftPickerComponent } from './components/shift-picker/shift-picker.component';
 
 export const MaterialModules = [
   MdAutocompleteModule,
@@ -107,7 +109,7 @@ export const MaterialModules = [
 ];
 
 @NgModule({
-  declarations: [TimePipe],
+  declarations: [TimePipe, ShiftPickerComponent],
   providers: [
     EmsEmployeeService,
     EmsDesignationService,
@@ -126,10 +128,13 @@ export const MaterialModules = [
     AmsTimelogsService,
     LocalStorageService,
     AmsTagService,
-    AmsSystemUsageService
+    AmsSystemUsageService,
+    AmsEffectiveShiftService
   ],
   imports: [
     HttpModule,
+    CommonModule,
+    FormsModule,
     Angulartics2Module.forChild(),
     ToastyModule.forRoot(),
     AgmCoreModule.forRoot({
@@ -147,7 +152,8 @@ export const MaterialModules = [
     NgxPaginationModule,
     NguiAutoCompleteModule,
     AgmCoreModule,
-    TimePipe
+    TimePipe,
+    ShiftPickerComponent
   ]
 })
 export class SharedModule { }

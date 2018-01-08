@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ResetPasswordDialogComponent } from '../../dialogs/reset-password-dialog/reset-password-dialog.component';
 import { SharedModule } from '../../shared/shared.module';
 import { SubAdminComponent } from './sub-admin.component';
-import { ShiftChangeComponent } from './shift-change/shift-change.component';
+// import { ShiftChangeComponent } from './shift-change/shift-change.component';
 import { SubAdminRoutingModule } from './sub-admin-routing.module';
 
 @NgModule({
@@ -14,11 +14,11 @@ import { SubAdminRoutingModule } from './sub-admin-routing.module';
   ],
   declarations: [
     SubAdminComponent,
-    ShiftChangeComponent
+    // ShiftChangeComponent
   ],
   exports: [
     SubAdminComponent,
-    ShiftChangeComponent
+    // ShiftChangeComponent
   ]
 })
 export class SubAdminModule { }

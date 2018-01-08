@@ -11,6 +11,7 @@ import { AlterTypesComponent } from './alter-types/alter-types.component';
 import { AlterEditComponent } from './alter-edit/alter-edit.component';
 import { ChannelTypesComponent } from './channel-types/channel-types.component';
 import { ChannelTypeEditComponent } from './channel-type-edit/channel-type-edit.component';
+import { RosterShiftsComponent } from './roster-shifts/roster-shifts.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
       { path: 'shifts/edit/:id', component: ShiftTypeNewComponent },
       { path: 'devices', component: DevicesComponent },
       { path: 'deviceLogs', component: DeviceLogsComponent },
+      { path: 'roaster', component: RosterShiftsComponent },
       { path: 'holidays', component: HolidaysComponent },
       { path: 'alerts', component: AlertsComponent },
       { path: 'alerts/types', component: AlterTypesComponent },
