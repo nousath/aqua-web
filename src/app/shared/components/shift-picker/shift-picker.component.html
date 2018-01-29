@@ -1,9 +1,11 @@
 <!-- <p>{{effectiveShift?.shiftType.name}}</p> -->
+<div>
+    <md-select [(ngModel)]="effectiveShift.shiftType" (ngModelChange)="onShiftChange($event)">
+        <!-- <option class="capitalize" [ngValue]="null">{{effectiveShift?.shiftType?.name}}</option> -->
+        <md-option *ngFor="let shiftType of shiftTypes" class="capitalize form-control input-sm" [ngValue]="shiftType">{{shiftType.name}}</md-option>
+    </md-select>
+</div>
 
-    <select [ngModel]="effectiveShift.shiftType" (ngModelChange) ="onShiftChange($event)">       
-        <!-- <option class="capitalize" [value]="null">{{effectiveShift?.shiftType?.name}}</option> -->
-        <option *ngFor ="let shiftType of shiftTypes"  class="capitalize form-control input-sm" [ngValue]="shiftType" >{{shiftType.name}}</option>
-    </select> 
 
    
 

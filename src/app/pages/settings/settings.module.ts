@@ -15,7 +15,7 @@ import { SettingsRoutingModule } from './settings-routing.module';
 import { DeviceDialogComponent } from '../../dialogs/device-dialog/device-dialog.component';
 import { SharedModule } from '../../shared/shared.module';
 import { ChannelTypesComponent } from './channel-types/channel-types.component';
-import { RosterShiftsComponent } from './roster-shifts/roster-shifts.component';
+
 
 @NgModule({
   imports: [
@@ -34,8 +34,7 @@ import { RosterShiftsComponent } from './roster-shifts/roster-shifts.component';
     DeviceLogsComponent,
     ChannelTypesComponent,
     ChannelTypeEditComponent,
-    DeviceDialogComponent,
-    RosterShiftsComponent
+    DeviceDialogComponent  
   ],
   entryComponents: [
     DeviceDialogComponent

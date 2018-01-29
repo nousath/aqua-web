@@ -48,23 +48,24 @@ export class RosterShiftsComponent implements OnInit {
     });
 
     this.uploader.onAfterAddingAll = (fileItems: FileItem) => {
-
+     
     };
 
     this.uploader.onErrorItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
       console.log('onErrorItem', response, headers);
     };
-
+    
     this.uploader.onCompleteItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
-
+      this.isDownloading = true;
       let res: any = JSON.parse(response);
-      if (!res.isSuccess)
+      if (!res.isSuccess) {
+        this.isDownloading = false;
         return toastyService.error({ title: 'Error', msg: 'excel upload failed' })
-        $("#dateSelector").datepicker("setDate", new Date(new Date().setHours(0, 0, 0, 0)));
+      }    
+      this.isDownloading = false;
       this.isUpload = false;
-    };
-
- 
+      window.location.reload();
+    }; 
 
     this.shiftTypes = new Page({
       api: amsShiftService.shiftTypes
@@ -75,14 +76,15 @@ export class RosterShiftsComponent implements OnInit {
     });
    
     this.getWeek(new Date());
-          
+    $("#dateSelector").datepicker("setDate", new Date(new Date().setHours(0, 0, 0, 0)));       
     this.effectiveShifts.fetch();    
     this.shiftTypes.fetch();
   }
   isDownloading: boolean = false;
-  download() {
+  download(date: Date) {
     this.isDownloading = true;
     let serverPageInput: ServerPageInput = new ServerPageInput();
+    serverPageInput.query['ofDate'] = date.toISOString();
     let reportName = `rosterExcel_${moment().format('DD_MMM_YY')}_DailyReport.xlsx`;
     this.amsEffectiveShiftService.downloadRosterExcel.exportReport(serverPageInput, null, reportName)
       .then(
@@ -94,10 +96,10 @@ export class RosterShiftsComponent implements OnInit {
       });
   };
 
-  excel() {    
-    this.isUpload = !this.isUpload;
-    this.uploader.clearQueue();    
-  }
+  excel() {           
+    this.isUpload = !this.isUpload;    
+    this.uploader.clearQueue(); 
+    }
 
 
   ngAfterViewInit() {
@@ -109,24 +111,24 @@ export class RosterShiftsComponent implements OnInit {
       autoclose: true
     }).on('changeDate', (e) => {
       this.getWeek(e.date);            
-    });
-    $("#dateSelector").datepicker("setDate", new Date(new Date().setHours(0, 0, 0, 0)));
-    
+    })
+    $("#dateSelector").datepicker("setDate", new Date(new Date().setHours(0, 0, 0, 0)));    
   }
 
   getWeek(date) {
     this.dates = [];
     var startOfWeek = moment(date)
-    var endOfWeek = moment(date).add(7, 'd');
+    var endOfWeek = moment(date).add(6,'d');
     while (startOfWeek <= endOfWeek) {
       this.dates.push(startOfWeek.toDate());
-      startOfWeek = startOfWeek.clone().add(1, 'd');
+      startOfWeek = startOfWeek.clone().add(1,'d');
     } 
   }
 
   fetchEmp() {
+    this.effectiveShifts.isLoading = true;
     this.effectiveShifts.fetch().then(() => {
-
+      this.effectiveShifts.isLoading = false;
     }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 

@@ -1,19 +1,19 @@
 <div class="row page_header">
   <div *ngIf="!isUpload" class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
     <h5>
-      <b>Weekly Shifts</b>
+      <b>Shift Roster</b>
     </h5>
   </div>
   <div *ngIf="!isUpload" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
-    <div>
+    <div *ngIf="!isUpload">
       <input id="dateSelector" style="width: auto;float: left;" class="form-control input-sm calendar no-spin" type="text">
     </div>
     <div class="headerBtn">
-      <button md-icon-button class="dwnldBtn" [disabled]="isDownloading || employees?.isLoading || employee?.isProcessing" (click)="download()"
+      <button md-icon-button class="dwnldBtn" [disabled]="isDownloading || effectiveShifts?.isLoading" (click)="download(dates[0])"
         mdTooltip="Download Excel" [mdTooltipPosition]="'above'">
         <md-icon>cloud_download</md-icon>
       </button>
-      <a md-icon-button [disabled]="isDownloading || employees?.isLoading || employee?.isProcessing" (click)="excel()" mdTooltip="Upload Excel"
+      <a md-icon-button [disabled]="isDownloading || effectiveShifts?.isLoading" (click)="excel()" mdTooltip="Upload Excel"
         [mdTooltipPosition]="'above'">
         <md-icon>cloud_upload</md-icon>
       </a>
@@ -21,7 +21,7 @@
 
   </div>
   <div *ngIf="isUpload" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <span style="float: left">
+    <span class="uploadXl">
       <b>Excel Upload</b>
     </span>&nbsp;&nbsp;
     <input class="file" id="uploader" type="file" ng2FileSelect [uploader]="uploader" />
@@ -38,10 +38,13 @@
     </button>
   </div>
 </div>
-<md-spinner class="custom_spinner" *ngIf="effectiveShifts?.isLoading || effectiveShift?.isProcessing" mode="indeterminate"></md-spinner>
+<md-spinner class="custom_spinner" *ngIf="effectiveShifts?.isLoading || isDownloading" mode="indeterminate"></md-spinner>
 <div class="row">
   <md-card class="card">
-    <table class="table table-condensed table-hover">
+      <div class="row text-center noData" *ngIf="effectiveShifts?.items?.length == 0">
+          <h5><b>no data to display !</b></h5>
+      </div>
+    <table class="table table-condensed table-hover" *ngIf="effectiveShifts?.items?.length > 0">
       <thead class="primary_thead">
         <tr>
           <th class="tdWidth">Code</th>
@@ -56,7 +59,7 @@
         totalItems: effectiveShifts.totalRecords };">
           <td class="tdWidth">{{effectiveShift.employee.code || '--'}}</td>
           <td class="tdWidth">{{effectiveShift.employee.name || '--'}}</td>
-          <td class="tdWidth" *ngFor="let date of dates">
+          <td  *ngFor="let date of dates">
             <aqua-shift-picker [shiftTypes]="shiftTypes.items" [effectiveShifts]="effectiveShift.shifts" [date]="date" (onChange)="changeShift($event, date,effectiveShift.employee)"></aqua-shift-picker>
           </td>
 

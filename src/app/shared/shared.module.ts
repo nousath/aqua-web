@@ -34,6 +34,7 @@ import { LocalStorageService } from '../services/local-storage.service';
 import { TimePipe } from './time.pipe';
 import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
 import { AmsTagService } from '../services/ams/ams-tag.service';
+import { ShiftPickerComponent } from './components/shift-picker/shift-picker.component';
 
 
 import {
@@ -71,7 +72,7 @@ import {
   StyleModule,
   MaterialModule
 } from '@angular/material';
-import { ShiftPickerComponent } from './components/shift-picker/shift-picker.component';
+
 
 export const MaterialModules = [
   MdAutocompleteModule,
@@ -109,7 +110,7 @@ export const MaterialModules = [
 ];
 
 @NgModule({
-  declarations: [TimePipe, ShiftPickerComponent],
+  declarations: [TimePipe,ShiftPickerComponent],
   providers: [
     EmsEmployeeService,
     EmsDesignationService,
@@ -155,5 +156,6 @@ export const MaterialModules = [
     TimePipe,
     ShiftPickerComponent
   ]
+
 })
 export class SharedModule { }
