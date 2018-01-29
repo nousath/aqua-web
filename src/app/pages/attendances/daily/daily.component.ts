@@ -35,7 +35,7 @@ export class Tags {
     if (!t)
       this.selected.push(tag);
   }
-  reset() {    
+  reset() {
     this.selected = [];
   }
 }
@@ -128,6 +128,12 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dailyAttendnace.filters.reset();
     this.getAttendance(new Date());
     this.tags.reset();
+    let tagElements: any[] = document.getElementsByName('tags') as any;
+    if (tagElements) {
+      tagElements.forEach(item => item.value = '');
+    }
+
+
     this.store.removeItem("daily-attendance-filter");
     $("#dateSelector").datepicker("setDate", new Date());
   }
@@ -171,7 +177,7 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   isDownloading: boolean = false;
-  download(byShiftEnd : boolean, byShiftLength : boolean, reportName : string) {
+  download(byShiftEnd: boolean, byShiftLength: boolean, reportName: string) {
     this.isDownloading = true;
     let serverPageInput: ServerPageInput = new ServerPageInput();
     let queryParams: any = {};

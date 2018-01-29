@@ -1,6 +1,6 @@
 <div class="row page_header">
     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-             <h5><b>Monthly Attendance</b></h5>
+        <h5><b>Monthly Attendance</b></h5>
     </div>
     <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
         <div class="headerInpts">
@@ -10,10 +10,8 @@
             </div>
         </div>
         <div class="headerBtns">
-            <button [disabled]="monthlyAttendnace?.isLoading || employee?.isProcessing" md-icon-button mdTooltip="Filters" class="marginLetf"
-                [mdTooltipPosition]="'above'" (click)="isFilter = !isFilter"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
-            <button [disabled]="monthlyAttendnace?.isLoading || isDownloading || employee?.isProcessing" [mdMenuTriggerFor]="appMenu"
-                md-icon-button><md-icon>cloud_download</md-icon> </button>
+            <button [disabled]="monthlyAttendnace?.isLoading || employee?.isProcessing" md-icon-button mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'" (click)="isFilter = !isFilter"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
+            <button [disabled]="monthlyAttendnace?.isLoading || isDownloading || employee?.isProcessing" [mdMenuTriggerFor]="appMenu" md-icon-button><md-icon>cloud_download</md-icon> </button>
             <md-menu #appMenu="mdMenu">
                 <button md-menu-item [matMenuTriggerFor]="appSubMenu1">Extra hours - after Shift end time</button>
                 <button md-menu-item [matMenuTriggerFor]="appSubMenu2">Extra hours - after Shift hours</button>
@@ -21,15 +19,15 @@
             </md-menu>
             <md-menu #appSubMenu1="mdMenu">
                 <button md-menu-item (click)="download(true, false, 'Extra hours - after Shift end time')">Excel</button>
-                <button *ngIf ="org ==='sh'" md-menu-item (click)="downloadPdf('attendance3')">PDF</button>
+                <button *ngIf="org ==='sh'" md-menu-item (click)="downloadPdf('attendance3')">PDF</button>
             </md-menu>
             <md-menu #appSubMenu2="mdMenu">
                 <button md-menu-item (click)="download(false, true, 'Extra hours - after Shift hours')">Excel</button>
-                <button  *ngIf ="org ==='sh'" md-menu-item (click)="downloadPdf('attendance2')">PDF</button>
+                <button *ngIf="org ==='sh'" md-menu-item (click)="downloadPdf('attendance2')">PDF</button>
             </md-menu>
             <md-menu #appSubMenu3="mdMenu">
                 <button md-menu-item (click)="download(false, false, 'Day Attendance')">Excel</button>
-                <button  *ngIf ="org ==='sh'" md-menu-item (click)="downloadPdf('attendance')">PDF</button>
+                <button *ngIf="org ==='sh'" md-menu-item (click)="downloadPdf('attendance')">PDF</button>
             </md-menu>
         </div>
 
@@ -124,7 +122,7 @@
                                                       totalItems: monthlyAttendnace.totalRecords };" class="capitalize">
                         <td>
                             <img *ngIf="item?.picUrl" class="img-circle profile_pic" alt="img" [src]="item?.picUrl" onError="this.src='/assets/images/blank.png'">
-                            <img *ngIf="!item?.picUrl" class="img-circle profile_pic" alt="img" src="assets/images/blank.png">                            &nbsp;
+                            <img *ngIf="!item?.picUrl" class="img-circle profile_pic" alt="img" src="assets/images/blank.png"> &nbsp;
                             <a [routerLink]="[item.id]">{{item?.name || '--'}}</a>
                         </td>
                         <td class="tdWidth">{{item?.code || '--'}}</td>
@@ -143,8 +141,7 @@
                 <div class="pageSize">
                     <label>Page Size:</label>
                     <select name="pageSize" [(ngModel)]="monthlyAttendnace.pageSize" (change)="monthlyAttendnace.pageNo = 1;getAttendance(monthlyAttendnace.filters.properties['ofDate']['value']);">
-                      <!-- <option value=10>10</option>
-                      <option value=20>20</option> -->
+                      <option value=10>10</option>
                       <option value=50>50</option>
                       <option value=100>100</option>
                       <option value=500>500</option>
