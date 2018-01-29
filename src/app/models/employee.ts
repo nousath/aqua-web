@@ -23,13 +23,12 @@ export class Employee {
   abilities: Abilities = new Abilities();
   currentAblitiy: 'maualAttendance' | 'manualByBeacon' | 'manualByGeoFencing' | 'manualByWifi' | 'none' = 'none';
   userType: 'admin' | 'superadmin' | 'normal' = 'normal';
-  effectiveShift: EffectiveShift = new EffectiveShift();
 }
 
-export class EffectiveShift {
-  date: any = null;
-  shiftType: string = '';//shiftTypeId
-}
+// export class EffectiveShift {
+//   date: Date = null;
+//   shiftType: string = '';//shiftTypeId
+// }
 
 export class Abilities {
   maualAttendance: boolean = false;

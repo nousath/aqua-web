@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ShiftChangeComponent } from './shift-change.component';
+import { ShiftPickerComponent } from './shift-picker.component';
 
-describe('ShiftChangeComponent', () => {
-  let component: ShiftChangeComponent;
-  let fixture: ComponentFixture<ShiftChangeComponent>;
+describe('ShiftPickerComponent', () => {
+  let component: ShiftPickerComponent;
+  let fixture: ComponentFixture<ShiftPickerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ShiftChangeComponent ]
+      declarations: [ ShiftPickerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ShiftChangeComponent);
+    fixture = TestBed.createComponent(ShiftPickerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -16,6 +16,7 @@ import { DeviceDialogComponent } from '../../dialogs/device-dialog/device-dialog
 import { SharedModule } from '../../shared/shared.module';
 import { ChannelTypesComponent } from './channel-types/channel-types.component';
 
+
 @NgModule({
   imports: [
     SharedModule,
@@ -33,7 +34,7 @@ import { ChannelTypesComponent } from './channel-types/channel-types.component';
     DeviceLogsComponent,
     ChannelTypesComponent,
     ChannelTypeEditComponent,
-    DeviceDialogComponent
+    DeviceDialogComponent  
   ],
   entryComponents: [
     DeviceDialogComponent
