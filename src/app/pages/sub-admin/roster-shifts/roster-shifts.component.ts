@@ -107,7 +107,6 @@ export class RosterShiftsComponent implements OnInit {
       format: 'dd/mm/yyyy',
       minViewMode: 0,
       maxViewMode: 2,
-      startDate: new Date(new Date().setHours(0, 0, 0, 0)),
       autoclose: true
     }).on('changeDate', (e) => {
       this.getWeek(e.date);            
