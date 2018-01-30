@@ -56,7 +56,7 @@
         <tr *ngFor="let effectiveShift of effectiveShifts.items | paginate: { id: 'foo',
         itemsPerPage: effectiveShifts.pageSize,
         currentPage: effectiveShifts.pageNo,
-        totalItems: effectiveShifts.totalRecords };">
+        totalItems: effectiveShifts.total };">
           <td class="tdWidth">{{effectiveShift.employee.code || '--'}}</td>
           <td class="tdWidth">{{effectiveShift.employee.name || '--'}}</td>
           <td  *ngFor="let date of dates">
