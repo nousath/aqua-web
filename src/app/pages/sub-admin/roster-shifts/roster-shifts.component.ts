@@ -80,6 +80,7 @@ export class RosterShiftsComponent implements OnInit {
     this.effectiveShifts.fetch();    
     this.shiftTypes.fetch();
   }
+  
   isDownloading: boolean = false;
   download(date: Date) {
     this.isDownloading = true;
