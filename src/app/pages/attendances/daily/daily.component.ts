@@ -126,16 +126,15 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
 
   reset() {
     this.dailyAttendnace.filters.reset();
-    this.getAttendance(new Date());
     this.tags.reset();
     let tagElements: any[] = document.getElementsByName('tags') as any;
     if (tagElements) {
       tagElements.forEach(item => item.value = '');
     }
-
-
     this.store.removeItem("daily-attendance-filter");
     $("#dateSelector").datepicker("setDate", new Date());
+    this.getAttendance(new Date());
+    
   }
 
   checkFiltersInStore() {
