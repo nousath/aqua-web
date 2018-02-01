@@ -107,9 +107,13 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
 
   reset() {
     this.monthlyAttendnace.filters.reset();
-    this.getAttendance(new Date());
     this.tags.reset();
+    let tagElements: any[] = document.getElementsByName('tags') as any;
+    if (tagElements) {
+      tagElements.forEach(item => item.value = '');
+    }
     this.store.removeItem('monthly-attendance-filters');
+    this.getAttendance(new Date());
 
   }
 
