@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AmsDeviceService, AmsOrganizationService } from '../../../services/ams';
+import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
 import { MdDialog } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastyService } from 'ng2-toasty';
@@ -8,6 +9,7 @@ import { Model } from '../../../common/contracts/model';
 import { Device, Category } from '../../../models';
 import { DeviceDialogComponent } from '../../../dialogs/device-dialog/device-dialog.component';
 import { Machine } from '../../../models/category';
+import { LocalStorageService } from '../../../services/local-storage.service';
 
 @Component({
   selector: 'aqua-devices',
@@ -19,13 +21,47 @@ export class DevicesComponent implements OnInit {
   devices: Page<Device>;
   categories: Page<Category>;
   device: Model<Device>;
+  isUpload: boolean = false;
+  uploader: FileUploader;
+  deviceId: string;
 
   constructor(private amsDeviceService: AmsDeviceService,
     private toastyService: ToastyService,
     private activatedRoute: ActivatedRoute,
     private orgService: AmsOrganizationService,
+    private store: LocalStorageService,
     private router: Router,
     public dialog: MdDialog) {
+
+      let access_Token: string = this.store.getItem('ams_token');
+      let orgCode = this.store.getItem('orgCode');
+
+      this.uploader = new FileUploader({
+        // url: `/ams/api/devices/${this.deviceId}/logs`,
+        url: `localhost:3040/api/devices/${this.deviceId}/logs`,
+        itemAlias: 'file',
+        headers: [{
+          name: 'x-access-token',
+          value: access_Token
+        }, {
+          name: 'org-code',
+          value: orgCode
+        }]
+      }); 
+   
+
+    this.uploader.onErrorItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
+      console.log('onErrorItem', response, headers);
+    };
+
+    this.uploader.onCompleteItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
+      console.log(response);
+      let res: any = JSON.parse(response);
+      if (!res.isSuccess)
+        return toastyService.error({ title: 'Error', msg: 'excel upload failed' })
+        this.isUpload = false;
+
+    };
 
     this.devices = new Page({
       api: amsDeviceService.devices
@@ -139,5 +175,51 @@ export class DevicesComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  fileUploader(file){
+    console.log(file)
+    this.deviceId = file.id;
+    console.log(this.deviceId)
+    let access_Token: string = this.store.getItem('ams_token');
+    let orgCode = this.store.getItem('orgCode');
+
+    this.isUpload = !this.isUpload;
+    this.uploader = new FileUploader({
+      url: `/ams/api/devices/${this.deviceId}/logs`,
+      itemAlias: 'file',
+      headers: [{
+        name: 'x-access-token',
+        value: access_Token
+      }, {
+        name: 'org-code',
+        value: orgCode
+      }]
+    });
+    this.uploader.clearQueue();
+
+    this.uploader.onErrorItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
+      console.log('onErrorItem', response, headers);
+      this.isDownloading = false;
+    };
+
+    this.uploader.onCompleteItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
+      let res: any = JSON.parse(response);
+      this.isDownloading = false;
+      this.isUpload = false;
+      
+      
+      if (!res.isSuccess)
+        return this.toastyService.error({title: 'Error', msg: res.error })
+
+        return this.toastyService.success('file uploaded successfully')
+
+    };
+}
+
+upload(item){
+  item.upload();
+  this.isUpload = !this.isUpload;
+  this.isDownloading = true;
+}
 
 }
