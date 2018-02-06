@@ -1,0 +1,39 @@
+.styled-select {   
+    height: 32px;
+    width: 100%;
+    overflow: hidden;  
+    background-color: #f2f2f2;
+    border-right: hidden; 
+    border-left: hidden; 
+    border-color:#95989A !important ;       
+
+ }  
+
+ .selectStyle {
+    height: 32px;
+    width: 100%;
+    padding-left: 15px;    
+    overflow: hidden;  
+    background-color: #f2f2f2;
+    border-right: hidden;     
+    border-color:#95989A !important ;  
+ }
+
+
+ .semi-square {
+    -webkit-bottom-left-radius: 5px;
+    -moz-bottom-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+
+    -webkit-top-left-radius: 5px;
+    -moz-top-left-radius: 5px;
+    border-top-left-radius: 5px;
+ }
+
+ select::-ms-expand {
+    display: none !important;
+}
+
+select {
+    -webkit-appearance:none;
+}
