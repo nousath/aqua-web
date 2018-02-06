@@ -30,3 +30,15 @@
 #activationKey {
     width: 42%;
 }
+
+.marginTopAdd{
+    margin-top: 2%;
+}
+
+.marginTopSubtract{
+    margin-top: -1%;
+}
+
+.queue{
+    margin-top: -1% !important;
+}
