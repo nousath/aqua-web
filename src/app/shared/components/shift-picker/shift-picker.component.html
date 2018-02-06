@@ -1,9 +1,16 @@
-<!-- <p>{{effectiveShift?.shiftType.name}}</p> -->
-<div>
-    <select [(ngModel)]="effectiveShift.shiftType" (ngModelChange)="onShiftChange($event)">
-        <!-- <option class="capitalize" [ngValue]="null">{{effectiveShift?.shiftType?.name}}</option> -->
-        <option *ngFor="let shiftType of shiftTypes" class="capitalize form-control input-sm" [ngValue]="shiftType">{{shiftType.name}}</option>
+
+<div *ngIf="isShow">
+    <select [(ngModel)]="effectiveShift.shiftType" class="selectStyle semi-square"
+        (ngModelChange)="onShiftChange($event)">
+        <option *ngFor="let shiftType of shiftTypes" [ngValue]="shiftType">{{shiftType.name}}</option>
     </select>
+</div>
+
+<div *ngIf="!isShow">
+    <select [(ngModel)]="effectiveShift.shiftType" class="styled-select" (ngModelChange)="onShiftChange($event)">
+        <option *ngFor="let shiftType of shiftTypes" [ngValue]="shiftType">{{shiftType.name}}</option>
+    </select>
+
 </div>
 
 

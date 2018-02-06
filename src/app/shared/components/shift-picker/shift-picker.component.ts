@@ -10,13 +10,15 @@ import { ShiftType, EffectiveShift, Shift } from '../../../models/index';
 })
 export class ShiftPickerComponent implements OnInit {
 
+  isShow: boolean = false;
+
   @Input()
   shiftTypes: ShiftType[];
 
   @Input()
   effectiveShifts: Shift[];
 
-  effectiveShift: Shift=new Shift();
+  effectiveShift: Shift = new Shift();
 
   @Input()
   date: Date;
@@ -29,19 +31,20 @@ export class ShiftPickerComponent implements OnInit {
   ngOnInit() {
     let pickerDate = new Date(this.date);
     pickerDate.setHours(0, 0, 0, 0);
-    
 
-    this.effectiveShifts.forEach(item=>{
+
+    this.effectiveShifts.forEach(item => {
 
       let itemDate = new Date(item.date);
       itemDate.setHours(0, 0, 0, 0);
-      
-      if(itemDate.getTime() === pickerDate.getTime()) {
+
+      if (itemDate.getTime() === pickerDate.getTime()) {
         this.effectiveShift = item;
 
-        this.shiftTypes.forEach(type=>{
-          if(type.id === this.effectiveShift.shiftType.id) {
+        this.shiftTypes.forEach(type => {
+          if (type.id === this.effectiveShift.shiftType.id) {
             this.effectiveShift.shiftType = type;
+            this.isShow = true;
           }
         })
       }
@@ -50,9 +53,8 @@ export class ShiftPickerComponent implements OnInit {
   }
 
 
-  onShiftChange(shiftType: ShiftType) {   
-    this.onChange.emit(shiftType.id);        
-    
+  onShiftChange(shiftType: ShiftType) {
+    this.onChange.emit(shiftType.id);
   }
 
 }
