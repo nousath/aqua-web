@@ -17,6 +17,7 @@ import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
 import { AdminGuard } from './guards/admin.guard';
 import { GkuAttendanceComponent } from './pages/gku-attendance/gku-attendance.component';
 import { SystemUsageComponent } from './pages/system-usage/system-usage.component';
+import { DailyShiftRosterComponent } from './pages/daily-shift-roster/daily-shift-roster.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { SystemUsageComponent } from './pages/system-usage/system-usage.componen
     OrgLoginComponent,
     AppDownloadComponent,
     GkuAttendanceComponent,
-    SystemUsageComponent
+    SystemUsageComponent,
+    DailyShiftRosterComponent
   ],
   imports: [
     BrowserModule,
