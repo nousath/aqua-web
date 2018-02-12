@@ -33,6 +33,7 @@ export class DailyShiftRosterComponent implements OnInit {
   pageSize = 10;
   isSpinnerDown: boolean = false;
   subscription: Subscription;
+  isHeader: any;
 
   constructor(private activatedRoute: ActivatedRoute,
     private autoCompleteService: AutoCompleteService,
@@ -46,7 +47,7 @@ export class DailyShiftRosterComponent implements OnInit {
       this.subscription = activatedRoute.queryParams.subscribe(queryParams => {
         let token: string = queryParams['token'];
         let orgCode: string = queryParams['orgCode'];
-        let isHeader: string = queryParams['isHeader'];
+        this.isHeader = queryParams['isHeader'];
         if (token && orgCode) {
           orgCode = orgCode.toLowerCase();
           this.store.setItem('ams_token', token);

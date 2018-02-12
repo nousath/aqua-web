@@ -1,4 +1,4 @@
-<div *ngIf="isHeader === true" class="row page_header header">
+<div *ngIf="isHeader == 'true'" class="row page_header header">
   <div col-xs-3 col-sm-3 col-md-3 col-lg-3 class="shiftRoster">
     <span>
       <h3> Shift Roster</h3>
@@ -17,7 +17,7 @@
   </div>
 </div> -->
 
-<md-spinner [ngClass]="{'bottomSpinner':isSpinnerDown}" class="custom_spinner" *ngIf="isDownloading || isLoading" mode="indeterminate"></md-spinner>
+<md-spinner [ngClass]="{'bottomSpinner':isSpinnerDown}" class="custom_spinner" *ngIf="isLoading" mode="indeterminate"></md-spinner>
 
 <div class="col">
   <md-toolbar class="calender">
