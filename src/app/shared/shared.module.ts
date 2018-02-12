@@ -35,7 +35,7 @@ import { TimePipe } from './time.pipe';
 import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
 import { AmsTagService } from '../services/ams/ams-tag.service';
 import { ShiftPickerComponent } from './components/shift-picker/shift-picker.component';
-
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import {
   MdTooltipModule,
@@ -141,6 +141,7 @@ export const MaterialModules = [
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyA3-BQmJVYB6_soLJPv7cx2lFUMAuELlkM'
     }),
+    InfiniteScrollModule, 
   ],
   exports: [
     CommonModule,
@@ -154,7 +155,8 @@ export const MaterialModules = [
     NguiAutoCompleteModule,
     AgmCoreModule,
     TimePipe,
-    ShiftPickerComponent
+    ShiftPickerComponent,
+    InfiniteScrollModule 
   ]
 
 })
