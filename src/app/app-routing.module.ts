@@ -21,7 +21,7 @@ import { AttendanceLogsComponent } from './pages/attendances/attendance-logs/att
 import { AdminGuard } from './guards/admin.guard';
 import { GkuAttendanceComponent } from './pages/gku-attendance/gku-attendance.component';
 import { SystemUsageComponent } from './pages/system-usage/system-usage.component';
-
+import { DailyShiftRosterComponent } from './pages/daily-shift-roster/daily-shift-roster.component';
 
 const emp_routes: Routes = [
   { path: '', redirectTo: 'list', pathMatch: 'full' },
@@ -44,6 +44,7 @@ const page_routes: Routes = [
 const routes: Routes = [
   { path: '', redirectTo: 'pages', pathMatch: 'full' },
   { path: 'system/usage', component: SystemUsageComponent, },
+  { path: 'dailyShift/roster', component: DailyShiftRosterComponent},
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
   { path: 'pages', component: PagesComponent, canActivate: [UserGuard], children: page_routes },
   { path: 'loginViaOrg', component: OrgLoginComponent },
