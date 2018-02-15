@@ -9,8 +9,8 @@ export const environment = {
   apiUrls: {
     ems: 'http://ems.m-sas.com',
     ams: 'http://ams.m-sas.com',
-    website: 'http://aquahrms.m-sas.com',
-    register: 'http://ams-getting-started.m-sas.com'
+    website: 'http://aqua-dev.m-sas.com',
+    register: 'http://register-atc-dev.m-sas.com'
   },
   name: 'local'
 };
