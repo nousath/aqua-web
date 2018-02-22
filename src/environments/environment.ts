@@ -7,7 +7,7 @@ export const environment = {
   production: false,
   silent: false,
   apiUrls: {
-    ems: 'http://ems-api-dev.m-sas.com',
+    ems: 'http://ems-api-qa.m-sas.com',
     ams: 'http://ams-api-dev.m-sas.com',
     website: 'http://aqua-dev.m-sas.com',
     register: 'http://register-atc-dev.m-sas.com'
