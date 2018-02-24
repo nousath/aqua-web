@@ -46,22 +46,24 @@
               <small>{{effectiveShift.employee.code || '--'}} </small>
             </td>
             <td *ngIf="!effectiveShift?.shifts[0]?.date">
-              <strong>Previous Shift</strong>
+              <!-- <strong>Previous Shift</strong> -->
+              <!-- <br> -->
+              <strong>{{effectiveShift?.previousShift?.shiftType.name ||'--'}}</strong>
               <br>
-              <small>{{effectiveShift?.previousShift?.shiftType.name ||'--'}}</small>
+              <small>{{effectiveShift?.previousShift?.shiftType.startTime|date:'H:mm' ||'--'}} - {{effectiveShift?.previousShift?.shiftType.endTime|date:'H:mm' || '--'}} </small>
 
             </td>
             <td *ngIf="effectiveShift?.shifts[0]?.date">
-              <strong>Current Shift</strong>
+              <strong>{{effectiveShift?.shifts[0].shiftType.name || '--'}}</strong>
               <br>
-              <small>{{effectiveShift?.shifts[0].shiftType.name || '--'}}</small>
+              <small>{{effectiveShift?.shifts[0].shiftType.startTime|date:'H:mm' || '--'}} - {{effectiveShift?.shifts[0].shiftType.endTime|date:'H:mm' || '--'}}</small>
             </td>
             <td>
               <button md-icon-button [mdMenuTriggerFor]="menu">
                 <md-icon>more_vert</md-icon>
               </button>
               <md-menu #menu="mdMenu">
-                <button md-menu-item *ngFor="let shiftType of shiftTypes.items" (click)="changeShift(shiftType,date,effectiveShift)">{{shiftType.name}}</button>
+                <button md-menu-item *ngFor="let shiftType of shiftTypes.items" (click)="changeShift(shiftType,date,effectiveShift.employee)">{{shiftType.name}}</button>
               </md-menu>
             </td>
           </tr>    

@@ -128,8 +128,9 @@ export class DailyShiftRosterComponent implements OnInit {
   updateEffectiveShift(id, model: any) {
     this.isLoading = true;
     this.amsEffectiveShiftService.effectiveShifts.update(id, model)
-      .then(() => {
+      .then(() => {        
         this.isLoading = false;
+        this.getEffectiveShift(this.date, this.pageSize);
       })
       .catch(err => { this.toastyService.error({ title: 'Error', msg: err }) });
   }
