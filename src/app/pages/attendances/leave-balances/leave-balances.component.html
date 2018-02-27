@@ -20,120 +20,120 @@
 
     </div>
 
-<md-spinner class="custom_spinner" *ngIf="leaveBalances.isLoading || isUpdatingLeave" mode="indeterminate"></md-spinner>
+    <md-spinner class="custom_spinner" *ngIf="leaveBalances.isLoading || isUpdatingLeave" mode="indeterminate"></md-spinner>
 
 
-<div class="row" *ngIf="isFilter">
-    <md-card class="card">
-        <div class="row text-center headr_bar">
-            <h5><b>Filters</b></h5>
-            <div class="actionBtns">
-                <button md-icon-button mdTooltip="Close" [mdTooltipPosition]="'above'" (click)="isFilter = !isFilter"><md-icon >highlight_off</md-icon></button>
-            </div>
-        </div>
-        <br>
-        <form class="row">
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  form-group">
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                    <label for="email">Name</label>
-                </div>
-                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                    <!--<input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="leaveBalances.isLoading  || isUpdatingLeave" [(ngModel)]="leaveBalances.filters.properties['name']['value']" name="Name">-->
+    <div class="row" *ngIf="isFilter">
+        <md-card class="card">
+            <div class="row text-center headr_bar">
+                <h5><b>Filters</b></h5>
+                <div class="actionBtns">
+                    <button md-icon-button mdTooltip="Close" [mdTooltipPosition]="'above'" (click)="isFilter = !isFilter"><md-icon >highlight_off</md-icon></button>
                 </div>
             </div>
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  form-group">
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                    <label for="pwd">Code</label>
+            <br>
+            <form class="row">
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  form-group">
+                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                        <label for="email">Name</label>
+                    </div>
+                    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                        <!--<input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="leaveBalances.isLoading  || isUpdatingLeave" [(ngModel)]="leaveBalances.filters.properties['name']['value']" name="Name">-->
+                    </div>
                 </div>
-                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                    <!--<input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="leaveBalances.isLoading  || isUpdatingLeave" [(ngModel)]="leaveBalances.filters.properties['code']['value']" name="Code">-->
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  form-group">
+                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                        <label for="pwd">Code</label>
+                    </div>
+                    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                        <!--<input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="leaveBalances.isLoading  || isUpdatingLeave" [(ngModel)]="leaveBalances.filters.properties['code']['value']" name="Code">-->
+                    </div>
                 </div>
-            </div>
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 form-group">
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                    <label>Shift</label>
-                </div>
-                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                    <!--<select class="form-control" [disabled]="leaveBalances.isLoading  || isUpdatingLeave" [(ngModel)]="leaveBalances.filters.properties['shiftType']['value']" placeholder="Shift" name="shift">
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 form-group">
+                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                        <label>Shift</label>
+                    </div>
+                    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                        <!--<select class="form-control" [disabled]="leaveBalances.isLoading  || isUpdatingLeave" [(ngModel)]="leaveBalances.filters.properties['shiftType']['value']" placeholder="Shift" name="shift">
                    <option *ngFor="let item of shiftTypes.items" [value]="item.id">
                     {{item?.name}}
                 </option>
                 </select>-->
+                    </div>
                 </div>
-            </div>
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 button_align form-group text-center">
-                <button [disabled]="leaveBalances.isLoading || isUpdatingLeave" md-mini-fab color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="fetchLeaveBalances()"><md-icon >done</md-icon></button>
-                <button [disabled]="leaveBalances.isLoading || isUpdatingLeave" md-mini-fab color="primary" mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()"><md-icon >undo</md-icon></button>
-            </div>
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 button_align form-group text-center">
+                    <button [disabled]="leaveBalances.isLoading || isUpdatingLeave" md-mini-fab color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="fetchLeaveBalances()"><md-icon >done</md-icon></button>
+                    <button [disabled]="leaveBalances.isLoading || isUpdatingLeave" md-mini-fab color="primary" mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()"><md-icon >undo</md-icon></button>
+                </div>
 
-        </form>
-    </md-card>
+            </form>
+        </md-card>
+    </div>
 </div>
-</div>
-<div class="row">  
+<div class="row">
     <div class="row page_header">
-            <table class="table table-condensed table-hover"   >
-                
-                <thead class="thead">
-                    <tr>
-                        <th >Name</th>
-                        <th class="tdWidth">Code</th>
-                        <th class="tdWidth capitalize" *ngFor="let item of leaveTypes.items">{{item?.name}}</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                   
-                <tbody style="background-color: white;">
-                    <tr *ngFor="let item of leaveBalances.items | paginate: { id: 'foo',
+        <table class="table table-condensed table-hover">
+
+            <thead class="thead">
+                <tr>
+                    <th>Name</th>
+                    <th class="tdWidth">Code</th>
+                    <th class="tdWidth capitalize" *ngFor="let item of leaveTypes.items">{{item?.name}}</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody style="background-color: white;">
+                <tr *ngFor="let item of leaveBalances.items | paginate: { id: 'foo',
                                                       itemsPerPage: leaveBalances.pageSize,
                                                       currentPage: leaveBalances.pageNo,
                                                       totalItems: leaveBalances.totalRecords };" class="capitalize">
 
-                        <td>
-                            <!--<img *ngIf="item?.picUrl" class="img-circle profile_pic" alt="img" [src]="item?.picUrl">-->
-                            <!--<img *ngIf="!item?.picUrl" class="img-circle profile_pic" alt="img" src="assets/images/blank.png"> &nbsp;-->
-                            <a [routerLink]="[item.id]">{{item?.name}}</a>
-                        </td>
-                        <td class="tdWidth">
-                            {{item?.code}}
-                        </td>
-                        <td *ngFor="let lb of item?.leaveBalances">
-                            <input *ngIf="!lb.leaveType.unlimited" type="text" maxlength="4" [name]="lb.days" [readOnly]="leaveBalances.isLoading || isUpdatingLeave || !item?.isEdit" class="number form-control input-xs" [(ngModel)]="lb.days">
-                            <span *ngIf="lb.leaveType.unlimited">Unlimited</span>
-                        </td>
-                        <td colspan="4"></td>
-                        <td></td>
-                        <td class="btnClmWidth">
-                            <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="toggleLaveBalnce(item, true)">
+                    <td>
+                        <!--<img *ngIf="item?.picUrl" class="img-circle profile_pic" alt="img" [src]="item?.picUrl">-->
+                        <!--<img *ngIf="!item?.picUrl" class="img-circle profile_pic" alt="img" src="assets/images/blank.png"> &nbsp;-->
+                        <a [routerLink]="[item.id]">{{item?.name}}</a>
+                    </td>
+                    <td class="tdWidth">
+                        {{item?.code}}
+                    </td>
+                    <td *ngFor="let lb of item?.leaveBalances">
+                        <input *ngIf="!lb.leaveType.unlimited" type="text" maxlength="4" [name]="lb.days" [readOnly]="leaveBalances.isLoading || isUpdatingLeave || !item?.isEdit" class="number form-control input-xs" [(ngModel)]="lb.days">
+                        <span *ngIf="lb.leaveType.unlimited">Unlimited</span>
+                    </td>
+                    <td colspan="4"></td>
+                    <td></td>
+                    <td class="btnClmWidth">
+                        <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="toggleLaveBalnce(item, true)">
                                 <md-icon>edit</md-icon>
                             </button>
-                            <button *ngIf="item?.isEdit" [disabled]="leaveBalances.isLoading || isUpdatingLeave" md-icon-button class="button_align cursor " (click)="updateLeaveBalance(item)" mdTooltip="Save" [mdTooltipPosition]="'above'">
+                        <button *ngIf="item?.isEdit" [disabled]="leaveBalances.isLoading || isUpdatingLeave" md-icon-button class="button_align cursor " (click)="updateLeaveBalance(item)" mdTooltip="Save" [mdTooltipPosition]="'above'">
                                 <md-icon>save</md-icon>
                             </button>
-                            <button *ngIf="item?.isEdit" [disabled]="leaveBalances.isLoading || isUpdatingLeave" md-icon-button class="button_align cursor" (click)="toggleLaveBalnce(item, false)" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
+                        <button *ngIf="item?.isEdit" [disabled]="leaveBalances.isLoading || isUpdatingLeave" md-icon-button class="button_align cursor" (click)="toggleLaveBalnce(item, false)" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
                                 <md-icon>undo</md-icon>
                             </button>
-                        </td>
-                    </tr>
+                    </td>
+                </tr>
 
-                </tbody>
-            </table>
-        </div>
-    
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="custom_pagination">
-                <pagination-controls id="foo" (pageChange)="leaveBalances.pageNo = $event;fetchLeaveBalances();"></pagination-controls>
-                <div class="pageSize">
-                    <label>Page Size:</label>
-                    <select name="pageSize" [(ngModel)]="leaveBalances.pageSize" (change)="leaveBalances.pageNo = 1;fetchLeaveBalances();">
-                      <option value=10>10</option>
-                      <option value=20>20</option>
-                      <option value=50>50</option>
-                      <option value=100>100</option>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="custom_pagination">
+            <pagination-controls id="foo" (pageChange)="leaveBalances.pageNo = $event;fetchLeaveBalances();"></pagination-controls>
+            <div class="pageSize">
+                <label>Page Size:</label>
+                <select name="pageSize" [(ngModel)]="leaveBalances.pageSize" (change)="leaveBalances.pageNo = 1;fetchLeaveBalances();">
+                      <option value="10">10</option>
+                      <option value="20">20</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
                     </select>
-                </div>
             </div>
         </div>
-    
+    </div>
+
 
 </div>
