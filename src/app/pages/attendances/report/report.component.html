@@ -1,0 +1,42 @@
+<div class="row page_header">
+        
+
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <h5><b>Report</b></h5>
+    </div>
+    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+       
+    </div>
+</div>
+<div class="row bottom_row">
+    <div class="alertBox col-xs-12 col-sm-12 col-md-6 col-lg-6" *ngFor="let item of insights.items">
+        <br>
+        <md-card>
+            <div class="row">
+                <div class="imgCard">
+                    <div class="col-xs-6 col-sm-8 col-md-7 col-lg-7">
+                        <h5><b>{{item?.alertType?.name}} </b></h5>
+                        <p>{{item?.alertType?.description}} </p>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-5 col-lg-5">
+                        <img width="100%" [src]="item?.alertType?.picUrl">
+                    </div>
+                </div>
+                <div class=container>
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                       
+                    </div>
+                    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9" >
+                            <a  *ngIf="item.alertType.hasNotifications" md-raised-button class="btnDownload "style="float:left;">Notification</a>
+                    
+                          <a  *ngIf="item.alertType.hasReports" md-raised-button class="btnNotification" [routerLink]="['/pages/attendances/download-report',item?.id]">Download</a>
+                            <a *ngIf="item.alertType.hasInsights" md-raised-button class="btnView"  style="float: right;"[routerLink]="['/pages/attendances/list-report',item?.id]">View</a>
+                    </div>
+                    <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
+ 
+                   
+                </div>
+            </div>
+        </md-card>
+    </div>
+</div>

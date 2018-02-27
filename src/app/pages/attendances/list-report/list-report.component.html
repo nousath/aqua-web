@@ -1,0 +1,79 @@
+<div class="row" style="background-color: white;">
+    <div class="row">
+        <div class="imgRounded">
+            <div class="col-xs-2 col-sm-2 col-md-3 col-lg-3">
+                <img [src]="alert?.properties?.alertType?.picUrl" width=" 80%;">
+            </div>
+        </div>
+        <div class="alertTitle">
+            <div class="col-xs-10 col-sm-10 col-md-9 col-lg-9" style="padding-top: 50px">
+                <h5>
+                    <b>alert Configuration: {{alert?.properties?.alertType?.name}}</b>
+                </h5>
+                <p>{{alert?.properties?.alertType?.description}}</p>
+            </div>
+        </div>
+
+    </div>
+
+    <md-spinner class="custom_spinner" *ngIf="isLoading"  mode="indeterminate"></md-spinner>
+    <div class="row">
+        <div class="container-fluid">
+            <ul class="nav nav-tabs">
+                <li class="active navTab">
+                    <a [routerLink]="['/pages/attendances/list-report',alert.id]">List</a>
+                </li>
+                <li class="navTab">
+                    <a [routerLink]="['/pages/attendances/download-report',alert.id]">Report</a>
+                </li>
+                <li class="navTab ">
+                    <a class="tab disabled">Notification</a>
+                </li>
+            </ul>
+        </div>
+       
+    </div>
+    <div class="container">
+
+        <h4>
+            <b>Filters</b>
+        </h4>
+        <aqua-report-filters ></aqua-report-filters>
+        <div class="row">
+            <div class="button">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+                    <button md-raised-button class="btnClear" (click)="clear()">Clear</button>
+
+                    <button md-raised-button class="btnApply">Apply</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class=" tableResponsive">
+        <table class="table table-condensed table-hover ">
+            <thead class="whiteHead">
+                  <th class="col-xs-3 col-sm-3 col-md-3 col-lg-3">Name</th>
+                    <th class="col-xs-7 col-sm-7 col-md-7 col-lg-7">Code</th>
+                   
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>abc</td>
+                    <td>1</td>
+                    <!-- <td>
+                        <div>
+                            <mat-icon class=" clickable " (click)="download(report.url,report.type,report.merchant) ">file_download
+                            </mat-icon>
+                        </div>
+                    </td> -->
+
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>

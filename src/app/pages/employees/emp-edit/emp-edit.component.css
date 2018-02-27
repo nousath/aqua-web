@@ -42,4 +42,12 @@
 .red-text{
     color:red;
   }
-  
+  .checkbox-inline, .radio-inline {
+    position: relative;
+    display: inline-block;
+    padding-left: 33px !important;
+    margin-bottom: 0;
+    font-weight: 400;
+    vertical-align: middle;
+    cursor: pointer;
+}
