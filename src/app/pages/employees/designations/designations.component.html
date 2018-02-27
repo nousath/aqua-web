@@ -5,7 +5,7 @@
     <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
         <div class="headerBtns">
             <!--<button [disabled]="designations?.isLoading   || designation.isProcessing  " md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>-->
-            <button md-icon-button [disabled]="designations?.isLoading   || designation.isProcessing  " mdTooltip="Add" class="marginLetf" [mdTooltipPosition]="'above'" (click)="toggleDesignation(true)"><md-icon >add_circle_outline</md-icon></button>
+            <button md-icon-button [disabled]="designations?.isLoading   || designation.isProcessing  " mdTooltip="Add" class="marginLetf" [mdTooltipPosition]="'above'" (click)="toggleDesignation(true)" style="width: 130px;"><md-icon >add_circle_outline</md-icon></button>
         </div>
     </div>
 </div>
@@ -50,6 +50,7 @@
 
 
 <div class="row">
+    <div class="row page_header">
     <md-card class="card">
         <div class="row text-center noData" *ngIf="designations?.items?.length == 0">
             <h5><b>no data to display !</b></h5>
@@ -75,7 +76,7 @@
                             <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="edit(item, true)">
                                 <md-icon>edit</md-icon>
                             </button>
-                            <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="removeConfirm(item)">
+                            <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Delete" [mdTooltipPosition]="'above'" (click)="removeConfirm(item)">
                                 <md-icon>delete</md-icon>
                             </button>
                             <button *ngIf="item?.isEdit" [disabled]="designations.isLoading || designation.isProcessing" md-icon-button class="button_align cursor " (click)="save(item)" mdTooltip="Save" [mdTooltipPosition]="'above'">
@@ -90,4 +91,5 @@
             </table>
         </div>
     </md-card>
+    </div>
 </div>

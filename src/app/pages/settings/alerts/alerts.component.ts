@@ -15,7 +15,7 @@ import { Model } from '../../../common/contracts/model';
 export class AlertsComponent implements OnInit {
 
   alerts: Page<AmsAlert>;
-  alert: Model<AmsAlert>; l
+  alert: Model<AmsAlert>; 
 
 
   constructor(private amsAlertService: AmsAlertService,

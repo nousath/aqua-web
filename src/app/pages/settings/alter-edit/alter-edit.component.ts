@@ -25,7 +25,7 @@ interface MyType {
 })
 export class AlterEditComponent implements OnInit {
 
-  alert: Model<AmsAlert>; l
+  alert: Model<AmsAlert>; 
   subscription: Subscription;
   reset: Function;
   resetConfig: Boolean = false;
@@ -54,8 +54,8 @@ export class AlterEditComponent implements OnInit {
 
     this.subscription = activatedRoute.params.subscribe(
       params => {
-        let alertId: string = params['id'];
-        this.alert.fetch(alertId).then(
+       
+        this.alert.fetch( params['id']).then(
           data => {
             // _.each(this.alert.properties.alertType.trigger.parameters, (i: AlertParameter) => {
             //   i.type = i.type.toLowerCase();

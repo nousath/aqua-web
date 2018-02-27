@@ -9,7 +9,7 @@
         <div class="headerInpts">
             <div class="input-group">
                 <span class="input-group-addon" id="basic-addon1">Select Month</span>
-                <input id="monthSelector" type="text" class="form-control input-sm calendar no-spin">
+                <input id="monthSelector" type="text" class="form-control input-sm calendar no-spin" style="cursor: pointer;">
             </div>
         </div>
         <div class="headerBtns">
@@ -70,16 +70,15 @@
                             <td>{{employee?.properties?.shiftType.name ? employee?.properties?.shiftType.name : '--'}} </td>
                         </tr>
                         <tr>
-                            <td colspan="2" angulartics2On="click" angularticsEvent="trackLocation" angularticsCategory="dailyAttendance" [angularticsProperties]="{label: 'Fall Campaign'}">
-                                Track Location:&nbsp;
-                                <md-slide-toggle [checked]="employee?.properties?.abilities?.trackLocation" (change)="toggleManual('trackLocation')">{{employee?.properties?.abilities?.trackLocation ? 'Enabled':'Disabled'}}</md-slide-toggle>
-                            </td>
+                            <td >Track Location:</td>
+
+                            <td><md-slide-toggle [checked]="employee?.properties?.abilities?.trackLocation" (change)="toggleManual('trackLocation')" >{{employee?.properties?.abilities?.trackLocation ? 'Enabled':'Disabled'}}</md-slide-toggle></td>
+                            
                         </tr>
                         <tr>
-                            <td colspan="2" angulartics2On="click" angularticsEvent="shiftNotifier" angularticsCategory="dailyAttendance" [angularticsProperties]="{label: 'Fall Campaign'}">
-                                Shift Notifier:&nbsp;
-                                <md-slide-toggle [checked]="employee?.properties?.abilities?.shiftNotifier" (change)="toggleManual('shiftNotifier')">{{employee?.properties?.abilities?.shiftNotifier ? 'Enabled':'Disabled'}}</md-slide-toggle>
-                            </td>
+                            <td>Shift Notifier:&nbsp;</td>
+                                <td><md-slide-toggle [checked]="employee?.properties?.abilities?.shiftNotifier" (change)="toggleManual('shiftNotifier')">{{employee?.properties?.abilities?.shiftNotifier ? 'Enabled':'Disabled'}}</md-slide-toggle></td>
+                            
                         </tr>
                     </table>
 

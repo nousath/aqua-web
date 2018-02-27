@@ -72,9 +72,9 @@
 
 <div class="row">
     <md-card class="card">
-        <div class="">
+        <div class="row page_header">
             <table class="table table-condensed table-hover">
-                <thead class="primary_thead">
+                <thead class="thead">
                     <tr>
                         <th class="tdWidth">Name</th>
                         <th class="tdWidth">Code</th>
@@ -88,7 +88,7 @@
                         <th class="tdWidth text-center" *ngIf="isShowLeaveAction">Action</th>               
                     </tr>
                 </thead>
-                <tbody>
+                <tbody style="background-color: white;">
                     <tr *ngFor="let item of leaves.items | paginate: { id: 'leavs',
                                                       itemsPerPage: leaves.pageSize,
                                                       currentPage: leaves.pageNo,

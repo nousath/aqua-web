@@ -100,16 +100,18 @@
 
 <div class="row">
     <md-card class="card">
+            <div class="row page_header">
         <div class="table-responsive">
             <table class="table table-condensed table-hover">
-                <thead class="primary_thead">
+                
+                <thead class="thead">
                     <tr>
                         <th class="srno">Sr No</th>
                         <th class="tdWidth">Name</th>
                         <th>Date</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody style="background-color: white;">
                     <tr *ngFor="let item of holidays.items | paginate: { id: 'foo',
                                                       itemsPerPage: holidays.pageSize,
                                                       currentPage: holidays.pageNo,
@@ -118,12 +120,18 @@
                         <td class="srno">{{(10 * (holidays.pageNo - 1))+(i+1)}}</td>
                         <td class="tdWidth">{{item?.name}}</td>
                         <td>{{item?.date | date}}</td>
+                        <td class="tdWidth text-center">
+                                <a md-icon-button class="button_align cursor" mdTooltip="Edit" [mdTooltipPosition]="'above'" >
+                                    <md-icon>edit</md-icon>
+                                </a>
+                            </td>   
                     </tr>
                 </tbody>
             </table>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <pagination-controls id="foo" (pageChange)="holidays.pageNo = $event;fetchHolidays();"></pagination-controls>
+        </div>
         </div>
     </md-card>
 </div>

@@ -43,9 +43,10 @@
 
 <div class="row">
     <md-card class="card">
+        <div class="row page_header">
         <div class="table-responsive">
             <table class="table table-condensed table-hover">
-                <thead class="primary_thead">
+                <thead class="thead">
                     <tr>
                         <th>Model</th>
                         <th class="tdWidth">Manufacturer</th>
@@ -56,7 +57,7 @@
                         <th class="tdWidth"></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody style="background-color: white;">
                     <tr *ngFor="let item of devices.items | paginate: { id: 'foo',
                                                       itemsPerPage: devices.pageSize,
                                                       currentPage: devices.pageNo,
@@ -83,5 +84,6 @@
         <!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <pagination-controls id="foo" (pageChange)="devices.pageNo = $event;fetchDevices();"></pagination-controls>
         </div> -->
+        </div>
     </md-card>
 </div>

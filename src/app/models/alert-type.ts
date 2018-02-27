@@ -7,8 +7,11 @@ export class AlertType {
   picUrl: string = '';
   cost: number = null;
   default: boolean = false;
+  hasNotifications: boolean;  
   processor: Processor = new Processor();
   trigger: Trigger = new Trigger();
+  hasInsights: boolean;
+  hasReports: boolean ;
 }
 
 

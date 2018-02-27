@@ -36,7 +36,7 @@ export interface IPage {
 }
 
 export class Page<TModel> extends PageModel<TModel> implements IPage {
-
+  id:number[]=[];
   errors: string[] = [];
   filters: Filters;
   isLoading = false;

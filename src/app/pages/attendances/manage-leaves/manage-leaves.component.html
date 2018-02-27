@@ -15,22 +15,22 @@
         </div>
 
     </div>
-</div>
+
 <md-spinner class="custom_spinner" *ngIf="leaveTypes?.isLoading  || leaveType?.isProcessing" mode="indeterminate"></md-spinner>
 
 
 <div class="row" *ngIf="isNew">
-    <md-card class="card">
+    <md-card class="card" >
         <div class="row text-center headr_bar">
             <h5><b>New Leave Type</b></h5>
             <div class="actionBtns">
                 <button md-icon-button mdTooltip="Close" [mdTooltipPosition]="'above'" (click)="toggleNew()"><md-icon >highlight_off</md-icon></button>
             </div>
         </div>
-        <md-card>
-            <div class="row">
+        <md-card > 
+            <div class="row" >
                 <table class="table table-condensed table-hover">
-                    <thead>
+                    <thead style="background-color: green;">
                         <tr>
                             <th class="tdWidth">Name<span class="asterisk">*</span></th>
                             <th class="tdWidth">Code</th>
@@ -51,8 +51,8 @@
 
                             </td>
                             <td>
-                                <select [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" class="form-control" [(ngModel)]="leaveType.properties.unitsPerDay">
-                                    <option [ngValue]="null">select an option</option>
+                                <select a [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" class="form-control" [(ngModel)]="leaveType.properties.unitsPerDay" > 
+                                    <option  [ngValue]="null">select an option</option>
                                     <option value=1>Full</option>
                                     <option value=2>Half</option>
                                     <option value=3>One Third</option>
@@ -85,13 +85,14 @@
         </md-card>
     </md-card>
 </div>
+</div>
 
 
 <div class="row">
     <md-card class="card">
-        <div class="">
+        <div class="row page_header">
             <table class="table table-condensed">
-                <thead class="primary_thead">
+                <thead class="thead">
                     <tr>
                         <!--<th>Sno.</th>-->
                         <th class="tdWidth">Name<span class="asterisk">*</span></th>
@@ -104,7 +105,7 @@
                         <th class="actionBtnss"></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody style="background-color: white;">
                     <tr *ngFor="let item of leaveTypes.items | paginate: { id: 'foo',
                                                       itemsPerPage: leaveTypes.pageSize,
                                                       currentPage: leaveTypes.pageNo,
@@ -123,7 +124,7 @@
                         </td>
                         <td>
                             <select [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing || !item?.isEdit" [ngClass]="{'non_editAble':leaveTypes?.isLoading  || leaveType?.isProcessing || !item?.isEdit}" class="form-control" [(ngModel)]="item.unitsPerDay">
-                              <option [ngValue]="null">select an option</option>
+                              <!-- <option [ngValue]="null">select an option</option> -->
                               <option value=1>Full</option>
                                     <option value=2>Half</option>
                                     <option value=3>One Third</option>

@@ -19,6 +19,12 @@
     width: 13%;
     float: left;
 }
+.page_header {
+    background-color: #e4e4e4;
+    padding-top: 0.5%;
+    padding-left: 0.5%;
+    padding-right: 0% !important;
+}
 
 .file {
     width: 38%;
@@ -36,34 +42,8 @@
     width: 0px;
     line-height: 1.42857143;
     vertical-align: top;
-    border-top: 0px solid #ddd !important;
 }
-
-.empCode {
-    white-space: pre-line;
-    font-size: 12px;
-    color: #919191;
+.table-condensed>tbody>tr>td, .table-condensed>tbody>tr>th, .table-condensed>tfoot>tr>td, .table-condensed>tfoot>tr>th, .table-condensed>thead>tr>td, .table-condensed>thead>tr>th {
+    padding: 5px;
+    padding-right: 9px !important;
 }
-
-.customStyle {
-    padding-left: 10px !important;
-}
-
-.previousShiftBorder
-{
-    background-color: #f2f2f2;
-    width: 100%;
-    border: 1px solid #95989A;
-    padding: 4px;
-    padding-left: 10px;
-    height: 32px;
-    border-right: hidden;     
-    -webkit-bottom-left-radius: 5px;
-    -moz-bottom-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-
-    -webkit-top-left-radius: 5px;
-    -moz-top-left-radius: 5px;
-    border-top-left-radius: 5px;
-}
-

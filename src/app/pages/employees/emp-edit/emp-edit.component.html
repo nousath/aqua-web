@@ -121,11 +121,15 @@
                     <tr>
                         <th>Phone:</th>
                         <td>
-                            <input name="phone" type="text" class="form-control" [maxlength]="validatorService.phoneNumberLength" [minLength]="validatorService.phoneNumberLength" [pattern]="validatorService.onlyNumber" [(ngModel)]="employee.properties.phone">
+                            <input name="phone"  type="text" class="form-control" [maxlength]="validatorService.phoneNumberLength" [minLength]="validatorService.phoneNumberLength"  [(ngModel)]="employee.properties.phone">
                         </td>
                         <th>Email:</th>
-                        <td>
-                            <input name="email" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.email">
+                        <td >
+                                <input id="email" required email name="email" #email="ngModel" [(ngModel)]="employee.email"
+                                type="text"
+                               class="form-control">
+                               <span class="help block" *ngIf="email.invalid && email.touched"> Email is invalid</span>
+                
                         </td>
                     </tr>
                 </table>

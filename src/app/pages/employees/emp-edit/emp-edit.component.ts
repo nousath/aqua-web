@@ -44,7 +44,8 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     private store: LocalStorageService,
     private dialog: MdDialog,
     private router: Router) {
-
+     
+      
     let access_Token: string = this.store.getItem('external-token');
     let orgCode = this.store.getItem('orgCode');
     this.uploader = new FileUploader({
@@ -247,6 +248,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     img.src = base64;
 
   }
+ 
 
   ngAfterViewInit() {
     if (this.employee.properties.dob) { $("#dateSelector").datepicker("setDate", new Date(this.employee.properties.dob)); }

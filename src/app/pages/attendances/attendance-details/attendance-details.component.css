@@ -134,3 +134,23 @@ button.mat-menu-item {
     font-size: 87%;
     text-align: center;
 }
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    padding: 8px;
+    line-height: 1.42857143;
+     vertical-align: middle !important; 
+    border-top: 1px solid #ddd;
+}
+.mat-slide-toggle {
+    display: inline-block;
+    height: 24px;
+    line-height: 24px;
+    align-self: center;
+    /* vertical-align: baseline; */
+    white-space: nowrap;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    outline: 0;
+    padding-top: 9px !important;
+}

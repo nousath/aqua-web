@@ -45,7 +45,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
   leaveBalances: Page<LeaveBalance>;
   isShowLeaveAction: boolean = false;
 
-  days: string[] = ['Mon', 'Tue', 'wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  days: string[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   events: DayEvent[] = [];
   emptyStartDays: any[] = [];
   emptyEndDays: any[] = [];

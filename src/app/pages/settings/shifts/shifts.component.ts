@@ -43,5 +43,7 @@ export class ShiftsComponent implements OnInit {
 
   ngOnInit() {
   }
-
+ remove(id){
+   this.shifType.remove(id).then(()=>{this.toastyService.info({ title: 'Info', msg: 'shift successfully delete' })}).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+ }
 }

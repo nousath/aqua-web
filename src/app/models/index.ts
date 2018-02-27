@@ -22,4 +22,5 @@ export * from './time-logs'
 export * from './channel'
 export * from './channel-type'
 export * from './effective-shift'
+export * from './daily-insight'
 

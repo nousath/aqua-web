@@ -6,7 +6,7 @@
         <div class="headerInpts">
             <div class="input-group">
                 <span class="input-group-addon" id="basic-addon1">Select Date</span>
-                <input id="dateSelector" type="text" class="form-control input-sm calendar no-spin">
+                <input id="dateSelector" type="text" class="form-control input-sm calendar no-spin" md-icon-button style="cursor: context-menu;">
 
                 <!--<input class="form-control input-sm calendar no-spin" type="date" [disabled]="dailyAttendnace?.isLoading  || isDownloading" [ngModel]="date  | date:'yyyy-MM-dd'" (ngModelChange)="date = $event;getAttendance($event)" aria-describedby="basic-addon1">-->
             </div>
@@ -85,14 +85,17 @@
                     </div>
                 </div>
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-group" *ngFor="let item of tagTypes?.items">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"  *ngIf="item.name !=='department'">
                         <label>{{item?.name | titlecase}}</label>
                     </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <select class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" #tag (change)="tags.reset();tags.select({tagTypeId:item.id,tagId:tag.value})" placeholder="Tag" name="tags">
+                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" *ngIf="item.name !=='department'">
+                        <select  class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" #tag (change)="tags.reset();tags.select({tagTypeId:item.id,tagId:tag.value})" placeholder="Tag" name="tags">
                         <option selected [ngValue]="null">select an option</option>
-                      <option *ngFor="let tag of item?.tags" [value]="tag.id">
-                        {{tag?.name | titlecase}}
+                      <option *ngFor="let tag of item?.tags" [value]="tag.id" >
+                            {{tag?.name | titlecase}}  
+                        <!-- <span *ngIf = "tag.name.toLowerCase() !== department">
+                              
+                          </span> -->
                     </option>
                     </select>
                     </div>
@@ -112,10 +115,11 @@
 </div>
 
 <div class="row">
-    <md-card class="card">
+    <div class="row page_header">
+  
         <div class="table-responsive">
             <table class="table table-condensed table-hover">
-                <thead class="primary_thead">
+                <thead class="thead">
                     <tr>
                         <th>Name</th>
                         <th class="tdWidth">Code</th>
@@ -127,7 +131,7 @@
                         <!-- <th></th> -->
                     </tr>
                 </thead>
-                <tbody>
+                <tbody style="background-color: white;">
                     <tr *ngFor="let item of dailyAttendnace.items | paginate: { id: 'foo',
                                                       itemsPerPage: dailyAttendnace.pageSize,
                                                       currentPage: dailyAttendnace.pageNo,
@@ -147,11 +151,13 @@
                         </td>
                         <td class="tdWidth">{{(item?.attendance?.checkIn | date:'shortTime') || '--'}}</td>
                         <td class="tdWidth">{{(item?.attendance?.checkOut | date:'shortTime') || '--'}}</td>
+                        <td></td>
                     </tr>
 
                 </tbody>
             </table>
         </div>
+        <br>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="custom_pagination">
                 <pagination-controls id="foo" (pageChange)="dailyAttendnace.pageNo = $event;getAttendance(dailyAttendnace.filters.properties['ofDate']['value']);"></pagination-controls>
@@ -167,5 +173,6 @@
                 </div>
             </div>
         </div>
-    </md-card>
+   
+</div>
 </div>

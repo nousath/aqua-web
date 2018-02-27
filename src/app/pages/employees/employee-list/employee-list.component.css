@@ -45,3 +45,19 @@
     margin-left: 1%;
     margin-right: 1%;
 }
+.table-condensed>tbody>tr>td, .table-condensed>tbody>tr>th, .table-condensed>tfoot>tr>td, .table-condensed>tfoot>tr>th, .table-condensed>thead>tr>td, .table-condensed>thead>tr>th {
+    padding: 5px;
+    padding-left: 2.5% !important;
+}
+.page_header {
+    background-color: #e4e4e4;
+    padding-top: 0.5%;
+    padding-left: 0.5%;
+    padding-right: 1% !important;
+}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: baseline !important;
+    border-top: 1px solid #ddd;
+}

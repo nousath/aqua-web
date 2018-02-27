@@ -28,8 +28,7 @@
   </md-toolbar>
 </div>
 
-<div class="row" [infiniteScrollDistance]="scrollDistance" data-infinite-scroll debounce [infiniteScrollUpDistance]="scrollUpDistance"
-  [infiniteScrollThrottle]="throttle" (scrolled)="onScrollDown()" (scrolledUp)="onUp()">
+<div class="row" data-infinite-scroll debounce  (scrolled)="onScrollDown()" (scrolledUp)="onUp()">
   <div class="col-12">
     <md-card>
       <table class="table table-condensed table-hover table-responsive">

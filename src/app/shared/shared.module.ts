@@ -35,7 +35,7 @@ import { TimePipe } from './time.pipe';
 import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
 import { AmsTagService } from '../services/ams/ams-tag.service';
 import { ShiftPickerComponent } from './components/shift-picker/shift-picker.component';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+// import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import {
   MdTooltipModule,
@@ -72,6 +72,8 @@ import {
   StyleModule,
   MaterialModule
 } from '@angular/material';
+import { insights } from '../models/insights';
+import { InsightsService } from '../services/ams/insights.service';
 
 
 export const MaterialModules = [
@@ -130,7 +132,10 @@ export const MaterialModules = [
     LocalStorageService,
     AmsTagService,
     AmsSystemUsageService,
-    AmsEffectiveShiftService
+    AmsEffectiveShiftService,
+    InsightsService
+    
+
   ],
   imports: [
     HttpModule,
@@ -141,7 +146,7 @@ export const MaterialModules = [
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyA3-BQmJVYB6_soLJPv7cx2lFUMAuELlkM'
     }),
-    InfiniteScrollModule, 
+    // InfiniteScrollModule, 
   ],
   exports: [
     CommonModule,
@@ -156,8 +161,8 @@ export const MaterialModules = [
     AgmCoreModule,
     TimePipe,
     ShiftPickerComponent,
-    InfiniteScrollModule 
-  ]
+  //   InfiniteScrollModule 
+   ]
 
 })
 export class SharedModule { }
