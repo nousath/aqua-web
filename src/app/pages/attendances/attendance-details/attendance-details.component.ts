@@ -35,15 +35,15 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
   employee: Model<Employee>;
   shifTypes: Page<ShiftType>;
   empId: string;
-  isProcessingAttendance: boolean = false;
-  isDownloading: boolean = false;
+  isProcessingAttendance = false;
+  isDownloading = false;
   selectedDate: Date = new Date();
 
   attendance: Model<DayEvent>;
 
   leavesSubmiited: Page<Leave>;
   leaveBalances: Page<LeaveBalance>;
-  isShowLeaveAction: boolean = false;
+  isShowLeaveAction = false;
 
   days: string[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   events: DayEvent[] = [];
@@ -115,7 +115,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
   }
 
   changeShift(shiftTypeId: string) {
-    let model: any = {
+    const model: any = {
       shiftType: { id: shiftTypeId }
     }
     if (shiftTypeId)
@@ -124,7 +124,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
 
   toggleManual(abilitie: 'trackLocation' | 'shiftNotifier') {
     this.employee.properties.abilities[abilitie] = !this.employee.properties.abilities[abilitie];
-    let model: any = {
+    const model: any = {
       abilities: this.employee.properties.abilities
     }
     this.updateEmp(model);
@@ -138,7 +138,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
       this.employee.properties.abilities[type] = true;
     }
 
-    let model: any = {
+    const model: any = {
       abilities: this.employee.properties.abilities
     }
     this.updateEmp(model);
@@ -185,8 +185,8 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
   fetchSubmittedLeaveBalance() {
     this.leavesSubmiited.fetch().then(
       data => {
-        let i: any = this.leavesSubmiited.items.find((item: Leave) => {
-          return item.status.toLowerCase() == 'submitted'
+        const i: any = this.leavesSubmiited.items.find((item: Leave) => {
+          return item.status.toLowerCase() === 'submitted'
         });
         if (i)
           this.isShowLeaveAction = true;
@@ -200,15 +200,15 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
     this.selectedDate = new Date(date)
     this.isProcessingAttendance = true;
     date = new Date(date);
-    let y = date.getFullYear(), m = date.getMonth();
-    let firstDay = new Date(y, m, 1);
-    let lastDay = new Date(y, m + 1, 1);
+    const y = date.getFullYear(), m = date.getMonth();
+    const firstDay = new Date(y, m, 1);
+    const lastDay = new Date(y, m + 1, 1);
 
-    let serverPageInput: ServerPageInput = new ServerPageInput();
+    const serverPageInput: ServerPageInput = new ServerPageInput();
     serverPageInput.query['fromDate'] = firstDay.toISOString();
     serverPageInput.query['toDate'] = lastDay.toISOString();
     serverPageInput.query['employee'] = this.empId;
-    let param: IGetParams = {
+    const param: IGetParams = {
       serverPageInput: serverPageInput
     };
 
@@ -216,23 +216,23 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
       this.events = [];
 
       let startDay = new Date(firstDay).getDay();
-      startDay = startDay == 0 ? 7 : startDay;
+      startDay = startDay === 0 ? 7 : startDay;
 
-      let dateVar: Date = new Date(this.selectedDate);
-      let year: number = dateVar.getFullYear();
-      let monthInNumber: number = dateVar.getMonth();
+      const dateVar: Date = new Date(this.selectedDate);
+      const year: number = dateVar.getFullYear();
+      const monthInNumber: number = dateVar.getMonth();
       // let totalDaysInMonth: number;
 
       // _.each(this.months, (value: Month, key: string, obj: Months) => {
-      //   if (value.id == m + 1)
+      //   if (value.id === m + 1)
       //     totalDaysInMonth = value.days;
       // });
 
-      let lastDateOfMonth: Date = new Date(y, monthInNumber + 1, 0);
+      const lastDateOfMonth: Date = new Date(y, monthInNumber + 1, 0);
 
-      let lastDayOfMonth = lastDateOfMonth.getDate();
+      const lastDayOfMonth = lastDateOfMonth.getDate();
 
-      let days: number[] = [];
+      const days: number[] = [];
       for (let i = 0; i < lastDayOfMonth; i++) {
         days.push(i);
       }
@@ -241,7 +241,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
         let dateEvent: DayEvent;
 
         dateEvent = _.find(data, (item: DayEvent) => {
-          return new Date(item.ofDate).getDate() == day + 1;
+          return new Date(item.ofDate).getDate() === day + 1;
         });
 
         if (dateEvent) {
@@ -253,7 +253,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
           dateEvent.shift.status = dateEvent.shift.status ? dateEvent.shift.status.toLowerCase() : '';
           this.events.push(dateEvent)
         } else {
-          let newEvent: DayEvent = new DayEvent();
+          const newEvent: DayEvent = new DayEvent();
           newEvent.ofDate = new Date(year, monthInNumber, day + 1).toISOString();
           this.events.push(newEvent);
         }
@@ -292,13 +292,13 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
     // dialogRef.componentInstance.attendance.ofDate = item.ofDate;
     // dialogRef.componentInstance.isHoliday = false;
 
-    // // if (item.shift && item.shift.status.toLowerCase() == 'holiday' && (item.status !== 'present' && item.status !== 'checkedin' && item.status !== 'missswipe')) {
+    // // if (item.shift && item.shift.status.toLowerCase() === 'holiday' && (item.status !== 'present' && item.status !== 'checkedin' && item.status !== 'missswipe')) {
     // //   dialogRef.componentInstance.isHoliday = true;
     // //   return dialogRef.componentInstance.hloiday = `Holiday: ${item.shift.holiday.name}`;
 
     // // }
 
-    // // if (item.status.toLowerCase() == 'onleave' && item.shift.status.toLowerCase() == 'working') {
+    // // if (item.status.toLowerCase() === 'onleave' && item.shift.status.toLowerCase() === 'working') {
     // //   dialogRef.componentInstance.isHoliday = true;
     // //   return dialogRef.componentInstance.hloiday = `On Leave`;
 
@@ -349,9 +349,9 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
   }
 
 
-  download(byShiftEnd : boolean, byShiftLength : boolean, reportName : string) {
+  download(byShiftEnd: boolean, byShiftLength: boolean, reportName: string) {
     this.isDownloading = true;
-    let serverPageInput: ServerPageInput = new ServerPageInput();
+    const serverPageInput: ServerPageInput = new ServerPageInput();
     serverPageInput.query['ofDate'] = this.selectedDate;
     serverPageInput.query['employee'] = this.empId;
     serverPageInput.query['byShiftEnd'] = byShiftEnd;
@@ -381,7 +381,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
 
     });
 
-    $("#monthSelector").datepicker("setDate", new Date());
+    $('#monthSelector').datepicker('setDate', new Date());
 
   }
 
@@ -389,7 +389,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
     this.subscription.unsubscribe();
   }
 
-  isUpdatingLeaveStatus: boolean = false;
+  isUpdatingLeaveStatus = false;
   updateStatus(leave: Leave) {
     this.isUpdatingLeaveStatus = true;
     this.amsLeaveService.leaves.update(leave.id, leave, null, `${leave.id}/action`).then(
@@ -411,7 +411,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
       this.updateStatus(leave);
 
     } else {
-      let dialogRef = this.dialog.open(LeaveActionDialogComponent, {
+      const dialogRef = this.dialog.open(LeaveActionDialogComponent, {
         width: '40%'
       });
 

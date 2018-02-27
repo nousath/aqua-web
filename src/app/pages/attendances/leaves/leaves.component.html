@@ -85,7 +85,7 @@
                         <th class="tdWidth">Reason</th>
                         <th class="tdWidth">Status</th>
                         <th class="tdWidth">Comment</th>
-                        <th class="tdWidth text-center" *ngIf="isShowLeaveAction">Action</th>               
+                        <th class="tdWidth text-center" *ngIf="isShowLeaveAction">Action</th>
                     </tr>
                 </thead>
                 <tbody style="background-color: white;">
@@ -107,25 +107,25 @@
                         <td class="tdWidth">{{item?.status}}</td>
                         <td class="tdWidth">{{item?.comment}}</td>
                         <td class="tdWidth text-center" *ngIf="isShowLeaveAction">
-                            <!--<button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status?.toLowerCase() == 'approved'
-                                      || item?.status?.toLowerCase() == 'submitted'" (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
+                            <!--<button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status?.toLowerCase() === 'approved'
+                                      || item?.status?.toLowerCase() === 'submitted'" (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
                                 <md-icon>highlight_off</md-icon>
                             </button>
-                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status?.toLowerCase() == 'rejected'
-                                      || item?.status?.toLowerCase() == 'submitted'
-                                      || item?.status?.toLowerCase() == 'cancelled'" (click)="accept_reject_leave(item, 'approved')" mdTooltip="Approve" [mdTooltipPosition]="'above'">
+                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status?.toLowerCase() === 'rejected'
+                                      || item?.status?.toLowerCase() === 'submitted'
+                                      || item?.status?.toLowerCase() === 'cancelled'" (click)="accept_reject_leave(item, 'approved')" mdTooltip="Approve" [mdTooltipPosition]="'above'">
                                 <md-icon>check_cirle</md-icon>
                             </button>-->
-                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status?.toLowerCase() == 'submitted'" (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
+                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status?.toLowerCase() === 'submitted'" (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
                                 <md-icon>highlight_off</md-icon>
                             </button>
-                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status?.toLowerCase() == 'submitted'" (click)="accept_reject_leave(item, 'approved')" mdTooltip="Approve" [mdTooltipPosition]="'above'">
+                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status?.toLowerCase() === 'submitted'" (click)="accept_reject_leave(item, 'approved')" mdTooltip="Approve" [mdTooltipPosition]="'above'">
                                 <md-icon>check_cirle</md-icon>
                             </button>
-                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status?.toLowerCase() == 'approved'" (click)="accept_reject_leave(item, 'cancelled')" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
+                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status?.toLowerCase() === 'approved'" (click)="accept_reject_leave(item, 'cancelled')" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
                               <md-icon>close</md-icon>
                           </button>
-                        </td>                        
+                        </td>
                     </tr>
 
                 </tbody>

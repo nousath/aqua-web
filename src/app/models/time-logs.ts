@@ -11,7 +11,7 @@ export class TimeLogs {
 
 export class TimeLogsLocation {
   coordinates: number[] = [];
-  has: boolean = false;
-  show: boolean = false;
-  address: string = '';
+  has = false;
+  show = false;
+  address = '';
 }

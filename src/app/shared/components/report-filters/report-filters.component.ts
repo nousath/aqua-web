@@ -1,4 +1,4 @@
-import { insights } from './../../../models/insights';
+import { Insight } from './../../../models/insight.model';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { AmsAlertService, InsightsService } from '../../../services';
@@ -8,7 +8,7 @@ import { AmsAlert } from '../../../models';
 import { Model } from '../../../common/contracts/model';
 import { Subscription } from 'rxjs/Rx';
 import * as _ from 'lodash';
-import { AlertParameter } from '../../../models/alert';
+import { AlertParameter } from '../../../models/alert-parameter.model';
 import { ValidatorService } from '../../../services/validator.service';
 import { Angulartics2 } from 'angulartics2';
 
@@ -23,13 +23,13 @@ declare var $: any;
 })
 
 export class ReportFiltersComponent  implements OnInit {
- 
-   alert: Model<insights>; 
+
+   alert: Model<Insight>;
   subscription: Subscription;
   reset: Function;
  resetConfig: Boolean = false;
- public date=new Date();
- 
+ public date= new Date();
+
 
   constructor(private amsInsightService: InsightsService,
     private toastyService: ToastyService,
@@ -40,19 +40,19 @@ export class ReportFiltersComponent  implements OnInit {
 
     this.alert = new Model({
       api: amsInsightService.Insights,
-      properties: new insights()
+      properties: new Insight()
     });
 
 
 
     this.subscription = activatedRoute.params.subscribe(
       params => {
-        let alertId: string = params['id'];
+        const alertId: string = params['id'];
         this.alert.fetch(alertId).then(
           data => {
-         
+
             if (!this.alert.properties.config.processor) {
-              
+
               this.alert.properties.config['processor'] = { 'channel': '' };
             }
           }
@@ -63,13 +63,13 @@ export class ReportFiltersComponent  implements OnInit {
 
 
   ngOnInit() {
-   
+
   }
 
-   
+
   ngAfterViewInit() {
   $('#dateSelector').datepicker({
-    
+
     minViewMode: 0,
     maxViewMode: 2,
     autoclose: true,

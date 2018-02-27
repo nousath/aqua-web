@@ -20,7 +20,7 @@ const routes: Routes = [
       { path: 'shifts/new', component: ShiftTypeNewComponent },
       { path: 'shifts/edit/:id', component: ShiftTypeNewComponent },
       { path: 'devices', component: DevicesComponent },
-      { path: 'deviceLogs', component: DeviceLogsComponent },     
+      { path: 'deviceLogs', component: DeviceLogsComponent },
       { path: 'holidays', component: HolidaysComponent },
       { path: 'alerts', component: AlertsComponent },
       { path: 'alerts/types', component: AlterTypesComponent },

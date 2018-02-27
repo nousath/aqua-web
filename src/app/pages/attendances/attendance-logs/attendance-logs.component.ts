@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
-import { Subscription } from "rxjs/Rx";
-import { ToastyService } from "ng2-toasty";
-import * as _ from "lodash";
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs/Rx';
+import { ToastyService } from 'ng2-toasty';
+import * as _ from 'lodash';
 import { TimeLogsLocation, TimeLogs } from '../../../models/time-logs';
 import { Employee } from '../../../models/employee';
 import { Model } from '../../../common/contracts/model';
@@ -94,9 +94,9 @@ export class AttendanceLogsComponent implements OnInit {
 
 
   getLocation(latlng: number[], index: number) {
-    let api: string = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng[1]},${latlng[0]}&key=AIzaSyA3-BQmJVYB6_soLJPv7cx2lFUMAuELlkM`;
+    const api = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng[1]},${latlng[0]}&key=AIzaSyA3-BQmJVYB6_soLJPv7cx2lFUMAuELlkM`;
     this.http.get(api).toPromise().then(data => {
-      this.logs.items[index].location.address =  data.json().results[0].formatted_address
+      this.logs.items[index].location.address = data.json().results[0].formatted_address
     }).catch(err => {
       this.logs.items[index].location.address = 'N/A'
     })
@@ -135,7 +135,7 @@ export class AttendanceLogsComponent implements OnInit {
   checkUpdate() {
     let h: number, m: number;
     this.timeLog.properties.employee.id = this.empId;
-    let checkTimes: string[] = this.checkTime.split(':');
+    const checkTimes: string[] = this.checkTime.split(':');
     this.timeLog.properties.time = new Date(new Date(this.ofDate).setHours(parseInt(checkTimes[0]), parseInt(checkTimes[1]))).toISOString();
     this.timeLog.properties.source = 'byAdmin';
     this.timeLog.save().then(data => {

@@ -1,4 +1,4 @@
-import { insights } from './../../../models/insights';
+import { Insight } from './../../../models/insight.model';
 import { AlertType } from './../../../models/alert-type';
 import { Component, OnInit } from '@angular/core';
 import { AmsAlertService } from '../../../services';
@@ -17,34 +17,32 @@ import { InsightsService } from '../../../services/ams/insights.service';
 })
 export class ReportComponent implements OnInit {
 
-  insights: Page<insights>;
-  insight: Model<insights>; 
-  
-
+  insights: Page<Insight>;
+  insight: Model<Insight>;
 
   constructor(private amsInsightService: InsightsService,
     private toastyService: ToastyService,
     private activatedRoute: ActivatedRoute,
     private router: Router) {
 
-    this.insights = new Page({ 
+    this.insights = new Page({
       api: amsInsightService.Insights
     });
 
     this.insight = new Model({
-      api: amsInsightService.Insights,   
-      properties: new insights()
+      api: amsInsightService.Insights,
+      properties: new Insight()
     });
-      
+
     this.fetchAlerts();
   }
-  
+
 
 
   fetchAlerts() {
     this.insights.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
-  
+
   ngOnInit() {
   }
 

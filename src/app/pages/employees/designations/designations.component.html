@@ -51,45 +51,45 @@
 
 <div class="row">
     <div class="row page_header">
-    <md-card class="card">
-        <div class="row text-center noData" *ngIf="designations?.items?.length == 0">
-            <h5><b>no data to display !</b></h5>
-        </div>
-        <div class="table-responsive" *ngIf="designations?.items?.length > 0">
-            <table class="table table-condensed table-hover">
-                <thead class="primary_thead">
-                    <tr>
-                        <th class="tdWidth">Name</th>
-                        <th>Code</th>
-                        <td></td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of designations.items;let i = index" class="capitalize">
-                        <td class="tdWidth">
-                            <input [maxlength]="validatorService.textLength" type="text" [name]="'name_'+i" [readOnly]="designations.isLoading || designation.isProcessing || !item?.isEdit" class="number form-control input-xs" [(ngModel)]="item.name">
-                        </td>
-                        <td>
-                            <input [maxlength]="validatorService.textLength" type="text" [name]="'code_'+i" [readOnly]="designations.isLoading || designation.isProcessing || !item?.isEdit" class="number form-control input-xs" [(ngModel)]="item.code">
-                        </td>
-                        <td class="btnClmWidth">
-                            <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="edit(item, true)">
+        <md-card class="card">
+            <div class="row text-center noData" *ngIf="designations?.items?.length === 0">
+                <h5><b>no data to display !</b></h5>
+            </div>
+            <div class="table-responsive" *ngIf="designations?.items?.length > 0">
+                <table class="table table-condensed table-hover">
+                    <thead class="primary_thead">
+                        <tr>
+                            <th class="tdWidth">Name</th>
+                            <th>Code</th>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of designations.items;let i = index" class="capitalize">
+                            <td class="tdWidth">
+                                <input [maxlength]="validatorService.textLength" type="text" [name]="'name_'+i" [readOnly]="designations.isLoading || designation.isProcessing || !item?.isEdit" class="number form-control input-xs" [(ngModel)]="item.name">
+                            </td>
+                            <td>
+                                <input [maxlength]="validatorService.textLength" type="text" [name]="'code_'+i" [readOnly]="designations.isLoading || designation.isProcessing || !item?.isEdit" class="number form-control input-xs" [(ngModel)]="item.code">
+                            </td>
+                            <td class="btnClmWidth">
+                                <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="edit(item, true)">
                                 <md-icon>edit</md-icon>
                             </button>
-                            <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Delete" [mdTooltipPosition]="'above'" (click)="removeConfirm(item)">
+                                <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Delete" [mdTooltipPosition]="'above'" (click)="removeConfirm(item)">
                                 <md-icon>delete</md-icon>
                             </button>
-                            <button *ngIf="item?.isEdit" [disabled]="designations.isLoading || designation.isProcessing" md-icon-button class="button_align cursor " (click)="save(item)" mdTooltip="Save" [mdTooltipPosition]="'above'">
+                                <button *ngIf="item?.isEdit" [disabled]="designations.isLoading || designation.isProcessing" md-icon-button class="button_align cursor " (click)="save(item)" mdTooltip="Save" [mdTooltipPosition]="'above'">
                                 <md-icon>save</md-icon>
                             </button>
-                            <button *ngIf="item?.isEdit" [disabled]="designations.isLoading || designation.isProcessing" md-icon-button class="button_align cursor" (click)="edit(item, false)" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
+                                <button *ngIf="item?.isEdit" [disabled]="designations.isLoading || designation.isProcessing" md-icon-button class="button_align cursor" (click)="edit(item, false)" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
                                 <md-icon>undo</md-icon>
                             </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </md-card>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </md-card>
     </div>
 </div>

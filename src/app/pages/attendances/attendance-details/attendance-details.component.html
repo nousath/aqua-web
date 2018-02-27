@@ -70,15 +70,19 @@
                             <td>{{employee?.properties?.shiftType.name ? employee?.properties?.shiftType.name : '--'}} </td>
                         </tr>
                         <tr>
-                            <td >Track Location:</td>
+                            <td>Track Location:</td>
 
-                            <td><md-slide-toggle [checked]="employee?.properties?.abilities?.trackLocation" (change)="toggleManual('trackLocation')" >{{employee?.properties?.abilities?.trackLocation ? 'Enabled':'Disabled'}}</md-slide-toggle></td>
-                            
+                            <td>
+                                <md-slide-toggle [checked]="employee?.properties?.abilities?.trackLocation" (change)="toggleManual('trackLocation')">{{employee?.properties?.abilities?.trackLocation ? 'Enabled':'Disabled'}}</md-slide-toggle>
+                            </td>
+
                         </tr>
                         <tr>
                             <td>Shift Notifier:&nbsp;</td>
-                                <td><md-slide-toggle [checked]="employee?.properties?.abilities?.shiftNotifier" (change)="toggleManual('shiftNotifier')">{{employee?.properties?.abilities?.shiftNotifier ? 'Enabled':'Disabled'}}</md-slide-toggle></td>
-                            
+                            <td>
+                                <md-slide-toggle [checked]="employee?.properties?.abilities?.shiftNotifier" (change)="toggleManual('shiftNotifier')">{{employee?.properties?.abilities?.shiftNotifier ? 'Enabled':'Disabled'}}</md-slide-toggle>
+                            </td>
+
                         </tr>
                     </table>
 
@@ -148,7 +152,7 @@
                     <h5><b>{{getDate(item?.ofDate)}}</b></h5>
                     <!--<p>{{i}} {{item?.ofDate | date}}</p>-->
                     <!--<p>{{item?.ofDate}}</p>-->
-                    <!--<div *ngIf="item?.shift?.status == 'working'">-->
+                    <!--<div *ngIf="item?.shift?.status === 'working'">-->
                     <p *ngIf="item?.status === 'present'
                      || item?.status === 'checkedin'
                      || item?.status === 'missswipe'
@@ -216,22 +220,22 @@
                         <td>{{item?.reason}}</td>
                         <td>{{item?.status}}</td>
                         <td class="text-center" *ngIf="isShowLeaveAction">
-                            <!--<button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status == 'approved'
-                                      || item?.status == 'submitted'" (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
+                            <!--<button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status === 'approved'
+                                      || item?.status === 'submitted'" (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
                                 <md-icon>highlight_off</md-icon>
                             </button>
-                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status == 'rejected'
-                                      || item?.status == 'submitted'
-                                      || item?.status == 'cancelled'" (click)="accept_reject_leave(item, 'approved')" mdTooltip="Approve" [mdTooltipPosition]="'above'">
+                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status === 'rejected'
+                                      || item?.status === 'submitted'
+                                      || item?.status === 'cancelled'" (click)="accept_reject_leave(item, 'approved')" mdTooltip="Approve" [mdTooltipPosition]="'above'">
                                 <md-icon>check_cirle</md-icon>
                             </button>-->
-                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status == 'submitted'" (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
+                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status === 'submitted'" (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
                                 <md-icon>highlight_off</md-icon>
                             </button>
-                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status == 'submitted'" (click)="accept_reject_leave(item, 'approved')" mdTooltip="Approve" [mdTooltipPosition]="'above'">
+                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status === 'submitted'" (click)="accept_reject_leave(item, 'approved')" mdTooltip="Approve" [mdTooltipPosition]="'above'">
                                 <md-icon>check_cirle</md-icon>
                             </button>
-                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status?.toLowerCase() == 'approved'" (click)="accept_reject_leave(item, 'cancelled')" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
+                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status?.toLowerCase() === 'approved'" (click)="accept_reject_leave(item, 'cancelled')" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
                               <md-icon>close</md-icon>
                           </button>
                         </td>
@@ -244,10 +248,10 @@
                     <div class="pageSize">
                         <label>Page Size:</label>
                         <select name="pageSize" [(ngModel)]="leavesSubmiited.pageSize" (change)="leavesSubmiited.pageNo = 1;fetchSubmittedLeaveBalance();">
-                            <option value=10>10</option>
-                            <option value=20>20</option>
-                            <option value=50>50</option>
-                            <option value=100>100</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
                         </select>
                     </div>
                 </div>

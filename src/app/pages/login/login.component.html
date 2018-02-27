@@ -37,15 +37,15 @@
                 </div> -->
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 signinForm ">
                     <!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 headr_btn ">
-                        <button *ngIf="section == 'SIGNIN' || section == 'SIGNUP'" class="btn btn-primary btnReg" (click)="switch('SIGNIN')" [ngClass]="{'btncolor':section == 'SIGNIN','grayBtn':section == 'SIGNUP'}">SIGNIN</button>
-                        <button *ngIf="section == 'SIGNIN' || section == 'SIGNUP'" class="btn btn-primary btnReg" (click)="switch('SIGNUP')" [ngClass]="{'btncolor':section == 'SIGNUP','grayBtn':section == 'SIGNIN'}">SIGNUP</button>
-                        <button *ngIf="section == 'OTP'" class="btn btn-primary btnReg btncolor">VERIFY EMAIL</button>
-                        <button *ngIf="section == 'COMPLETE'" class="btn btn-primary btnReg btncolor">COMPLETE PROFILE</button>
-                        <button *ngIf="section == 'FORGOTPASSWORD'" class="btn btn-primary btnReg btncolor">FORGOT PASSWORD</button>
-                        <button *ngIf="section == 'RESETPASSWORD'" class="btn btn-primary btnReg btncolor">RESET PASSWORD</button>
+                        <button *ngIf="section === 'SIGNIN' || section === 'SIGNUP'" class="btn btn-primary btnReg" (click)="switch('SIGNIN')" [ngClass]="{'btncolor':section === 'SIGNIN','grayBtn':section === 'SIGNUP'}">SIGNIN</button>
+                        <button *ngIf="section === 'SIGNIN' || section === 'SIGNUP'" class="btn btn-primary btnReg" (click)="switch('SIGNUP')" [ngClass]="{'btncolor':section === 'SIGNUP','grayBtn':section === 'SIGNIN'}">SIGNUP</button>
+                        <button *ngIf="section === 'OTP'" class="btn btn-primary btnReg btncolor">VERIFY EMAIL</button>
+                        <button *ngIf="section === 'COMPLETE'" class="btn btn-primary btnReg btncolor">COMPLETE PROFILE</button>
+                        <button *ngIf="section === 'FORGOTPASSWORD'" class="btn btn-primary btnReg btncolor">FORGOT PASSWORD</button>
+                        <button *ngIf="section === 'RESETPASSWORD'" class="btn btn-primary btnReg btncolor">RESET PASSWORD</button>
                     </div> -->
                     <!--signin-->
-                    <!-- <div *ngIf="section == 'SIGNIN'">
+                    <!-- <div *ngIf="section === 'SIGNIN'">
                         <form>
                             <div class="row formPadding">
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
@@ -75,7 +75,7 @@
                     </div> -->
 
                     <!--FORGOTPASSWORD-->
-                    <!-- <div *ngIf="section == 'FORGOTPASSWORD'">
+                    <!-- <div *ngIf="section === 'FORGOTPASSWORD'">
                         <form #forgotpassForm="ngForm">
                             <div class="row formPadding">
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
@@ -99,7 +99,7 @@
                         </form>
                     </div> -->
                     <!--RESETPASSWORD-->
-                    <!-- <div *ngIf="section == 'RESETPASSWORD'">
+                    <!-- <div *ngIf="section === 'RESETPASSWORD'">
                         <form #resetpassForm="ngForm">
                             <div class="row formPadding">
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 paddingRight">
@@ -169,7 +169,7 @@
                         </form>
                     </div> -->
                     <!--signup-->
-                    <!-- <div *ngIf="section == 'SIGNUP'">
+                    <!-- <div *ngIf="section === 'SIGNUP'">
                         <form #signupForm="ngForm">
                             <div class="row formPadding">
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
@@ -188,7 +188,7 @@
                         </form>
                     </div> -->
                     <!-- OTP -->
-                    <!-- <div *ngIf="section == 'OTP'">
+                    <!-- <div *ngIf="section === 'OTP'">
                         <div class="row formPadding">
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 paddingRight">
                                 <div class="form-group ">
@@ -251,7 +251,7 @@
                         </div>
                     </div> -->
                     <!--complete Signup-->
-                    <!-- <div *ngIf="section == 'COMPLETE'">
+                    <!-- <div *ngIf="section === 'COMPLETE'">
                         <form #setupProfileForm="ngForm">
                             <div class="row formPadding">
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
@@ -307,7 +307,7 @@
         </div>
         <div class="row cardBody">
             <!--signin-->
-            <div *ngIf="section == 'SIGNIN'">
+            <div *ngIf="section === 'SIGNIN'">
                 <form>
                     <div class="row formPadding">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
@@ -341,7 +341,7 @@
                 </div>
             </div>
             <!--signup-->
-            <div *ngIf="section == 'SIGNUP'">
+            <div *ngIf="section === 'SIGNUP'">
                 <form #signupForm="ngForm">
                     <div class="row formPadding">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
@@ -367,13 +367,13 @@
             </div>
 
             <!--FORGOTPASSWORD-->
-            <div *ngIf="section == 'FORGOTPASSWORD'">
+            <div *ngIf="section === 'FORGOTPASSWORD'">
                 <form #forgotpassForm="ngForm">
                     <div class="row formPadding">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                             <div class="form-group ">
                                 <md-input-container class="full_width">
-                                    <input type="email" mdInput #emailAddress="ngModel" email [(ngModel)]="SignUpEmail" placeholder="Email Address" [maxlength]="validatorService.textLength" name="Email" mdInput required>
+                                    <input type="email" mdInput #emailAddress="ngModel" email [(ngModel)]="signupEmail" placeholder="Email Address" [maxlength]="validatorService.textLength" name="Email" required>
                                     <span class="asterisk" *ngIf="!emailAddress.valid && emailAddress.touched" angulartics2On="click" angularticsEvent="entervalidEmail" angularticsCategory="signIn" [angularticsProperties]="{label:  user.properties.email}">Enter a valid Email</span>
                                 </md-input-container>
                             </div>
@@ -393,7 +393,7 @@
             </div>
 
             <!--RESETPASSWORD-->
-            <div *ngIf="section == 'RESETPASSWORD'">
+            <div *ngIf="section === 'RESETPASSWORD'">
                 <form #resetpassForm="ngForm">
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">

@@ -8,8 +8,8 @@ import { AttendanceDetailsComponent } from './attendance-details/attendance-deta
 import { ApplyLeaveComponent } from './apply-leave/apply-leave.component';
 import { LeavesComponent } from './leaves/leaves.component';
 import { ReportComponent } from './report/report.component';
-import {DownloadReportComponent} from './download-report/download-report.component';
-import {ListReportComponent} from './list-report/list-report.component';
+import { DownloadReportComponent } from './download-report/download-report.component';
+import { ListReportComponent } from './list-report/list-report.component';
 import { LeaveBalancesComponent } from './leave-balances/leave-balances.component';
 import { ManageLeavesComponent } from './manage-leaves/manage-leaves.component';
 const routes: Routes = [
@@ -31,7 +31,7 @@ const routes: Routes = [
       { path: 'monthly/:empId/apply-leave', component: ApplyLeaveComponent },
       { path: 'leaves/:empId/apply-leave', component: ApplyLeaveComponent },
       { path: 'leaves/new/apply', component: ApplyLeaveComponent },
-    
+
       { path: 'leaves', component: LeavesComponent },
       { path: 'leave-balances', component: LeaveBalancesComponent },
       { path: 'leave-balances/:empId', component: AttendanceDetailsComponent },

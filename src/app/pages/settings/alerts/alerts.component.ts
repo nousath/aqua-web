@@ -15,7 +15,7 @@ import { Model } from '../../../common/contracts/model';
 export class AlertsComponent implements OnInit {
 
   alerts: Page<AmsAlert>;
-  alert: Model<AmsAlert>; 
+  alert: Model<AmsAlert>;
 
 
   constructor(private amsAlertService: AmsAlertService,
@@ -37,7 +37,7 @@ export class AlertsComponent implements OnInit {
   }
 
   toggleStatus(alert: AmsAlert) {
-    alert.status = alert.status == 'active' ? 'inactive' : 'active';
+    alert.status = alert.status === 'active' ? 'inactive' : 'active';
     this.alert.properties = alert;
     this.alert.save().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }

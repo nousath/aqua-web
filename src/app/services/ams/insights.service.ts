@@ -1,21 +1,21 @@
 import { GenericApi } from './../../common/generic-api';
 import { IApi } from './../../common/contracts/api/api.interface';
-import { insights } from './../../models/insights';
+import { Insight } from './../../models/insight.model';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { DailyInsightAlerts } from '../../models/daily-insightAlert';
+import { DailyInsightAlerts } from '../../models/daily-insight-alert';
 
 @Injectable()
 export class InsightsService {
-Insights:IApi<insights>;
-alertInsights:IApi<DailyInsightAlerts>
-subscribe:IApi<insights>;
+Insights: IApi<Insight>;
+alertInsights: IApi<DailyInsightAlerts>
+subscribe: IApi<Insight>;
 
-  constructor(private http:Http) { 
-    const baseApi='ams';
-  
-this.Insights=new GenericApi<insights>('Insights', http, baseApi);
-this.alertInsights=new GenericApi<DailyInsightAlerts>('alertInsights',http,baseApi);
-this.subscribe=new GenericApi<insights>('insights/subscribe',http,baseApi);
+  constructor(private http: Http) {
+    const baseApi = 'ams';
+
+this.Insights = new GenericApi<Insight>('Insights', http, baseApi);
+this.alertInsights = new GenericApi<DailyInsightAlerts>('alertInsights', http, baseApi);
+this.subscribe = new GenericApi<Insight>('insights/subscribe', http, baseApi);
   }
 }

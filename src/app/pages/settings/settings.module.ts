@@ -34,7 +34,7 @@ import { ChannelTypesComponent } from './channel-types/channel-types.component';
     DeviceLogsComponent,
     ChannelTypesComponent,
     ChannelTypeEditComponent,
-    DeviceDialogComponent  
+    DeviceDialogComponent
   ],
   entryComponents: [
     DeviceDialogComponent

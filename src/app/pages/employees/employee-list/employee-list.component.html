@@ -5,22 +5,22 @@
     <div *ngIf="!isUpload" class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
         <div class="filterStatus">
             <!-- <div class="btn-group" role="group" aria-label="..."> -->
-                    <span class="field" id="basic-addon1">status</span>
-                <div class="btn-group" role="group">
-                       
-                    <button type="button" class="btn btn-default dropdown-toggle capitalize" data-toggle="dropdown" >
+            <span class="field" id="basic-addon1">status</span>
+            <div class="btn-group" role="group">
+
+                <button type="button" class="btn btn-default dropdown-toggle capitalize" data-toggle="dropdown">
                         {{statusFilter}}
                         <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu" style="cursor: pointer;">
-                        <li><a (click)="fetchEmp('activate')">Activate</a></li>
-                        <li><a (click)="fetchEmp('verified')">verified</a></li>
-                        <li><a (click)="fetchEmp('inComplete')">In Complete</a></li>
-                        <li><a (click)="fetchEmp('pending')">Pending</a></li>
-                      <li><a   (click)="fetchEmp('deactivate')">Deactivate</a></li>
-                        <li><a (click)="fetchEmp('archive')">Archive</a></li>
-                    </ul>
-                </div>
+                <ul class="dropdown-menu" style="cursor: pointer;">
+                    <li><a (click)="fetchEmp('activate')">Activate</a></li>
+                    <li><a (click)="fetchEmp('verified')">verified</a></li>
+                    <li><a (click)="fetchEmp('inComplete')">In Complete</a></li>
+                    <li><a (click)="fetchEmp('pending')">Pending</a></li>
+                    <li><a (click)="fetchEmp('deactivate')">Deactivate</a></li>
+                    <li><a (click)="fetchEmp('archive')">Archive</a></li>
+                </ul>
+            </div>
             <!-- </div> -->
         </div>
         <div class="filtrEmpName">
@@ -54,7 +54,7 @@
                            <md-icon>highlight_off</md-icon>
                         </button>
         </div>
-        <button *ngIf="uploader?.queue?.length == 0" class="uploadBtn" (click)="excel()" md-icon-button>
+        <button *ngIf="uploader?.queue?.length === 0" class="uploadBtn" (click)="excel()" md-icon-button>
                             <md-icon>highlight_off</md-icon>
                         </button>
     </div>
@@ -62,8 +62,8 @@
 <md-spinner class="custom_spinner" *ngIf="employees?.isLoading || uploader.isUploading || employee?.isProcessing" mode="indeterminate"></md-spinner>
 <div class="row">
     <div class="row page_header">
-   
-        <div class="row text-center noData" *ngIf="employees?.items?.length == 0">
+
+        <div class="row text-center noData" *ngIf="employees?.items?.length === 0">
             <h5><b>no data to display !</b></h5>
         </div>
         <div class="table-responsive" *ngIf="employees?.items?.length" style="background-color: white;">
@@ -96,7 +96,7 @@
                                 <md-icon>edit</md-icon>
                             </a>
                             &nbsp;
-                            <button *ngIf="item.status !== 'deactivate'" [disabled]="employees?.isLoading || employee?.isProcessing" md-icon-button class="button_align cursor"  mdTooltip="Terminate" [mdTooltipPosition]="'above'" (click)="terminateEmp(item.id, item.name)">
+                            <button *ngIf="item.status !== 'deactivate'" [disabled]="employees?.isLoading || employee?.isProcessing" md-icon-button class="button_align cursor" mdTooltip="Terminate" [mdTooltipPosition]="'above'" (click)="terminateEmp(item.id, item.name)">
                             <i class="fa fa-user-times fa-lg" aria-hidden="true"></i>
                             </button>
                         </td>
@@ -122,6 +122,6 @@
                 </div>
             </div>
         </div>
-    
+
     </div>
 </div>

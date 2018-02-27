@@ -1,6 +1,6 @@
 export class Designation {
-  name: string = '';
-  code: string = '';
+  name = '';
+  code = '';
   id: number = null;
-  isEdit: boolean = false;
+  isEdit = false;
 }

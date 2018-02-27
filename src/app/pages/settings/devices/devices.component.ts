@@ -21,9 +21,12 @@ export class DevicesComponent implements OnInit {
   devices: Page<Device>;
   categories: Page<Category>;
   device: Model<Device>;
-  isUpload: boolean = false;
+  isUpload = false;
   uploader: FileUploader;
   deviceId: string;
+
+  isDownloading = false;
+  activationKey = '';
 
   constructor(private amsDeviceService: AmsDeviceService,
     private toastyService: ToastyService,
@@ -33,22 +36,22 @@ export class DevicesComponent implements OnInit {
     private router: Router,
     public dialog: MdDialog) {
 
-      let access_Token: string = this.store.getItem('ams_token');
-      let orgCode = this.store.getItem('orgCode');
+    const access_Token: string = this.store.getItem('ams_token');
+    const orgCode = this.store.getItem('orgCode');
 
-      this.uploader = new FileUploader({
-        // url: `/ams/api/devices/${this.deviceId}/logs`,
-        url: `localhost:3040/api/devices/${this.deviceId}/logs`,
-        itemAlias: 'file',
-        headers: [{
-          name: 'x-access-token',
-          value: access_Token
-        }, {
-          name: 'org-code',
-          value: orgCode
-        }]
-      }); 
-   
+    this.uploader = new FileUploader({
+      // url: `/ams/api/devices/${this.deviceId}/logs`,
+      url: `localhost:3040/api/devices/${this.deviceId}/logs`,
+      itemAlias: 'file',
+      headers: [{
+        name: 'x-access-token',
+        value: access_Token
+      }, {
+        name: 'org-code',
+        value: orgCode
+      }]
+    });
+
 
     this.uploader.onErrorItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
       console.log('onErrorItem', response, headers);
@@ -56,10 +59,11 @@ export class DevicesComponent implements OnInit {
 
     this.uploader.onCompleteItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
       console.log(response);
-      let res: any = JSON.parse(response);
-      if (!res.isSuccess)
+      const res: any = JSON.parse(response);
+      if (!res.isSuccess) {
         return toastyService.error({ title: 'Error', msg: 'excel upload failed' })
-        this.isUpload = false;
+      }
+      this.isUpload = false;
 
     };
 
@@ -83,22 +87,22 @@ export class DevicesComponent implements OnInit {
 
   fetchDevices() {
     this.devices.fetch(
-      function(err,page){
-        if(!err){
+      function (err, page) {
+        if (!err) {
           let h: number, m: number;
-          page.items.forEach(device=>{
-            if(device.mute && device.mute.length >0){
-              device.mute.forEach(dt=>{
-                if(dt.start != null){
-                    h = new Date(dt.start).getHours();
-                    m = new Date(dt.start).getMinutes();
-                    dt.start= `${h < 10 ? '0' + h : h}:${m < 10 ? '0' + m : m}`;
+          page.items.forEach(device => {
+            if (device.mute && device.mute.length > 0) {
+              device.mute.forEach(dt => {
+                if (dt.start != null) {
+                  h = new Date(dt.start).getHours();
+                  m = new Date(dt.start).getMinutes();
+                  dt.start = `${h < 10 ? '0' + h : h}:${m < 10 ? '0' + m : m}`;
                 }
-                if(dt.end != null){
+                if (dt.end != null) {
                   h = new Date(dt.end).getHours();
                   m = new Date(dt.end).getMinutes();
-                  dt.end= `${h < 10 ? '0' + h : h}:${m < 10 ? '0' + m : m}`;
-              }
+                  dt.end = `${h < 10 ? '0' + h : h}:${m < 10 ? '0' + m : m}`;
+                }
               })
             }
           })
@@ -108,7 +112,7 @@ export class DevicesComponent implements OnInit {
   }
 
   saveDevice(device?: Device) {
-    let dialogRef = this.dialog.open(DeviceDialogComponent, {
+    const dialogRef = this.dialog.open(DeviceDialogComponent, {
       width: '40%'
     });
     dialogRef.componentInstance.categories = this.categories.items;
@@ -136,8 +140,7 @@ export class DevicesComponent implements OnInit {
     ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
-  isDownloading: boolean = false;
-  activationKey: string = '';
+
   getActivationKey() {
     this.isDownloading = true;
     this.orgService.organizations.get('my').then(
@@ -149,11 +152,11 @@ export class DevicesComponent implements OnInit {
   }
 
   copyKey() {
-    let input: any = document.querySelector('#activationKey');
+    const input: any = document.querySelector('#activationKey');
     input.select()
     try {
-      let successful = document.execCommand('copy');
-      let msg = successful ? 'successful' : 'unsuccessful';
+      const successful = document.execCommand('copy');
+      const msg = successful ? 'successful' : 'unsuccessful';
       console.log('Copying text command was ' + msg);
     } catch (err) {
       console.log('Oops, unable to copy');
@@ -176,12 +179,12 @@ export class DevicesComponent implements OnInit {
   ngOnInit() {
   }
 
-  fileUploader(file){
+  fileUploader(file) {
     console.log(file)
     this.deviceId = file.id;
     console.log(this.deviceId)
-    let access_Token: string = this.store.getItem('ams_token');
-    let orgCode = this.store.getItem('orgCode');
+    const access_Token: string = this.store.getItem('ams_token');
+    const orgCode = this.store.getItem('orgCode');
 
     this.isUpload = !this.isUpload;
     this.uploader = new FileUploader({
@@ -203,23 +206,23 @@ export class DevicesComponent implements OnInit {
     };
 
     this.uploader.onCompleteItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
-      let res: any = JSON.parse(response);
+      const res: any = JSON.parse(response);
       this.isDownloading = false;
       this.isUpload = false;
-      
-      
-      if (!res.isSuccess)
-        return this.toastyService.error({title: 'Error', msg: res.error })
 
-        return this.toastyService.success('file uploaded successfully')
+
+      if (!res.isSuccess)
+        return this.toastyService.error({ title: 'Error', msg: res.error })
+
+      return this.toastyService.success('file uploaded successfully')
 
     };
-}
+  }
 
-upload(item){
-  item.upload();
-  this.isUpload = !this.isUpload;
-  this.isDownloading = true;
-}
+  upload(item) {
+    item.upload();
+    this.isUpload = !this.isUpload;
+    this.isDownloading = true;
+  }
 
 }

@@ -17,14 +17,14 @@ export class AutoCompleteService {
   private getHeaders(apiName: string): Headers {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    let externalToken = this.store.getItem('external-token');
-    let amsToken = this.store.getItem('ams_token');
-    let orgCode = this.store.getItem('orgCode');
+    const externalToken = this.store.getItem('external-token');
+    const amsToken = this.store.getItem('ams_token');
+    const orgCode = this.store.getItem('orgCode');
 
 
     // let externalToken = this.store.getItem('externalToken');
 
-    if (apiName == 'ams') {
+    if (apiName === 'ams') {
       if (amsToken)
         headers.append('x-access-token', amsToken);
       if (externalToken)
@@ -32,7 +32,7 @@ export class AutoCompleteService {
       // else if (emsToken)
       //   headers.append('external-token', emsToken);
 
-    } else if (apiName == 'ems') {
+    } else if (apiName === 'ems') {
       // if (externalToken)
       //   headers.append('external-token', externalToken)
       if (externalToken)
@@ -46,9 +46,9 @@ export class AutoCompleteService {
 
   private getQueryParams(input: ServerPageInput): URLSearchParams {
 
-    let params: URLSearchParams = new URLSearchParams();
+    const params: URLSearchParams = new URLSearchParams();
     _.each(input, (value, key, obj) => {
-      if (key == "query") {
+      if (key === 'query') {
         _.each(value, (keyVal, keyKey) => {
           if (keyVal)
             params.set(keyKey, keyVal);
@@ -59,11 +59,11 @@ export class AutoCompleteService {
   }
 
   searchByKey<TModel>(key: string, value: string, apiName: string, apiKey: string, input?: ServerPageInput): Observable<TModel[]> {
-    let params: URLSearchParams = new URLSearchParams();
+    const params: URLSearchParams = new URLSearchParams();
 
     if (input) {
       _.each(input, (item, itemKey) => {
-        if (itemKey == "query") {
+        if (itemKey === 'query') {
           _.each(item, (keyVal, keyKey) => {
             if (keyVal)
               params.set(keyKey, keyVal);
@@ -73,13 +73,13 @@ export class AutoCompleteService {
     }
 
     // if (value) {
-    value = value == 'init' ? null : value;
+    value = value === 'init' ? null : value;
 
 
     params.set(key, value);
     return this.http.get(`${environment.apiUrls[apiName]}/api/${apiKey}`, { headers: this.getHeaders(apiName), search: params })
       .map(res => {
-        let json = res.json().items as TModel[];
+        const json = res.json().items as TModel[];
         return json;
       }).catch(
       err => {

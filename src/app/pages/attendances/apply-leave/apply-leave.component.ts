@@ -21,7 +21,7 @@ export class ApplyLeaveComponent implements OnInit {
   leaveBalances: Page<LeaveBalance>;
   employee: Model<Employee>;
   subscription: Subscription;
-  isEmpId: boolean = false;
+  isEmpId = false;
   duration: 'multi' | 'full' | 'half' | '1/3' | '2/3' | null = null;
 
   constructor(private amsEmployeeService: AmsEmployeeService,
@@ -31,8 +31,7 @@ export class ApplyLeaveComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private toastyService: ToastyService,
-    private angulartics2: Angulartics2)
-     {
+    private angulartics2: Angulartics2) {
 
     this.employee = new Model({
       api: amsEmployeeService.employeesForAdmin,
@@ -54,7 +53,7 @@ export class ApplyLeaveComponent implements OnInit {
 
     this.subscription = activatedRoute.params.subscribe(
       params => {
-        let empId = params['empId'];
+        const empId = params['empId'];
         if (empId) {
           this.isEmpId = true;
           this.getLeaveBalance(empId);
@@ -94,7 +93,7 @@ export class ApplyLeaveComponent implements OnInit {
   selectLeveType(leaveTypeId: string) {
     if (leaveTypeId)
       this.leave.properties.leaveType.unitsPerDay = this.leaveBalances.items.find((i: LeaveBalance) => {
-        return i.leaveType.id == leaveTypeId
+        return i.leaveType.id === leaveTypeId
       }).leaveType.unitsPerDay;
     else
       this.leave.properties.leaveType.unitsPerDay = null;
@@ -108,17 +107,17 @@ export class ApplyLeaveComponent implements OnInit {
   }
 
   applyLeave(isFormValid: boolean) {
-    this.angulartics2.eventTrack.next({ action: 'applyLeaveClick', properties: { category: 'allLeave', label: 'myLabel' }});
+    this.angulartics2.eventTrack.next({ action: 'applyLeaveClick', properties: { category: 'allLeave', label: 'myLabel' } });
     if (!isFormValid) {
       return this.toastyService.info({ title: 'Info', msg: 'Fill all required fields' })
     }
     this.leave.properties.date = new Date(this.leave.properties.date).toISOString();
     switch (this.duration) {
       case 'multi':
-        let oneDay = 24 * 60 * 60 * 1000;
-        let startDay: Date = new Date(this.leave.properties.date);
+        const oneDay = 24 * 60 * 60 * 1000;
+        const startDay: Date = new Date(this.leave.properties.date);
         startDay.setHours(0, 0, 0, 0);
-        let endDay: Date = new Date(this.leave.properties.toDate);
+        const endDay: Date = new Date(this.leave.properties.toDate);
         endDay.setHours(0, 0, 0, 0);
         if (endDay <= startDay) {
           return this.toastyService.info({ title: 'Info', msg: 'End Date should be greater then Start Date' })
@@ -146,8 +145,8 @@ export class ApplyLeaveComponent implements OnInit {
         return this.toastyService.info({ title: 'Info', msg: 'Select Duration' })
     }
 
-    let totalLeaveBalace: LeaveBalance = this.leaveBalances.items.find((i: LeaveBalance) => {
-      return i.leaveType.id == this.leave.properties.type.id
+    const totalLeaveBalace: LeaveBalance = this.leaveBalances.items.find((i: LeaveBalance) => {
+      return i.leaveType.id === this.leave.properties.type.id
     });
 
     if (this.leave.properties.days > totalLeaveBalace.days && !totalLeaveBalace.leaveType.unlimited) {
@@ -163,7 +162,7 @@ export class ApplyLeaveComponent implements OnInit {
 
   initDatePiker(type: string) {
     setTimeout(() => {
-      if (this.duration == 'multi') {
+      if (this.duration === 'multi') {
         this.initMultiDatePiker()
       } else {
         this.initOneDayDatePiker()

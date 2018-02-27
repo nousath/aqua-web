@@ -5,7 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Model } from '../../../common/contracts/model';
 import { Employee, Designation } from '../../../models';
 import { Subscription, Observable } from 'rxjs/Rx';
-import { EmsEmployee, Supervisor } from '../../../models/ems/employee';
+import { EmsEmployee} from '../../../models/ems/employee';
+import { Supervisor } from '../../../models/ems/supervisor.model';
 import { ValidatorService } from '../../../services/validator.service';
 import { AutoCompleteService } from '../../../services/auto-complete.service';
 import { NgForm } from '@angular/forms';
@@ -13,7 +14,7 @@ import { Page } from '../../../common/contracts/page';
 import { MdDialog } from '@angular/material';
 import { ResetPasswordDialogComponent } from '../../../dialogs/reset-password-dialog/reset-password-dialog.component';
 import { FileUploader, ParsedResponseHeaders, FileItem, FileLikeObject } from 'ng2-file-upload';
-import * as _ from "lodash";
+import * as _ from 'lodash';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { environment } from '../../../../environments/environment.qa';
 declare var $: any;
@@ -30,10 +31,10 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
   designations: Page<Designation>;
   subscription: Subscription;
   uploader: FileUploader;
-  isChangeImage: boolean = false;
+  isChangeImage = false;
   imgUploadUrl: string = environment.apiUrls.ems;
 
-  isNew: boolean = false;
+  isNew = false;
 
   constructor(private emsEmployeeService: EmsEmployeeService,
     private toastyService: ToastyService,
@@ -44,10 +45,10 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     private store: LocalStorageService,
     private dialog: MdDialog,
     private router: Router) {
-     
-      
-    let access_Token: string = this.store.getItem('external-token');
-    let orgCode = this.store.getItem('orgCode');
+
+
+    const access_Token: string = this.store.getItem('external-token');
+    const orgCode = this.store.getItem('orgCode');
     this.uploader = new FileUploader({
       itemAlias: 'image',
       allowedMimeType: ['image/png', 'image/gif', 'image/jpeg', 'image/jpg'],
@@ -76,10 +77,10 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.uploader.onCompleteItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
 
-      let res: any = JSON.parse(response);
+      const res: any = JSON.parse(response);
       if (!res.isSuccess)
         return toastyService.error({ title: 'Error', msg: 'Image upload failed' })
-      this.employee.properties.picUrl = `${res.message.picUrl}?time=${new Date().toString().replace(/ /g, "")}`;
+      this.employee.properties.picUrl = `${res.message.picUrl}?time=${new Date().toString().replace(/ /g, '')}`;
       this.isChangeImage = false;
 
     };
@@ -106,15 +107,15 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.subscription = activatedRoute.params.subscribe(
       params => {
-        let empId = params['id'];
+        const empId = params['id'];
         if (!empId)
           return this.toastyService.error({ title: 'Error', msg: 'Please select an employee' });
-        empId == 'new' ?
+        empId === 'new' ?
           (this.isNew = true) :
           this.employee.fetch(empId).then(
             data => {
               this.uploader.setOptions({ url: `/ems/api/employees/image/${empId}` });
-              if (this.employee.properties.dob) { $("#dateSelector").datepicker("setDate", new Date(this.employee.properties.dob)); }
+              if (this.employee.properties.dob) { $('#dateSelector').datepicker('setDate', new Date(this.employee.properties.dob)); }
               this.employee.properties.supervisor = this.employee.properties.supervisor ? this.employee.properties.supervisor : new Supervisor();
               // this.employee.properties.designation = this.employee.properties.designation ? this.employee.properties.designation : new Designation();
               this.employee.properties.designation = this.employee.properties.designation ? this.employee.properties.designation.toLowerCase() : null;
@@ -134,8 +135,8 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.employee.properties.email && !this.validatorService.validateEmail(this.employee.properties.email))
       return this.toastyService.info({ title: 'Info', msg: 'Please fill valid email' })
 
-    let d: any = this.employee.properties.designation ? _.find(this.designations.items, (item: Designation) => {
-      return item.name.toLowerCase() == this.employee.properties.designation.toLowerCase()
+    const d: any = this.employee.properties.designation ? _.find(this.designations.items, (item: Designation) => {
+      return item.name.toLowerCase() === this.employee.properties.designation.toLowerCase()
     }) : null;
     this.employee.properties.designation = d ? d : null;
 
@@ -143,7 +144,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
       this.employee.properties.status = 'activate';
 
     if (this.employee.properties.picUrl)
-      this.employee.properties.picUrl = this.employee.properties.picUrl.indexOf('?time=') == -1 ?
+      this.employee.properties.picUrl = this.employee.properties.picUrl.indexOf('?time=') === -1 ?
         this.employee.properties.picUrl :
         this.employee.properties.picUrl.slice(0, this.employee.properties.picUrl.indexOf('?time='));
 
@@ -164,12 +165,12 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   resetPassword() {
-    let dialog = this.dialog.open(ResetPasswordDialogComponent, { width: '40%' });
+    const dialog = this.dialog.open(ResetPasswordDialogComponent, { width: '40%' });
     dialog.afterClosed().subscribe(
       (password: string) => {
         if (password) {
           this.employee.isProcessing = true;
-          let emp: any = {
+          const emp: any = {
             password: password
           };
           this.emsEmployeeService.employees.update(this.employee.properties.id, emp)
@@ -209,7 +210,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getBase64(image: FileItem, cb) {
-    let reader = new FileReader();
+    const reader = new FileReader();
     reader.onloadend = (e) => {
       this.getImgFromBase64(image, reader.result, cb);
     }
@@ -217,41 +218,41 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getImgFromBase64(image: FileItem, base64: string, cb) {
-    let canvas: HTMLCanvasElement = document.createElement("canvas"),
-      ctx: CanvasRenderingContext2D = canvas.getContext("2d");
-    let img = new Image();
+    const canvas: HTMLCanvasElement = document.createElement('canvas'),
+      ctx: CanvasRenderingContext2D = canvas.getContext('2d');
+    const img = new Image();
     img.onload = () => {
-      let ratio = img.width / img.height;
+      const ratio = img.width / img.height;
       img.width = img.width <= 150 ? img.width : 150;
       canvas.width = img.width;
       canvas.height = img.width / ratio;
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      let dataURI = canvas.toDataURL("image/jpeg", 0.6);
+      const dataURI = canvas.toDataURL('image/jpeg', 0.6);
 
-      let typeOfImage = image.file.type;
-      let nameOfImage = image.file.name;
+      const typeOfImage = image.file.type;
+      const nameOfImage = image.file.name;
       // convert base64 to raw binary data held in a string
-      let byteString = atob(dataURI.split(',')[1]);
+      const byteString = atob(dataURI.split(',')[1]);
       // separate out the mime component
-      let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+      const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
       // write the bytes of the string to an ArrayBuffer
-      let ab = new ArrayBuffer(byteString.length);
-      let ia = new Uint8Array(ab);
+      const ab = new ArrayBuffer(byteString.length);
+      const ia = new Uint8Array(ab);
       for (let i = 0; i < byteString.length; i++) {
         ia[i] = byteString.charCodeAt(i);
       }
       // write the ArrayBuffer to a blob, and you're done
-      let bb = new Blob([ab], { type: typeOfImage });
-      let file = new File([bb], nameOfImage, { type: typeOfImage });
+      const bb = new Blob([ab], { type: typeOfImage });
+      const file = new File([bb], nameOfImage, { type: typeOfImage });
       cb(file);
     };
     img.src = base64;
 
   }
- 
+
 
   ngAfterViewInit() {
-    if (this.employee.properties.dob) { $("#dateSelector").datepicker("setDate", new Date(this.employee.properties.dob)); }
+    if (this.employee.properties.dob) { $('#dateSelector').datepicker('setDate', new Date(this.employee.properties.dob)); }
     $('#dateSelector').datepicker({
       format: 'dd/mm/yyyy',
       minViewMode: 0,

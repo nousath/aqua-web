@@ -1,10 +1,10 @@
 export class Tag {
-  id: string = '';
-  name: string = '';
+  id = '';
+  name = '';
 }
 export class TagType {
-  id: string = '';
-  name: string = '';
+  id = '';
+  name = '';
   tags: Tag[] = [];
 }
 

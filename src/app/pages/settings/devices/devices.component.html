@@ -19,69 +19,69 @@
 <md-spinner class="custom_spinner" *ngIf="devices?.isLoading || isDownloading || device?.isProcessing || categories?.isLoading" mode="indeterminate"></md-spinner>
 
 <div *ngIf="isUpload" class="row marginTopAdd">
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-          <span><b>File Upload</b></span>&nbsp;&nbsp;
-        </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-          <input class="file" id="uploader" type="file" ng2FileSelect [uploader]="uploader"/>
-        </div>
-          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 marginTopSubtract" *ngFor="let item of uploader.queue" class="queue">
-              <button md-icon-button (click)="upload(item)" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+        <span><b>File Upload</b></span>&nbsp;&nbsp;
+    </div>
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <input class="file" id="uploader" type="file" ng2FileSelect [uploader]="uploader" />
+    </div>
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 marginTopSubtract" *ngFor="let item of uploader.queue" class="queue">
+        <button md-icon-button (click)="upload(item)" [disabled]="item.isReady || item.isUploading || item.isSuccess">
                               <md-icon>cloud_upload</md-icon>
                           </button>
-              <button md-icon-button  (click)="isUpload = !isUpload" [disabled]="item.isReady || item.isUploading  || uploader.isUploading">
+        <button md-icon-button (click)="isUpload = !isUpload" [disabled]="item.isReady || item.isUploading  || uploader.isUploading">
                              <md-icon>highlight_off</md-icon>
                           </button>
-          </div>
-          <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 marginTopSubtract">
-              <button *ngIf="uploader?.queue?.length == 0"  (click)="isUpload = !isUpload" md-icon-button>
+    </div>
+    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 marginTopSubtract">
+        <button *ngIf="uploader?.queue?.length === 0" (click)="isUpload = !isUpload" md-icon-button>
                   <md-icon>highlight_off</md-icon>
               </button>
-          </div>
-          
-  </div>
+    </div>
+
+</div>
 
 <div class="row">
     <md-card class="card">
         <div class="row page_header">
-        <div class="table-responsive">
-            <table class="table table-condensed table-hover">
-                <thead class="thead">
-                    <tr>
-                        <th>Model</th>
-                        <th class="tdWidth">Manufacturer</th>
-                        <th class="tdWidth">Category</th>
-                        <th class="tdWidth">IP</th>
-                        <th class="tdWidth">Port No</th>
-                        <th class="tdWidth">BSSID</th>
-                        <th class="tdWidth"></th>
-                    </tr>
-                </thead>
-                <tbody style="background-color: white;">
-                    <tr *ngFor="let item of devices.items | paginate: { id: 'foo',
+            <div class="table-responsive">
+                <table class="table table-condensed table-hover">
+                    <thead class="thead">
+                        <tr>
+                            <th>Model</th>
+                            <th class="tdWidth">Manufacturer</th>
+                            <th class="tdWidth">Category</th>
+                            <th class="tdWidth">IP</th>
+                            <th class="tdWidth">Port No</th>
+                            <th class="tdWidth">BSSID</th>
+                            <th class="tdWidth"></th>
+                        </tr>
+                    </thead>
+                    <tbody style="background-color: white;">
+                        <tr *ngFor="let item of devices.items | paginate: { id: 'foo',
                                                       itemsPerPage: devices.pageSize,
                                                       currentPage: devices.pageNo,
                                                       totalItems: devices.totalRecords };" class="capitalize">
-                        <td>
-                            <img *ngIf="item?.machine?.picUrl" class="img-circle profile_pic" alt="img" [src]="item?.machine?.picUrl">
-                            <img *ngIf="!item?.machine?.picUrl" class="img-circle profile_pic" alt="img" src="assets/images/blank.png"> &nbsp;{{item?.machine?.model}}
-                        </td>
-                        <td class="tdWidth">{{item?.machine?.manufacturer}}</td>
-                        <td class="tdWidth">{{item?.category?.name}}</td>
-                        <td class="tdWidth">{{item?.ip}}</td>
-                        <td class="tdWidth">{{item?.port || '--'}}</td>
-                        <td class="tdWidth">{{item?.bssid || '--'}}</td>
-                        <td class="tdWidth text-center">
-                            <button class="button_align" md-icon-button [disabled]="devices?.isLoading || device?.isProcessing || categories?.isLoading" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="saveDevice(item)"><i class="fa fa-pencil-square-o  fa-lg" aria-hidden="true"></i></button>
-                            <button class="button_align" md-icon-button [disabled]="devices?.isLoading || device?.isProcessing || categories?.isLoading" mdTooltip="Delete" [mdTooltipPosition]="'above'" (click)="remove(item)"><md-icon>delete</md-icon></button>
-                            <button class="button_align" md-icon-button [disabled]="devices?.isLoading || device?.isProcessing || categories?.isLoading" mdTooltip="Import CSV" [mdTooltipPosition]="'above'" (click)="fileUploader(item)"><md-icon>cloud_upload</md-icon></button>
-                        </td>
-                    </tr>
+                            <td>
+                                <img *ngIf="item?.machine?.picUrl" class="img-circle profile_pic" alt="img" [src]="item?.machine?.picUrl">
+                                <img *ngIf="!item?.machine?.picUrl" class="img-circle profile_pic" alt="img" src="assets/images/blank.png"> &nbsp;{{item?.machine?.model}}
+                            </td>
+                            <td class="tdWidth">{{item?.machine?.manufacturer}}</td>
+                            <td class="tdWidth">{{item?.category?.name}}</td>
+                            <td class="tdWidth">{{item?.ip}}</td>
+                            <td class="tdWidth">{{item?.port || '--'}}</td>
+                            <td class="tdWidth">{{item?.bssid || '--'}}</td>
+                            <td class="tdWidth text-center">
+                                <button class="button_align" md-icon-button [disabled]="devices?.isLoading || device?.isProcessing || categories?.isLoading" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="saveDevice(item)"><i class="fa fa-pencil-square-o  fa-lg" aria-hidden="true"></i></button>
+                                <button class="button_align" md-icon-button [disabled]="devices?.isLoading || device?.isProcessing || categories?.isLoading" mdTooltip="Delete" [mdTooltipPosition]="'above'" (click)="remove(item)"><md-icon>delete</md-icon></button>
+                                <button class="button_align" md-icon-button [disabled]="devices?.isLoading || device?.isProcessing || categories?.isLoading" mdTooltip="Import CSV" [mdTooltipPosition]="'above'" (click)="fileUploader(item)"><md-icon>cloud_upload</md-icon></button>
+                            </td>
+                        </tr>
 
-                </tbody>
-            </table>
-        </div>
-        <!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    </tbody>
+                </table>
+            </div>
+            <!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <pagination-controls id="foo" (pageChange)="devices.pageNo = $event;fetchDevices();"></pagination-controls>
         </div> -->
         </div>

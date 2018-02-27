@@ -24,14 +24,14 @@ declare var $: any;
 export class DailyShiftRosterComponent implements OnInit {
   shiftTypes: Page<ShiftType>;
   effectiveShifts: Page<EffectiveShift>;
-  effectiveShift: any;  
+  effectiveShift: any;
   isLoading = true;
   date: Date;
   throttle = 300;
   scrollDistance = 1;
-  scrollUpDistance = 2; 
+  scrollUpDistance = 2;
   pageSize = 10;
-  isSpinnerDown: boolean = false;
+  isSpinnerDown = false;
   subscription: Subscription;
   isHeader: any;
 
@@ -44,17 +44,17 @@ export class DailyShiftRosterComponent implements OnInit {
     private router: Router,
     private toastyService: ToastyService) {
 
-      this.subscription = activatedRoute.queryParams.subscribe(queryParams => {
-        let token: string = queryParams['token'];
-        let orgCode: string = queryParams['orgCode'];
-        this.isHeader = queryParams['isHeader'];
-        if (token && orgCode) {
-          orgCode = orgCode.toLowerCase();
-          this.store.setItem('ams_token', token);
-          this.store.setItem('orgCode', orgCode);
-        }
-      })
-  
+    this.subscription = activatedRoute.queryParams.subscribe(queryParams => {
+      const token: string = queryParams['token'];
+      let orgCode: string = queryParams['orgCode'];
+      this.isHeader = queryParams['isHeader'];
+      if (token && orgCode) {
+        orgCode = orgCode.toLowerCase();
+        this.store.setItem('ams_token', token);
+        this.store.setItem('orgCode', orgCode);
+      }
+    })
+
 
     this.shiftTypes = new Page({
       api: amsShiftService.shiftTypes
@@ -74,19 +74,19 @@ export class DailyShiftRosterComponent implements OnInit {
         value: 1
       }]
     });
-   
+
 
 
     this.shiftTypes.fetch().catch((err) => {
       this.toastyService.error({ title: 'Error', msg: err })
     });
 
-    $("#dateSelector").datepicker("setDate", new Date());
+    $('#dateSelector').datepicker('setDate', new Date());
   }
 
   onScrollDown() {
-    console.log('scrolled down!!');   
-    this.isSpinnerDown = true;   
+    console.log('scrolled down!!');
+    this.isSpinnerDown = true;
     this.pageSize += 10;
     this.getEffectiveShift(this.date, this.pageSize)
   }
@@ -128,7 +128,7 @@ export class DailyShiftRosterComponent implements OnInit {
   updateEffectiveShift(id, model: any) {
     this.isLoading = true;
     this.amsEffectiveShiftService.effectiveShifts.update(id, model)
-      .then(() => {        
+      .then(() => {
         this.isLoading = false;
         this.getEffectiveShift(this.date, this.pageSize);
       })
@@ -137,7 +137,7 @@ export class DailyShiftRosterComponent implements OnInit {
 
   // onSelectEmp(emp: Employee) {  //todo
   //    this.effectiveShift = _.find(this.effectiveShifts.items, function(item) {
-  //      if(item.employee.id == emp.id )
+  //      if(item.employee.id === emp.id )
   //       return item
   //      }
   //   )
@@ -159,7 +159,8 @@ export class DailyShiftRosterComponent implements OnInit {
   //   return `${data.name} (${data.code})`;
   // }
 
- 
+
+  // tslint:disable-next-line:use-life-cycle-interface
   ngAfterViewInit() {
     $('#dateSelector').datepicker({
       format: 'dd/MM/yyyy',
@@ -171,7 +172,7 @@ export class DailyShiftRosterComponent implements OnInit {
       this.date = e.date;
       this.getEffectiveShift(e.date, 10);
     });
-    $("#dateSelector").datepicker("setDate", new Date());
+    $('#dateSelector').datepicker('setDate', new Date());
   }
 
   ngOnInit() {

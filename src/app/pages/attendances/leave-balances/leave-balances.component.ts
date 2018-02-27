@@ -19,7 +19,7 @@ export class LeaveBalancesComponent implements OnInit {
   // leaveBalance: Model<OrgLeaveBalance>;
   leaveTypes: Page<LeaveType>;
 
-  isFilter: boolean = false;
+  isFilter = false;
 
   constructor(public validatorService: ValidatorService,
     private amsLeaveService: AmsLeaveService,
@@ -57,16 +57,16 @@ export class LeaveBalancesComponent implements OnInit {
     this.leaveBalances.fetch().then(
       data => {
         _.each(this.leaveBalances.items, (emp: OrgLeaveBalance) => {
-          let leaveBalnces: LeaveBalance[] = [];
+          const leaveBalnces: LeaveBalance[] = [];
           _.each(this.leaveTypes.items, (leaveType: LeaveType) => {
-            let lb: LeaveBalance = _.find(emp.leaveBalances, (i: LeaveBalance) => {
+            const lb: LeaveBalance = _.find(emp.leaveBalances, (i: LeaveBalance) => {
               return i.leaveType.id === leaveType.id;
             });
             // lb ? leaveBalnces.push(lb) : leaveBalnces.push(new LeaveBalance());
             if (lb) {
               leaveBalnces.push(lb)
             } else {
-              let newLb: LeaveBalance = new LeaveBalance();
+              const newLb: LeaveBalance = new LeaveBalance();
               newLb.leaveType = leaveType;
               leaveBalnces.push(newLb)
             }
@@ -111,13 +111,13 @@ export class LeaveBalancesComponent implements OnInit {
       this.store.setObject(`leeaveBalance_${leave.id}`, leave);
     } else {
       leave.isEdit = false;
-      let l: OrgLeaveBalance = this.store.getObject(`leeaveBalance_${leave.id}`) as OrgLeaveBalance;
+      const l: OrgLeaveBalance = this.store.getObject(`leeaveBalance_${leave.id}`) as OrgLeaveBalance;
       leave.leaveBalances = l.leaveBalances;
       this.store.removeItem(`leeaveBalance_${leave.id}`);
     }
   }
 
-  isUpdatingLeave: boolean = false;
+  isUpdatingLeave = false;
   updateLeaveBalance(leave: OrgLeaveBalance) {
     this.isUpdatingLeave = true;
 

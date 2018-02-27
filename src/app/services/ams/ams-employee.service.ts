@@ -13,7 +13,7 @@ export class AmsEmployeeService {
   syncEmployees: IApi<any>;
   signInViaExternalToken: IApi<Employee>;
   teamMembers: IApi<Employee>;
- 
+
 
   constructor(private http: Http) {
     const baseApi = 'ams';
@@ -22,7 +22,7 @@ export class AmsEmployeeService {
     this.employees = new GenericApi<Employee>('employees', http, baseApi);
     this.employeesForAdmin = new GenericApi<Employee>('employees/forAdmin', http, baseApi);
     this.syncEmployees = new GenericApi<any>('employees/sync/updates', http, baseApi);
-    this.teamMembers = new GenericApi<any>('teams/my/teamMembers', http, baseApi);  
-     
+    this.teamMembers = new GenericApi<any>('teams/my/teamMembers', http, baseApi);
+
   }
 }

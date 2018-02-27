@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from "@angular/router";
+import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PagesComponent } from './pages/pages.component';
@@ -28,7 +28,7 @@ import { DailyShiftRosterComponent } from './pages/daily-shift-roster/daily-shif
     GkuAttendanceComponent,
     SystemUsageComponent,
     DailyShiftRosterComponent,
-   
+
   ],
   imports: [
     BrowserModule,

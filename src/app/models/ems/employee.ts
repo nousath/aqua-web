@@ -2,47 +2,37 @@ import { Organization } from '../organization';
 import { Device } from '../device';
 import { ShiftType } from '../shift-type';
 import { Designation } from '../designation';
+import { Supervisor } from './supervisor.model';
 
 export class EmsEmployee {
-  id: string = '';
-  name: string = '';
-  code: string = '';
+  id = '';
+  name = '';
+  code = '';
   // designation: Designation = new Designation();
-  designation: string = '';
-  status: string = '';
+  designation = '';
+  status = '';
   gender: 'male' | 'female' | 'others' | null = null;
-  fatherName: string = '';
+  fatherName = '';
   bloodGroup: 'A+' | 'B+' | 'O+' | 'AB+' | 'A-' | 'B-' | 'O-' | 'AB-' | null = null;
-  picData: string = '';
-  picUrl: string = '';
-  dob: string = '';
-  email: string = '';
-  password: string = '';
+  picData = '';
+  picUrl = '';
+  dob = '';
+  email = '';
+  password = '';
   userType: 'admin' | 'superadmin' | 'normal' = 'normal';
-  phone: string = '';
+  phone = '';
   organization: Organization = new Organization();
   device: Device = new Device();
   shiftType: ShiftType = new ShiftType();
   supervisor: Supervisor = new Supervisor();
   leaveBalances: any[];
   avgHours: number = null;
-  token: string = '';
+  token = '';
 
-  address1: string = '';
-  address2: string = '';
-  city: string = '';
-  state: string = '';
-  district: string = '';
-  pincode: string = '';
+  address1 = '';
+  address2 = '';
+  city = '';
+  state = '';
+  district = '';
+  pincode = '';
 }
-
-export class Supervisor {
-  id: number = null;
-  code: string = '';
-  name: string = '';
-}
-
-
-
-
-

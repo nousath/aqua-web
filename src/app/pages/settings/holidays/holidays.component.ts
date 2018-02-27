@@ -15,8 +15,8 @@ export class HolidaysComponent implements OnInit {
 
   holidays: Page<Holiday>
   holiday: Model<Holiday>
-  isFilter: boolean = false;
-  isNew: boolean = false;
+  isFilter = false;
+  isNew = false;
 
   constructor(private amsHolidayService: AmsHolidayService,
     public validatorService: ValidatorService,

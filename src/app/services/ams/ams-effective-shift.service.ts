@@ -10,12 +10,12 @@ export class AmsEffectiveShiftService {
   effectiveShifts: IApi<EffectiveShift>;
   downloadRosterExcel: IApi<EffectiveShift>;
   employeeEffectiveShift: IApi<EffectiveShift>;
-  constructor(private http: Http) { 
+  constructor(private http: Http) {
     const baseApi = 'ams';
 
     this.effectiveShifts = new GenericApi<EffectiveShift>('effectiveShifts', http, baseApi);
-    this.downloadRosterExcel = new GenericApi<any>('effectiveShifts/roster/excelFormat',http, baseApi);
-    this.employeeEffectiveShift = new GenericApi<any>('effectiveShifts/byDate',http, baseApi);
+    this.downloadRosterExcel = new GenericApi<any>('effectiveShifts/roster/excelFormat', http, baseApi);
+    this.employeeEffectiveShift = new GenericApi<any>('effectiveShifts/byDate', http, baseApi);
   }
 
 }

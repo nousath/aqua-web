@@ -1,12 +1,12 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common'
 import { ToastyService } from 'ng2-toasty';
-import { AmsDeviceService, AmsEmployeeService } from "app/services";
-import { DeviceLogs, Device } from "app/models";
-import { Page } from "app/common/contracts/page";
+import { AmsDeviceService, AmsEmployeeService } from 'app/services';
+import { DeviceLogs, Device } from 'app/models';
+import { Page } from 'app/common/contracts/page';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subscription } from "rxjs/Rx";
+import { Subscription } from 'rxjs/Rx';
 declare var $: any;
 
 @Component({
@@ -67,7 +67,7 @@ export class DeviceLogsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    $("#dateSelector").datepicker("setDate", new Date(this.activatedRoute.queryParams['value']['date']));
+    $('#dateSelector').datepicker('setDate', new Date(this.activatedRoute.queryParams['value']['date']));
     $('#dateSelector').datepicker({
       format: 'dd/mm/yyyy',
       minViewMode: 0,
@@ -94,6 +94,6 @@ export class DeviceLogsComponent implements OnInit, OnDestroy, AfterViewInit {
   reset() {
     this.deviceLogs.filters.reset();
     this.getDeviceLogs();
-    this.store.removeItem("device-logs-filter")
+    this.store.removeItem('device-logs-filter')
   }
 }

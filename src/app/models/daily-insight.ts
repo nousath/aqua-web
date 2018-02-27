@@ -1,24 +1,12 @@
-import { AlertConfig } from './alert-type';
-import {AmsAlert} from './alert';
-import { DailyInsightAlerts } from './daily-insightAlert';
-export class DailyInsight
-{
-   
-    employee: string='';
-    alert: AmsAlert = new AmsAlert();
-    config: AlertConfig = new AlertConfig();
-    date: string='';
-    onHome: false; 
-   
-  }
-    export class  Insightparameter
-     {
-      statistics: {
-        count: number
-      }
-        param: string='';
-        count: string='';
-        observe: 'response'
-      
-    }
-  
+import { AmsAlert } from './alert';
+import { DailyInsightAlerts } from './daily-insight-alert';
+import { AlertConfig } from './alert-config';
+export class DailyInsight {
+  employee = '';
+  alert: AmsAlert = new AmsAlert();
+  config: AlertConfig = new AlertConfig();
+  date = '';
+  onHome: false;
+
+}
+

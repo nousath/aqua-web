@@ -1,4 +1,4 @@
-import { insights } from './../../../models/insights';
+import { Insight } from './../../../models/insight.model';
 import { ReportFiltersComponent } from './../../../shared/components/report-filters/report-filters.component';
 import { Component, OnInit } from '@angular/core';
 import { InsightsService } from '../../../services';
@@ -7,7 +7,7 @@ import { ToastyService } from 'ng2-toasty';
 import { Model } from '../../../common/contracts/model';
 import { Subscription } from 'rxjs/Rx';
 import * as _ from 'lodash';
-import { AlertParameter } from '../../../models/alert';
+import { AlertParameter } from '../../../models/alert-parameter.model';
 import { ValidatorService } from '../../../services/validator.service';
 import { Angulartics2 } from 'angulartics2';
 import { Page } from '../../../common/contracts/page';
@@ -27,30 +27,30 @@ interface MyType {
   styleUrls: ['./list-report.component.css']
 })
 export class ListReportComponent implements OnInit {
-  alerts: Page<insights>;
-  alert: Model<insights>; 
+  alerts: Page<Insight>;
+  alert: Model<Insight>;
   subscription: Subscription;
-  isLoading=false;
-  constructor(private amsInsightService:InsightsService,
+  isLoading = false;
+  constructor(private amsInsightService: InsightsService,
     private toastyService: ToastyService,
     public validatorService: ValidatorService,
     private activatedRoute: ActivatedRoute,
     private angulartics2: Angulartics2,
     private router: Router) {
-       
+
     this.alerts = new Page({
-        api: amsInsightService.Insights
-      });
-  
+      api: amsInsightService.Insights
+    });
+
 
     this.alert = new Model({
       api: amsInsightService.Insights,
-      properties: new insights()
+      properties: new Insight()
     });
     this.subscription = activatedRoute.params.subscribe(
       params => {
         this.isLoading = true;
-        let alertId: string = params['id'];
+        const alertId: string = params['id'];
         this.alert.fetch(alertId).then(
           data => {
             // _.each(this.alert.properties.alertType.trigger.parameters, (i: AlertParameter) => {
@@ -68,7 +68,7 @@ export class ListReportComponent implements OnInit {
   }
   ngOnInit() {
   }
-  
+
 }
 
 

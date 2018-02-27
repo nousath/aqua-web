@@ -5,10 +5,10 @@ import { Model } from '../../../common/contracts/model';
 import { ValidatorService } from '../../../services';
 import { EmsDesignationService } from '../../../services/ems/ems-designation.service';
 import { ToastyService } from 'ng2-toasty';
-import * as _ from "lodash";
+import * as _ from 'lodash';
 import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-dialog.component';
 import { MdDialog } from '@angular/material';
-import { LocalStorageService } from "app/services/local-storage.service";
+import { LocalStorageService } from 'app/services/local-storage.service';
 
 @Component({
   selector: 'aqua-designations',
@@ -19,7 +19,7 @@ export class DesignationsComponent implements OnInit {
 
   designations: Page<Designation>
   designation: Model<Designation>
-  isNew: boolean = false;
+  isNew = false;
 
   constructor(private emsDesignationService: EmsDesignationService,
     public validatorService: ValidatorService,
@@ -60,7 +60,7 @@ export class DesignationsComponent implements OnInit {
       this.store.setObject(`designationEdit_${designation.id}`, designation);
     } else {
       designation.isEdit = false;
-      let d: Designation = this.store.getObject(`designationEdit_${designation.id}`) as Designation;
+      const d: Designation = this.store.getObject(`designationEdit_${designation.id}`) as Designation;
       designation.code = d.code;
       designation.name = d.name;
       this.store.removeItem(`designationEdit_${designation.id}`);
@@ -75,7 +75,7 @@ export class DesignationsComponent implements OnInit {
   }
 
   removeConfirm(designation: Designation) {
-    let dialog = this.dialog.open(ConfirmDialogComponent, { width: '40%' });
+    const dialog = this.dialog.open(ConfirmDialogComponent, { width: '40%' });
     dialog.componentInstance.msg = `Are you sure to want to remove designation ${designation.name} ?`;
     dialog.afterClosed().subscribe((value: boolean) => {
       if (value) {

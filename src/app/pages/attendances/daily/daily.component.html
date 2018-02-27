@@ -85,16 +85,16 @@
                     </div>
                 </div>
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-group" *ngFor="let item of tagTypes?.items">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"  *ngIf="item.name !=='department'">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" *ngIf="item.name !=='department'">
                         <label>{{item?.name | titlecase}}</label>
                     </div>
                     <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" *ngIf="item.name !=='department'">
-                        <select  class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" #tag (change)="tags.reset();tags.select({tagTypeId:item.id,tagId:tag.value})" placeholder="Tag" name="tags">
+                        <select class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" #tag (change)="tags.reset();tags.select({tagTypeId:item.id,tagId:tag.value})" placeholder="Tag" name="tags">
                         <option selected [ngValue]="null">select an option</option>
                       <option *ngFor="let tag of item?.tags" [value]="tag.id" >
-                            {{tag?.name | titlecase}}  
+                            {{tag?.name | titlecase}}
                         <!-- <span *ngIf = "tag.name.toLowerCase() !== department">
-                              
+
                           </span> -->
                     </option>
                     </select>
@@ -116,7 +116,7 @@
 
 <div class="row">
     <div class="row page_header">
-  
+
         <div class="table-responsive">
             <table class="table table-condensed table-hover">
                 <thead class="thead">
@@ -145,9 +145,9 @@
                         <td class="tdWidth">{{item?.attendance?.hoursWorked || '--'}}</td>
                         <td class="tdWidth">
                             <ng-template #elsePart>
-                                <span>{{item?.attendance?.status?.toLowerCase() == 'checkedin' ? 'Present' : item?.attendance?.status}}</span>
+                                <span>{{item?.attendance?.status?.toLowerCase() === 'checkedin' ? 'Present' : item?.attendance?.status}}</span>
                             </ng-template>
-                            <span *ngIf="item?.attendance?.status == 'absent' && (item?.attendance?.shift?.status === 'weekOff' || item?.attendance?.shift?.status === 'holiday'); else elsePart">{{item?.attendance?.shift?.status | titlecase}}</span>
+                            <span *ngIf="item?.attendance?.status === 'absent' && (item?.attendance?.shift?.status === 'weekOff' || item?.attendance?.shift?.status === 'holiday'); else elsePart">{{item?.attendance?.shift?.status | titlecase}}</span>
                         </td>
                         <td class="tdWidth">{{(item?.attendance?.checkIn | date:'shortTime') || '--'}}</td>
                         <td class="tdWidth">{{(item?.attendance?.checkOut | date:'shortTime') || '--'}}</td>
@@ -165,14 +165,14 @@
                 <div class="pageSize">
                     <label>Page Size:</label>
                     <select name="pageSize" [(ngModel)]="dailyAttendnace.pageSize" (change)="dailyAttendnace.pageNo = 1;getAttendance(dailyAttendnace.filters.properties['ofDate']['value']);">
-                      <option value=10>10</option>
-                      <option value=50>50</option>
-                      <option value=100>100</option>
-                      <option value=500>500</option>
+                      <option value="10">10</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                      <option value="500">500</option>
                     </select>
                 </div>
             </div>
         </div>
-   
-</div>
+
+    </div>
 </div>

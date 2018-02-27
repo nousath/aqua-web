@@ -17,17 +17,17 @@ declare var $: any;
 @Component({
   selector: 'aqua-roster-shifts',
   templateUrl: './roster-shifts.component.html',
-  styleUrls: ['./roster-shifts.component.css'],  
+  styleUrls: ['./roster-shifts.component.css'],
 })
 export class RosterShiftsComponent implements OnInit {
   dates: any = [];
   effectiveShifts: Page<EffectiveShift>;
   shiftTypes: Page<ShiftType>;
   change: any;
-  isDownloading: boolean = false;
+  isDownloading = false;
   uploader: FileUploader;
   isLoading = true;
-  isUpload: boolean = false;
+  isUpload = false;
   constructor(private amsEmployeeService: AmsEmployeeService,
     private amsShiftService: AmsShiftService,
     private amsEffectiveShiftService: AmsEffectiveShiftService,
@@ -35,8 +35,8 @@ export class RosterShiftsComponent implements OnInit {
     private store: LocalStorageService) {
 
 
-    let access_Token: string = this.store.getItem('ams_token');
-    let orgCode = this.store.getItem('orgCode');
+    const access_Token: string = this.store.getItem('ams_token');
+    const orgCode = this.store.getItem('orgCode');
     this.uploader = new FileUploader({
       url: '/ams/api/effectiveShifts/shiftUpdate/xl',
       itemAlias: 'record',
@@ -59,7 +59,7 @@ export class RosterShiftsComponent implements OnInit {
 
     this.uploader.onCompleteItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
       this.isDownloading = true;
-      let res: any = JSON.parse(response);
+      const res: any = JSON.parse(response);
       if (!res.isSuccess) {
         this.isDownloading = false;
         return toastyService.error({ title: 'Error', msg: 'excel upload failed' })
@@ -84,23 +84,21 @@ export class RosterShiftsComponent implements OnInit {
     this.shiftTypes.fetch().catch((err) => {
       this.toastyService.error({ title: 'Error', msg: err })
     });
-
   }
-
 
   download(date: Date) {
     this.isDownloading = true;
-    let serverPageInput: ServerPageInput = new ServerPageInput();
+    const serverPageInput: ServerPageInput = new ServerPageInput();
     serverPageInput.query['ofDate'] = date.toISOString();
-    let reportName = `rosterExcel_${moment().format('DD_MMM_YY')}_DailyReport.xlsx`;
+    const reportName = `rosterExcel_${moment().format('DD_MMM_YY')}_DailyReport.xlsx`;
     this.amsEffectiveShiftService.downloadRosterExcel.exportReport(serverPageInput, null, reportName)
       .then(
-      (data) => {
-        this.isDownloading = false
-      }).catch(err => {
-        this.toastyService.error({ title: 'Error', msg: err });
-        this.isDownloading = false
-      });
+        (data) => {
+          this.isDownloading = false
+        }).catch(err => {
+          this.toastyService.error({ title: 'Error', msg: err });
+          this.isDownloading = false
+        });
   };
 
   excel() {
@@ -109,23 +107,23 @@ export class RosterShiftsComponent implements OnInit {
   }
 
 
-  ngAfterViewInit() {
-    $('#dateSelector').datepicker({
-      format: 'dd/mm/yyyy',
-      minViewMode: 0,
-      maxViewMode: 2,
-      autoclose: true
-    }).on('changeDate', (e) => {
-      this.getEffectiveShift(e.date);
-      this.getWeek(e.date);
-    })
-    $("#dateSelector").datepicker("setDate", new Date(new Date().setHours(0, 0, 0, 0)));
-  }
+  // ngAfterViewInit() {
+  //   $('#dateSelector').datepicker({
+  //     format: 'dd/mm/yyyy',
+  //     minViewMode: 0,
+  //     maxViewMode: 2,
+  //     autoclose: true
+  //   }).on('changeDate', (e) => {
+  //     this.getEffectiveShift(e.date);
+  //     this.getWeek(e.date);
+  //   })
+  //   $('#dateSelector').datepicker('setDate', new Date(new Date().setHours(0, 0, 0, 0)));
+  // }
 
   getWeek(date) {
     this.dates = [];
-    var startOfWeek = moment(date).add(1, 'd');
-    var endOfWeek = moment(date).add(6, 'd');
+    let startOfWeek = moment(date).add(1, 'd');
+    const endOfWeek = moment(date).add(6, 'd');
     while (startOfWeek <= endOfWeek) {
       this.dates.push(startOfWeek.toDate());
       startOfWeek = startOfWeek.clone().add(1, 'd');

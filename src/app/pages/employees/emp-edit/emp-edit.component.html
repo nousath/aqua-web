@@ -42,7 +42,7 @@
                             Cancel
                         </button>
                     </div>
-                    <button *ngIf="uploader?.queue?.length == 0" (click)="isChangeImage = !isChangeImage" md-raised-button class="btn_grey">
+                    <button *ngIf="uploader?.queue?.length === 0" (click)="isChangeImage = !isChangeImage" md-raised-button class="btn_grey">
                             Cancel
                         </button>
                 </div>
@@ -121,15 +121,13 @@
                     <tr>
                         <th>Phone:</th>
                         <td>
-                            <input name="phone"  type="text" class="form-control" [maxlength]="validatorService.phoneNumberLength" [minLength]="validatorService.phoneNumberLength"  [(ngModel)]="employee.properties.phone">
+                            <input name="phone" type="text" class="form-control" [maxlength]="validatorService.phoneNumberLength" [minLength]="validatorService.phoneNumberLength" [(ngModel)]="employee.properties.phone">
                         </td>
                         <th>Email:</th>
-                        <td >
-                                <input id="email" required email name="email" #email="ngModel" [(ngModel)]="employee.email"
-                                type="text"
-                               class="form-control">
-                               <span class="help block" *ngIf="email.invalid && email.touched"> Email is invalid</span>
-                
+                        <td>
+                            <input id="email" required email name="email" #email="ngModel" [(ngModel)]="employee.email" type="text" class="form-control">
+                            <span class="help block" *ngIf="email.invalid && email.touched"> Email is invalid</span>
+
                         </td>
                     </tr>
                 </table>

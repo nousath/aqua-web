@@ -5,5 +5,5 @@ export class ServerPageInput {
     limit = 50;
     noPaging = true;
     query = {};
-    serverPaging: boolean = true;
+    serverPaging = true;
 }

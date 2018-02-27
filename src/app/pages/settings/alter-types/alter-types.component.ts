@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Page } from '../../../common/contracts/page';
 import { AlertType } from '../../../models';
 import * as _ from 'lodash';
-import { AlertParameter } from '../../../models/alert';
+import { AlertParameter } from '../../../models/alert-parameter.model';
 
 @Component({
   selector: 'aqua-alter-types',
@@ -39,7 +39,7 @@ export class AlterTypesComponent implements OnInit {
   }
 
 
-  isSubscribing: boolean = false;
+  isSubscribing = false;
   subscribe(alertTypeId: string) {
     this.isSubscribing = true;
     this.amsAlertService.subscribe.update(alertTypeId, null).then(

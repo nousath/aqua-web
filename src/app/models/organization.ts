@@ -1,7 +1,7 @@
 export class Organization {
-  id: string = '';
-  name: string = '';
-  code: string = '';
-  externalUrl: string = '';
-  activationKey: string = '';
+  id = '';
+  name = '';
+  code = '';
+  externalUrl = '';
+  activationKey = '';
 }

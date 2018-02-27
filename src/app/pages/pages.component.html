@@ -21,7 +21,7 @@
 <div class="bodyPart row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 rowBody">
         <div class="hidden-xs col-sm-2 col-md-2 col-lg-2">
-            <md-nav-list *ngIf="userType == 'superadmin'" dense class="fixedSideNav">
+            <md-nav-list *ngIf="userType === 'superadmin'" dense class="fixedSideNav">
                 <div class="logo_container text-center">
                     <img class="logo" src="assets/images/splash_logo.png">
                     <br>
@@ -90,7 +90,7 @@
                     </a>
                 </div>
             </md-nav-list>
-            <md-nav-list *ngIf="userType == 'admin'" dense class="fixedSideNav">
+            <md-nav-list *ngIf="userType === 'admin'" dense class="fixedSideNav">
                 <div class="logo_container text-center">
                     <img class="logo" src="assets/images/splash_logo.png">
                     <br>

@@ -15,13 +15,13 @@
                             <label>Name<span class="asterisk">*</span></label>
                         </td>
                         <td class="valueWidth">
-                            <input type="text" class="form-control" [maxlength]="validatorService.textLength" name="shiftName" [(ngModel)]="shifType.properties.name" required [disabled]="shifType?.properties?.name?.toLowerCase() == 'general'">
+                            <input type="text" class="form-control" [maxlength]="validatorService.textLength" name="shiftName" [(ngModel)]="shifType.properties.name" required [disabled]="shifType?.properties?.name?.toLowerCase() === 'general'">
                         </td>
                         <td class="labelWidth">
                             <label>Code<span class="asterisk">*</span></label>
                         </td>
                         <td class="valueWidth">
-                            <input type="text" class="form-control" [maxlength]="validatorService.textLength" name="shiftcode" [(ngModel)]="shifType.properties.code" required [disabled]="shifType?.properties?.code?.toLowerCase() == 'gen'">
+                            <input type="text" class="form-control" [maxlength]="validatorService.textLength" name="shiftcode" [(ngModel)]="shifType.properties.code" required [disabled]="shifType?.properties?.code?.toLowerCase() === 'gen'">
                         </td>
                     </tr>
                     <tr>

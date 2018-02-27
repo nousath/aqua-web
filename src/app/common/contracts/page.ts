@@ -36,7 +36,7 @@ export interface IPage {
 }
 
 export class Page<TModel> extends PageModel<TModel> implements IPage {
-  id:number[]=[];
+  id: number[]= [];
   errors: string[] = [];
   filters: Filters;
   isLoading = false;
@@ -57,7 +57,7 @@ export class Page<TModel> extends PageModel<TModel> implements IPage {
     if (options.items) {
       this.items = options.items;
     }
-    options.serverPaging = options.serverPaging != undefined ? options.serverPaging : true;
+    options.serverPaging = options.serverPaging !== undefined ? options.serverPaging : true;
     this.items = [];
     this.filters = new Filters({
       associatedList: this,

@@ -5,8 +5,8 @@ export class DayEvent {
   checkOut: string = null;
   hoursWorked: number = null;
   ofDate: string = null;
-  id: string = '';
-  status: string = '';
+  id = '';
+  status = '';
   shift: Shift = new Shift();
   employee: { id: string } = { id: '' };
 }

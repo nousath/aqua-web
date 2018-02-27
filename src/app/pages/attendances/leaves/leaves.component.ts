@@ -7,8 +7,8 @@ import { Leave } from '../../../models';
 import { LeaveActionDialogComponent } from '../../../dialogs/leave-action-dialog/leave-action-dialog.component';
 import { MdDialog } from '@angular/material';
 import { Filter } from '../../../common/contracts/filters';
-import * as _ from "lodash";
-import { LocalStorageService } from "../../../services/local-storage.service";
+import * as _ from 'lodash';
+import { LocalStorageService } from '../../../services/local-storage.service';
 import { Angulartics2 } from 'angulartics2';
 declare var $: any;
 
@@ -20,8 +20,8 @@ declare var $: any;
 export class LeavesComponent implements OnInit, AfterViewInit {
 
   leaves: Page<Leave>;
-  isFilter: boolean = false;
-  isShowLeaveAction: boolean = false;
+  isFilter = false;
+  isShowLeaveAction = false;
   date: Date = null
 
 
@@ -56,8 +56,8 @@ export class LeavesComponent implements OnInit, AfterViewInit {
 
     this.leaves.fetch().then(
       data => {
-        let i: any = this.leaves.items.find((item: Leave) => {
-          return item.status.toLowerCase() == 'submitted'
+        const i: any = this.leaves.items.find((item: Leave) => {
+          return item.status.toLowerCase() === 'submitted'
         });
         if (i)
           this.isShowLeaveAction = true;
@@ -73,7 +73,7 @@ export class LeavesComponent implements OnInit, AfterViewInit {
   }
 
   checkFiltersInStore() {
-    let filters: any = this.store.getObject('leaves-filters');
+    const filters: any = this.store.getObject('leaves-filters');
     if (filters) {
       this.isFilter = true;
       this.leaves.filters.properties['status']['value'] = filters['status'] || null;
@@ -83,7 +83,7 @@ export class LeavesComponent implements OnInit, AfterViewInit {
   }
 
   setFiltersToStore() {
-    let queryParams: any = {};
+    const queryParams: any = {};
     _.each(this.leaves.filters.properties, (filter: Filter, key: any, obj: any) => {
       if (filter.value) {
         queryParams[key] = filter.value;
@@ -99,14 +99,14 @@ export class LeavesComponent implements OnInit, AfterViewInit {
     if (days && days < 1) {
       days = 1;
     }
-    let newdays = days ? Math.abs(days - 1) : 0;
-    let newDate = date ? new Date(date) : null;
+    const newdays = days ? Math.abs(days - 1) : 0;
+    const newDate = date ? new Date(date) : null;
     if (newDate) { newDate.setDate(newDate.getDate() + newdays); }
     return date ? newDate : null;
 
   }
 
-  isUpdatingLeaveStatus: boolean = false;
+  isUpdatingLeaveStatus = false;
   updateStatus(leave: Leave) {
     this.isUpdatingLeaveStatus = true;
     this.amsLeaveService.leaves.update(leave.id, leave, null, `${leave.id}/action`).then(
@@ -129,7 +129,7 @@ export class LeavesComponent implements OnInit, AfterViewInit {
 
     } else {
       this.angulartics2.eventTrack.next({ action: 'rejectLeaveClick', properties: { category: 'allLeave', label: 'myLabel' } });
-      let dialogRef = this.dialog.open(LeaveActionDialogComponent, {
+      const dialogRef = this.dialog.open(LeaveActionDialogComponent, {
         width: '35%'
       });
 
@@ -154,7 +154,7 @@ export class LeavesComponent implements OnInit, AfterViewInit {
     }).on('changeMonth', (e) => {
       if (e.date) {
         this.date = e.date;
-       let date = new Date(e.date);
+       const date = new Date(e.date);
         this.leaves.filters.properties['date']['value'] = date.toISOString();
       }
       // this.fetchLeaves(e.date);

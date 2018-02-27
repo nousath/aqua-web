@@ -9,9 +9,9 @@ export class LeaveBalance {
 }
 
 export class OrgLeaveBalance {
-  id: string = '';
-  name: string = '';
-  code: string = '';
+  id = '';
+  name = '';
+  code = '';
   leaveBalances: LeaveBalance[] = [];
-  isEdit: boolean = false;
+  isEdit = false;
 }

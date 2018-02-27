@@ -2,12 +2,12 @@ import { Organization } from './organization';
 
 export class User {
   id: number = null;
-  email: string = '';
-  password: string = '';
-  name: string = '';
-  token: string = '';
-  code: string = '';
-  status: string = '';
-  phone: string = '';
+  email = '';
+  password = '';
+  name = '';
+  token = '';
+  code = '';
+  status = '';
+  phone = '';
   organization: Organization = new Organization()
 }

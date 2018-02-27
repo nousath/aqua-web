@@ -22,7 +22,7 @@ export class LocalStorageService {
   }
 
   getObject(key): any {
-    let item = window.localStorage.getItem(key);
+    const item = window.localStorage.getItem(key);
     return item ? JSON.parse(item) : null;
   }
 

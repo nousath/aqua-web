@@ -7,7 +7,7 @@ import { AmsAlert } from '../../../models';
 import { Model } from '../../../common/contracts/model';
 import { Subscription } from 'rxjs/Rx';
 import * as _ from 'lodash';
-import { AlertParameter } from '../../../models/alert';
+import { AlertParameter } from '../../../models/alert-parameter.model';
 import { ValidatorService } from '../../../services/validator.service';
 import { Angulartics2 } from 'angulartics2';
 import { Page } from '../../../common/contracts/page';
@@ -28,20 +28,20 @@ interface MyType {
 })
 export class DownloadReportComponent implements OnInit {
   alerts: Page<AmsAlert>;
-  alert: Model<AmsAlert>; 
+  alert: Model<AmsAlert>;
   subscription: Subscription;
-  isLoading=false;
+  isLoading= false;
   constructor(private amsAlertService: AmsAlertService,
     private toastyService: ToastyService,
     public validatorService: ValidatorService,
     private activatedRoute: ActivatedRoute,
     private angulartics2: Angulartics2,
     private router: Router) {
-       
+
       this.alerts = new Page({
         api: amsAlertService.alerts
       });
-  
+
 
     this.alert = new Model({
       api: amsAlertService.alerts,
@@ -50,7 +50,7 @@ export class DownloadReportComponent implements OnInit {
     this.subscription = activatedRoute.params.subscribe(
       params => {
         this.isLoading = true;
-        let alertId: string = params['id'];
+        const alertId: string = params['id'];
         this.alert.fetch(alertId).then(
           data => {
             // _.each(this.alert.properties.alertType.trigger.parameters, (i: AlertParameter) => {
@@ -66,7 +66,7 @@ export class DownloadReportComponent implements OnInit {
     );
 
   }
- 
+
 
 
 

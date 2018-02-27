@@ -5,7 +5,7 @@
     <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
         <div class="headerBtns">
             <!--<button [disabled]="shifTypes?.isLoading   || holiday?.isProcessing  " md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>-->
-            <button md-icon-button [disabled]="shifTypes?.isLoading" mdTooltip="Add"  [mdTooltipPosition]="'above'" class="marginLetf" [routerLink]="['new']">
+            <button md-icon-button [disabled]="shifTypes?.isLoading" mdTooltip="Add" [mdTooltipPosition]="'above'" class="marginLetf" [routerLink]="['new']">
                 <md-icon style="width:  100px;">add_circle_outline</md-icon>
             </button>
         </div>
@@ -16,7 +16,7 @@
 
 <div class="row">
     <!-- <md-card class="card"> -->
-        <div class="row page_header">
+    <div class="row page_header">
         <div class="table-responsive">
             <table class="table table-condensed table-hover">
                 <thead class="thead">
@@ -26,7 +26,7 @@
                         <th class="tdWidth">Start Time</th>
                         <th class="tdWidth">End Time</th>
                         <th class="days text-center">Days</th>
-                        <th class="tdWidth text-center"></th>                       
+                        <th class="tdWidth text-center"></th>
                     </tr>
                 </thead>
                 <tbody style="background-color: white;">
@@ -41,34 +41,34 @@
                         <td class="tdWidth">{{item?.endTime | date:'HH:mm'}}</td>
                         <td class="days text-center">
                             <div class="btn-group btn-group-sm">
-                                <button type="button" class="btn btn-sm" [ngClass]="{'btn-danger':item?.sunday?.toLowerCase() == 'off',
-                                                                                                 'btn-success':item?.sunday?.toLowerCase() == 'full',
-                                                                                                 'btn-warning':item?.sunday?.toLowerCase() == 'halfday',
-                                                                                                 'btn-default':item?.sunday?.toLowerCase() == 'alternate'}" [mdTooltip]="item?.sunday | uppercase" [mdTooltipPosition]="'above'">S</button>
-                                <button type="button" class="btn btn-sm" [ngClass]="{'btn-danger':item?.monday?.toLowerCase() == 'off',
-                                                                                                 'btn-success':item?.monday?.toLowerCase() == 'full',
-                                                                                                 'btn-warning':item?.monday?.toLowerCase() == 'halfday',
-                                                                                                 'btn-default':item?.monday?.toLowerCase() == 'alternate'}" [mdTooltip]="item?.monday | uppercase" [mdTooltipPosition]="'above'">M</button>
-                                <button type="button" class="btn btn-sm" [ngClass]="{'btn-danger':item?.tuesday?.toLowerCase() == 'off',
-                                                                                                 'btn-success':item?.tuesday?.toLowerCase() == 'full',
-                                                                                                 'btn-warning':item?.tuesday?.toLowerCase() == 'halfday',
-                                                                                                 'btn-default':item?.tuesday?.toLowerCase() == 'alternate'}" [mdTooltip]="item?.tuesday | uppercase" [mdTooltipPosition]="'above'">T</button>
-                                <button type="button" class="btn btn-sm" [ngClass]="{'btn-danger':item?.wednesday?.toLowerCase() == 'off',
-                                                                                                 'btn-success':item?.wednesday?.toLowerCase() == 'full',
-                                                                                                 'btn-warning':item?.wednesday?.toLowerCase() == 'halfday',
-                                                                                                 'btn-default':item?.wednesday?.toLowerCase() == 'alternate'}" [mdTooltip]="item?.wednesday | uppercase" [mdTooltipPosition]="'above'">W</button>
-                                <button type="button" class="btn btn-sm" [ngClass]="{'btn-danger':item?.thursday?.toLowerCase() == 'off',
-                                                                                                 'btn-success':item?.thursday?.toLowerCase() == 'full',
-                                                                                                 'btn-warning':item?.thursday?.toLowerCase() == 'halfday',
-                                                                                                 'btn-default':item?.thursday?.toLowerCase() == 'alternate'}" [mdTooltip]="item?.thursday | uppercase" [mdTooltipPosition]="'above'">T</button>
-                                <button type="button" class="btn btn-sm" [ngClass]="{'btn-danger':item?.friday?.toLowerCase() == 'off',
-                                                                                                 'btn-success':item?.friday?.toLowerCase() == 'full',
-                                                                                                 'btn-warning':item?.friday?.toLowerCase() == 'halfday',
-                                                                                                 'btn-default':item?.friday?.toLowerCase() == 'alternate'}" [mdTooltip]="item?.friday | uppercase" [mdTooltipPosition]="'above'">F</button>
-                                <button type="button" class="btn btn-sm" [ngClass]="{'btn-danger':item?.saturday?.toLowerCase() == 'off',
-                                                                                                 'btn-success':item?.saturday?.toLowerCase() == 'full',
-                                                                                                 'btn-warning':item?.saturday?.toLowerCase() == 'halfday',
-                                                                                                 'btn-default':item?.saturday?.toLowerCase() == 'alternate'}" [mdTooltip]="item?.saturday | uppercase" [mdTooltipPosition]="'above'">S</button>
+                                <button type="button" class="btn btn-sm" [ngClass]="{'btn-danger':item?.sunday?.toLowerCase() === 'off',
+                                                                                                 'btn-success':item?.sunday?.toLowerCase() === 'full',
+                                                                                                 'btn-warning':item?.sunday?.toLowerCase() === 'halfday',
+                                                                                                 'btn-default':item?.sunday?.toLowerCase() === 'alternate'}" [mdTooltip]="item?.sunday | uppercase" [mdTooltipPosition]="'above'">S</button>
+                                <button type="button" class="btn btn-sm" [ngClass]="{'btn-danger':item?.monday?.toLowerCase() === 'off',
+                                                                                                 'btn-success':item?.monday?.toLowerCase() === 'full',
+                                                                                                 'btn-warning':item?.monday?.toLowerCase() === 'halfday',
+                                                                                                 'btn-default':item?.monday?.toLowerCase() === 'alternate'}" [mdTooltip]="item?.monday | uppercase" [mdTooltipPosition]="'above'">M</button>
+                                <button type="button" class="btn btn-sm" [ngClass]="{'btn-danger':item?.tuesday?.toLowerCase() === 'off',
+                                                                                                 'btn-success':item?.tuesday?.toLowerCase() === 'full',
+                                                                                                 'btn-warning':item?.tuesday?.toLowerCase() === 'halfday',
+                                                                                                 'btn-default':item?.tuesday?.toLowerCase() === 'alternate'}" [mdTooltip]="item?.tuesday | uppercase" [mdTooltipPosition]="'above'">T</button>
+                                <button type="button" class="btn btn-sm" [ngClass]="{'btn-danger':item?.wednesday?.toLowerCase() === 'off',
+                                                                                                 'btn-success':item?.wednesday?.toLowerCase() === 'full',
+                                                                                                 'btn-warning':item?.wednesday?.toLowerCase() === 'halfday',
+                                                                                                 'btn-default':item?.wednesday?.toLowerCase() === 'alternate'}" [mdTooltip]="item?.wednesday | uppercase" [mdTooltipPosition]="'above'">W</button>
+                                <button type="button" class="btn btn-sm" [ngClass]="{'btn-danger':item?.thursday?.toLowerCase() === 'off',
+                                                                                                 'btn-success':item?.thursday?.toLowerCase() === 'full',
+                                                                                                 'btn-warning':item?.thursday?.toLowerCase() === 'halfday',
+                                                                                                 'btn-default':item?.thursday?.toLowerCase() === 'alternate'}" [mdTooltip]="item?.thursday | uppercase" [mdTooltipPosition]="'above'">T</button>
+                                <button type="button" class="btn btn-sm" [ngClass]="{'btn-danger':item?.friday?.toLowerCase() === 'off',
+                                                                                                 'btn-success':item?.friday?.toLowerCase() === 'full',
+                                                                                                 'btn-warning':item?.friday?.toLowerCase() === 'halfday',
+                                                                                                 'btn-default':item?.friday?.toLowerCase() === 'alternate'}" [mdTooltip]="item?.friday | uppercase" [mdTooltipPosition]="'above'">F</button>
+                                <button type="button" class="btn btn-sm" [ngClass]="{'btn-danger':item?.saturday?.toLowerCase() === 'off',
+                                                                                                 'btn-success':item?.saturday?.toLowerCase() === 'full',
+                                                                                                 'btn-warning':item?.saturday?.toLowerCase() === 'halfday',
+                                                                                                 'btn-default':item?.saturday?.toLowerCase() === 'alternate'}" [mdTooltip]="item?.saturday | uppercase" [mdTooltipPosition]="'above'">S</button>
                             </div>
                         </td>
                         <td class="tdWidth text-center">
@@ -76,8 +76,8 @@
                                 <md-icon>edit</md-icon>
                             </a>
                             <button *ngIf="!item?.id?.isEdit" md-icon-button class="button_align cursor" mdTooltip="delete" [mdTooltipPosition]="'above'" (click)="remove(item)"><md-icon>delete</md-icon></button>
-                        </td>                        
-                     
+                        </td>
+
                     </tr>
                 </tbody>
             </table>
