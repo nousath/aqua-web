@@ -33,7 +33,7 @@
         <md-icon>highlight_off</md-icon>
       </button>
         </div>
-        <button *ngIf="uploader?.queue?.length === 0" class="uploadBtn" (click)="excel()" md-icon-button>
+        <button *ngIf="uploader?.queue?.length == 0" class="uploadBtn" (click)="excel()" md-icon-button>
       <md-icon>highlight_off</md-icon>
     </button>
     </div>
@@ -41,46 +41,37 @@
 <md-spinner class="custom_spinner" *ngIf="isDownloading || isLoading" mode="indeterminate"></md-spinner>
 <div class="row">
     <md-card class="card">
-        <<<<<<< Updated upstream <div class="row text-center noData" *ngIf="effectiveShifts?.items?.length === 0">
+        <div class="row text-center noData" *ngIf="effectiveShifts?.items?.length == 0">
             <h5>
                 <b>no data to display !</b>
             </h5>
-</div>
-<table class="table table-condensed" *ngIf="effectiveShifts?.items?.length > 0">
-    <thead class="primary_thead">
-        =======
-        <div class="row text-center noData" *ngIf="effectiveShifts?.items?.length === 0">
-            <h5><b>no data to display !</b></h5>
         </div>
-        <div class="row page_header">
-            <table class="table table-condensed table-hover" *ngIf="effectiveShifts?.items?.length > 0">
-                <thead class="thead">
-                    >>>>>>> Stashed changes
-                    <tr>
-                        <th>Name/Code</th>
-                        <th class="tdWidth"></th>
-                        <th class="tdWidth" *ngFor="let date of dates">{{date | date:'dd/MM/yyyy'}}</th>
-                    </tr>
-                </thead>
-                <tbody style="background-color: white;">
-                    <tr *ngFor="let effectiveShift of effectiveShifts.items | paginate: { id: 'foo',
+        <table class="table table-condensed" *ngIf="effectiveShifts?.items?.length > 0">
+            <thead class="primary_thead">
+                <tr>
+                    <th>Name/Code</th>
+                    <th class="tdWidth"></th>
+                    <th class="tdWidth" *ngFor="let date of dates">{{date | date:'dd/MM/yyyy'}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let effectiveShift of effectiveShifts.items | paginate: { id: 'foo',
         itemsPerPage: effectiveShifts.pageSize,
         currentPage: effectiveShifts.pageNo,
         totalItems: effectiveShifts.totalRecords };">
-                        <td class="customStyle">{{effectiveShift.employee.name || '--'}}
-                            <br>
-                            <span class="empCode">{{effectiveShift.employee.code || '--'}}</span>
-                        </td>
-                        <td>
-                            <div class="previousShiftBorder">{{effectiveShift?.previousShift?.shiftType?.name || '--'}}</div>
-                        </td>
-                        <td class="tdStyle" *ngFor="let date of dates">
-                            <aqua-shift-picker [shiftTypes]="shiftTypes.items" [effectiveShifts]="effectiveShift.shifts" [date]="date" (onChange)="changeShift($event, date,effectiveShift.employee)"></aqua-shift-picker>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+                    <td class="customStyle">{{effectiveShift.employee.name || '--'}}
+                        <br>
+                        <span class="empCode">{{effectiveShift.employee.code || '--'}}</span>
+                    </td>
+                    <td>
+                        <div class="previousShiftBorder">{{effectiveShift?.previousShift?.shiftType?.name || '--'}}</div>
+                    </td>
+                    <td class="tdStyle" *ngFor="let date of dates">
+                        <aqua-shift-picker [shiftTypes]="shiftTypes.items" [effectiveShifts]="effectiveShift.shifts" [date]="date" (onChange)="changeShift($event, date,effectiveShift.employee)"></aqua-shift-picker>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="custom_pagination">
                 <pagination-controls id="foo" (pageChange)="effectiveShifts.pageNo = $event;getEffectiveShift(effectiveShifts.filters.properties['fromDate']['value']);"></pagination-controls>
@@ -88,16 +79,13 @@
                 <div class="pageSize">
                     <label>Page Size:</label>
                     <select name="pageSize" [(ngModel)]="effectiveShifts.pageSize" (change)="effectiveShifts.pageNo = 1;getEffectiveShift(effectiveShifts.filters.properties['fromDate']['value'])">
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-          </select>
+                      <option value="10">10</option>
+                      <option value="20">20</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                    </select>
                 </div>
             </div>
         </div>
-
-        </md-card>
-
-
-        </div>
+    </md-card>
+</div>

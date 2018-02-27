@@ -125,9 +125,8 @@
                         </td>
                         <th>Email:</th>
                         <td>
-                            <input id="email" required email name="email" #email="ngModel" [(ngModel)]="employee.email" type="text" class="form-control">
+                            <input id="email" required email name="email" #email="ngModel" [(ngModel)]="employee.properties.email" type="text" class="form-control">
                             <span class="help block" *ngIf="email.invalid && email.touched"> Email is invalid</span>
-
                         </td>
                     </tr>
                 </table>

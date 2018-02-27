@@ -69,6 +69,8 @@ export class ListReportComponent implements OnInit {
   ngOnInit() {
   }
 
+  clear() { }
+
 }
 
 
