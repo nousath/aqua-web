@@ -107,18 +107,18 @@ export class RosterShiftsComponent implements OnInit {
   }
 
 
-  // ngAfterViewInit() {
-  //   $('#dateSelector').datepicker({
-  //     format: 'dd/mm/yyyy',
-  //     minViewMode: 0,
-  //     maxViewMode: 2,
-  //     autoclose: true
-  //   }).on('changeDate', (e) => {
-  //     this.getEffectiveShift(e.date);
-  //     this.getWeek(e.date);
-  //   })
-  //   $('#dateSelector').datepicker('setDate', new Date(new Date().setHours(0, 0, 0, 0)));
-  // }
+  ngAfterViewInit() {
+    $('#dateSelector').datepicker({
+      format: 'dd/mm/yyyy',
+      minViewMode: 0,
+      maxViewMode: 2,
+      autoclose: true
+    }).on('changeDate', (e) => {
+      this.getEffectiveShift(e.date);
+      this.getWeek(e.date);
+    })
+    $('#dateSelector').datepicker('setDate', new Date(new Date().setHours(0, 0, 0, 0)));
+  }
 
   getWeek(date) {
     this.dates = [];
