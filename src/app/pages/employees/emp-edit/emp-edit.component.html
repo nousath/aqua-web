@@ -23,10 +23,16 @@
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                     <div class="row profileImage cursor">
                         <img *ngIf="employee?.properties?.picUrl" class="EmpProile" [src]="employee?.properties?.picUrl" onerror="this.src = 'assets/images/blank.png'" width="100%">
+                        <!-- <div class="text-block">
+                            <h4 style="border: black solid;">Nature</h4>
+                          </div> -->
+                          <div class="text-block"  >
+                          <span *ngIf="employee?.properties?.id" (click)="isChangeImage = !isChangeImage" class="btn chimg" mdTooltip="Change Profile Picture" class="glyphicon glyphicon-edit"></span> 
+                        </div>
                         <img *ngIf="!employee?.properties?.picUrl" class="EmpProile" alt="img" src="assets/images/blank.png" width="100%">
-                        <button *ngIf="employee?.properties?.id" (click)="isChangeImage = !isChangeImage" class="btn chimg" mdTooltip="Change Profile Picture" [mdTooltipPosition]="'above'">
-                          Change Profile Picture
-                        </button>
+                        <!-- <button *ngIf="employee?.properties?.id" (click)="isChangeImage = !isChangeImage" class="btn chimg" mdTooltip="Change Profile Picture" [mdTooltipPosition]="'above'">
+                            Change Profile Photo
+                        </button> -->
                     </div>
 
                 </div>
@@ -42,7 +48,7 @@
                             Cancel
                         </button>
                     </div>
-                    <button *ngIf="uploader?.queue?.length === 0" (click)="isChangeImage = !isChangeImage" md-raised-button class="btn_grey">
+                    <button *ngIf="uploader?.queue?.length == 0" (click)="isChangeImage = !isChangeImage" md-raised-button class="btn_grey">
                             Cancel
                         </button>
                 </div>
@@ -121,12 +127,15 @@
                     <tr>
                         <th>Phone:</th>
                         <td>
-                            <input name="phone" type="text" class="form-control" [maxlength]="validatorService.phoneNumberLength" [minLength]="validatorService.phoneNumberLength" [(ngModel)]="employee.properties.phone">
+                            <input name="phone"  type="number" class="form-control"   [(ngModel)]="employee.properties.phone">
                         </td>
                         <th>Email:</th>
-                        <td>
-                            <input id="email" required email name="email" #email="ngModel" [(ngModel)]="employee.properties.email" type="text" class="form-control">
-                            <span class="help block" *ngIf="email.invalid && email.touched"> Email is invalid</span>
+                        <td >
+                                <input id="email"  email name="email" #email="ngModel" [(ngModel)]="employee.properties.email"
+                                type="text"
+                               class="form-control">
+                               <span class="help block" *ngIf="email.invalid || email.touched"></span>
+                
                         </td>
                     </tr>
                 </table>
