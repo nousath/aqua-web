@@ -127,14 +127,12 @@
                     <tr>
                         <th>Phone:</th>
                         <td>
-                            <input name="phone"  type="number" class="form-control"   [(ngModel)]="employee.properties.phone">
+                            <input name="phone"  type="number" class="form-control" [maxlength]="validatorService.phoneNumberLength" [minLength]="validatorService.phoneNumberLength"  [(ngModel)]="employee.properties.phone">
                         </td>
                         <th>Email:</th>
                         <td >
-                                <input id="email"  email name="email" #email="ngModel" [(ngModel)]="employee.properties.email"
-                                type="text"
-                               class="form-control">
-                               <span class="help block" *ngIf="email.invalid || email.touched"></span>
+                                <input type="text" class="form-control" #userEmail="ngModel" name="email" [(ngModel)]="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [ngClass]="{invalid : userEmail.touched && !userEmail?.valid}" >
+                              
                 
                         </td>
                     </tr>
