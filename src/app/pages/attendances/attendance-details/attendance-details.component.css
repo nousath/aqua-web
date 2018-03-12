@@ -24,6 +24,7 @@
     color: grey;
     margin: 0;
     font-size: 76%;
+  
 }
 
 .calBox {
@@ -34,6 +35,8 @@
     margin: 0.1%;
     text-align: center;
     min-height: 80px;
+    border-color: #00a8c6;
+        
 }
 
 .example-spacer {
@@ -61,18 +64,23 @@
     background-image: url(../../../../assets/images/corners/absent-icon.png);
     background-position: right top;
     background-repeat: no-repeat;
+   
 }
 
 .present {
     background-image: url(../../../../assets/images/corners/present-icon.png);
     background-position: right top;
     background-repeat: no-repeat;
+    border: #21c600 !important;
+   
+
 }
 
 .leave {
     background-image: url(../../../../assets/images/corners/leave-icon.png);
     background-position: right top;
     background-repeat: no-repeat;
+   
 }
 
 .missedSwipe {
@@ -88,7 +96,7 @@
 }
 
 .weekoff {
-    color: grey !important;
+    color: rgb(250, 16, 16) !important;
 }
 
 .profieCrd {
@@ -153,4 +161,15 @@ button.mat-menu-item {
     user-select: none;
     outline: 0;
     padding-top: 9px !important;
+}
+
+.highlight{
+    background-color: blue !important;
+    color: #21c600 !important;
+    width: 100px !important;
+    border: black !important;
+
+}
+.selected{
+    background-color: black !important;
 }

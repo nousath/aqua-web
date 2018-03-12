@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, style } from '@angular/core';
 import { AmsDeviceService, AmsOrganizationService } from '../../../services/ams';
 import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
 import { MdDialog } from '@angular/material';
@@ -10,6 +10,8 @@ import { Device, Category } from '../../../models';
 import { DeviceDialogComponent } from '../../../dialogs/device-dialog/device-dialog.component';
 import { Machine } from '../../../models/category';
 import { LocalStorageService } from '../../../services/local-storage.service';
+import { CopyContentComponent } from '../../../dialogs/copy-content/copy-content.component';
+import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'aqua-devices',
@@ -26,7 +28,7 @@ export class DevicesComponent implements OnInit {
   deviceId: string;
 
   isDownloading = false;
-  activationKey = '';
+  activationKey = "";
 
   constructor(private amsDeviceService: AmsDeviceService,
     private toastyService: ToastyService,
@@ -111,6 +113,7 @@ export class DevicesComponent implements OnInit {
     ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
+
   saveDevice(device?: Device) {
     const dialogRef = this.dialog.open(DeviceDialogComponent, {
       width: '40%'
@@ -142,26 +145,21 @@ export class DevicesComponent implements OnInit {
 
 
   getActivationKey() {
+
     this.isDownloading = true;
     this.orgService.organizations.get('my').then(
       data => {
-        this.activationKey = data.activationKey;
+        const dialogRef = this.dialog.open(CopyContentComponent, {
+          width: '40%',
+          data: data.activationKey,
+        });
+        // this.activationKey = data.activationKey;
         this.isDownloading = false;
       }
     ).catch(err => { this.isDownloading = false; this.toastyService.error({ title: 'Error', msg: err }) });
   }
 
-  copyKey() {
-    const input: any = document.querySelector('#activationKey');
-    input.select()
-    try {
-      const successful = document.execCommand('copy');
-      const msg = successful ? 'successful' : 'unsuccessful';
-      console.log('Copying text command was ' + msg);
-    } catch (err) {
-      console.log('Oops, unable to copy');
-    }
-  }
+
 
   // downloadSyncApp() {
   //   this.isDownloading = true;

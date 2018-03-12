@@ -9,28 +9,19 @@
                 <input id="monthSelector" type="text" class="form-control input-sm calendar no-spin" style="cursor: pointer;">
             </div>
         </div>
-        <div class="headerBtns">
-            <button [disabled]="monthlyAttendnace?.isLoading || employee?.isProcessing" md-icon-button mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'" (click)="isFilter = !isFilter"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
-            <button [disabled]="monthlyAttendnace?.isLoading || isDownloading || employee?.isProcessing" [mdMenuTriggerFor]="appMenu" md-icon-button><md-icon>cloud_download</md-icon> </button>
+        <div class="headerBtns ">
+            <button [disabled]="dailyAttendnace?.isLoading || employee?.isProcessing" md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
+            <button [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" [mdMenuTriggerFor]="appMenu" md-icon-button><md-icon>cloud_download</md-icon> </button>
             <md-menu #appMenu="mdMenu">
-                <button md-menu-item [matMenuTriggerFor]="appSubMenu1">Extra hours - after Shift end time</button>
-                <button md-menu-item [matMenuTriggerFor]="appSubMenu2">Extra hours - after Shift hours</button>
-                <button md-menu-item [matMenuTriggerFor]="appSubMenu3">Monthly Attendance</button>
+                <button md-menu-item (click)="download(true,false,'Extra hours - after Shift end time')">Extra hours - after Shift end time</button>
+                <button md-menu-item (click)="download(false,true,'Extra hours - after Shift hours')">Extra hours - after Shift hours
+                </button>
+                <button md-menu-item (click)="download(false,false, 'Day Attendance')">Day's Attendance</button>
             </md-menu>
-            <md-menu #appSubMenu1="mdMenu">
-                <button md-menu-item (click)="download(true, false, 'Extra hours - after Shift end time')">Excel</button>
-                <button *ngIf="org ==='sh'" md-menu-item (click)="downloadPdf('attendance3')">PDF</button>
-            </md-menu>
-            <md-menu #appSubMenu2="mdMenu">
-                <button md-menu-item (click)="download(false, true, 'Extra hours - after Shift hours')">Excel</button>
-                <button *ngIf="org ==='sh'" md-menu-item (click)="downloadPdf('attendance2')">PDF</button>
-            </md-menu>
-            <md-menu #appSubMenu3="mdMenu">
-                <button md-menu-item (click)="download(false, false, 'Day Attendance')">Excel</button>
-                <button *ngIf="org ==='sh'" md-menu-item (click)="downloadPdf('attendance')">PDF</button>
-            </md-menu>
+            <!-- <button [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button mdTooltip="Download Attendance extraHours" [mdTooltipPosition]="'above'" (click)="download(true)"><md-icon>cloud_download</md-icon> </button>
+            <button [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" (click)="download(false)" angulartics2On="click" angularticsEvent="dialyAttendnaceDownloadClick"
+                angularticsCategory="dialyAttendnace" [angularticsProperties]="{label: 'Fall Campaign'}"><md-icon >cloud_download</md-icon></button> -->
         </div>
-
     </div>
 </div>
 <md-spinner class="custom_spinner" *ngIf="monthlyAttendnace?.isLoading || isDownloading || employee?.isProcessing" mode="indeterminate"></md-spinner>

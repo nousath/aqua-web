@@ -5,6 +5,7 @@ export class ShiftType {
   code = '';
   startTime = '';
   endTime = '';
+  
   monday: 'off' | 'full' | 'half' | 'alternate' | null = null;
   tuesday: 'off' | 'full' | 'half' | 'alternate' | null = null;
   wednesday: 'off' | 'full' | 'half' | 'alternate' | null = null;
@@ -14,6 +15,7 @@ export class ShiftType {
   sunday: 'off' | 'full' | 'half' | 'alternate' | null = null;
   changeType: 'now' | 'later' = 'now';
   status = '';
+  
 }
 
 

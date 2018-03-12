@@ -1,4 +1,6 @@
-import { ReportFiltersComponent } from './../../../shared/components/report-filters/report-filters.component';
+import { InsightsService } from './../../../services/ams/insights.service';
+import { Insight } from './../../../models/insight.model';
+// import { ReportFiltersComponent } from './../../../shared/components/report-filters/report-filters.component';
 import { Component, OnInit } from '@angular/core';
 import { AmsAlertService } from '../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -27,26 +29,27 @@ interface MyType {
   styleUrls: ['./download-report.component.css']
 })
 export class DownloadReportComponent implements OnInit {
-  alerts: Page<AmsAlert>;
-  alert: Model<AmsAlert>;
+ 
+  alert: Model<Insight>;
   subscription: Subscription;
   isLoading= false;
-  constructor(private amsAlertService: AmsAlertService,
+  constructor(private amsInsightService: InsightsService,
     private toastyService: ToastyService,
     public validatorService: ValidatorService,
     private activatedRoute: ActivatedRoute,
     private angulartics2: Angulartics2,
     private router: Router) {
 
-      this.alerts = new Page({
-        api: amsAlertService.alerts
+      // this.alerts = new Page({
+      //   api: amsAlertService.alerts
+      // });
+
+
+      this.alert = new Model({
+        api: amsInsightService.insights,
+        properties: new Insight()
       });
-
-
-    this.alert = new Model({
-      api: amsAlertService.alerts,
-      properties: new AmsAlert()
-    });
+  
     this.subscription = activatedRoute.params.subscribe(
       params => {
         this.isLoading = true;
@@ -66,11 +69,7 @@ export class DownloadReportComponent implements OnInit {
     );
 
   }
-
-
-
-
-
+  
   ngOnInit() {
   }
   reportTab() {

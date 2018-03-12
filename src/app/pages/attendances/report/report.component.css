@@ -29,3 +29,10 @@
     height: 200px;
     overflow: auto;
 }
+.btnView[_ngcontent-c7] {
+    background-color: #6b6b6b !important;
+    -ms-flex-line-pack: end;
+    align-content: flex-end;
+    color: white !important;
+    margin-right: 43px !important;
+}

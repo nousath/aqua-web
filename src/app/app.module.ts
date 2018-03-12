@@ -1,3 +1,7 @@
+// import { ReportFiltersComponent } from './shared/components/report-filters/report-filters.component';
+import { DownloadReportComponent } from './pages/attendances/download-report/download-report.component';
+import { ListReportComponent } from './pages/attendances/list-report/list-report.component';
+import { ReportComponent } from './pages/attendances/report/report.component';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
@@ -18,6 +22,7 @@ import { SystemUsageComponent } from './pages/system-usage/system-usage.componen
 import { DailyShiftRosterComponent } from './pages/daily-shift-roster/daily-shift-roster.component';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,6 +33,7 @@ import { DailyShiftRosterComponent } from './pages/daily-shift-roster/daily-shif
     GkuAttendanceComponent,
     SystemUsageComponent,
     DailyShiftRosterComponent,
+    
 
   ],
   imports: [
