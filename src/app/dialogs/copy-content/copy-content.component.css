@@ -72,4 +72,12 @@ td {
     width: 100%;
     height: 100%;
 }
-
+.header[_ngcontent-c13][_ngcontent-c13] {
+    color: white;
+    background-color: #2d3349 !important;
+    /* margin: -23px !important; */
+    margin-bottom: -22px !important;
+    margin-top: -22px !important;
+    margin-left: -36px !important;
+    margin-right: -36px !important;
+}

@@ -1,3 +1,4 @@
+// import { ReportFiltersComponent } from './../../shared/components/report-filters/report-filters.component';
 import { AttendanceLogsComponent } from './attendance-logs/attendance-logs.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -36,6 +37,12 @@ const routes: Routes = [
       { path: 'leave-balances', component: LeaveBalancesComponent },
       { path: 'leave-balances/:empId', component: AttendanceDetailsComponent },
       { path: 'manage-leaves', component: ManageLeavesComponent },
+
+      {path:'report', component:ReportComponent},
+      // {path:'list-report',component:ListReportComponent},
+      {path:'list-report/:id',component:ListReportComponent},
+      {path:'download-report/:id',component:DownloadReportComponent}
+
     ]
   }
 ];

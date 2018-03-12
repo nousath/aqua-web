@@ -1,3 +1,4 @@
+import { CopyContentComponent } from './../../dialogs/copy-content/copy-content.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -34,10 +35,11 @@ import { ChannelTypesComponent } from './channel-types/channel-types.component';
     DeviceLogsComponent,
     ChannelTypesComponent,
     ChannelTypeEditComponent,
-    DeviceDialogComponent
+    DeviceDialogComponent,
+    CopyContentComponent
   ],
   entryComponents: [
-    DeviceDialogComponent
+    DeviceDialogComponent,CopyContentComponent
   ],
   exports: [
     SettingsComponent,

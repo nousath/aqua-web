@@ -26,11 +26,11 @@ export class ReportComponent implements OnInit {
     private router: Router) {
 
     this.insights = new Page({
-      api: amsInsightService.Insights
+      api: amsInsightService.insights
     });
 
     this.insight = new Model({
-      api: amsInsightService.Insights,
+      api: amsInsightService.insights,
       properties: new Insight()
     });
 

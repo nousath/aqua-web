@@ -1,42 +1,57 @@
 <div class="row page_header">
     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <h5><b>Devices</b></h5>
+        <h5>
+            <b>Devices</b>
+        </h5>
     </div>
     <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-        <span *ngIf="activationKey" class="activationKeySpan">
-                <span >Activation Key :  <input disabled id="activationKey" [value]="activationKey"></span>
-        <button md-icon-button [disabled]="devices?.isLoading || isDownloading || device?.isProcessing || categories?.isLoading" (click)="copyKey()" mdTooltip="Copy Activation Key" class="marginLetf" [mdTooltipPosition]="'above'"><md-icon >content_copy</md-icon></button>
-        </span>
+        <!-- <button class="button_align" md-icon-button [disabled]="devices?.isLoading || device?.isProcessing || categories?.isLoading" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="saveDevice(item)"><i class="fa fa-pencil-square-o  fa-lg" aria-hidden="true"></i></button>
+        <span *ngIf="activationKey" class="activationKeySpan" (click)="copycontent()"> -->
+        <!-- <span >Activation Key :  <input readonly id="activationKey" [value]="activationKey"></span> -->
+        <!-- <button md-icon-button [disabled]="devices?.isLoading || isDownloading || device?.isProcessing || categories?.isLoading" (click)="copyKey()" mdTooltip="Copy Activation Key" class="marginLetf" [mdTooltipPosition]="'above'"><md-icon >content_copy</md-icon></button> -->
+        <!-- </span> -->
         <div class="headerBtns1">
-            <button *ngIf="!activationKey" md-icon-button [disabled]="isDownloading" (click)="getActivationKey()" mdTooltip="Get Activation Key" class="marginLetf" [mdTooltipPosition]="'above'"><md-icon >vpn_key</md-icon></button>
-            <a md-icon-button mdTooltip="Download Sync App" class="marginLetf" [mdTooltipPosition]="'above'" href="https://s3.ap-south-1.amazonaws.com/aqua-setups/AquaSync.msi">
-                <md-icon>cloud_download</md-icon>
-            </a>
-            <button md-icon-button [disabled]="devices?.isLoading || isDownloading || device?.isProcessing || categories?.isLoading" (click)="saveDevice()" mdTooltip="Add" class="marginLetf" [mdTooltipPosition]="'above'"><md-icon >add_circle_outline</md-icon></button>
+            <ol>
+                <button md-icon-button [disabled]="isDownloading" (click)="getActivationKey()" mdTooltip="Get Activation Key" class="marginLetf"
+                    [mdTooltipPosition]="'above'" aria-hidden="true">
+                    <md-icon>vpn_key</md-icon>
+                </button>
+                <a md-icon-button mdTooltip="Download Sync App" class="marginLetf" [mdTooltipPosition]="'above'" href="https://s3.ap-south-1.amazonaws.com/aqua-setups/AquaSync.msi">
+                    <md-icon>cloud_download</md-icon>
+                </a>
+                <button md-icon-button [disabled]="devices?.isLoading || isDownloading || device?.isProcessing || categories?.isLoading"
+                    (click)="saveDevice()" mdTooltip="Add" class="marginLetf" [mdTooltipPosition]="'above'">
+                    <md-icon>add_circle_outline</md-icon>
+                </button>
+
+            </ol>
         </div>
     </div>
 </div>
-<md-spinner class="custom_spinner" *ngIf="devices?.isLoading || isDownloading || device?.isProcessing || categories?.isLoading" mode="indeterminate"></md-spinner>
+<md-spinner class="custom_spinner" *ngIf="devices?.isLoading || isDownloading || device?.isProcessing || categories?.isLoading"
+    mode="indeterminate"></md-spinner>
 
 <div *ngIf="isUpload" class="row marginTopAdd">
     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-        <span><b>File Upload</b></span>&nbsp;&nbsp;
+        <span>
+            <b>File Upload</b>
+        </span>&nbsp;&nbsp;
     </div>
     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
         <input class="file" id="uploader" type="file" ng2FileSelect [uploader]="uploader" />
     </div>
     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 marginTopSubtract" *ngFor="let item of uploader.queue" class="queue">
         <button md-icon-button (click)="upload(item)" [disabled]="item.isReady || item.isUploading || item.isSuccess">
-                              <md-icon>cloud_upload</md-icon>
-                          </button>
+            <md-icon>cloud_upload</md-icon>
+        </button>
         <button md-icon-button (click)="isUpload = !isUpload" [disabled]="item.isReady || item.isUploading  || uploader.isUploading">
-                             <md-icon>highlight_off</md-icon>
-                          </button>
+            <md-icon>highlight_off</md-icon>
+        </button>
     </div>
     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 marginTopSubtract">
         <button *ngIf="uploader?.queue?.length === 0" (click)="isUpload = !isUpload" md-icon-button>
-                  <md-icon>highlight_off</md-icon>
-              </button>
+            <md-icon>highlight_off</md-icon>
+        </button>
     </div>
 
 </div>
@@ -72,9 +87,18 @@
                             <td class="tdWidth">{{item?.port || '--'}}</td>
                             <td class="tdWidth">{{item?.bssid || '--'}}</td>
                             <td class="tdWidth text-center">
-                                <button class="button_align" md-icon-button [disabled]="devices?.isLoading || device?.isProcessing || categories?.isLoading" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="saveDevice(item)"><i class="fa fa-pencil-square-o  fa-lg" aria-hidden="true"></i></button>
-                                <button class="button_align" md-icon-button [disabled]="devices?.isLoading || device?.isProcessing || categories?.isLoading" mdTooltip="Delete" [mdTooltipPosition]="'above'" (click)="remove(item)"><md-icon>delete</md-icon></button>
-                                <button class="button_align" md-icon-button [disabled]="devices?.isLoading || device?.isProcessing || categories?.isLoading" mdTooltip="Import CSV" [mdTooltipPosition]="'above'" (click)="fileUploader(item)"><md-icon>cloud_upload</md-icon></button>
+                                <button class="button_align" md-icon-button [disabled]="devices?.isLoading || device?.isProcessing || categories?.isLoading"
+                                    mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="saveDevice(item)">
+                                    <i class="fa fa-pencil-square-o  fa-lg" aria-hidden="true"></i>
+                                </button>
+                                <button class="button_align" md-icon-button [disabled]="devices?.isLoading || device?.isProcessing || categories?.isLoading"
+                                    mdTooltip="Delete" [mdTooltipPosition]="'above'" (click)="remove(item)">
+                                    <md-icon>delete</md-icon>
+                                </button>
+                                <button class="button_align" md-icon-button [disabled]="devices?.isLoading || device?.isProcessing || categories?.isLoading"
+                                    mdTooltip="Import CSV" [mdTooltipPosition]="'above'" (click)="fileUploader(item)">
+                                    <md-icon>cloud_upload</md-icon>
+                                </button>
                             </td>
                         </tr>
 

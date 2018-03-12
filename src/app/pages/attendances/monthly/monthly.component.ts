@@ -181,32 +181,32 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
     });
   }
 
-  downloadPdf(jobName) {
-    this.isDownloading = true;
-    const queryParams: any = {};
-    _.each(this.monthlyAttendnace.filters.properties, (filter: Filter, key: any, obj: any) => {
-      if (filter.value) {
-        queryParams[key] = filter.value;
-      }
-    });
-    const atomsUrl = `http://atoms-api.m-sas.com/api/docs/${jobName}_${this.org}/${queryParams['ofDate']}.pdf?clientCode=msas`;
-    this.http.get(atomsUrl, { responseType: ResponseContentType.Blob }).toPromise().then(response => {
-      const fileName = `${moment(queryParams['ofDate']).format('MMM_YY')}_monthlyReport.pdf`;
-      const blob = new Blob([response['_body']], { type: 'application/pdf' });
-      const objectUrl = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = objectUrl;
-      a.download = fileName;
-      a.click();
-      URL.revokeObjectURL(objectUrl);
-      document.body.appendChild(a);
-      document.body.removeChild(a);
-      this.isDownloading = false;
-    }).catch(err => {
-      this.toastyService.error({ title: 'Error', msg: err });
-      this.isDownloading = false;
-    });
-  }
+  // downloadPdf(jobName) {
+  //   this.isDownloading = true;
+  //   const queryParams: any = {};
+  //   _.each(this.monthlyAttendnace.filters.properties, (filter: Filter, key: any, obj: any) => {
+  //     if (filter.value) {
+  //       queryParams[key] = filter.value;
+  //     }
+  //   });
+  //   const atomsUrl = `http://atoms-api.m-sas.com/api/docs/${jobName}_${this.org}/${queryParams['ofDate']}.pdf?clientCode=msas`;
+  //   this.http.get(atomsUrl, { responseType: ResponseContentType.Blob }).toPromise().then(response => {
+  //     const fileName = `${moment(queryParams['ofDate']).format('MMM_YY')}_monthlyReport.pdf`;
+  //     const blob = new Blob([response['_body']], { type: 'application/pdf' });
+  //     const objectUrl = window.URL.createObjectURL(blob);
+  //     const a = document.createElement('a');
+  //     a.href = objectUrl;
+  //     a.download = fileName;
+  //     a.click();
+  //     URL.revokeObjectURL(objectUrl);
+  //     document.body.appendChild(a);
+  //     document.body.removeChild(a);
+  //     this.isDownloading = false;
+  //   }).catch(err => {
+  //     this.toastyService.error({ title: 'Error', msg: err });
+  //     this.isDownloading = false;
+  //   });
+  // }
 
   ngOnInit() {
   }

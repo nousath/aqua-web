@@ -92,10 +92,10 @@
                         <td class="tdWidth">{{item?.status || '--'}}</td>
                         <td class="tdWidth">{{item?.designation || '--'}}</td>
                         <td class="tdWidth text-center">
-                            <a md-icon-button class="button_align cursor" mdTooltip="Edit details" [mdTooltipPosition]="'above'" [routerLink]="[item.id]">
+                            <!-- <a md-icon-button class="button_align cursor" mdTooltip="Edit details" [mdTooltipPosition]="'above'" [routerLink]="[item.id]">
                                 <md-icon>edit</md-icon>
                             </a>
-                            &nbsp;
+                            &nbsp; -->
                             <button *ngIf="item.status !== 'deactivate'" [disabled]="employees?.isLoading || employee?.isProcessing" md-icon-button class="button_align cursor" mdTooltip="Terminate" [mdTooltipPosition]="'above'" (click)="terminateEmp(item.id, item.name)">
                             <i class="fa fa-user-times fa-lg" aria-hidden="true"></i>
                             </button>

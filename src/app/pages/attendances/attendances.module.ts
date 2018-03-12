@@ -17,7 +17,7 @@ import { AttendanceLogsComponent } from './attendance-logs/attendance-logs.compo
 import { DownloadReportComponent } from './download-report/download-report.component';
 import { ListReportComponent } from './list-report/list-report.component';
 import { ReportComponent } from './report/report.component';
-import { ReportFiltersComponent } from '../../shared/components/report-filters/report-filters.component';
+
 
 @NgModule({
   imports: [
@@ -39,7 +39,7 @@ import { ReportFiltersComponent } from '../../shared/components/report-filters/r
     DownloadReportComponent,
     ListReportComponent,
     ReportComponent,
-    ReportFiltersComponent
+    // ReportFiltersComponent
   ],
   entryComponents: [
     DayEventDialogComponent,
@@ -54,7 +54,10 @@ import { ReportFiltersComponent } from '../../shared/components/report-filters/r
     AttendanceLogsComponent,
     LeavesComponent,
     LeaveBalancesComponent,
-    ManageLeavesComponent
+    ManageLeavesComponent,
+    ReportComponent,
+    ListReportComponent,
+    DownloadReportComponent
   ]
 })
 export class AttendancesModule { }

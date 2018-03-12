@@ -35,6 +35,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
   employee: Model<Employee>;
   shifTypes: Page<ShiftType>;
   empId: string;
+  ofDate:any;
   isProcessingAttendance = false;
   isDownloading = false;
   selectedDate: Date = new Date();
@@ -44,12 +45,11 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
   leavesSubmiited: Page<Leave>;
   leaveBalances: Page<LeaveBalance>;
   isShowLeaveAction = false;
-
   days: string[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   events: DayEvent[] = [];
   emptyStartDays: any[] = [];
   emptyEndDays: any[] = [];
-  date: Date = null;
+  date:any;
 
   constructor(private amsEmployeeService: AmsEmployeeService,
     private amsLeaveService: AmsLeaveService,
@@ -111,7 +111,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
 
       }
     );
-
+    var current_date= new Date();
   }
 
   changeShift(shiftTypeId: string) {
@@ -169,6 +169,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
 
   getDate(date: Date): number {
     return new Date(date).getDate()
+   
   };
 
   fetchLeavesBalances() {

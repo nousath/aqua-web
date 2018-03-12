@@ -1,3 +1,7 @@
+// import { ReportFiltersComponent } from './shared/components/report-filters/report-filters.component';
+import { ListReportComponent } from './pages/attendances/list-report/list-report.component';
+import { DownloadReportComponent } from './pages/attendances/download-report/download-report.component';
+import { ReportComponent } from './pages/attendances/report/report.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
