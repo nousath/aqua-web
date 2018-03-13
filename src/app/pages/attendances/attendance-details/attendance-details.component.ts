@@ -169,7 +169,6 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
 
   getDate(date: Date): number {
     return new Date(date).getDate()
-   
   };
 
   fetchLeavesBalances() {
@@ -224,6 +223,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
       const monthInNumber: number = dateVar.getMonth();
       // let totalDaysInMonth: number;
 
+      
       // _.each(this.months, (value: Month, key: string, obj: Months) => {
       //   if (value.id === m + 1)
       //     totalDaysInMonth = value.days;
@@ -284,7 +284,12 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
 
   updateDayEvent(item: DayEvent) {
     //  let attendanceId = item.id
+    if(item.checkIn){
     this.router.navigate([`/pages/attendances/daily/${this.empId}/attendance-logs/${item.ofDate}`])
+    }
+    else{
+      
+    }
     // // if (!item.id) {
     // //   return
     // // }
