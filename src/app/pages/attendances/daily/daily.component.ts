@@ -202,8 +202,8 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    var date = new Date();
-    var today = new Date(date.getFullYear(), date.getMonth(),date.getDate());
+    const date = new Date();
+    const today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
     $('#dateSelector').datepicker({
       minDate: moment(),
@@ -216,7 +216,7 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
       maxDate: new Date()
     }).on('changeDate', (e) => {
       if (new Date(e.date) > new Date()) {
-    
+
         return this.toastyService.info({ title: 'Info', msg: 'Date should be less than or equal to current date' })
       }
       this.getAttendance(e.date);

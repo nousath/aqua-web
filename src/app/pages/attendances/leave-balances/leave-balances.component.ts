@@ -18,7 +18,7 @@ export class LeaveBalancesComponent implements OnInit {
   leaveBalances: Page<OrgLeaveBalance>;
   // leaveBalance: Model<OrgLeaveBalance>;
   leaveTypes: Page<LeaveType>;
-
+  isUpdatingLeave = false;
   isFilter = false;
 
   constructor(public validatorService: ValidatorService,
@@ -117,7 +117,6 @@ export class LeaveBalancesComponent implements OnInit {
     }
   }
 
-  isUpdatingLeave = false;
   updateLeaveBalance(leave: OrgLeaveBalance) {
     this.isUpdatingLeave = true;
 

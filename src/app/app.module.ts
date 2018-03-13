@@ -33,7 +33,7 @@ import { DailyShiftRosterComponent } from './pages/daily-shift-roster/daily-shif
     GkuAttendanceComponent,
     SystemUsageComponent,
     DailyShiftRosterComponent,
-    
+
 
   ],
   imports: [

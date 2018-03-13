@@ -10,8 +10,8 @@
             </div>
         </div>
         <div class="headerBtns ">
-            <button [disabled]="dailyAttendnace?.isLoading || employee?.isProcessing" md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
-            <button [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" [mdMenuTriggerFor]="appMenu" md-icon-button><md-icon>cloud_download</md-icon> </button>
+            <button [disabled]="employee?.isProcessing" md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
+            <button [disabled]= "isDownloading || employee?.isProcessing" [mdMenuTriggerFor]="appMenu" md-icon-button><md-icon>cloud_download</md-icon> </button>
             <md-menu #appMenu="mdMenu">
                 <button md-menu-item (click)="download(true,false,'Extra hours - after Shift end time')">Extra hours - after Shift end time</button>
                 <button md-menu-item (click)="download(false,true,'Extra hours - after Shift hours')">Extra hours - after Shift hours

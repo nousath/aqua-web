@@ -43,9 +43,7 @@
     flex: 1 1 auto;
 }
 
-.toolbar {
-    /*margin-bottom: 1%;*/
-}
+
 
 .profileImage {
     width: 100%;
@@ -102,9 +100,7 @@
     
 }
 
-.profieCrd {
-    /* padding: 0; */
-}
+
 
 .calHeader {
     background: #00a8c6;

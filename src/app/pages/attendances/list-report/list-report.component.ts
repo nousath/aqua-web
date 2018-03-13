@@ -43,11 +43,11 @@ export class ListReportComponent implements OnInit {
   subscription: Subscription;
   isLoading = false;
   shiftTypes: Page<ShiftType>;
-  alertId:any;
+  alertId: any;
   tagTypes: Page<TagType>;
   tags: Tags = new Tags();
   date: Date = null;
-  ofDate:any;
+  ofDate: any;
   isDownloading = false;
 
 
@@ -60,15 +60,15 @@ export class ListReportComponent implements OnInit {
     private http: Http,
     private router: Router) {
 
-  
-                
+
+
 
     this.alert = new Model({
       api: amsInsightService.insights,
       properties: new Insight()
     });
 
-   
+
 
     this.subscription = activatedRoute.params.subscribe(
       params => {
@@ -76,10 +76,10 @@ export class ListReportComponent implements OnInit {
         const alertId: string = params['id'];
         const ofDate = new Date();
 
-        this.amsInsightService.getDaily(alertId, ofDate).subscribe((data)=>{
+        this.amsInsightService.getDaily(alertId, ofDate).subscribe((data) => {
           this.isLoading = false;
         })
-      
+
 
         // this.alert.fetch(alertId).then(
         //   data => {
@@ -107,8 +107,8 @@ export class ListReportComponent implements OnInit {
 
       if (amsToken) {
         headers.append('x-access-token', amsToken);
-      }   
-   
+      }
+
     headers.append('org-code', orgCode);
 
     return headers;

@@ -38,10 +38,10 @@ const routes: Routes = [
       { path: 'leave-balances/:empId', component: AttendanceDetailsComponent },
       { path: 'manage-leaves', component: ManageLeavesComponent },
 
-      {path:'report', component:ReportComponent},
+      {path: 'report', component: ReportComponent},
       // {path:'list-report',component:ListReportComponent},
-      {path:'list-report/:id',component:ListReportComponent},
-      {path:'download-report/:id',component:DownloadReportComponent}
+      {path: 'list-report/:id', component: ListReportComponent},
+      {path: 'download-report/:id', component: DownloadReportComponent}
 
     ]
   }

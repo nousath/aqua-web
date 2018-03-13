@@ -21,10 +21,10 @@
         <div class="container-fluid">
             <ul class="nav nav-tabs">
                 <li class="active navTab">
-                    <a [routerLink]="['/pages/attendances/list-report',alert.id || alert.date]">List</a>
+                    <a [routerLink]="['/pages/attendances/list-report',alert.id || alert.properties.date]">List</a>
                 </li>
                 <li class="navTab">
-                    <a [routerLink]="['/pages/attendances/download-report',alert.id || alert.date]">Report</a>
+                    <a [routerLink]="['/pages/attendances/download-report',alert.id || alert.properties.date]">Report</a>
                 </li>
                 <li class="navTab ">
                     <a class="tab disabled">Notification</a>

@@ -58,9 +58,8 @@ export class HolidaysComponent implements OnInit {
       this.initDatePiker();
     }, 1000);
   }
-
-  save(holiday?:Holiday) {
-    if(holiday){
+  save(holiday?: Holiday) {
+    if (holiday) {
       this.holiday.properties = holiday;
     }
     if (!this.holiday.properties.name)
@@ -115,12 +114,12 @@ export class HolidaysComponent implements OnInit {
   //   }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   // }
 
-  
-  
+
+
 
   ngOnInit() {
   }
-  
+
   remove(item) {
     this.holiday.properties = item;
     this.holiday.remove()
