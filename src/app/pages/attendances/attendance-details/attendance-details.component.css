@@ -67,11 +67,13 @@
    
 }
 
-.present {
+.present{
     background-image: url(../../../../assets/images/corners/present-icon.png);
     background-position: right top;
     background-repeat: no-repeat;
     border: #21c600 !important;
+ 
+    /* background-color: #00a8c6 !important */
    
 
 }
@@ -97,6 +99,7 @@
 
 .weekoff {
     color: rgb(250, 16, 16) !important;
+    
 }
 
 .profieCrd {
@@ -163,13 +166,38 @@ button.mat-menu-item {
     padding-top: 9px !important;
 }
 
-.highlight{
+/* .highlight,::-webkit-textfield-decoration-container{
     background-color: blue !important;
     color: #21c600 !important;
     width: 100px !important;
     border: black !important;
 
+} */
+.calBoxhighlight[_ngcontent-c7][_ngcontent-c7] {
+    background-color: #f1f1f1;
+    width: 14%;
+    float: left;
+    margin-bottom: -34px !important;
+    padding-top: 34px !important;
+    margin-top: -33px !important;
+    text-align: center !important;
+    min-height: 80px !important;
+    border-color: #00a8c6 !important;
+    background-color: rgba(0,0,0,.12) !important;
+    color: #21c600 !important;
+    width: 107px !important;
+    border: black !important;
 }
-.selected{
-    background-color: black !important;
+.selectedDate{
+    background-color: #21c600 !important;
 }
+/* .ui-datepicker-today a.ui-state-highlight {
+    border-color: #d3d3d3;
+    background: #e6e6e6 url(/themeroller/images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x;;
+    color: #555555;    
+} */
+/* .ui-datepicker-today.ui-datepicker-current-day a.ui-state-highlight {
+    border-color: #aaaaaa;
+    background: #ffffff url(images/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x;
+    color: #212121;
+} */
