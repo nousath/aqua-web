@@ -33,7 +33,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
   uploader: FileUploader;
   isChangeImage = false;
   imgUploadUrl: string = environment.apiUrls.ems;
-
+  email: any;
   isNew = false;
 
   constructor(private emsEmployeeService: EmsEmployeeService,

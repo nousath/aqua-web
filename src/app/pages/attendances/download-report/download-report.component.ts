@@ -29,7 +29,7 @@ interface MyType {
   styleUrls: ['./download-report.component.css']
 })
 export class DownloadReportComponent implements OnInit {
- 
+
   alert: Model<Insight>;
   subscription: Subscription;
   isLoading= false;
@@ -49,7 +49,7 @@ export class DownloadReportComponent implements OnInit {
         api: amsInsightService.insights,
         properties: new Insight()
       });
-  
+
     this.subscription = activatedRoute.params.subscribe(
       params => {
         this.isLoading = true;
@@ -69,7 +69,7 @@ export class DownloadReportComponent implements OnInit {
     );
 
   }
-  
+
   ngOnInit() {
   }
   reportTab() {

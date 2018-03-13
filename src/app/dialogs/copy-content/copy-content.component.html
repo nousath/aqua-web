@@ -1,10 +1,15 @@
 <div class="container-fluid">
-  <div  class="row text-center header">
-<span  class="activationKeySpan" (click)="copycontent()"> 
-    <span >Activation Key :  <input readonly id="activationKey" class="form-control" [value]="activationKey"></span>
-<button md-icon-button [disabled]="devices?.isLoading || isDownloading || device?.isProcessing || categories?.isLoading" (click)="copyKey()" mdTooltip="Copy Activation Key" class="marginLetf" [mdTooltipPosition]="'above'"><md-icon >content_copy</md-icon></button>
-</span>
+  <div class="row text-center header">
+    <span class="activationKeySpan">
+      <span>Activation Key :
+        <input readonly id="activationKey" class="form-control" [value]="activationKey">
+      </span>
+      <button class="marginLetf" md-icon-button 
+        (click)="copyKey()" mdTooltip="Copy Activation Key"  [mdTooltipPosition]="'above'">
+        <md-icon>content_copy</md-icon>
+      </button>
+    </span>
 
-</div>
-<!-- <button md-raised-button class="btn_grey" md-dialog-close>Cancel</button> -->
+  </div>
+  <!-- <button md-raised-button class="btn_grey" md-dialog-close>Cancel</button> -->
 </div>

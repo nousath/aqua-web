@@ -35,11 +35,12 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
   employee: Model<Employee>;
   shifTypes: Page<ShiftType>;
   empId: string;
-  ofDate:any;
+  ofDate: any;
   isProcessingAttendance = false;
   isDownloading = false;
   selectedDate: Date = new Date();
 
+  isUpdatingLeaveStatus = false;
   attendance: Model<DayEvent>;
 
   leavesSubmiited: Page<Leave>;
@@ -49,7 +50,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
   events: DayEvent[] = [];
   emptyStartDays: any[] = [];
   emptyEndDays: any[] = [];
-  date:any;
+  date: any;
 
   constructor(private amsEmployeeService: AmsEmployeeService,
     private amsLeaveService: AmsLeaveService,
@@ -111,7 +112,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
 
       }
     );
-    var current_date= new Date();
+    const current_date = new Date();
   }
 
   changeShift(shiftTypeId: string) {
@@ -134,7 +135,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
     this.employee.properties.abilities.manualByGeoFencing = false;
     this.employee.properties.abilities.manualByBeacon = false;
     this.employee.properties.abilities.manualByWifi = false;
-    if (type != 'none') {
+    if (type !== 'none') {
       this.employee.properties.abilities[type] = true;
     }
 
@@ -223,7 +224,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
       const monthInNumber: number = dateVar.getMonth();
       // let totalDaysInMonth: number;
 
-      
+
       // _.each(this.months, (value: Month, key: string, obj: Months) => {
       //   if (value.id === m + 1)
       //     totalDaysInMonth = value.days;
@@ -283,73 +284,10 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
   }
 
   updateDayEvent(item: DayEvent) {
-    //  let attendanceId = item.id
-    if(item.checkIn){
-    this.router.navigate([`/pages/attendances/daily/${this.empId}/attendance-logs/${item.ofDate}`])
+    if (item.checkIn) {
+      this.router.navigate([`/pages/attendances/daily/${this.empId}/attendance-logs/${item.ofDate}`])
     }
-    else{
-      
-    }
-    // // if (!item.id) {
-    // //   return
-    // // }
-
-    // let dialogRef = this.dialog.open(DayEventDialogComponent, { width: '50%' });
-    // dialogRef.componentInstance.attendance.ofDate = item.ofDate;
-    // dialogRef.componentInstance.isHoliday = false;
-
-    // // if (item.shift && item.shift.status.toLowerCase() === 'holiday' && (item.status !== 'present' && item.status !== 'checkedin' && item.status !== 'missswipe')) {
-    // //   dialogRef.componentInstance.isHoliday = true;
-    // //   return dialogRef.componentInstance.hloiday = `Holiday: ${item.shift.holiday.name}`;
-
-    // // }
-
-    // // if (item.status.toLowerCase() === 'onleave' && item.shift.status.toLowerCase() === 'working') {
-    // //   dialogRef.componentInstance.isHoliday = true;
-    // //   return dialogRef.componentInstance.hloiday = `On Leave`;
-
-    // // }
-
-    // let h: number, m: number;
-    // if (item.checkIn) {
-    //   h = new Date(item.checkIn).getHours();
-    //   m = new Date(item.checkIn).getMinutes();
-    //   dialogRef.componentInstance.checkIn = `${h < 10 ? '0' + h : h}:${m < 10 ? '0' + m : m}`;
-    // } else {
-    //   dialogRef.componentInstance.checkIn = null;
-    // }
-
-    // if (item.checkOut) {
-    //   h = new Date(item.checkOut).getHours();
-    //   m = new Date(item.checkOut).getMinutes();
-    //   dialogRef.componentInstance.checkOut = `${h < 10 ? '0' + h : h}:${m < 10 ? '0' + m : m}`;
-    // } else {
-    //   dialogRef.componentInstance.checkOut = null;
-    // }
-
-
-    // dialogRef.componentInstance.attendance.id = item.id;
-    // dialogRef.afterClosed().subscribe((attendance: DayEvent) => {
-    //   if (attendance) {
-    //     this.attendance.properties = attendance;
-    //     this.attendance.properties.employee.id = this.empId;
-    //     if (this.attendance.properties.hoursWorked) {
-    //       let s: Date = new Date(this.attendance.properties.checkIn);
-    //       let e: Date = new Date(this.attendance.properties.checkOut);
-    //       this.attendance.properties.hoursWorked = Math.floor(Math.abs((e.getTime() - s.getTime()) / 36e5));
-    //     }
-    //     this.attendance.save().then(
-    //       data => {
-    //         this.getAttendance(this.selectedDate);
-    //       }
-    //     ).catch(
-    //       err => this.toastyService.error({ title: 'Error', msg: err })
-    //       )
-    //   }
-    // });
   }
-
-
   openCalnder() {
     $('#monthSelector').datepicker('show')
   }
@@ -362,7 +300,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
     serverPageInput.query['employee'] = this.empId;
     serverPageInput.query['byShiftEnd'] = byShiftEnd;
     serverPageInput.query['byShiftLength'] = byShiftLength;
-     reportName = `${reportName}_${this.employee.properties.name}_${moment(this.selectedDate).format('MMM_YY')}_monthlyReport.xlsx`;
+    reportName = `${reportName}_${this.employee.properties.name}_${moment(this.selectedDate).format('MMM_YY')}_monthlyReport.xlsx`;
     this.amsAttendanceService.donwloadSingleEmpMonthAtte.exportReport(serverPageInput, null, reportName).then(
       data => this.isDownloading = false
     ).catch(err => {
@@ -395,7 +333,6 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
     this.subscription.unsubscribe();
   }
 
-  isUpdatingLeaveStatus = false;
   updateStatus(leave: Leave) {
     this.isUpdatingLeaveStatus = true;
     this.amsLeaveService.leaves.update(leave.id, leave, null, `${leave.id}/action`).then(

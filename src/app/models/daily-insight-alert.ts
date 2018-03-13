@@ -6,7 +6,7 @@ import { Processor } from './processor.model';
 export class DailyInsightAlerts {
   id = '';
   status = '';
-  date='';
+  date= '';
   organization: Organization = new Organization();
   config: DailyConfig = new DailyConfig();
   processor: Processor = new Processor();

@@ -28,7 +28,7 @@ export class DevicesComponent implements OnInit {
   deviceId: string;
 
   isDownloading = false;
-  activationKey = "";
+  activationKey = '';
 
   constructor(private amsDeviceService: AmsDeviceService,
     private toastyService: ToastyService,

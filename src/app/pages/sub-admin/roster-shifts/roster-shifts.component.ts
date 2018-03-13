@@ -93,21 +93,19 @@ export class RosterShiftsComponent implements OnInit {
     const reportName = `rosterExcel_${moment().format('DD_MMM_YY')}_DailyReport.xlsx`;
     this.amsEffectiveShiftService.downloadRosterExcel.exportReport(serverPageInput, null, reportName)
       .then(
-        (data) => {
-          this.isDownloading = false
-        }).catch(err => {
-          this.toastyService.error({ title: 'Error', msg: err });
-          this.isDownloading = false
-        });
+      (data) => {
+        this.isDownloading = false
+      }).catch(err => {
+        this.toastyService.error({ title: 'Error', msg: err });
+        this.isDownloading = false
+      });
   };
 
   excel() {
     this.isUpload = !this.isUpload;
     this.uploader.clearQueue();
   }
-
-
-  ngAfterViewInit() {
+  AfterViewInit() {
     $('#dateSelector').datepicker({
       format: 'dd/mm/yyyy',
       minViewMode: 0,

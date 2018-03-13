@@ -37,7 +37,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
   showDatePicker = false;
   subscription: Subscription;
   org: any;
-
+  isDownloading = false;
   tagTypes: Page<TagType>;
   tags: Tags = new Tags();
 
@@ -159,7 +159,6 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
 
   }
 
-  isDownloading = false;
   download(byShiftEnd: boolean, byShiftLength: boolean, reportName: string) {
     this.isDownloading = true;
     const serverPageInput: ServerPageInput = new ServerPageInput();

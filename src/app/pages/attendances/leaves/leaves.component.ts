@@ -23,7 +23,7 @@ export class LeavesComponent implements OnInit, AfterViewInit {
   isFilter = false;
   isShowLeaveAction = false;
   date: Date = null
-
+  isUpdatingLeaveStatus = false;
 
 
   constructor(public validatorService: ValidatorService,
@@ -105,8 +105,6 @@ export class LeavesComponent implements OnInit, AfterViewInit {
     return date ? newDate : null;
 
   }
-
-  isUpdatingLeaveStatus = false;
   updateStatus(leave: Leave) {
     this.isUpdatingLeaveStatus = true;
     this.amsLeaveService.leaves.update(leave.id, leave, null, `${leave.id}/action`).then(

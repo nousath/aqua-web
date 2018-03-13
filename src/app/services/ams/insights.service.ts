@@ -4,7 +4,7 @@ import { Insight } from './../../models/insight.model';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { DailyInsightAlerts } from '../../models/daily-insight-alert';
-import { Observer } from 'rxjs';
+import { Observer } from 'rxjs/Observer';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 
@@ -27,8 +27,8 @@ export class InsightsService {
   }
 
   getDaily(id: string, date: Date): Observable<any> {
-    let subject = new Subject<any>();
-    this.insights.get(`${id}/daily/${date}`).then(item=> subject.next(item));
+    const subject = new Subject<any>();
+    this.insights.get(`${id}/daily/${date}`).then(item => subject.next(item));
     return subject.asObservable();
   }
 

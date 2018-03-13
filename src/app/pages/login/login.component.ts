@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   user: Model<User>;
   otpModel: EmsEmployee;
-  signupEmail = '';
+  SignUpEmail = '';
   isLoggingIn = false;
   section: 'SIGNIN' | 'SIGNUP' | 'OTP' | 'COMPLETE' | 'FORGOTPASSWORD' | 'RESETPASSWORD' = 'SIGNIN';
   verifyOTP: VerifyOTP = new VerifyOTP();
@@ -130,12 +130,12 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   signUp() {
-    if (!this.signupEmail) {
+    if (!this.SignUpEmail) {
       return this.toastyService.info({ title: 'Info', msg: 'Please enter Email' })
     }
 
-    // window.location.href = `${this.registerUrl}/#/signup/${this.signupEmail}`;
-    const win = window.open(`${this.registerUrl}/#/signup/${this.signupEmail}`, '_blank');
+    // window.location.href = `${this.registerUrl}/#/signup/${this.SignUpEmail}`;
+    const win = window.open(`${this.registerUrl}/#/signup/${this.SignUpEmail}`, '_blank');
     if (win) {
       // Browser has allowed it to be opened
       win.focus();
@@ -233,7 +233,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   resendOTP() {
     const resend: any = {
-      email: this.signupEmail
+      email: this.SignUpEmail
     }
     this.isLoggingIn = true;
     this.emsAuthService.forgotPassword.create(resend).then(

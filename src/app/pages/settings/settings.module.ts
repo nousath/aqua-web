@@ -39,7 +39,7 @@ import { ChannelTypesComponent } from './channel-types/channel-types.component';
     CopyContentComponent
   ],
   entryComponents: [
-    DeviceDialogComponent,CopyContentComponent
+    DeviceDialogComponent, CopyContentComponent
   ],
   exports: [
     SettingsComponent,
