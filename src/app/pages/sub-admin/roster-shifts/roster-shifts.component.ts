@@ -14,6 +14,7 @@ import * as _ from 'lodash';
 import { LocalStorageService } from '../../../services/local-storage.service';
 declare var $: any;
 
+
 @Component({
   selector: 'aqua-roster-shifts',
   templateUrl: './roster-shifts.component.html',
@@ -24,6 +25,8 @@ export class RosterShiftsComponent implements OnInit {
   effectiveShifts: Page<EffectiveShift>;
   shiftTypes: Page<ShiftType>;
   change: any;
+  date: Date = null;
+ 
   isDownloading = false;
   uploader: FileUploader;
   isLoading = true;
@@ -105,18 +108,18 @@ export class RosterShiftsComponent implements OnInit {
     this.isUpload = !this.isUpload;
     this.uploader.clearQueue();
   }
-  AfterViewInit() {
-    $('#dateSelector').datepicker({
-      format: 'dd/mm/yyyy',
-      minViewMode: 0,
-      maxViewMode: 2,
-      autoclose: true
-    }).on('changeDate', (e) => {
-      this.getEffectiveShift(e.date);
-      this.getWeek(e.date);
-    })
-    $('#dateSelector').datepicker('setDate', new Date(new Date().setHours(0, 0, 0, 0)));
-  }
+  // AfterViewInit() {
+  //   $('#dateSelector').datepicker({
+  //     format: 'dd/mm/yyyy',
+  //     minViewMode: 0,
+  //     maxViewMode: 2,
+  //     autoclose: true
+  //   }).on('changeDate', (e) => {
+  //     this.getEffectiveShift(e.date);
+  //     this.getWeek(e.date);
+  //   })
+  //   $('#dateSelector').datepicker('setDate', new Date(new Date().setHours(0, 0, 0, 0)));
+  // }
 
   getWeek(date) {
     this.dates = [];
@@ -148,6 +151,12 @@ export class RosterShiftsComponent implements OnInit {
     this.updateEffectiveShift(employee.id, model);
 
   }
+  getAttendance(date: Date) {
+    
+    this.date = date;
+    date = new Date(date);
+this.shiftTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+  }
 
   updateEffectiveShift(id, model: any) {
     this.isLoading = true;
@@ -161,5 +170,29 @@ export class RosterShiftsComponent implements OnInit {
   ngOnInit() {
 
   }
+  
+  ngAfterViewInit() {
+    const date = new Date();
+    const today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+    $('#dateSelector').datepicker({
+      minDate: moment(),
+      format: 'dd/mm/yyyy',
+      daysOfWeekDisabled: [0, 6],
+      minViewMode: 0,
+      maxViewMode: 2,
+      // endDate: '+0d',
+      autoclose: true,
+      maxDate: new Date()
+    }).on('changeDate', (e) => {
+      if (new Date(e.date) > new Date()) {
+
+        return this.toastyService.info({ title: 'Info', msg: 'Date should be less than or equal to current date' })
+      }
+      this.getAttendance(e.date);
+    });
+    $('#dateSelector').datepicker('setDate', new Date());
+  }
+
 
 }
