@@ -62,7 +62,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
     private store: LocalStorageService,
     public dialog: MdDialog,
     private router: Router) {
-   console.log(this.today);
+    // this.today=new Date(moment().startOf("day").toDate()).toISOString();
    
     this.employee = new Model({
       api: amsEmployeeService.employeesForAdmin,
