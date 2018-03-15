@@ -51,6 +51,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
   emptyStartDays: any[] = [];
   emptyEndDays: any[] = [];
   date: any;
+  today=new Date(moment().startOf("day").toDate()).toISOString();
 
   constructor(private amsEmployeeService: AmsEmployeeService,
     private amsLeaveService: AmsLeaveService,
@@ -61,7 +62,8 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
     private store: LocalStorageService,
     public dialog: MdDialog,
     private router: Router) {
-
+    // this.today=new Date(moment().startOf("day").toDate()).toISOString();
+   
     this.employee = new Model({
       api: amsEmployeeService.employeesForAdmin,
       properties: new Employee()
@@ -113,6 +115,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
       }
     );
     const current_date = new Date();
+
   }
 
   changeShift(shiftTypeId: string) {
@@ -284,7 +287,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
   }
 
   updateDayEvent(item: DayEvent) {
-    if (item.checkIn) {
+    if (item.ofDate < new Date().toISOString()) {
       this.router.navigate([`/pages/attendances/daily/${this.empId}/attendance-logs/${item.ofDate}`])
     }
   }

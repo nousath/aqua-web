@@ -157,18 +157,17 @@
                         <!--<p>{{item?.ofDate}}</p>-->
                         <!--<div *ngIf="item?.shift?.status === 'working'">-->
                         <p *ngIf="item?.status === 'present'
-                        
+                        || item?.status === 'checkedin'
                          || item?.status === 'missswipe'
                          || item?.status === 'checked-in-again'
                          || item?.status === 'halfday'">
                             In - {{item?.checkIn | date:'shortTime'}}
                         </p>
-                        <p *ngIf="item.status==='checkedin'  || item?.status === 'checked-in-again'">
-                            <span class="calBoxhighlight">In - {{item?.checkIn | date:'shortTime'}} </span>
-                            
+                        <p *ngIf="item.ofDate === today" style="border-color: black;">
+                            <span class="calBoxhighlight"></span>
                         </p>
                         <p *ngIf="item?.status === 'present'
-                        || item?.status === 'checkedin'
+                     
                         || item?.status === 'missswipe'
                         || item?.status === 'checked-in-again'
                         || item?.status === 'halfday'">
