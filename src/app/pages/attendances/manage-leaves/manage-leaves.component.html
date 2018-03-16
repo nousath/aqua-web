@@ -1,6 +1,8 @@
 <div class="row page_header">
     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <h5><b>Manage Leaves</b></h5>
+        <h5>
+            <b>Manage Leaves</b>
+        </h5>
     </div>
     <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
         <!--<div class="headerInpts">
@@ -11,7 +13,10 @@
         </div>-->
         <div class="headerBtns">
             <!--<button [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>-->
-            <button [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" md-icon-button mdTooltip="Add New" [mdTooltipPosition]="'above'" (click)="toggleNew()"><md-icon >add_circle_outline</md-icon></button>
+            <button [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" md-icon-button mdTooltip="Add New" [mdTooltipPosition]="'above'"
+                (click)="toggleNew()">
+                <md-icon>add_circle_outline</md-icon>
+            </button>
         </div>
 
     </div>
@@ -22,61 +27,76 @@
     <div class="row" *ngIf="isNew">
         <md-card class="card">
             <div class="row text-center headr_bar">
-                <h5><b>New Leave Type</b></h5>
+                <h5>
+                    <b>New Leave Type</b>
+                </h5>
                 <div class="actionBtns">
-                    <button md-icon-button mdTooltip="Close" [mdTooltipPosition]="'above'" (click)="toggleNew()"><md-icon >highlight_off</md-icon></button>
+                    <button md-icon-button mdTooltip="Close" [mdTooltipPosition]="'above'" (click)="toggleNew()">
+                        <md-icon>highlight_off</md-icon>
+                    </button>
                 </div>
             </div>
             <md-card>
                 <div class="row">
                     <table class="table table-condensed table-hover">
-                        <thead style="background-color: green;">
+                        <thead style="background-color: rgba(218, 215, 218, 1);">
                             <tr>
-                                <th class="tdWidth">Name<span class="asterisk">*</span></th>
+                                <th class="tdWidth">Name
+                                    <span class="asterisk">*</span>
+                                </th>
                                 <th class="tdWidth">Code</th>
-                                <th class="tdWidth">Units Per Day<span class="asterisk">*</span></th>
-                                <th class="tdWidth">Unlimited<span class="asterisk">*</span></th>
-                                <th class="tdWidth">Leave Category<span class="asterisk">*</span></th>
+                                <th class="tdWidth">Units Per Day
+                                    <span class="asterisk">*</span>
+                                </th>
+                                <th class="tdWidth">Unlimited
+                                    <span class="asterisk">*</span>
+                                </th>
+                                <th class="tdWidth">Leave Category
+                                    <span class="asterisk">*</span>
+                                </th>
                                 <th class="actionBtnss"></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr class="capitalize">
                                 <td>
-                                    <input [readOnly]="leaveTypes?.isLoading  || leaveType?.isProcessing" class="form-control" type="text" [maxlength]="validatorService.textLength" [(ngModel)]="leaveType.properties.name">
+                                    <input [readOnly]="leaveTypes?.isLoading  || leaveType?.isProcessing" class="form-control" type="text" [maxlength]="validatorService.textLength"
+                                        [(ngModel)]="leaveType.properties.name">
 
                                 </td>
                                 <td>
-                                    <input [readOnly]="leaveTypes?.isLoading  || leaveType?.isProcessing" class="form-control" type="text" [maxlength]="validatorService.textLength" [(ngModel)]="leaveType.properties.code">
+                                    <input [readOnly]="leaveTypes?.isLoading  || leaveType?.isProcessing" class="form-control" type="text" [maxlength]="validatorService.textLength"
+                                        [(ngModel)]="leaveType.properties.code">
 
                                 </td>
                                 <td>
-                                    <select a [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" class="form-control" [(ngModel)]="leaveType.properties.unitsPerDay"-webkit-appearance: none;> 
-                                    <option  [ngValue]="null">select an option</option>
-                                    <option value=1>Full</option>
-                                    <option value=2>Half</option>
-                                    <option value=3>One Third</option>
-                                </select>
+                                    <select a [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" class="form-control" [(ngModel)]="leaveType.properties.unitsPerDay">
+                                        <option [ngValue]="null">select an option</option>
+                                        <option value=1>Full</option>
+                                        <option value=2>Half</option>
+                                        <option value=3>One Third</option>
+                                    </select>
                                 </td>
                                 <td class="selectparent">
                                     <select [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" class="form-control" [(ngModel)]="leaveType.properties.unlimited ">
-                              <option [ngValue]="null">select an option</option>
-                                    <option [ngValue]="true">Yes</option>
-                                    <option [ngValue]="false">No</option>
-                             </select>
+                                        <option [ngValue]="null">select an option</option>
+                                        <option [ngValue]="true">Yes</option>
+                                        <option [ngValue]="false">No</option>
+                                    </select>
                                 </td>
                                 <td>
                                     <select [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" class="form-control" [(ngModel)]="leaveType.properties.category">
-                              <option [ngValue]="null">select an option</option>
-                              <option value="lossOfPay">Loss Of Pay</option>
-                              <option value="OnDuty">On Duty</option>
-                              <option value="paidLeave">Paid Leave</option>
-                             </select>
+                                        <option [ngValue]="null">select an option</option>
+                                        <option value="lossOfPay">Loss Of Pay</option>
+                                        <option value="OnDuty">On Duty</option>
+                                        <option value="paidLeave">Paid Leave</option>
+                                    </select>
                                 </td>
                                 <td>
-                                    <button [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" type="submit" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="saveLeaveType()" mdTooltip="Save" [mdTooltipPosition]="'above'">
-                                Save
-                            </button>
+                                    <button [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" type="submit" md-raised-button color="primary" mdTooltip="Apply"
+                                        [mdTooltipPosition]="'above'" (click)="saveLeaveType()" mdTooltip="Save" [mdTooltipPosition]="'above'">
+                                        Save
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
@@ -95,11 +115,19 @@
                 <thead class="thead">
                     <tr>
                         <!--<th>Sno.</th>-->
-                        <th class="tdWidth">Name<span class="asterisk">*</span></th>
+                        <th class="tdWidth">Name
+                            <span class="asterisk">*</span>
+                        </th>
                         <th class="tdWidth">Code</th>
-                        <th class="tdWidth">Units Per Day<span class="asterisk">*</span></th>
-                        <th class="tdWidth">Unlimited<span class="asterisk">*</span></th>
-                        <th class="tdWidth">Leave Category<span class="asterisk">*</span></th>
+                        <th class="tdWidth">Units Per Day
+                            <span class="asterisk">*</span>
+                        </th>
+                        <th class="tdWidth">Unlimited
+                            <span class="asterisk">*</span>
+                        </th>
+                        <th class="tdWidth">Leave Category
+                            <span class="asterisk">*</span>
+                        </th>
 
                         <!--<th>Total</th>-->
                         <th class="actionBtnss"></th>
@@ -113,49 +141,55 @@
 
                         <!--<td>{{i+1}}</td>-->
                         <td>
-                            <input [readOnly]="leaveTypes?.isLoading  || leaveType?.isProcessing || !item?.isEdit" [ngClass]="{'non_editAble':leaveTypes?.isLoading  || leaveType?.isProcessing || !item?.isEdit}" class="form-control" type="text" [maxlength]="validatorService.textLength"
-                                [(ngModel)]="item.name">
+                            <input [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing || !item?.isEdit" [ngClass]="{'non_editAble':leaveTypes?.isLoading  || leaveType?.isProcessing || !item?.isEdit}"
+                                class="form-control" type="text" [maxlength]="validatorService.textLength" [(ngModel)]="item.name">
 
                         </td>
                         <td>
-                            <input [readOnly]="leaveTypes?.isLoading  || leaveType?.isProcessing || !item?.isEdit" [ngClass]="{'non_editAble':leaveTypes?.isLoading  || leaveType?.isProcessing || !item?.isEdit}" class="form-control" type="text" [maxlength]="validatorService.textLength"
-                                [(ngModel)]="item.code">
+                            <input [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing || !item?.isEdit" [ngClass]="{'non_editAble':leaveTypes?.isLoading  || leaveType?.isProcessing || !item?.isEdit}"
+                                class="form-control" type="text" [maxlength]="validatorService.textLength" [(ngModel)]="item.code">
 
                         </td>
                         <td>
-                            <select [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing || !item?.isEdit" [ngClass]="{'non_editAble':leaveTypes?.isLoading  || leaveType?.isProcessing || !item?.isEdit}" class="form-control" [(ngModel)]="item.unitsPerDay">
-                              <!-- <option [ngValue]="null">select an option</option> -->
-                              <option value=1>Full</option>
-                                    <option value=2>Half</option>
-                                    <option value=3>One Third</option>
-                             </select>
+                            <select [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing || !item?.isEdit" [ngClass]="{'non_editAble':leaveTypes?.isLoading  || leaveType?.isProcessing || !item?.isEdit}"
+                                class="form-control" [(ngModel)]="item.unitsPerDay">
+                                <!-- <option [ngValue]="null">select an option</option> -->
+                                <option value=1>Full</option>
+                                <option value=2>Half</option>
+                                <option value=3>One Third</option>
+                            </select>
                         </td>
                         <td>
-                            <select [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing || !item?.isEdit" [ngClass]="{'non_editAble':leaveTypes?.isLoading  || leaveType?.isProcessing || !item?.isEdit}" class="form-control" [(ngModel)]="item.unlimited">
-                              <option [ngValue]="null">select an option</option>
-                                    <option [value]="true">Yes</option>
-                                    <option [value]="false">No</option>
-                             </select>
+                            <select [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing || !item?.isEdit" [ngClass]="{'non_editAble':leaveTypes?.isLoading  || leaveType?.isProcessing || !item?.isEdit}"
+                                class="form-control" [(ngModel)]="item.unlimited">
+                                <option [ngValue]="null">select an option</option>
+                                <option [value]="true">Yes</option>
+                                <option [value]="false">No</option>
+                            </select>
                         </td>
                         <td>
-                            <select [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing || !item?.isEdit" [ngClass]="{'non_editAble':leaveTypes?.isLoading  || leaveType?.isProcessing || !item?.isEdit}" class="form-control" [(ngModel)]="item.category">
-                              <option [ngValue]="null">select an option</option>
-                             <option value="lossOfPay">Loss Of Pay</option>
-                              <option value="OnDuty">On Duty</option>
-                              <option value="paidLeave">Paid Leave</option>
-                             </select>
+                            <select [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing || !item?.isEdit" [ngClass]="{'non_editAble':leaveTypes?.isLoading  || leaveType?.isProcessing || !item?.isEdit}"
+                                class="form-control" [(ngModel)]="item.category">
+                                <option [ngValue]="null">select an option</option>
+                                <option value="lossOfPay">Loss Of Pay</option>
+                                <option value="OnDuty">On Duty</option>
+                                <option value="paidLeave">Paid Leave</option>
+                            </select>
                         </td>
                         <td>
                             <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="toggleLeaveType(item, true)">
                                 <md-icon>edit</md-icon>
                             </button>
-                            <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Delete" [mdTooltipPosition]="'above'" (click)="remove(item)">
+                            <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Delete" [mdTooltipPosition]="'above'"
+                                (click)="remove(item)">
                                 <md-icon>delete</md-icon>
                             </button>
-                            <button *ngIf="item?.isEdit" [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" md-icon-button class="button_align cursor " (click)="saveLeaveType(item)" mdTooltip="Save" [mdTooltipPosition]="'above'">
+                            <button *ngIf="item?.isEdit" [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" md-icon-button class="button_align cursor "
+                                (click)="saveLeaveType(item)" mdTooltip="Save" [mdTooltipPosition]="'above'">
                                 <md-icon>save</md-icon>
                             </button>
-                            <button *ngIf="item?.isEdit" [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" md-icon-button class="button_align cursor" (click)="toggleLeaveType(item, false)" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
+                            <button *ngIf="item?.isEdit" [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" md-icon-button class="button_align cursor"
+                                (click)="toggleLeaveType(item, false)" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
                                 <md-icon>undo</md-icon>
                             </button>
                         </td>
@@ -170,10 +204,10 @@
                 <div class="pageSize">
                     <label>Page Size:</label>
                     <select name="pageSize" [(ngModel)]="leaveTypes.pageSize" (change)="leaveTypes.pageNo = 1;fetchLeaveTypes();">
-                      <option value="10">10</option>
-                      <option value="20">20</option>
-                      <option value="50">50</option>
-                      <option value="100">100</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
                     </select>
                 </div>
             </div>
