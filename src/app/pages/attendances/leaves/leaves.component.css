@@ -4,7 +4,7 @@
 }
 
 .tdWidth {
-    width: 10%;
+    width: 8% !important;
     /*text-align: center;*/
 }
 
@@ -50,9 +50,7 @@
     border-radius: 50%;
 }
 .table[_ngcontent-c7] > tbody[_ngcontent-c7] > tr[_ngcontent-c7] > td[_ngcontent-c7], .table[_ngcontent-c7] > tbody[_ngcontent-c7] > tr[_ngcontent-c7] > th[_ngcontent-c7], .table[_ngcontent-c7] > tfoot[_ngcontent-c7] > tr[_ngcontent-c7] > td[_ngcontent-c7], .table[_ngcontent-c7] > tfoot[_ngcontent-c7] > tr[_ngcontent-c7] > th[_ngcontent-c7], .table[_ngcontent-c7] > thead[_ngcontent-c7] > tr[_ngcontent-c7] > td[_ngcontent-c7], .table[_ngcontent-c7] > thead[_ngcontent-c7] > tr[_ngcontent-c7] > th[_ngcontent-c7] {
-    padding: 8px;
-    padding-left: 31px !important;
-    line-height: 1.42857143;
-    vertical-align: baseline !important;
-    border-top: 1px solid #ddd;
+   
+    padding-left: 13px !important;
+   
 }

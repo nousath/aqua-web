@@ -97,4 +97,5 @@ button.mat-menu-item {
     line-height: 1.42857143;
     vertical-align: baseline !important;
     border-top: 1px solid #ddd;
+    padding-left: 20px !important;
 }
