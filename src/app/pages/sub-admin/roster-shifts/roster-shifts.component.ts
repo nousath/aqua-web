@@ -155,7 +155,9 @@ export class RosterShiftsComponent implements OnInit {
     
     this.date = date;
     date = new Date(date);
-this.shiftTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+    this.shiftTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+    this.getEffectiveShift(date);
+    this.getWeek(date);
   }
 
   updateEffectiveShift(id, model: any) {

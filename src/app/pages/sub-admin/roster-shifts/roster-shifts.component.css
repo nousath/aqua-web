@@ -62,23 +62,12 @@
     padding-left: 10px;
     height: 32px;
     border-right: hidden;    
-    -webkit-bottom-left-radius: 5px;
-    -moz-bottom-left-radius: 5px;
-    border-bottom-left-radius: 5px;
+    -webkit-bottom-left-radius: 5px !important;
+    -moz-bottom-left-radius: 5px !important;
+    border-bottom-left-radius: 5px !important;
  
-    -webkit-top-left-radius: 5px;
-    -moz-top-left-radius: 5px;
-    border-top-left-radius: 5px;
+    -webkit-top-left-radius: 5px !important;
+    -moz-top-left-radius: 5px !important;
+    border-top-left-radius: 5px !important;
  }
- /* @media (min-width: 1200px){
-    width: 66.66666667%;
-    margin-top: 6px !important;
-} */
-/* .calendar {
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAQCAYAAAAWGF8bAAAABGdBT…GXer0ujuPwjoJN02R0Oh3WwBgKtN/w+5vy/hPIgs+1In9BixIAzI2t5gAAAABJRU5ErkJggg==);
-    background-repeat: no-repeat;
-    background-position: right;
-    background-color: white !important;
-    margin-top: 4px !important;
-    /* padding-left: 20px; */
 

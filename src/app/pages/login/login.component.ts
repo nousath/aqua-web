@@ -111,7 +111,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   loginToAms() {
     const tempData: any = { 'device': { 'id': 'string' } };
     this.isLoggingIn = true;
-    this.amsEmployeeService.employees.create(tempData).then(
+    this.amsEmployeeService.amsLogin.create(tempData).then(
       (amsUser) => {
         this.isLoggingIn = false;
         if (amsUser.userType === 'normal') {

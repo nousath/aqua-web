@@ -9,6 +9,7 @@ import { DailyAttendance } from '../../models/daily-attendance';
 export class AmsEmployeeService {
 
   employees: IApi<Employee>;
+  amsLogin: IApi<Employee>;
   employeesForAdmin: IApi<Employee>;
   syncEmployees: IApi<any>;
   signInViaExternalToken: IApi<Employee>;
@@ -20,6 +21,7 @@ export class AmsEmployeeService {
 
     this.signInViaExternalToken = new GenericApi<Employee>('employees/makeTunnel', http, baseApi);
     this.employees = new GenericApi<Employee>('employees', http, baseApi);
+    this.amsLogin = new GenericApi<Employee>('employees/login', http, baseApi);
     this.employeesForAdmin = new GenericApi<Employee>('employees/forAdmin', http, baseApi);
     this.syncEmployees = new GenericApi<any>('employees/sync/updates', http, baseApi);
     this.teamMembers = new GenericApi<any>('teams/my/teamMembers', http, baseApi);
