@@ -26,7 +26,7 @@ export class GenericApi<TModel> implements IApi<TModel> {
         headers.append('x-access-token', amsToken);
       }
       if (externalToken) {
-        headers.append('external-token', externalToken)
+        headers.append('x-role-key', externalToken)
       }
       // else if (emsToken)
       //   headers.append('external-token', emsToken);
