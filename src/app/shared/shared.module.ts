@@ -26,7 +26,8 @@ import {
   EmsAuthService,
   AmsTimelogsService,
   AmsSystemUsageService,
-  AmsEffectiveShiftService
+  AmsEffectiveShiftService,
+  AmsReportRequestService
 } from '../services';
 
 import { ValidatorService } from '../services/validator.service';
@@ -130,7 +131,8 @@ export const MaterialModules = [
     LocalStorageService,
     AmsTagService,
     AmsSystemUsageService,
-    AmsEffectiveShiftService
+    AmsEffectiveShiftService,
+    AmsReportRequestService
   ],
   imports: [
     HttpModule,

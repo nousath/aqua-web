@@ -1,0 +1,25 @@
+<div>
+  <div *ngIf="type === 'daily-extra-hours-after-shift-end' || type === 'daily-extra-hours-after-shift-hours' || type === 'daily-attendance'"
+    class="form-group">
+    <label for="from">Date <span class="required">*</span></label>
+    <input class="form-control filterSize calendar no-spin" type="date" required [(ngModel)]="reportRequest.reportParams.from">
+    <div class="text-center">
+      <button type="button" class="btn-primary" [disabled]="!reportRequest.reportParams.from" (click)="onSubmit()">Submit</button>
+      <button type="button" class="btn-primary" (click)="type= ''">Cancel</button>
+    </div>
+  </div>
+
+</div>
+<div>
+  <div *ngIf="type === 'monthly-extra-hours-after-shift-end' || type === 'monthly-extra-hours-after-shift-hours' || type === 'monthly-attendance'"
+    class="form-group">
+    <label for="from">Month <span class="required">*</span></label>
+    <input class="form-control filterSize calendar no-spin" type="month" reqired [(ngModel)]="reportRequest.reportParams.from">
+    <div class="text-center">
+      <button type="button" class="btn-primary" [disabled]="!reportRequest.reportParams.from" (click)="onSubmit()">Submit</button>
+      <button type="button" class="btn-primary" (click)="type= ''">Cancel</button>
+    </div>
+  </div>
+
+</div>
+<md-spinner class="custom_spinner" *ngIf="isLoading" mode="indeterminate"></md-spinner>

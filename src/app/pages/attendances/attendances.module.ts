@@ -14,6 +14,9 @@ import { DayEventDialogComponent } from '../../dialogs/day-event-dialog/day-even
 import { LeaveActionDialogComponent } from '../../dialogs/leave-action-dialog/leave-action-dialog.component';
 
 import { AttendanceLogsComponent } from './attendance-logs/attendance-logs.component';
+import { ReportsComponent } from './reports/reports.component';
+import { ReportFiltersComponent } from './report-filters/report-filters.component';
+import { ReportListsComponent } from './report-lists/report-lists.component';
 
 @NgModule({
   imports: [
@@ -32,6 +35,9 @@ import { AttendanceLogsComponent } from './attendance-logs/attendance-logs.compo
     ManageLeavesComponent,
     DayEventDialogComponent,
     LeaveActionDialogComponent,
+    ReportsComponent,
+    ReportFiltersComponent,
+    ReportListsComponent,
   ],
   entryComponents: [
     DayEventDialogComponent,
