@@ -1,0 +1,13 @@
+<div class="row page_header">
+  <div class="form-group marginLeft">
+    <label for="reportList">Choose Report Type</label>
+    <select class="form-control reportList" [(ngModel)] = 'selectedType'>
+      <option disabled></option>
+      <option *ngFor="let reportType of reportTypes" [value]='reportType'> {{reportType | uppercase}} </option>
+    </select>
+  </div>
+
+ 
+</div>
+<aqua-report-filters *ngIf='selectedType' [type]="selectedType"></aqua-report-filters>
+<aqua-report-lists></aqua-report-lists>

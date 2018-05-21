@@ -1,0 +1,11 @@
+.filterSize{
+    width: 30% !important;
+}
+
+.marginLeft{
+    margin-left: 25% !important;
+}
+
+.required{
+    color: red;
+}

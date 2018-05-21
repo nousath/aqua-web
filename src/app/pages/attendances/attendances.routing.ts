@@ -9,6 +9,7 @@ import { LeavesComponent } from './leaves/leaves.component';
 import { LeaveBalancesComponent } from './leave-balances/leave-balances.component';
 import { ManageLeavesComponent } from './manage-leaves/manage-leaves.component';
 import { AttendanceLogsComponent } from './attendance-logs/attendance-logs.component';
+import { ReportsComponent } from './reports/reports.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'daily', pathMatch: 'full' },
       { path: 'monthly', component: MonthlyComponent },
       { path: 'daily', component: DailyComponent },
+      { path: 'reports', component: ReportsComponent },
 
       { path: 'daily/:empId', component: AttendanceDetailsComponent },
       // { path: 'details/:empId', component: AttendanceDetailsComponent },
