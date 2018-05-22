@@ -5,7 +5,7 @@ import { ValidatorService, AmsLeaveService } from '../../../services';
 import { ToastyService } from 'ng2-toasty';
 import { Model } from '../../../common/contracts/model';
 import * as _ from 'lodash';
-import { LocalStorageService } from "app/services/local-storage.service";
+import { LocalStorageService } from '../../../services/local-storage.service';
 
 @Component({
   selector: 'aqua-manage-leaves',
@@ -16,7 +16,9 @@ export class ManageLeavesComponent implements OnInit {
 
   leaveTypes: Page<LeaveType>;
   leaveType: Model<LeaveType>;
+  leaveTypeModel : LeaveType = new LeaveType()
   isNew = false;
+  isEdit = false;
 
   constructor(public validatorService: ValidatorService,
     private amsLeaveService: AmsLeaveService,
@@ -38,7 +40,11 @@ export class ManageLeavesComponent implements OnInit {
 
   toggleNew() {
     this.isNew = !this.isNew;
+    if(!this.isNew){
+      this.isEdit = false
+    }
     this.leaveType.properties = new LeaveType();
+    this.leaveTypeModel = new LeaveType();
   }
 
   remove(leaveType: LeaveType) {
