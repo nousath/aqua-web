@@ -14,6 +14,9 @@ export class ReportsComponent implements OnInit {
     'monthly-extra-hours-after-shift-end',
     'monthly-extra-hours-after-shift-hours',
     'monthly-attendance',
+    'attendance-details',
+    'monthly-late-check-in',
+    'monthly-early-check-out'
   ]
 
   selectedType: string;

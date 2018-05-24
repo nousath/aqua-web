@@ -11,7 +11,9 @@
 
 </div>
 <div>
-  <div *ngIf="type === 'monthly-extra-hours-after-shift-end' || type === 'monthly-extra-hours-after-shift-hours' || type === 'monthly-attendance'"
+  <div *ngIf="type === 'monthly-extra-hours-after-shift-end' || type === 'monthly-extra-hours-after-shift-hours' ||
+   type === 'monthly-attendance' || type === 'attendance-details' || type === 'monthly-early-check-out'
+   || type === 'monthly-late-check-in'"
     class="form-group">
     <label for="from">Month <span class="required">*</span></label>
     <input class="form-control filterSize calendar no-spin" type="month" reqired [(ngModel)]="reportRequest.reportParams.from">
