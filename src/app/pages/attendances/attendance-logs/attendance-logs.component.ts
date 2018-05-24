@@ -24,6 +24,7 @@ import { Http } from '@angular/http';
 })
 export class AttendanceLogsComponent implements OnInit {
   employee: Model<Employee>;
+  userType: string;
   logs: Page<TimeLogs>;
   attendances: Page<DayEvent>;
   timeLog: Model<TimeLogs>;
@@ -89,6 +90,7 @@ export class AttendanceLogsComponent implements OnInit {
 
       }
     )
+  this.userType = localStorage.getItem('userType')
 
   }
 

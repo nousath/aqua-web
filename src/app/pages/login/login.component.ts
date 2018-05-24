@@ -112,17 +112,24 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.amsEmployeeService.employees.create(tempData).then(
       (amsUser) => {
         this.isLoggingIn = false;
-        if (amsUser.userType == 'normal') {
-          this.router.navigate(['/download']);
-          return this.toastyService.info({ title: 'Info', msg: 'You are not authorized to use this application. Please contact the system administrator if you need to access this application' })
-        }
+        // if (amsUser.userType == 'normal') {
+          
+          // this.router.navigate(['/download']);
+          // this.router.navigate(['/pages/attendances/daily',amsUser.id]);
+          // return this.toastyService.info({ title: 'Info', msg: 'You are not authorized to use this application. Please contact the system administrator if you need to access this application' })
+        // }
         this.store.setItem('ams_token', amsUser.token);
+        this.store.setItem('userId',amsUser.id)
         this.store.setObject('user', amsUser);
+        this.store.setItem('userType', amsUser.userType);
         this.store.setItem('orgCode', amsUser.organization.code.toLowerCase());
         if (amsUser.userType == 'superadmin')
-          this.router.navigate(['/pages']);
-        if (amsUser.userType == 'admin')
-          this.router.navigate(['/pages/subAdmin']);
+          return this.router.navigate(['/pages']);
+          if (amsUser.userType == 'normal' || 'admin')
+          return this.router.navigate(['/pages/attendances/daily',amsUser.id]);
+        // if (amsUser.userType == 'admin')
+        //   return this.router.navigate(['/pages/attendances/daily',amsUser.id]);
+        
       }
     ).catch(err => { this.isLoggingIn = false; this.toastyService.error({ title: 'Error', msg: err }) });
   }

@@ -27,7 +27,7 @@ import { SystemUsageComponent } from './pages/system-usage/system-usage.componen
     OrgLoginComponent,
     AppDownloadComponent,
     GkuAttendanceComponent,
-    SystemUsageComponent
+    SystemUsageComponent,
   ],
   imports: [
     BrowserModule,

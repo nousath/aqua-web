@@ -23,6 +23,7 @@ export class LeavesComponent implements OnInit, AfterViewInit {
   isFilter: boolean = false;
   isShowLeaveAction: boolean = false;
   date: Date = null
+  userType: string = ''
 
 
 
@@ -33,6 +34,24 @@ export class LeavesComponent implements OnInit, AfterViewInit {
     private toastyService: ToastyService,
     private angulartics2: Angulartics2) {
 
+      this.userType = store.getItem('userType');
+      
+    if(this.userType == 'admin'){
+    this.leaves = new Page({
+      api: amsLeaveService.teamLeaves,
+      filters: [{
+        field: 'name',
+        value: null
+      }, {
+        field: 'status',
+        value: null
+      }, {
+        field: 'date',
+        value: null
+      }]
+    });
+  }
+  if(this.userType == 'superadmin'){
     this.leaves = new Page({
       api: amsLeaveService.allLeavesOfOrg,
       filters: [{
@@ -46,6 +65,7 @@ export class LeavesComponent implements OnInit, AfterViewInit {
         value: null
       }]
     });
+  }
     this.checkFiltersInStore();
   }
 

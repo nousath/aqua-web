@@ -11,7 +11,7 @@ import { Employee, Abilities } from '../../../models/employee';
 import { Subscription } from 'rxjs/Rx';
 import { AmsLeaveService, AmsAttendanceService, AmsEmployeeService } from '../../../services/ams';
 import { Page } from '../../../common/contracts/page';
-import { LeaveBalance, Attendance, Leave } from '../../../models/';
+import { LeaveBalance, Attendance, Leave, User } from '../../../models/';
 import * as _ from 'lodash';
 import { DailyAttendance } from '../../../models/daily-attendance';
 import { LeaveActionDialogComponent } from '../../../dialogs/leave-action-dialog/leave-action-dialog.component';
@@ -33,6 +33,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
 
   subscription: Subscription;
   employee: Model<Employee>;
+  user: string;
   shifTypes: Page<ShiftType>;
   empId: string;
   isProcessingAttendance: boolean = false;
@@ -91,6 +92,8 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
         value: null
       }]
     });
+
+    this.user = localStorage.getItem('userType');
 
     this.shifTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
     this.subscription = activatedRoute.params.subscribe(

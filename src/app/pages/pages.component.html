@@ -8,10 +8,10 @@
             <button md-button [routerLink]="['/pages/settings']" routerLinkActive="activeTab"><b>SETTINGS</b></button> -->
             <span class="example-spacer"></span>
             <div *ngIf="employeeSearch" class="searchbar">
-                <input ngui-auto-complete [min-chars]="1" placeholder="Employee search" [(ngModel)]="selectedEmp" (valueChanged)="onSelectEmp($event)" [source]="empSource.bind(this)" [value-formatter]="empFormatter" [list-formatter]="empListFormatter" class="form-control searchbarinput search"
+                <input ngui-auto-complete [min-chars]="1" *ngIf="userType == 'superadmin'" placeholder="Employee search" [(ngModel)]="selectedEmp" (valueChanged)="onSelectEmp($event)" [source]="empSource.bind(this)" [value-formatter]="empFormatter" [list-formatter]="empListFormatter" class="form-control searchbarinput search"
                     name="roleId" />
             </div>
-            <button md-icon-button (click)="syncEmployees()" [disabled]="isSyncing" mdTooltip="Sync Employees" class="marginLetf" [mdTooltipPosition]="'below'"><i class="fa fa-refresh  fa-lg" [ngClass]="{'fa-spin':isSyncing}"  aria-hidden="true"></i></button>
+            <button md-icon-button (click)="syncEmployees()" *ngIf="userType == 'superadmin'" [disabled]="isSyncing"  mdTooltip="Sync Employees" class="marginLetf" [mdTooltipPosition]="'below'"><i class="fa fa-refresh  fa-lg" [ngClass]="{'fa-spin':isSyncing}"  aria-hidden="true"></i></button>
             <button md-button (click)="logout()" class="capitalize" mdTooltip="Logout" class="marginLetf" [mdTooltipPosition]="'below'">{{currentUser?.name}}<md-icon class="example-icon">exit_to_app</md-icon></button>
 
         </md-toolbar>
@@ -98,9 +98,25 @@
                     <img class="logo" src="assets/images/splash_logo.png">
                     <br>
                 </div>
-                <a md-list-item [routerLink]="['/pages/subAdmin/shifts']" routerLinkActive="activeTab" #rla9="routerLinkActive">
-                    <h5>Roster Shift</h5>
+                <a md-list-item [routerLink]="['/pages/attendances/daily',userId]" routerLinkActive="activeTab" #rla9="routerLinkActive">
+                    <h5>My Attendance</h5>
                 </a>
+                <a md-list-item [routerLink]="['/pages/attendances/teams',userId]" routerLinkActive="activeTab" #rla3="routerLinkActive">
+                    <h5>Team Attendance</h5>
+                </a>
+                <a md-list-item [routerLink]="['/pages/attendances/leaves']" routerLinkActive="activeTab" #rla3="routerLinkActive">
+                    <h5>All Leave</h5>
+                </a>
+            </md-nav-list>
+            <md-nav-list *ngIf="userType == 'normal'" dense class="fixedSideNav">
+                <div class="logo_container text-center">
+                    <img class="logo" src="assets/images/splash_logo.png">
+                    <br>
+                </div>
+                <a md-list-item [routerLink]="['/pages/attendances/daily',userId]" routerLinkActive="activeTab" #rla3="routerLinkActive">
+                    <h5>My Attendance</h5>
+                </a>
+                
             </md-nav-list>
         </div>
         <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10 section hiddenHorScroll">

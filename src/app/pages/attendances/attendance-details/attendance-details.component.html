@@ -1,9 +1,10 @@
 <div class="row page_header">
     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <a md-raised-button class="reply" color="primary" [routerLink]="['/pages/attendances/daily']">
+        <a *ngIf="user == 'superadmin'" md-raised-button class="reply" color="primary" [routerLink]="['/pages/attendances/daily']">
             <md-icon>reply</md-icon>List
         </a>
-        <h5><b>Details</b></h5>
+        <h5 *ngIf="user == 'normal' || 'admin'"><b>My Atteandance</b></h5>
+        <h5 *ngIf="user == 'superadmin'"><b>Details</b></h5>
     </div>
     <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
         <div class="headerInpts">
@@ -12,7 +13,7 @@
                 <input id="monthSelector" type="text" class="form-control input-sm calendar no-spin">
             </div>
         </div>
-        <div class="headerBtns">
+        <div class="headerBtns" *ngIf="user == 'superadmin'">
             <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading || isProcessingAttendance" [mdMenuTriggerFor]="appMenu" md-icon-button>
                 <md-icon>cloud_download</md-icon>
             </button>
@@ -49,23 +50,24 @@
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <table class="table">
 
-                        <tr class="capitalize">
+                        <!-- <tr class="capitalize">
                             <td>Monthly Average Hours:</td>
                             <td>{{employee?.properties?.avgHours | number:'1.0-2'}}</td>
-                        </tr>
+                        </tr> -->
                         <tr class="capitalize">
-                            <td>Supervisor:</td>
+                            <!-- <td>Supervisor:</td> -->
+                            <td>Contractor:</td>
                             <td>{{employee?.properties?.supervisor?.name}} {{employee?.properties?.supervisor?.code ? '('+employee?.properties?.supervisor?.code+')':'--'}}</td>
                         </tr>
-                        <tr>
+                        <!-- <tr>
                             <td>Email:</td>
                             <td>{{employee?.properties?.email ? employee?.properties?.email : '--'}} </td>
-                        </tr>
+                        </tr> -->
                         <tr class="capitalize">
                             <td>Mobile:</td>
                             <td>{{employee?.properties?.phone ? employee?.properties?.phone : '--'}} </td>
                         </tr>
-                        <tr class="capitalize">
+                        <!-- <tr class="capitalize">
                             <td>Shift:</td>
                             <td>{{employee?.properties?.shiftType.name ? employee?.properties?.shiftType.name : '--'}} </td>
                         </tr>
@@ -80,10 +82,10 @@
                                 Shift Notifier:&nbsp;
                                 <md-slide-toggle [checked]="employee?.properties?.abilities?.shiftNotifier" (change)="toggleManual('shiftNotifier')">{{employee?.properties?.abilities?.shiftNotifier ? 'Enabled':'Disabled'}}</md-slide-toggle>
                             </td>
-                        </tr>
+                        </tr> -->
                     </table>
 
-                    <table class="table">
+                    <table *ngIf="user == ('superadmin' || 'admin')" class="table">
                         <tr>
                             <th>Choose Ability</th>
                         </tr>
@@ -205,7 +207,7 @@
                         <th>Type</th>
                         <th>Reason</th>
                         <th>Status</th>
-                        <th class="text-center" *ngIf="isShowLeaveAction">Action</th>
+                        <th class="text-center" *ngIf="isShowLeaveAction && user == 'superadmin || admin'">Action</th>
                     </tr>
                     <tr *ngFor="let item of leavesSubmiited.items  | paginate: { id: 'leaveBalanceBar',
                                                       itemsPerPage: leavesSubmiited.pageSize,
@@ -216,7 +218,7 @@
                         <td>{{item?.leaveType?.name}}</td>
                         <td>{{item?.reason}}</td>
                         <td>{{item?.status}}</td>
-                        <td class="text-center" *ngIf="isShowLeaveAction">
+                        <td class="text-center" *ngIf="isShowLeaveAction && user == 'superadmin || admin'">
                             <!--<button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status == 'approved'
                                       || item?.status == 'submitted'" (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
                                 <md-icon>highlight_off</md-icon>

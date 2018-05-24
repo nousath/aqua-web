@@ -85,6 +85,7 @@
                         <th class="tdWidth">Reason</th>
                         <th class="tdWidth">Status</th>
                         <th class="tdWidth">Comment</th>
+                        <th><md-checkbox ng-model="isChecked" aria-label="Finished?"></md-checkbox></th>
                         <th class="tdWidth text-center" *ngIf="isShowLeaveAction">Action</th>               
                     </tr>
                 </thead>
@@ -106,6 +107,7 @@
                         <td class="tdWidth">{{item?.reason}}</td>
                         <td class="tdWidth">{{item?.status}}</td>
                         <td class="tdWidth">{{item?.comment}}</td>
+                        <td><md-checkbox ng-model="isChecked" aria-label="Finished?"></md-checkbox></td>
                         <td class="tdWidth text-center" *ngIf="isShowLeaveAction">
                             <!--<button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status?.toLowerCase() == 'approved'
                                       || item?.status?.toLowerCase() == 'submitted'" (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">

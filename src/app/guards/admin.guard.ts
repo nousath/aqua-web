@@ -13,7 +13,7 @@ export class AdminGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
     let currentUser: Employee = this.store.getObject('user') as Employee;
-    if (currentUser.userType == 'superadmin') {
+    if (currentUser.userType == 'superadmin' || currentUser.userType == 'admin'  || currentUser.userType == 'normal') {
       return true;
     }
     this.router.navigate(['/pages/subAdmin']);

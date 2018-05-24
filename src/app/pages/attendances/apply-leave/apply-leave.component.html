@@ -138,12 +138,24 @@
                             </td>
                             <td>
                                 <input name="startdate" class="form-control  calendar no-spin" type="date" [ngModel]="leave.properties.date  | date:'yyyy-MM-dd'" (ngModelChange)="leave.properties.date = $event" [required]="duration == 'multi'">
+                                <md-radio-group [(ngModel)]="duration" name="duration">
+                                    <md-radio-button value="full">Full</md-radio-button>
+                                    <md-radio-button *ngIf="leave.properties.leaveType.unitsPerDay == 2" value="half">Half</md-radio-button>
+                                    <md-radio-button *ngIf="leave.properties.leaveType.unitsPerDay == 3" value="1/3">One Third</md-radio-button>
+                                    <md-radio-button *ngIf="leave.properties.leaveType.unitsPerDay == 3" value="2/3">Two Third</md-radio-button>
+                                </md-radio-group>
                             </td>
                             <td>
                                 <label>End Date:<span class="asterisk">*</span></label>
                             </td>
                             <td>
                                 <input name="enddate" class="form-control  calendar no-spin" type="date" [ngModel]="leave.properties.toDate  | date:'yyyy-MM-dd'" (ngModelChange)="leave.properties.toDate = $event" [required]="duration == 'multi'">
+                                <md-radio-group [(ngModel)]="duration" name="duration" style="margin-top:20px;">
+                                    <md-radio-button value="full">Full</md-radio-button>
+                                    <md-radio-button *ngIf="leave.properties.leaveType.unitsPerDay == 2" value="half">Half</md-radio-button>
+                                    <md-radio-button *ngIf="leave.properties.leaveType.unitsPerDay == 3" value="1/3">One Third</md-radio-button>
+                                    <md-radio-button *ngIf="leave.properties.leaveType.unitsPerDay == 3" value="2/3">Two Third</md-radio-button>
+                                </md-radio-group>
                             </td>
                         </tr>
                         <tr>

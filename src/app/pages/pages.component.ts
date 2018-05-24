@@ -25,13 +25,14 @@ export class PagesComponent implements OnInit, OnDestroy {
 
   currentUser: Employee = new Employee();
   orgCode: string = '';
+  userId: string = '';
   sections: Sections = new Sections();
 
   selectedEmp: Employee = new Employee();
   subscription: Subscription;
   isSyncing: boolean = false;
   isShowEmployeeTab: boolean = false;
-  userType: string = 'superadmin';
+  userType: string = '';
   employeeSearch = true;
 
   constructor(private store: LocalStorageService,
@@ -40,10 +41,11 @@ export class PagesComponent implements OnInit, OnDestroy {
     private toastyService: ToastyService,
     private router: Router) {
     this.currentUser = store.getObject('user') as Employee;
-    this.userType = this.currentUser.userType;
+    this.userType = store.getItem('userType');
     this.orgCode = store.getItem('orgCode').toLowerCase();
     this.isShowEmployeeTab = this.orgCode == 'gku' || this.orgCode == 'sus' || this.orgCode == 'kmt' ? false : true;
-
+    this.userId = store.getItem('userId');
+    console.log(this.userId)
 
     this.subscription = router.events
       .filter(event => event instanceof NavigationEnd)

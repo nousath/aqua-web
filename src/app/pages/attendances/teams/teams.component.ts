@@ -1,0 +1,216 @@
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Location } from '@angular/common'
+import { Page } from '../../../common/contracts/page';
+import { AmsEmployeeService, AmsShiftService, AmsAttendanceService } from '../../../services/ams';
+import { ToastyService } from 'ng2-toasty';
+import { MonthAttendance, ShiftType } from '../../../models';
+import * as moment from 'moment';
+import { DailyAttendance } from '../../../models/daily-attendance';
+import { ServerPageInput } from '../../../common/contracts/api/page-input';
+import { Employee } from '../../../models';
+import { ValidatorService } from '../../../services/validator.service';
+import { Model } from '../../../common/contracts/model';
+import { MdDialog } from '@angular/material';
+import { ActivatedRoute, Router, Params } from '@angular/router';
+import { Filter } from '../../../common/contracts/filters';
+import * as _ from "lodash";
+import { LocalStorageService } from '../../../services/local-storage.service';
+import { AmsTagService } from '../../../services/ams/ams-tag.service';
+import { TagType, Tag } from '../../../models/tag';
+import { GenericApi } from '../../../common/generic-api';
+import { Http } from '@angular/http';
+declare var $: any;
+
+export interface SelectedTag {
+  tagId: string;
+  tagTypeId: string;
+}
+export class Tags {
+  selected: SelectedTag[] = [];
+  select(tag: SelectedTag) {
+    let t: SelectedTag = _.find(this.selected, (i: SelectedTag) => {
+      return i.tagTypeId == tag.tagTypeId;
+    });
+    if (t && tag.tagId == 'select an option')
+      return this.selected.splice(this.selected.indexOf(t), 1);
+    if (!t)
+      this.selected.push(tag);
+  }
+  reset() {
+    this.selected = [];
+  }
+}
+
+@Component({
+  selector: 'aqua-teams',
+  templateUrl: './teams.component.html',
+  styleUrls: ['./teams.component.css']
+})
+export class TeamsComponent implements OnInit {
+  empId: any;
+
+  dailyAttendnace: Page<DailyAttendance>;
+  isFilter: boolean = false;
+  shiftTypes: Page<ShiftType>;
+  employee: Model<Employee>;
+  tagTypes: Page<TagType>;
+  tags: Tags = new Tags();
+  date: Date = null
+
+  constructor(private amsEmployeeService: AmsEmployeeService,
+    private amsShiftService: AmsShiftService,
+    public validatorService: ValidatorService,
+    public activatedRoute: ActivatedRoute,
+    private http: Http,
+    public router: ActivatedRoute,
+    private route:Router,
+    private store: LocalStorageService,
+    private tagService: AmsTagService,
+    private location: Location,
+    private amsAttendanceService: AmsAttendanceService,
+    private toastyService: ToastyService) {
+
+      
+    
+    this.employee = new Model({
+      api: amsEmployeeService.employees,
+      properties: new Employee()
+    });
+
+    this.dailyAttendnace = new Page({
+      api: this.amsAttendanceService.teamMember,
+      location: location,
+      filters: [{
+        field: 'ofDate',
+        value: null
+      }, {
+        field: 'name',
+        value: null
+      }, {
+        field: 'code',
+        value: null
+      }, {
+        field: 'shiftTypeId',
+        value: null
+      }, {
+        field: 'status',
+        value: null
+      }, {
+        field: 'byShiftEnd',
+        value: false
+      }, {
+        field: 'byShiftLength',
+        value: false
+      }, {
+        field: 'tagIds',
+        value: ''
+      }],
+    });
+
+    this.shiftTypes = new Page({
+      api: amsShiftService.shiftTypes
+    });
+
+    this.tagTypes = new Page({
+      api: tagService.tagTypes
+    });
+
+    this.shiftTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+    this.tagTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+    this.empId = router.snapshot.params["empId"];
+    console.log(this.empId)
+    // this.router.queryParams.subscribe((params: Params) => {
+    //   // this.empId = params['empId'];
+    //   this.empId = params;
+    //   console.log(params)
+    // });
+
+    this.checkFiltersInStore();
+
+  }
+  reset() {
+    this.dailyAttendnace.filters.reset();
+    this.tags.reset();
+    let tagElements: any[] = document.getElementsByName('tags') as any;
+    if (tagElements) {
+      tagElements.forEach(item => item.value = '');
+    }
+    this.store.removeItem("daily-attendance-filter");
+    $("#dateSelector").datepicker("setDate", new Date());
+    this.getAttendance(new Date());
+    
+  }
+  checkFiltersInStore() {
+    let filters: any = this.store.getObject('daily-attendance-filter');
+    if (filters) {
+      this.isFilter = true;
+      // this.dailyAttendnace.filters.properties['ofDate']['value'] = filters['ofDate'] || new Date();
+      this.dailyAttendnace.filters.properties['name']['value'] = filters['name'] || null;
+      this.dailyAttendnace.filters.properties['code']['value'] = filters['code'] || null;
+      this.dailyAttendnace.filters.properties['shiftTypeId']['value'] = filters['shiftTypeId'] || null;
+    }
+    this.getAttendance(this.dailyAttendnace.filters.properties['ofDate']['value'] || new Date());
+  }
+
+  setFiltersToStore() {
+    let queryParams: any = {};
+    _.each(this.dailyAttendnace.filters.properties, (filter: Filter, key: any, obj: any) => {
+      if (filter.value) {
+        queryParams[key] = filter.value;
+      }
+    })
+    if (queryParams) {
+      this.store.setObject('dailyTeam-attendance-filter', queryParams);
+    }
+  }
+  // getSelectedId{
+
+  // }
+  getAttendance(date: Date) {
+    this.setFiltersToStore();
+    this.date = date;
+    date = new Date(date);
+    this.dailyAttendnace.filters.properties['ofDate']['value'] = date.toISOString();
+    let tags: string[] = [];
+    _.each(this.tags.selected, (tag: SelectedTag) => {
+      tags.push(tag.tagId)
+    })
+    // let newAttendance:Page= new Page({})
+    // const placeOfId = newAttendance.options.api.key.split('/')
+    // placeOfId[1] =this.id;
+    // this.router.queryParams.subscribe((params: Params) => {
+    //   this.id = params;
+    //   console.log(params);
+    // });
+    
+    this.dailyAttendnace.filters.properties['tagIds']['value'] = tags;
+    this.dailyAttendnace.options.api = new GenericApi<any>(`teams/${this.empId}/teamMembers`, this.http, 'ams'),
+
+        this.dailyAttendnace.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+  }
+  ngOnInit() {
+    
+  }
+  ngAfterViewInit() {
+    
+    $('#dateSelector').datepicker({
+      format: 'dd/mm/yyyy',
+      minViewMode: 0,
+      maxViewMode: 2,
+      autoclose: true,
+      maxDate: new Date()
+    }).on('changeDate', (e) => {
+      if (new Date(e.date) > new Date()) {
+        return this.toastyService.info({ title: 'Info', msg: 'Date should be less than or equal to current date' })
+      }
+      this.getAttendance(e.date);
+    });
+    $("#dateSelector").datepicker("setDate", new Date());
+  }
+  mypage(id:string){
+    this.route.navigate(['pages/attendances/daily',id]);
+  }
+  myTeam(teamid:string){
+    this.route.navigate(['pages/attendances/daily/teams',teamid]);
+  }
+}

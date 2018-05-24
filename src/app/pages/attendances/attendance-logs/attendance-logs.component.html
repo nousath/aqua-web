@@ -1,7 +1,7 @@
 <div class="row page_header">
     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
         <a md-raised-button class="reply" color="primary" [routerLink]="['../../']">
-            <md-icon>reply</md-icon> Details
+            <md-icon>reply</md-icon> Back
         </a>
         <h5><b>Time Logs</b></h5>
     </div>
@@ -128,7 +128,7 @@
 
                 </div>
             </div>
-            <div class="row text-center">
+            <div *ngIf="userType == 'superadmin'" class="row text-center">
                 <button *ngIf="isButton" md-raised-button color="primary" (click)="toggleRow()">ADD ROW</button>
             </div>
         </md-card>
