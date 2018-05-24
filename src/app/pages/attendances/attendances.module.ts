@@ -17,6 +17,7 @@ import { AttendanceLogsComponent } from './attendance-logs/attendance-logs.compo
 import { ReportsComponent } from './reports/reports.component';
 import { ReportFiltersComponent } from './report-filters/report-filters.component';
 import { ReportListsComponent } from './report-lists/report-lists.component';
+import { LeaveTypeComponent } from './leave-type/leave-type.component';
 import { TeamsComponent } from './teams/teams.component';
 
 @NgModule({
@@ -39,6 +40,7 @@ import { TeamsComponent } from './teams/teams.component';
     ReportsComponent,
     ReportFiltersComponent,
     ReportListsComponent,
+    LeaveTypeComponent,
     TeamsComponent
   ],
   entryComponents: [

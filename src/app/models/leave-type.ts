@@ -1,4 +1,7 @@
 import { Organization } from './organization';
+import { Periodicity } from './periodicity';
+
+
 export class LeaveType {
   id: string = '';
   code: string = '';
@@ -7,6 +10,8 @@ export class LeaveType {
   unlimited: boolean = false;
   days: number = null;
   category: 'lossOfPay' | 'OnDuty' | 'paidLeave' | null = null;
+  periodicity: Periodicity = new Periodicity();
+  carryForward: number = null;
   isEdit: boolean = false;
   organization: Organization = new Organization();
 }
