@@ -6,23 +6,17 @@ import { LocalStorageService } from '../services/local-storage.service';
 import { Employee } from '../models/employee';
 
 @Injectable()
-export class AdminGuard implements CanActivate {
+export class SubAdminGuard implements CanActivate {
 
   constructor(private router: Router, private store: LocalStorageService) {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
     let currentUser: Employee = this.store.getObject('user') as Employee;
-    if (currentUser.userType == 'superadmin' || currentUser.userType == 'admin'  || currentUser.userType == 'normal') {
+    if (currentUser.userType == 'admin') {
       return true;
     }
-    this.router.navigate(['/pages/subAdmin']);
+    // this.router.navigate(['/pages/subAdmin']);
     return false;
   }
-  // if (currentUser.userType == 'admin') {
-    //   this.router.navigate([`/pages/daily/${currentUser.id}`]);
-    //   return false;
-    // }
-  
-    // return false;
 }

@@ -69,6 +69,7 @@ export class LeavesComponent implements OnInit, AfterViewInit {
     this.checkFiltersInStore();
   }
 
+  
   fetchLeaves(date?: Date) {
     this.setFiltersToStore();
 

@@ -122,6 +122,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     );
 
+    this.store.setItem('Ems-employeeID',this.employee.properties.id)
 
   }
 

@@ -23,6 +23,8 @@ export class ApplyLeaveComponent implements OnInit {
   subscription: Subscription;
   isEmpId: boolean = false;
   duration: 'multi' | 'full' | 'half' | '1/3' | '2/3' | null = null;
+  startTime:  'startfull' | 'starthalf'| 'start1/3' |null = null
+  endTime: 'endfull' | 'endhalf' |'end1/3'| null = null
 
   constructor(private amsEmployeeService: AmsEmployeeService,
     private amsLeaveService: AmsLeaveService,
@@ -117,13 +119,34 @@ export class ApplyLeaveComponent implements OnInit {
       case 'multi':
         let oneDay = 24 * 60 * 60 * 1000;
         let startDay: Date = new Date(this.leave.properties.date);
-        startDay.setHours(0, 0, 0, 0);
+        switch (this.startTime){
+          case 'startfull':
+          startDay.setHours(0, 0, 0, 0);
+          break;
+          case 'starthalf':
+          startDay.setHours(12,0, 0, 0);
+          break;
+          case 'start1/3':
+          startDay.setHours(8,0, 0, 0);
+          break;
+        }
+        // startDay.setHours(0, 0, 0, 0);
         let endDay: Date = new Date(this.leave.properties.toDate);
-        endDay.setHours(0, 0, 0, 0);
+        switch (this.endTime){
+          case 'endfull':
+          endDay.setHours(0, 0, 0, 0);
+          break;
+          case 'endhalf':
+          endDay.setHours(12, 0, 0, 0);
+          break;
+          case 'end1/3':
+          endDay.setHours(8, 0, 0, 0);
+          break;
+        }
         if (endDay <= startDay) {
           return this.toastyService.info({ title: 'Info', msg: 'End Date should be greater then Start Date' })
         }
-        this.leave.properties.days = Math.round(Math.abs((endDay.getTime() - startDay.getTime()) / (oneDay))) + 1;
+        this.leave.properties.days = Math.abs((endDay.getTime() - startDay.getTime()) / (oneDay));
         this.leave.properties.toDate = new Date(this.leave.properties.toDate).toISOString();
         break;
       case 'full':

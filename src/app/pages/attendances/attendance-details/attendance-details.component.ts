@@ -20,6 +20,8 @@ import { ShiftType } from '../../../models/shift-type';
 import * as moment from 'moment';
 import { AmsShiftService } from '../../../services/ams/ams-shift.service';
 import { LocalStorageService } from '../../../services/local-storage.service';
+import { EmsEmployeeService } from '../../../services/index';
+import { ResetPasswordDialogComponent } from '../../../dialogs/reset-password-dialog/reset-password-dialog.component';
 declare var $: any;
 
 
@@ -53,6 +55,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
   date: Date = null;
 
   constructor(private amsEmployeeService: AmsEmployeeService,
+    private emsEmployeeService: EmsEmployeeService,
     private amsLeaveService: AmsLeaveService,
     private amsShiftService: AmsShiftService,
     private amsAttendanceService: AmsAttendanceService,
@@ -427,5 +430,25 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
       });
     }
   }
-
+  resetPassword() {
+    let dialog = this.dialog.open(ResetPasswordDialogComponent, { width: '40%' });
+    dialog.afterClosed().subscribe(
+      (password: string) => {
+        if (password) {
+          this.employee.isProcessing = true;
+          let emsUserID : number;
+          let emp: any = {
+            password: password
+          };
+          emsUserID = this.store.getItem('emsUserId')
+          this.emsEmployeeService.employees.update(emsUserID, emp)
+            .then(data => {
+              this.employee.isProcessing = false;
+              this.toastyService.success({ title: 'Success', msg: 'Password updated successfully' });
+            })
+            .catch(err => { this.employee.isProcessing = false; this.toastyService.error({ title: 'Error', msg: err }) });
+        }
+      }
+    );
+  }
 }

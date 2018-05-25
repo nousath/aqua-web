@@ -100,6 +100,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         }
         this.store.setItem('external-token', emsUser.token); // for ems its aceess-token
         this.store.setItem('orgCode', emsUser.organization.code);
+        this.store.setItem('emsUserId', emsUser.id);
         this.loginToAms();
       }
     ).catch(err => { this.isLoggingIn = false; this.toastyService.error({ title: 'Error', msg: err }) });

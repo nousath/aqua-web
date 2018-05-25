@@ -3,8 +3,12 @@
         <a *ngIf="user == 'superadmin'" md-raised-button class="reply" color="primary" [routerLink]="['/pages/attendances/daily']">
             <md-icon>reply</md-icon>List
         </a>
-        <h5 *ngIf="user == 'normal' || 'admin'"><b>My Atteandance</b></h5>
-        <h5 *ngIf="user == 'superadmin'"><b>Details</b></h5>
+        <h5 *ngIf="user == 'normal' || 'admin'">
+            <b>My Atteandance</b>
+        </h5>
+        <h5 *ngIf="user == 'superadmin'">
+            <b>Details</b>
+        </h5>
     </div>
     <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
         <div class="headerInpts">
@@ -13,8 +17,11 @@
                 <input id="monthSelector" type="text" class="form-control input-sm calendar no-spin">
             </div>
         </div>
+
+
         <div class="headerBtns" *ngIf="user == 'superadmin'">
-            <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading || isProcessingAttendance" [mdMenuTriggerFor]="appMenu" md-icon-button>
+            <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading || isProcessingAttendance" [mdMenuTriggerFor]="appMenu"
+                md-icon-button>
                 <md-icon>cloud_download</md-icon>
             </button>
             <md-menu #appMenu="mdMenu">
@@ -29,7 +36,8 @@
 
     </div>
 </div>
-<md-spinner class="custom_spinner" *ngIf="employee?.isProcessing || attendance?.isProcessing || isDownloading || leaveBalances?.isLoading || leavesSubmiited?.isLoading || isProcessingAttendance || isUpdatingLeaveStatus" mode="indeterminate"></md-spinner>
+<md-spinner class="custom_spinner" *ngIf="employee?.isProcessing || attendance?.isProcessing || isDownloading || leaveBalances?.isLoading || leavesSubmiited?.isLoading || isProcessingAttendance || isUpdatingLeaveStatus"
+    mode="indeterminate"></md-spinner>
 <br>
 <div class="row">
     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 profieCrd nameFormat">
@@ -66,6 +74,10 @@
                         <tr class="capitalize">
                             <td>Mobile:</td>
                             <td>{{employee?.properties?.phone ? employee?.properties?.phone : '--'}} </td>
+                        </tr>
+                        <tr class="capitalize">
+                            <td colspan="2"><button  class="resetPW" *ngIf="employee?.properties?.id" md-raised-button [disabled]="employee?.isProcessing || designations?.isLoading"
+                                color="primary" (click)="resetPassword()">Reset Password</button></td>
                         </tr>
                         <!-- <tr class="capitalize">
                             <td>Shift:</td>
@@ -148,7 +160,9 @@
                  'missedSwipe':item?.status === 'missswipe',
                   'weekoff':item?.shift?.status === 'weekoff' && (item?.status !== 'present' && item?.status !== 'checkedin' && item?.status !== 'missswipe'),
                    'holiday':item?.shift?.status === 'holiday' && (item?.status !== 'present' && item?.status !== 'checkedin' && item?.status !== 'missswipe')}">
-                    <h5><b>{{getDate(item?.ofDate)}}</b></h5>
+                    <h5>
+                        <b>{{getDate(item?.ofDate)}}</b>
+                    </h5>
                     <!--<p>{{i}} {{item?.ofDate | date}}</p>-->
                     <!--<p>{{item?.ofDate}}</p>-->
                     <!--<div *ngIf="item?.shift?.status == 'working'">-->
@@ -228,15 +242,18 @@
                                       || item?.status == 'cancelled'" (click)="accept_reject_leave(item, 'approved')" mdTooltip="Approve" [mdTooltipPosition]="'above'">
                                 <md-icon>check_cirle</md-icon>
                             </button>-->
-                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status == 'submitted'" (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
+                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status == 'submitted'"
+                                (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
                                 <md-icon>highlight_off</md-icon>
                             </button>
-                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status == 'submitted'" (click)="accept_reject_leave(item, 'approved')" mdTooltip="Approve" [mdTooltipPosition]="'above'">
+                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status == 'submitted'"
+                                (click)="accept_reject_leave(item, 'approved')" mdTooltip="Approve" [mdTooltipPosition]="'above'">
                                 <md-icon>check_cirle</md-icon>
                             </button>
-                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status?.toLowerCase() == 'approved'" (click)="accept_reject_leave(item, 'cancelled')" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
-                              <md-icon>close</md-icon>
-                          </button>
+                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status?.toLowerCase() == 'approved'"
+                                (click)="accept_reject_leave(item, 'cancelled')" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
+                                <md-icon>close</md-icon>
+                            </button>
                         </td>
                     </tr>
                 </table>

@@ -1,7 +1,7 @@
 import { Organization } from './organization';
 
 export class User {
-  id: number = null;
+  id: string = null;
   email: string = '';
   password: string = '';
   name: string = '';

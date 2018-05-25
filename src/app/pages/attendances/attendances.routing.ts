@@ -11,13 +11,15 @@ import { ManageLeavesComponent } from './manage-leaves/manage-leaves.component';
 import { AttendanceLogsComponent } from './attendance-logs/attendance-logs.component';
 import { ReportsComponent } from './reports/reports.component';
 import { TeamsComponent } from './teams/teams.component';
+import { AdminGuard } from '../../guards/admin.guard';
+import { SubAdminGuard } from '../../guards/subadmin.gaurd';
 
 const routes: Routes = [
   {
     path: '', component: AttendancesComponent, children: [
       { path: '', redirectTo: 'daily', pathMatch: 'full' },
       { path: 'monthly', component: MonthlyComponent },
-      { path: 'daily', component: DailyComponent },
+      { path: 'daily', component: DailyComponent  },
       { path: 'reports', component: ReportsComponent },
 
       { path: 'daily/:empId', component: AttendanceDetailsComponent },
