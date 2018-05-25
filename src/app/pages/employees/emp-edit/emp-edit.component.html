@@ -57,6 +57,10 @@
                 </div>
             </div>
         </md-card>
+        <br>
+        <md-card>
+            <aqua-finger-print [code] ="employee.properties.code"></aqua-finger-print>
+        </md-card>
     </div>
     <md-spinner class="custom_spinner" *ngIf="employee?.isProcessing || uploader.isUploading || designations?.isLoading" mode="indeterminate"> </md-spinner>
     <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">

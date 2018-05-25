@@ -23,6 +23,8 @@ export class Employee {
   abilities: Abilities = new Abilities();
   currentAblitiy: 'maualAttendance' | 'manualByBeacon' | 'manualByGeoFencing' | 'manualByWifi' | 'none' = 'none';
   userType: 'admin' | 'superadmin' | 'normal' = 'normal';
+  fingerPrint: string;
+  devices: Device[] = [];
 }
 
 // export class EffectiveShift {
