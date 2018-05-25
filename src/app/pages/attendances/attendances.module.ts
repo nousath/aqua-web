@@ -19,7 +19,6 @@ import { ReportFiltersComponent } from './report-filters/report-filters.componen
 import { ReportListsComponent } from './report-lists/report-lists.component';
 import { LeaveTypeComponent } from './leave-type/leave-type.component';
 import { TeamsComponent } from './teams/teams.component';
-import { ResetPasswordDialogComponent } from '../../dialogs/reset-password-dialog/reset-password-dialog.component';
 
 @NgModule({
   imports: [
@@ -43,12 +42,10 @@ import { ResetPasswordDialogComponent } from '../../dialogs/reset-password-dialo
     ReportListsComponent,
     LeaveTypeComponent,
     TeamsComponent,
-    ResetPasswordDialogComponent
   ],
   entryComponents: [
     DayEventDialogComponent,
     LeaveActionDialogComponent,
-    ResetPasswordDialogComponent
   ],
  
   exports: [
@@ -61,7 +58,6 @@ import { ResetPasswordDialogComponent } from '../../dialogs/reset-password-dialo
     LeavesComponent,
     LeaveBalancesComponent,
     ManageLeavesComponent,
-    ResetPasswordDialogComponent
   ]
 })
 export class AttendancesModule { }

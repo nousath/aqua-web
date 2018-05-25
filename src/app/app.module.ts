@@ -17,6 +17,7 @@ import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
 import { AdminGuard } from './guards/admin.guard';
 import { GkuAttendanceComponent } from './pages/gku-attendance/gku-attendance.component';
 import { SystemUsageComponent } from './pages/system-usage/system-usage.component';
+import { ResetPasswordDialogComponent } from './dialogs/reset-password-dialog/reset-password-dialog.component';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { SystemUsageComponent } from './pages/system-usage/system-usage.componen
     AppDownloadComponent,
     GkuAttendanceComponent,
     SystemUsageComponent,
+    ResetPasswordDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -38,6 +40,12 @@ import { SystemUsageComponent } from './pages/system-usage/system-usage.componen
   ],
   providers: [
     LoginGuard, UserGuard, AdminGuard
+  ],
+  entryComponents: [
+    ResetPasswordDialogComponent
+  ],
+  exports:[
+    ResetPasswordDialogComponent
   ],
   bootstrap: [AppComponent]
 })
