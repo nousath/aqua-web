@@ -63,15 +63,15 @@ export class TeamsComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     private http: Http,
     public router: ActivatedRoute,
-    private route:Router,
+    private route: Router,
     private store: LocalStorageService,
     private tagService: AmsTagService,
     private location: Location,
     private amsAttendanceService: AmsAttendanceService,
     private toastyService: ToastyService) {
 
-      
-    
+
+
     this.employee = new Model({
       api: amsEmployeeService.employees,
       properties: new Employee()
@@ -119,15 +119,14 @@ export class TeamsComponent implements OnInit {
     this.tagTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
     this.empId = router.snapshot.params["empId"];
     console.log(this.empId)
-    // this.router.queryParams.subscribe((params: Params) => {
-    //   // this.empId = params['empId'];
-    //   this.empId = params;
-    //   console.log(params)
-    // });
 
     this.checkFiltersInStore();
 
   }
+  addTag(id: string) {
+    console.log(id)
+  }
+
   reset() {
     this.dailyAttendnace.filters.reset();
     this.tags.reset();
@@ -138,7 +137,7 @@ export class TeamsComponent implements OnInit {
     this.store.removeItem("daily-attendance-filter");
     $("#dateSelector").datepicker("setDate", new Date());
     this.getAttendance(new Date());
-    
+
   }
   checkFiltersInStore() {
     let filters: any = this.store.getObject('daily-attendance-filter');
@@ -175,24 +174,41 @@ export class TeamsComponent implements OnInit {
     _.each(this.tags.selected, (tag: SelectedTag) => {
       tags.push(tag.tagId)
     })
-    // let newAttendance:Page= new Page({})
-    // const placeOfId = newAttendance.options.api.key.split('/')
-    // placeOfId[1] =this.id;
-    // this.router.queryParams.subscribe((params: Params) => {
-    //   this.id = params;
-    //   console.log(params);
-    // });
-    
+
+
     this.dailyAttendnace.filters.properties['tagIds']['value'] = tags;
     this.dailyAttendnace.options.api = new GenericApi<any>(`teams/${this.empId}/teamMembers`, this.http, 'ams'),
 
-        this.dailyAttendnace.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+      this.dailyAttendnace.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
+
+  isDownloading: boolean = false;
+  download(byShiftEnd: boolean, byShiftLength: boolean, reportName: string) {
+    this.isDownloading = true;
+    let serverPageInput: ServerPageInput = new ServerPageInput();
+    let queryParams: any = {};
+    _.each(this.dailyAttendnace.filters.properties, (filter: Filter, key: any, obj: any) => {
+      if (filter.value) {
+        queryParams[key] = filter.value;
+      }
+    });
+    queryParams['byShiftEnd'] = byShiftEnd;
+    queryParams['byShiftLength'] = byShiftLength;
+    serverPageInput.query = queryParams;
+    reportName = `${reportName}_${moment(queryParams['ofDate']).format('DD_MMM_YY')}_DailyReport.xlsx`;
+    this.amsAttendanceService.donwloadDailyAttendances.exportReport(serverPageInput, null, reportName).then(
+      data => this.isDownloading = false
+    ).catch(err => {
+      this.toastyService.error({ title: 'Error', msg: err });
+      this.isDownloading = false
+    });
+  };
+
   ngOnInit() {
-    
+
   }
   ngAfterViewInit() {
-    
+
     $('#dateSelector').datepicker({
       format: 'dd/mm/yyyy',
       minViewMode: 0,
@@ -207,10 +223,10 @@ export class TeamsComponent implements OnInit {
     });
     $("#dateSelector").datepicker("setDate", new Date());
   }
-  mypage(id:string){
-    this.route.navigate(['pages/attendances/daily',id]);
+  mypage(id: string) {
+    this.route.navigate(['pages/attendances/daily', id]);
   }
-  myTeam(teamid:string){
-    this.route.navigate(['pages/attendances/daily/teams',teamid]);
+  myTeam(teamid: string) {
+    this.route.navigate(['pages/attendances/daily/teams', teamid]);
   }
 }

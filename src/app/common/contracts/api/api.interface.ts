@@ -13,4 +13,5 @@ export interface IApi<TModel> {
   remove(id: number): Promise<void>;
   simpePost(model: any): Promise<void>;
   exportReport(input: ServerPageInput, path?: string, reportName?: string): Promise<void>;
+  all(type: any, id?: string, model?: any): Promise<void>;
 }

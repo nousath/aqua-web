@@ -8,6 +8,8 @@ import { DesignationsComponent } from './designations/designations.component';
 import { ConfirmDialogComponent } from '../../dialogs/confirm-dialog/confirm-dialog.component';
 // import { ResetPasswordDialogComponent } from '../../dialogs/reset-password-dialog/reset-password-dialog.component';
 import { SharedModule } from '../../shared/shared.module';
+import { DepartmentsComponent } from './departments/departments.component';
+import { FingerPrintComponent } from './finger-print/finger-print.component';
 
 @NgModule({
   imports: [
@@ -20,6 +22,9 @@ import { SharedModule } from '../../shared/shared.module';
     EmpEditComponent,
     DesignationsComponent,
     ConfirmDialogComponent,
+    FingerPrintComponent,
+    DepartmentsComponent,
+    FingerPrintComponent,
     // ResetPasswordDialogComponent
   ],
   entryComponents: [
@@ -32,6 +37,7 @@ import { SharedModule } from '../../shared/shared.module';
     EmpEditComponent,
     DesignationsComponent,
     ConfirmDialogComponent,
+    DepartmentsComponent
     // ResetPasswordDialogComponent
   ]
 })

@@ -8,11 +8,17 @@
             <button md-button [routerLink]="['/pages/settings']" routerLinkActive="activeTab"><b>SETTINGS</b></button> -->
             <span class="example-spacer"></span>
             <div *ngIf="employeeSearch" class="searchbar">
-                <input ngui-auto-complete [min-chars]="1" *ngIf="userType == 'superadmin'" placeholder="Employee search" [(ngModel)]="selectedEmp" (valueChanged)="onSelectEmp($event)" [source]="empSource.bind(this)" [value-formatter]="empFormatter" [list-formatter]="empListFormatter" class="form-control searchbarinput search"
-                    name="roleId" />
+                <input ngui-auto-complete [min-chars]="1" *ngIf="userType == 'superadmin'" placeholder="Employee search" [(ngModel)]="selectedEmp"
+                    (valueChanged)="onSelectEmp($event)" [source]="empSource.bind(this)" [value-formatter]="empFormatter" [list-formatter]="empListFormatter"
+                    class="form-control searchbarinput search" name="roleId" />
             </div>
-            <button md-icon-button (click)="syncEmployees()" *ngIf="userType == 'superadmin'" [disabled]="isSyncing"  mdTooltip="Sync Employees" class="marginLetf" [mdTooltipPosition]="'below'"><i class="fa fa-refresh  fa-lg" [ngClass]="{'fa-spin':isSyncing}"  aria-hidden="true"></i></button>
-            <button md-button (click)="logout()" class="capitalize" mdTooltip="Logout" class="marginLetf" [mdTooltipPosition]="'below'">{{currentUser?.name}}<md-icon class="example-icon">exit_to_app</md-icon></button>
+            <button md-icon-button (click)="syncEmployees()" *ngIf="userType == 'superadmin'" [disabled]="isSyncing" mdTooltip="Sync Employees"
+                class="marginLetf" [mdTooltipPosition]="'below'">
+                <i class="fa fa-refresh  fa-lg" [ngClass]="{'fa-spin':isSyncing}" aria-hidden="true"></i>
+            </button>
+            <button md-button (click)="logout()" class="capitalize" mdTooltip="Logout" class="marginLetf" [mdTooltipPosition]="'below'">{{currentUser?.name}}
+                <md-icon class="example-icon">exit_to_app</md-icon>
+            </button>
 
         </md-toolbar>
     </div>
@@ -36,6 +42,9 @@
                     </a>
                     <a *ngIf="isShowEmployeeTab" md-list-item [routerLink]="['/pages/employees/designations']" routerLinkActive="activeTab" #rla2="routerLinkActive">
                         <h5>Designations</h5>
+                    </a>
+                    <a *ngIf="isShowEmployeeTab" md-list-item [routerLink]="['/pages/employees/departments']" routerLinkActive="activeTab" #rla15="routerLinkActive">
+                        <h5>Departments </h5>
                     </a>
                 </div>
                 <p class="subListHeader" (click)="sections.select('attendance')">Attendance
@@ -116,7 +125,7 @@
                 <a md-list-item [routerLink]="['/pages/attendances/daily',userId]" routerLinkActive="activeTab" #rla3="routerLinkActive">
                     <h5>My Attendance</h5>
                 </a>
-                
+
             </md-nav-list>
         </div>
         <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10 section hiddenHorScroll">

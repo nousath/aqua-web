@@ -18,6 +18,8 @@ import { AdminGuard } from './guards/admin.guard';
 import { GkuAttendanceComponent } from './pages/gku-attendance/gku-attendance.component';
 import { SystemUsageComponent } from './pages/system-usage/system-usage.component';
 import { ResetPasswordDialogComponent } from './dialogs/reset-password-dialog/reset-password-dialog.component';
+import { DepartmentsComponent } from './pages/employees/departments/departments.component';
+import { EmsDepartmentService } from './services/index';
 
 
 @NgModule({
@@ -39,7 +41,7 @@ import { ResetPasswordDialogComponent } from './dialogs/reset-password-dialog/re
     AppRoutingModule,
   ],
   providers: [
-    LoginGuard, UserGuard, AdminGuard
+    LoginGuard, UserGuard, AdminGuard,EmsDepartmentService
   ],
   entryComponents: [
     ResetPasswordDialogComponent

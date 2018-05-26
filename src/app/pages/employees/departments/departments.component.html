@@ -1,0 +1,113 @@
+<div class="row page_header">
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <h5>
+            <b>Departments</b>
+        </h5>
+    </div>
+    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+        <div class="headerBtns">
+            <button md-icon-button [disabled]=" departments?.isLoading   ||  department.isProcessing  " mdTooltip="Add" class="marginLetf"
+                [mdTooltipPosition]="'above'" (click)="toggleDepartment(true)">
+                <md-icon>add_circle_outline</md-icon>
+            </button>
+        </div>
+    </div>
+</div>
+<md-spinner class="custom_spinner" *ngIf=" departments?.isLoading   ||  department.isProcessing  " mode="indeterminate"></md-spinner>
+
+
+<div class="row" *ngIf="isNew">
+    <md-card class="card">
+        <div class="row text-center headr_bar">
+            <h5>
+                <b>New Department</b>
+            </h5>
+            <div class="actionBtns">
+                <button md-icon-button mdTooltip="Close" [mdTooltipPosition]="'above'" (click)="toggleDepartment()">
+                    <md-icon>highlight_off</md-icon>
+                </button>
+            </div>
+        </div>
+        <br>
+        <form class="row">
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  form-group">
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <label for="email">Name
+                        <span class="asterisk">*</span>
+                    </label>
+                </div>
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                    <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]=" departments?.isLoading   ||  department?.isProcessing  "
+                        [(ngModel)]=" department.properties.name" name="Name" required>
+                </div>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  form-group">
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <label for="pwd">Code
+                        <span class="asterisk">*</span>
+                    </label>
+                </div>
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                    <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]=" departments?.isLoading   ||  department?.isProcessing  "
+                        [(ngModel)]=" department.properties.code" name="code" required>
+                </div>
+            </div>
+
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 button_align form-group text-center">
+                <button [disabled]=" departments?.isLoading   ||  department?.isProcessing  " type="submit" md-raised-button color="primary"
+                    mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="save();">Save</button>&nbsp;&nbsp;
+                <button [disabled]=" departments?.isLoading   ||  department?.isProcessing  " md-raised-button class="btn_grey" mdTooltip="Reset"
+                    [mdTooltipPosition]="'above'" (click)="toggleDepartment(true)">Reset</button>
+            </div>
+
+        </form>
+    </md-card>
+</div>
+
+
+<div class="row">
+    <md-card class="card">
+        <div class="row text-center noData" *ngIf=" departments?.items?.length == 0">
+            <h5>
+                <b>no data to display !</b>
+            </h5>
+        </div>
+        <div class="table-responsive" *ngIf=" departments?.items?.length > 0">
+            <table class="table table-condensed table-hover">
+                <thead class="primary_thead">
+                    <tr>
+                        <th class="tdWidth">Name</th>
+                        <th>Code</th>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of  departments.items;let i = index" class="capitalize">
+                        <td class="tdWidth">
+                            <input [maxlength]="validatorService.textLength" type="text" [name]="'name_'+i" [readOnly]=" departments.isLoading ||  department.isProcessing || !item?.isEdit"
+                                class="number form-control input-xs" [(ngModel)]="item.name">
+                        </td>
+                        <td>
+                            <input [maxlength]="validatorService.textLength" type="text" [name]="'code_'+i" [readOnly]=" departments.isLoading ||  department.isProcessing || !item?.isEdit"
+                                class="number form-control input-xs" [(ngModel)]="item.code">
+                        </td>
+                        <!-- <td class="btnClmWidth">
+                          <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="edit(item, true)">
+                              <md-icon>edit</md-icon>
+                          </button>
+                          <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="removeConfirm(item)">
+                              <md-icon>delete</md-icon>
+                          </button>
+                          <button *ngIf="item?.isEdit" [disabled]=" departments.isLoading ||  department.isProcessing" md-icon-button class="button_align cursor " (click)="save(item)" mdTooltip="Save" [mdTooltipPosition]="'above'">
+                              <md-icon>save</md-icon>
+                          </button>
+                          <button *ngIf="item?.isEdit" [disabled]=" departments.isLoading ||  department.isProcessing" md-icon-button class="button_align cursor" (click)="edit(item, false)" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
+                              <md-icon>undo</md-icon>
+                          </button>
+                      </td> -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </md-card>
+</div>

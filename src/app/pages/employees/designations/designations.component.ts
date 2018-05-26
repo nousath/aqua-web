@@ -8,7 +8,7 @@ import { ToastyService } from 'ng2-toasty';
 import * as _ from "lodash";
 import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-dialog.component';
 import { MdDialog } from '@angular/material';
-import { LocalStorageService } from "app/services/local-storage.service";
+import { LocalStorageService } from '../../../services/local-storage.service';
 
 @Component({
   selector: 'aqua-designations',
