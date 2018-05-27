@@ -56,16 +56,12 @@
             angularticsEvent="excelUploadClick" angularticsCategory="employee " [angularticsProperties]="{label: 'Fall Campaign'}">
             <md-icon>cloud_upload</md-icon>
         </a>
-        <a class="exlD" md-icon-button mdTooltip="Excel Download" [mdMenuTriggerFor]="appMenu" [mdTooltipPosition]="'above'" angulartics2On="click"
-            angularticsEvent="excelUploadClick" angularticsCategory="employee " [angularticsProperties]="{label: 'Fall Campaign'}">
+        <button class="exlD" (click)="downloadlink()" [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing"
+            md-icon-button>
             <md-icon>cloud_download</md-icon>
-        </a>
-        <md-menu #appMenu="mdMenu">
-            <button md-menu-item (click)="download(true,false,'Extra hours - after Shift end time')">Employee Add</button>
-            <button md-menu-item (click)="download(false,true,'Extra hours - after Shift hours')">Employee Update
-            </button>
-            <button md-menu-item (click)="download(false,false, 'Day Attendance')">Biometric Add</button>
-        </md-menu>
+        </button>
+
+
 
     </div>
     <div *ngIf="isUpload" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">

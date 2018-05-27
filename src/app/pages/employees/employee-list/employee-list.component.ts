@@ -90,7 +90,7 @@ export class EmployeeListComponent implements OnInit {
 
   fetchEmp(status?: string) {
     if (status) {
-    this.status = status;
+      this.status = status;
     }
     this.statusFilter = status ? status : 'activate';
     this.employees.filters.properties['status'].value = this.status ? this.status : 'activate';
@@ -123,7 +123,9 @@ export class EmployeeListComponent implements OnInit {
     })
 
   }
-
+  downloadlink() {
+    this.router.navigate(['pages/attendances/reports'])
+  }
   ngOnInit() {
   }
 

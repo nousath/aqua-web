@@ -1,31 +1,46 @@
 <div class="container">
-  <div class="form-group">
+  <!-- <div class="form-group">
     <label for="fingerPrint">Finger Print :</label>
     <input *ngIf="employee.fingerPrint !=='wip'" class="form-control" type="input" [disabled]="isFingerPrintExists" [(ngModel)]="fingerPrint">
     <span *ngIf="!isFingerPrintExists && employee.fingerPrint !=='wip'">Give Name to Finger Print: wip</span>
     <label *ngIf="isFingerPrintExists && employee.fingerPrint ==='wip'">Status: wip(work-in-progress)</label>
-  </div>
+  </div> -->
   <div>
     <table class="table table-condensed table-responsive">
       <thead>
         <tr>
-          <td>IP</td>
-          <td>Port</td>
-          <td>Name</td>
-          <td>Actions</td>
+          <th>Machine
+            <br> Name</th>
+          <th>Type</th>
+          <th>Status</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of devices.items;">
-          <td>{{item.ip}}</td>
+          <td>South Gate</td>
+          <td>In</td>
+          <td>&nbsp;&nbsp;
+            <md-checkbox ng-checked="checkall" class="green"></md-checkbox>
+          </td>
+
+          <!-- <td>{{item.ip}}</td>
           <td>{{item.port}}</td>
-          <td>{{item.machine.model}}</td>
+          <td>{{item.machine.model}}</td> -->
           <td *ngIf="!isFingerPrintExists" (click)="updateFingerPrint(false, true, 'fetch', item.id)">
             <span class="clickable glyphicon glyphicon-plus"></span>
           </td>
           <td *ngIf="isFingerPrintExists">
-            <span *ngIf="isExists(item.id)" (click)="updateFingerPrint(true, false, 'remove', item.id)" class=" clickable glyphicon glyphicon-remove"></span>
-            <span *ngIf="!isExists(item.id)" (click)="updateFingerPrint(false, false, 'add', item.id)" class=" clickable glyphicon glyphicon-ok"></span>
+            <!-- <span *ngIf="isExists(item.id)" (click)="updateFingerPrint(true, false, 'remove', item.id)" class=" clickable glyphicon glyphicon-remove"></span> -->
+            <!-- <span *ngIf="!isExists(item.id)" (click)="updateFingerPrint(false, false, 'add', item.id)" class=" clickable glyphicon glyphicon-ok"></span> -->
+            <span class=" clickable glyphicon glyphicon-remove"></span>
+            <span class=" clickable glyphicon glyphicon-ok"></span>
+            <button mat-raised-button [disabled]="true" matTooltip="You cannot delete that">
+              <mat-icon>delete</mat-icon>
+            </button>
+            <button mat-raised-button [disabled]="false" matTooltip="You cannot delete that">
+              <mat-icon>delete</mat-icon>
+            </button>
           </td>
         </tr>
       </tbody>

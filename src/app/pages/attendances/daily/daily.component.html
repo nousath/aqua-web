@@ -18,7 +18,7 @@
                 class="marginLetf" [mdTooltipPosition]="'above'">
                 <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
             </button>
-            <button (click)="downloadlink()" [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing"  md-icon-button>
+            <button (click)="downloadlink()" [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button>
                 <md-icon>cloud_download</md-icon>
             </button>
             <!-- <md-menu #appMenu="mdMenu">
@@ -27,11 +27,11 @@
                 </button>
                 <button md-menu-item (click)="download(false,false, 'Day Attendance')">Day's Attendance</button>
             </md-menu> -->
-            <a class="exl" md-icon-button mdTooltip="Excel Upload" [mdTooltipPosition]="'above'" angulartics2On="click"
-            angularticsEvent="excelUploadClick" angularticsCategory="employee " [angularticsProperties]="{label: 'Fall Campaign'}">
-            <md-icon>cloud_upload</md-icon>
-        </a>
-            
+            <a class="exl" md-icon-button mdTooltip="Excel Upload" [mdTooltipPosition]="'above'" angulartics2On="click" angularticsEvent="excelUploadClick"
+                angularticsCategory="employee " [angularticsProperties]="{label: 'Fall Campaign'}">
+                <md-icon>cloud_upload</md-icon>
+            </a>
+
             <!-- <button [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button mdTooltip="Download Attendance extraHours" [mdTooltipPosition]="'above'" (click)="download(true)"><md-icon>cloud_download</md-icon> </button>
             <button [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" (click)="download(false)" angulartics2On="click" angularticsEvent="dialyAttendnaceDownloadClick"
                 angularticsCategory="dialyAttendnace" [angularticsProperties]="{label: 'Fall Campaign'}"><md-icon >cloud_download</md-icon></button> -->
@@ -66,11 +66,11 @@
                     <md-icon>highlight_off</md-icon>
                 </button>
             </div>
-    
+
         </div>
 
     </div>
-    
+
 </div>
 
 <md-spinner class="custom_spinner" *ngIf="dailyAttendnace?.isLoading || isDownloading" mode="indeterminate"></md-spinner>
@@ -162,7 +162,7 @@
                         <label for="email">Department</label>
                     </div>
                     <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input  type="text" class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" name="Name">
+                        <input type="text" class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" name="Name">
                     </div>
                 </div>
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4  form-group">
@@ -170,7 +170,7 @@
                         <label for="email">Contractor</label>
                     </div>
                     <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input  type="text" class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" name="Name">
+                        <input type="text" class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" name="Name">
                     </div>
                 </div>
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 button_align form-group">
@@ -192,14 +192,14 @@
                     <tr>
                         <th class="td">Name</th>
                         <th class="tdWidth">Code</th>
-                        <!-- <th class="tdWidth">Shift</th>
-                        <th class="tdWidth">Hours</th> -->
-                        <th class="tdWidth">Status</th>
                         <th class="tdWidth">Designation</th>
-                        <th class="tdWidth">Department</th>
+                        <th class="tdWidth">Shift</th>
+                        <!-- <th class="tdWidth">Hours</th> -->
+                        <th class="tdWidth">Status</th>
+                        <!-- <th class="tdWidth">Department</th> -->
                         <th class="tdWidth">Check In</th>
                         <th class="tdWidth">Check Out</th>
-                        <th class="tdWidth"></th>
+                        <th class="tdWidth">Team</th>
                         <!-- <th></th> -->
                     </tr>
                 </thead>
@@ -214,20 +214,23 @@
                             <a [routerLink]="[item.id]">{{item?.name || '--'}}</a>
                         </td>
                         <td class="tdWidth">{{item?.code || '--'}}</td>
-                        <!-- <td class="tdWidth">{{item?.shiftType?.name || '--'}}</td>
-                        <td class="tdWidth">{{item?.attendance?.hoursWorked || '--'}}</td> -->
+                        <td class="tdWidth">{{item?.designation || '--'}}</td>
+                        <td class="tdWidth">{{item?.shiftType?.name || '--'}}</td>
+                        <!-- <td class="tdWidth">{{item?.attendance?.hoursWorked || '--'}}</td> -->
                         <td class="tdWidth">
                             <ng-template #elsePart>
                                 <span>{{item?.attendance?.status?.toLowerCase() == 'checkedin' ? 'Present' : item?.attendance?.status}}</span>
                             </ng-template>
                             <span *ngIf="item?.attendance?.status == 'absent' && (item?.attendance?.shift?.status === 'weekOff' || item?.attendance?.shift?.status === 'holiday'); else elsePart">{{item?.attendance?.shift?.status | titlecase}}</span>
                         </td>
-                        <td class="tdWidth">{{item?.designation || '--'}}</td>
-                        <td class="tdWidth">{{item?.department || '--'}}</td>
+
+                        <!-- <td class="tdWidth">{{item?.department || '--'}}</td> -->
                         <td class="tdWidth">{{(item?.attendance?.checkIn | date:'shortTime') || '--'}}</td>
                         <td class="tdWidth">{{(item?.attendance?.checkOut | date:'shortTime') || '--'}}</td>
                         <td class="tdWidth">
-                            <a [routerLink]="['teams',item.id]" *ngIf="item?.team">Team</a>
+                            <a [routerLink]="['teams',item.id]" *ngIf="item?.team">
+                                <img src="assets/images/team.png" width="30px;">
+                            </a>
                             <span *ngIf="!item.team">--</span>
                         </td>
                     </tr>

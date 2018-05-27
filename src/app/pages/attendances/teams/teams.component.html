@@ -151,9 +151,10 @@
                     <tr>
                         <th class="td">Name</th>
                         <th class="tdWidth">Code</th>
-                        <th class="tdWidth">Status</th>
                         <th class="tdWidth">Designation</th>
-                        <th class="tdWidth">Department</th>
+                        <!-- <th class="tdWidth">Department</th> -->
+                        <th class="tdWidth">Shift</th>
+                        <th class="tdWidth">Status</th>
                         <th class="tdWidth">Check In</th>
                         <th class="tdWidth">Check Out</th>
                         <th class="tdWidth">Team</th>
@@ -167,18 +168,23 @@
                             <a (click)="mypage(item.id)">{{item?.name || '--'}}</a>
                         </td>
                         <td class="tdWidth">{{item?.code || '--'}}</td>
+                        <td class="tdWidth">{{item?.designation || '--'}}</td>
+                        <td class="tdWidth">{{item?.shiftType?.name || '--'}}</td>
                         <td class="tdWidth">
                             <ng-template #elsePart>
                                 <span>{{item?.attendance?.status?.toLowerCase() == 'checkedin' ? 'Present' : item?.attendance?.status}}</span>
                             </ng-template>
                             <span *ngIf="item?.attendance?.status == 'absent' && (item?.attendance?.shift?.status === 'weekOff' || item?.attendance?.shift?.status === 'holiday'); else elsePart">{{item?.attendance?.shift?.status | titlecase}}</span>
                         </td>
-                        <td class="tdWidth">{{item?.designation || '--'}}</td>
-                        <td class="tdWidth">{{item?.department || '--'}}</td>
+
+                        <!-- <td class="tdWidth">{{item?.department || '--'}}</td> -->
+
                         <td class="tdWidth">{{(item?.attendance?.checkIn | date:'shortTime') || '--'}}</td>
                         <td class="tdWidth">{{(item?.attendance?.checkOut | date:'shortTime') || '--'}}</td>
                         <td class="tdWidth">
-                            <a (click)="myTeam(item.id)" *ngIf="item?.team?.total != 0">Team</a>
+                            <a (click)="myTeam(item.id)" *ngIf="item?.team?.total != 0">
+                                <img src="assets/images/team.png" width="30px;">
+                            </a>
                             <span *ngIf="item?.team?.total == 0">--</span>
                         </td>
                         <td class="tdWidth"></td>

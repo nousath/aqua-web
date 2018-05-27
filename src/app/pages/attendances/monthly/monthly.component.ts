@@ -207,6 +207,9 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
       this.isDownloading = false;
     });
   }
+  downloadlink() {
+    this.router.navigate(['pages/attendances/reports'])
+  }
 
   ngOnInit() {
   }

@@ -16,11 +16,15 @@
                 [mdTooltipPosition]="'above'" (click)="isFilter = !isFilter">
                 <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
             </button>
-            <button [disabled]="monthlyAttendnace?.isLoading || isDownloading || employee?.isProcessing" [mdMenuTriggerFor]="appMenu"
-                md-icon-button>
+            <button (click)="downloadlink()" md-icon-button>
                 <md-icon>cloud_download</md-icon>
             </button>
-            <md-menu #appMenu="mdMenu">
+
+            <!-- <button [disabled]="monthlyAttendnace?.isLoading || isDownloading || employee?.isProcessing" [mdMenuTriggerFor]="appMenu"
+                md-icon-button>
+                <md-icon>cloud_download</md-icon>
+            </button> -->
+            <!-- <md-menu #appMenu="mdMenu">
                 <button md-menu-item [matMenuTriggerFor]="appSubMenu1">Extra hours - after Shift end time</button>
                 <button md-menu-item [matMenuTriggerFor]="appSubMenu2">Extra hours - after Shift hours</button>
                 <button md-menu-item [matMenuTriggerFor]="appSubMenu3">Monthly Attendance</button>
@@ -36,7 +40,7 @@
             <md-menu #appSubMenu3="mdMenu">
                 <button md-menu-item (click)="download(false, false, 'Day Attendance')">Excel</button>
                 <button *ngIf="org ==='sh'" md-menu-item (click)="downloadPdf('attendance')">PDF</button>
-            </md-menu>
+            </md-menu> -->
         </div>
 
     </div>
@@ -111,24 +115,24 @@
                     </div>
                 </div>
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4  form-group">
-                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                            <label for="email">Contractor</label>
-                        </div>
-                        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                            <input type="text" class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" name="Name">
-                        </div>
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        <label for="email">Contractor</label>
                     </div>
+                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                        <input type="text" class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" name="Name">
+                    </div>
+                </div>
             </div>
             <!-- <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 chipsBadge form-group">
                 <span *ngFor="let item of selectedTags;let i = index" class="badge badge-pill badge-dark"> {{item?.name | titlecase}}&nbsp;<i (click)="removeChip(i)" class="fa fa-times" aria-hidden="true"></i></span>
             </div> -->
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 button_align form-group ">
-                    
-                        <button [disabled]="monthlyAttendnace?.isLoading || isDownloading" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'"
-                            (click)="getAttendance(monthlyAttendnace.filters.properties['ofDate']['value']);">Apply</button>
-                        <button [disabled]="monthlyAttendnace?.isLoading || isDownloading" md-raised-button class="btn_grey" mdTooltip="Reset" [mdTooltipPosition]="'above'"
-                            (click)="reset()">Reset</button>
+
+                    <button [disabled]="monthlyAttendnace?.isLoading || isDownloading" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'"
+                        (click)="getAttendance(monthlyAttendnace.filters.properties['ofDate']['value']);">Apply</button>
+                    <button [disabled]="monthlyAttendnace?.isLoading || isDownloading" md-raised-button class="btn_grey" mdTooltip="Reset" [mdTooltipPosition]="'above'"
+                        (click)="reset()">Reset</button>
                 </div>
             </div>
         </form>
