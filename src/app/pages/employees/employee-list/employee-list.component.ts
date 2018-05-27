@@ -6,13 +6,13 @@ import { ToastyService } from 'ng2-toasty';
 import { MdDialog } from "@angular/material";
 import { Model } from '../../../common/contracts/model';
 import { ActivatedRoute, Route, Router } from '@angular/router';
-import { ValidatorService } from "app/services";
 import { EmsEmployee } from '../../../models/ems/employee';
 import { Filter } from '../../../common/contracts/filters';
 import * as _ from "lodash";
 import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-dialog.component';
 import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
 import { LocalStorageService } from "app/services/local-storage.service";
+import { ValidatorService } from '../../../services/validator.service';
 
 @Component({
   selector: 'aqua-employee-list',

@@ -1,22 +1,36 @@
 <div class="row page_header">
     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <h5><b>Devices</b></h5>
+        <h5>
+            <b>Devices</b>
+        </h5>
     </div>
     <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
         <span *ngIf="activationKey" class="activationKeySpan">
-                <span >Activation Key :  <input disabled id="activationKey" [value]="activationKey"></span>
-        <button md-icon-button [disabled]="devices?.isLoading || isDownloading || device?.isProcessing || categories?.isLoading" (click)="copyKey()" mdTooltip="Copy Activation Key" class="marginLetf" [mdTooltipPosition]="'above'"><md-icon >content_copy</md-icon></button>
+            <span>Activation Key :
+                <input disabled id="activationKey" [value]="activationKey">
+            </span>
+            <button md-icon-button [disabled]="devices?.isLoading || isDownloading || device?.isProcessing || categories?.isLoading"
+                (click)="copyKey()" mdTooltip="Copy Activation Key" class="marginLetf" [mdTooltipPosition]="'above'">
+                <md-icon>content_copy</md-icon>
+            </button>
         </span>
         <div class="headerBtns1">
-            <button *ngIf="!activationKey" md-icon-button [disabled]="isDownloading" (click)="getActivationKey()" mdTooltip="Get Activation Key" class="marginLetf" [mdTooltipPosition]="'above'"><md-icon >vpn_key</md-icon></button>
+            <button *ngIf="!activationKey" md-icon-button [disabled]="isDownloading" (click)="getActivationKey()" mdTooltip="Get Activation Key"
+                class="marginLetf" [mdTooltipPosition]="'above'">
+                <md-icon>vpn_key</md-icon>
+            </button>
             <a md-icon-button mdTooltip="Download Sync App" class="marginLetf" [mdTooltipPosition]="'above'" href="https://s3.ap-south-1.amazonaws.com/aqua-setups/AquaSync.msi">
                 <md-icon>cloud_download</md-icon>
             </a>
-            <button md-icon-button [disabled]="devices?.isLoading || isDownloading || device?.isProcessing || categories?.isLoading" (click)="saveDevice()" mdTooltip="Add" class="marginLetf" [mdTooltipPosition]="'above'"><md-icon >add_circle_outline</md-icon></button>
+            <button md-icon-button [disabled]="devices?.isLoading || isDownloading || device?.isProcessing || categories?.isLoading"
+                (click)="saveDevice()" mdTooltip="Add" class="marginLetf" [mdTooltipPosition]="'above'">
+                <md-icon>add_circle_outline</md-icon>
+            </button>
         </div>
     </div>
 </div>
-<md-spinner class="custom_spinner" *ngIf="devices?.isLoading || isDownloading || device?.isProcessing || categories?.isLoading" mode="indeterminate"></md-spinner>
+<md-spinner class="custom_spinner" *ngIf="devices?.isLoading || isDownloading || device?.isProcessing || categories?.isLoading"
+    mode="indeterminate"></md-spinner>
 
 
 
@@ -26,35 +40,64 @@
             <table class="table table-condensed table-hover">
                 <thead class="primary_thead">
                     <tr>
-                        <th>Model</th>
-                        <th class="tdWidth">Manufacturer</th>
-                        <th class="tdWidth">Category</th>
+                        <th class="tdWidth">Machine Name</th>
+                        <th class="tdWidth">Machine Type</th>
                         <th class="tdWidth">IP</th>
-                        <th class="tdWidth">Port No</th>
-                        <th class="tdWidth">BSSID</th>
+                        <th class="tdWidth">Category</th>
                         <th class="tdWidth"></th>
+
+                        <!-- <th class="tdWidth">Port No</th>
+                        <th class="tdWidth">BSSID</th> -->
+                        <!-- <th class="tdWidth"></th>
+                            <th>Model</th>
+                            <th class="tdWidth">Manufacturer</th>
+                            <th class="tdWidth">Category</th>
+                            <th class="tdWidth">IP</th>
+                            <th class="tdWidth">Port No</th>
+                            <th class="tdWidth">BSSID</th>
+                            <th class="tdWidth"></th> -->
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of devices.items | paginate: { id: 'foo',
+                    <!-- <tr *ngFor="let item of devices.items | paginate: { id: 'foo',
                                                       itemsPerPage: devices.pageSize,
                                                       currentPage: devices.pageNo,
                                                       totalItems: devices.totalRecords };" class="capitalize">
                         <td>
                             <img *ngIf="item?.machine?.picUrl" class="img-circle profile_pic" alt="img" [src]="item?.machine?.picUrl">
                             <img *ngIf="!item?.machine?.picUrl" class="img-circle profile_pic" alt="img" src="assets/images/blank.png"> &nbsp;{{item?.machine?.model}}
-                        </td>
-                        <td class="tdWidth">{{item?.machine?.manufacturer}}</td>
-                        <td class="tdWidth">{{item?.category?.name}}</td>
+                        </td> -->
+                    <!-- <td class="tdWidth">{{item?.machine?.manufacturer}}</td> -->
+                    <!-- <td class="tdWidth">CheckIn</td>
                         <td class="tdWidth">{{item?.ip}}</td>
-                        <td class="tdWidth">{{item?.port || '--'}}</td>
-                        <td class="tdWidth">{{item?.bssid || '--'}}</td>
-                        <td class="tdWidth text-center">
+                        <td class="tdWidth">{{item?.category?.name}}</td> -->
+                    <!-- <td class="tdWidth">{{item?.port || '--'}}</td>
+                        <td class="tdWidth">{{item?.bssid || '--'}}</td> -->
+                    <!-- <td class="tdWidth text-center">
                             <button class="button_align" md-icon-button [disabled]="devices?.isLoading || device?.isProcessing || categories?.isLoading" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="saveDevice(item)"><i class="fa fa-pencil-square-o  fa-lg" aria-hidden="true"></i></button>
                             <button class="button_align" md-icon-button [disabled]="devices?.isLoading || device?.isProcessing || categories?.isLoading" mdTooltip="Delete" [mdTooltipPosition]="'above'" (click)="remove(item)"><md-icon>delete</md-icon></button>
                         </td>
+                    </tr> -->
+                    <tr>
+                        <td class="tdWidth">South Gate</td>
+                        <td class="tdWidth">In</td>
+                        <td class="tdWidth">10.0.0.8</td>
+                        <td class="tdWidth">Biometric</td>
+                        <td class="tdWidth text-center">
+                                <button class="button_align" md-icon-button [disabled]="devices?.isLoading || device?.isProcessing || categories?.isLoading" mdTooltip="Edit" [mdTooltipPosition]="'above'" ><i class="fa fa-pencil-square-o  fa-lg" aria-hidden="true"></i></button>
+                                <button class="button_align" md-icon-button [disabled]="devices?.isLoading || device?.isProcessing || categories?.isLoading" mdTooltip="Delete" [mdTooltipPosition]="'above'" ><md-icon>delete</md-icon></button>
+                            </td>
                     </tr>
-
+                    <tr>
+                        <td class="tdWidth">South Gate</td>
+                        <td class="tdWidth">Out</td>
+                        <td class="tdWidth">10.0.0.7</td>
+                        <td class="tdWidth">Biometric</td>
+                        <td class="tdWidth text-center">
+                                <button class="button_align" md-icon-button [disabled]="devices?.isLoading || device?.isProcessing || categories?.isLoading" mdTooltip="Edit" [mdTooltipPosition]="'above'" ><i class="fa fa-pencil-square-o  fa-lg" aria-hidden="true"></i></button>
+                                <button class="button_align" md-icon-button [disabled]="devices?.isLoading || device?.isProcessing || categories?.isLoading" mdTooltip="Delete" [mdTooltipPosition]="'above'" ><md-icon>delete</md-icon></button>
+                            </td>
+                    </tr>
                 </tbody>
             </table>
         </div>

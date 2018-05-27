@@ -31,7 +31,7 @@ import { EmsDepartmentService } from './services/index';
     AppDownloadComponent,
     GkuAttendanceComponent,
     SystemUsageComponent,
-    ResetPasswordDialogComponent
+    ResetPasswordDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,7 +44,7 @@ import { EmsDepartmentService } from './services/index';
     LoginGuard, UserGuard, AdminGuard,EmsDepartmentService
   ],
   entryComponents: [
-    ResetPasswordDialogComponent
+    ResetPasswordDialogComponent,
   ],
   exports:[
     ResetPasswordDialogComponent

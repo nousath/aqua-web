@@ -55,6 +55,8 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
   tagTypes: Page<TagType>;
   tags: Tags = new Tags();
   date: Date = null
+  isUpload: boolean = false;
+  
 
   constructor(private amsEmployeeService: AmsEmployeeService,
     private amsShiftService: AmsShiftService,
@@ -216,7 +218,9 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
     });
     $("#dateSelector").datepicker("setDate", new Date());
   }
-
+  downloadlink(){
+    this.router.navigate(['pages/attendances/reports'])
+  }
   ngOnDestroy() {
 
   }

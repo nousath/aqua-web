@@ -11,7 +11,7 @@
         </div> -->
         <div class="headerBtns">
             <button [disabled]="leaves?.isLoading  || isUpdatingLeaveStatus" md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
-            <a md-icon-button [routerLink]="['new/apply']" mdTooltip="New Leave" [mdTooltipPosition]="'above'">
+            <a *ngIf="userType == 'superadmin'" md-icon-button [routerLink]="['new/apply']" mdTooltip="New Leave" [mdTooltipPosition]="'above'">
                 <md-icon>add_circle_outline</md-icon>
             </a>
         </div>
@@ -107,8 +107,8 @@
                         <td class="tdWidth">{{item?.reason}}</td>
                         <td class="tdWidth">{{item?.status}}</td>
                         <td class="tdWidth">{{item?.comment}}</td>
-                        <td><md-checkbox  ng-checked="checkall" aria-label="Finished?"></md-checkbox></td>
-                        <td class="tdWidth text-center" *ngIf="isShowLeaveAction">
+                        <td><md-checkbox  *ngIf="item?.status?.toLowerCase() == 'submitted'" ng-checked="checkall" aria-label="Finished?"></md-checkbox></td>
+                        <td class="tdWidth text-center" *ngIf="isShowLeaveAction" >
                             <!--<button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status?.toLowerCase() == 'approved'
                                       || item?.status?.toLowerCase() == 'submitted'" (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
                                 <md-icon>highlight_off</md-icon>

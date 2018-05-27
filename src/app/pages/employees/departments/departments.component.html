@@ -91,7 +91,7 @@
                             <input [maxlength]="validatorService.textLength" type="text" [name]="'code_'+i" [readOnly]=" departments.isLoading ||  department.isProcessing || !item?.isEdit"
                                 class="number form-control input-xs" [(ngModel)]="item.code">
                         </td>
-                        <!-- <td class="btnClmWidth">
+                        <td class="btnClmWidth">
                           <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="edit(item, true)">
                               <md-icon>edit</md-icon>
                           </button>
@@ -104,7 +104,7 @@
                           <button *ngIf="item?.isEdit" [disabled]=" departments.isLoading ||  department.isProcessing" md-icon-button class="button_align cursor" (click)="edit(item, false)" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
                               <md-icon>undo</md-icon>
                           </button>
-                      </td> -->
+                      </td>
                     </tr>
                 </tbody>
             </table>

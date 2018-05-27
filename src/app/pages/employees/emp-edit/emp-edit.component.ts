@@ -16,6 +16,7 @@ import { FileUploader, ParsedResponseHeaders, FileItem, FileLikeObject } from 'n
 import * as _ from "lodash";
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { environment } from '../../../../environments/environment.qa';
+import { LeaveActionDialogComponent } from '../../../dialogs/leave-action-dialog/leave-action-dialog.component';
 declare var $: any;
 
 
@@ -181,8 +182,17 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     );
-
   }
+  resign(){
+    // save(form: NgForm) {
+    //   if (form.invalid)
+    //     return this.toastyService.info({ title: 'Info', msg: 'Please fill all mandatory fields' })
+    //   else
+        return this.toastyService.info({ title: 'Info', msg: 'Employee Will be terminated Automatically' })
+        // this.dialogRef.close();
+    }
+    
+  
   empSource(keyword: string): Observable<EmsEmployee[]> {
     return this.autoCompleteService.searchByKey<EmsEmployee>('name', keyword, 'ems', 'employees');
   }

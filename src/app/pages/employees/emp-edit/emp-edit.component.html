@@ -67,6 +67,8 @@
         <md-card>
             <aqua-finger-print [code]="employee.properties.code"></aqua-finger-print>
         </md-card>
+        
+
     </div>
     <br>
 
@@ -167,8 +169,8 @@
                                 [value-formatter]="empFormatter" [list-formatter]="empListFormatter" class="form-control search"
                                 name="Supervisor" />
                         </td>
-                        <th>Employee Code
-                            <span class="asterisk">*</span>:</th>
+                        <th>Employee Code<span class="asterisk">*</span>:</th>
+                            
                         <td>
                             <input name="empCode" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.code"
                                 required>
@@ -182,8 +184,30 @@
                                 <option *ngFor="let item of designations.items" [value]="item.name">{{item.name}}</option>
                             </select>
                         </td>
-                        <th></th>
-                        <td></td>
+                        <th>Department:</th>
+                        <td>
+                            <select name="department" class="form-control" [(ngModel)]="employee.properties.designation">
+                                <option [ngValue]="null">Select an option</option>
+                                <option>Production</option>
+                                <option>R&D</option>
+                                <option>Purchasing</option>
+                                <option>Marketing</option>
+                                <option>Human Resource Managemen</option>
+                                <option>Accounting and Finance</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>HOD:</th>
+                        <td>
+                            <input ngui-auto-complete [min-chars]="1" placeholder="Employee search"  [source]="empSource.bind(this)"
+                                [value-formatter]="empFormatter" [list-formatter]="empListFormatter" class="form-control search"
+                                name="Supervisor" />
+                        </td>
+                        <th>Date Of Joining:
+                        <td>
+                            <input name="empCode" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.code">
+                        </td>
                     </tr>
                 </table>
             </md-card>
@@ -229,6 +253,34 @@
                         </td>
                     </tr>
                 </table>
+            </md-card>
+            <md-card>
+                    <form #resignationForm="ngForm">
+                <div class="dialog_Header text-center">
+                    <h5>
+                        <b>Contact</b>
+                    </h5>
+                </div>
+                <br>
+                <table class="table">
+                    <tr>
+                        <th>Termination Date</th>
+                        <td>
+                            <input name="startdate" class="form-control  calendar no-spin" type="date" required>
+                        </td>
+                        <th>Reason</th>
+                        <td>
+                            <input name="address2" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.address2">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="test-center">
+                            <button *ngIf="employee?.properties?.id" md-raised-button [disabled]="employee?.isProcessing || designations?.isLoading"
+                            color="primary" (click)="resign()" style="float:right">Resignation</button>
+                        </td>
+                    </tr>
+                </table>
+                </form>
             </md-card>
         </form>
     </div>

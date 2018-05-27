@@ -24,15 +24,20 @@
     right: -2%;
     bottom: 0;
 }
+.exlD {
+    position: absolute;
+    right: 6%;
+    bottom: 0;
+}
 
 .filterStatus {
-    width: 28%;
+    width: 33%;
     float: right;
 }
 
 .queue {
     width: 13%;
-    float: left;
+    float: right;
 }
 
 .uploadBtn {
@@ -44,4 +49,7 @@
     float: left;
     margin-left: 1%;
     margin-right: 1%;
+}
+.upload{
+    padding-top: 10px;
 }
