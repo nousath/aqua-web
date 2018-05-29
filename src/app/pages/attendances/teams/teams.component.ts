@@ -227,6 +227,7 @@ export class TeamsComponent implements OnInit {
     this.route.navigate(['pages/attendances/daily', id]);
   }
   myTeam(teamid: string) {
-    this.route.navigate(['pages/attendances/daily/teams', teamid]);
+    this.empId= teamid;
+    this.getAttendance(this.dailyAttendnace.filters.properties['ofDate']['value'] || new Date());
   }
 }

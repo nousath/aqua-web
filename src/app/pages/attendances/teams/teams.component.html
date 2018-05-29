@@ -112,24 +112,22 @@
                     </div>
                 </div>
 
-                <!-- <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 chipsBadge form-group">
-                <span *ngFor="let item of selectedTags;let i = index" class="badge badge-pill badge-dark"> {{item?.name | titlecase}}&nbsp;<i (click)="removeChip(i)" class="fa fa-times" aria-hidden="true"></i></span>
-            </div> -->
-                <!-- <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-group">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 formSets">
-                        <label class="setStatus">Department</label>
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4  form-group">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        <label for="email">Department</label>
                     </div>
                     <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <select class="form-control boxStatus" [disabled]="dailyAttendnace?.isLoading   " [(ngModel)]="dailyAttendnace.filters.properties['status']['value']" placeholder="Status" name="Status">
-                        <option value="">All</option>
-                        <option value="present">Present</option>
-                        <option value="absent">Absent</option>
-                        <option value="missSwipe">Missed Swipe</option>
-                        <option value="halfday">Half Day</option>
-                        <option value="onLeave">On Leave</option>
-                        </select>
+                        <input type="text" class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" name="Name">
                     </div>
-                </div> -->
+                </div>
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4  form-group">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        <label for="email">Contractor</label>
+                    </div>
+                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                        <input type="text" class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" name="Name">
+                    </div>
+                </div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 button_align form-group">
                         <button [disabled]="dailyAttendnace?.isLoading" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'"

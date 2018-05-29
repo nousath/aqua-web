@@ -76,6 +76,9 @@ export class EmployeeListComponent implements OnInit {
         field: 'name',
         value: null
       }, {
+        field: 'code',
+        value: null
+      },{
         field: 'status',
         value: 'activate'
       }]

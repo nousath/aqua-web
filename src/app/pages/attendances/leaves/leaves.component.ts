@@ -10,6 +10,8 @@ import { Filter } from '../../../common/contracts/filters';
 import * as _ from "lodash";
 import { LocalStorageService } from "../../../services/local-storage.service";
 import { Angulartics2 } from 'angulartics2';
+import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-dialog.component';
+import { LeaveConfirmDialogComponent } from '../../../dialogs/leave-confirm-dialog/leave-confirm-dialog.component';
 declare var $: any;
 
 @Component({
@@ -24,6 +26,7 @@ export class LeavesComponent implements OnInit, AfterViewInit {
   isShowLeaveAction: boolean = false;
   date: Date = null
   userType: string = ''
+  select: boolean = false
 
 
 
@@ -181,6 +184,15 @@ export class LeavesComponent implements OnInit, AfterViewInit {
       // this.fetchLeaves(e.date);
     });
     // $("#monthSelector").datepicker("setDate", null);
+  }
+  selectAll(){
+    if(this.select == true)
+        this.select = false;
+        else
+        this.select = true;
+  }
+  ApproveLeave(){
+    let dialog = this.dialog.open(LeaveConfirmDialogComponent, { width: '40%' });
   }
 
   ngOnInit() {

@@ -18,15 +18,15 @@
                 class="marginLetf" [mdTooltipPosition]="'above'">
                 <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
             </button>
-            <button (click)="downloadlink()" [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button>
+            <button [matMenuTriggerFor]="appMenu" [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button>
                 <md-icon>cloud_download</md-icon>
             </button>
-            <!-- <md-menu #appMenu="mdMenu">
-                <button md-menu-item (click)="download(true,false,'Extra hours - after Shift end time')">Extra hours - after Shift end time</button>
-                <button md-menu-item (click)="download(false,true,'Extra hours - after Shift hours')">Extra hours - after Shift hours
+            <md-menu #appMenu="mdMenu">
+                <button md-menu-item (click)="downloadlink()">Report 1</button>
+                <button md-menu-item (click)="downloadlink()">Report 2
                 </button>
-                <button md-menu-item (click)="download(false,false, 'Day Attendance')">Day's Attendance</button>
-            </md-menu> -->
+                <button md-menu-item (click)="downloadlink()">Report 3</button>
+            </md-menu>
             <a class="exl" md-icon-button mdTooltip="Excel Upload" [mdTooltipPosition]="'above'" angulartics2On="click" angularticsEvent="excelUploadClick"
                 angularticsCategory="employee " [angularticsProperties]="{label: 'Fall Campaign'}">
                 <md-icon>cloud_upload</md-icon>

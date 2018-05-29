@@ -20,6 +20,7 @@ import { SystemUsageComponent } from './pages/system-usage/system-usage.componen
 import { ResetPasswordDialogComponent } from './dialogs/reset-password-dialog/reset-password-dialog.component';
 import { DepartmentsComponent } from './pages/employees/departments/departments.component';
 import { EmsDepartmentService } from './services/index';
+import { LeaveConfirmDialogComponent } from './dialogs/leave-confirm-dialog/leave-confirm-dialog.component';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import { EmsDepartmentService } from './services/index';
     GkuAttendanceComponent,
     SystemUsageComponent,
     ResetPasswordDialogComponent,
+    LeaveConfirmDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,9 +47,11 @@ import { EmsDepartmentService } from './services/index';
   ],
   entryComponents: [
     ResetPasswordDialogComponent,
+    LeaveConfirmDialogComponent
   ],
   exports:[
-    ResetPasswordDialogComponent
+    ResetPasswordDialogComponent,
+    LeaveConfirmDialogComponent
   ],
   bootstrap: [AppComponent]
 })

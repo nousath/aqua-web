@@ -1,6 +1,8 @@
 <div class="row page_header">
     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <h5><b>Manage Leaves</b></h5>
+        <h5>
+            <b>Manage Leaves</b>
+        </h5>
     </div>
     <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
         <!--<div class="headerInpts">
@@ -11,7 +13,10 @@
         </div>-->
         <div class="headerBtns">
             <!--<button [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>-->
-            <button [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" md-icon-button mdTooltip="Add New" [mdTooltipPosition]="'above'" (click)="toggleNew()"><md-icon>add_circle_outline</md-icon></button>
+            <button [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" md-icon-button mdTooltip="Add New" [mdTooltipPosition]="'above'"
+                (click)="toggleNew()">
+                <md-icon>add_circle_outline</md-icon>
+            </button>
         </div>
 
     </div>
@@ -86,8 +91,8 @@
     </md-card>
 </div> -->
 <div class="row">
-        <aqua-leave-type *ngIf="isNew || isEdit" [leave]="leaveTypeModel"></aqua-leave-type>
-         </div>
+    <aqua-leave-type *ngIf="isNew || isEdit" [leave]="leaveTypeModel"></aqua-leave-type>
+</div>
 
 <div class="row">
     <md-card class="card">
@@ -103,16 +108,15 @@
                         <th class="tdWidth">Leave Category<span class="asterisk">*</span></th> -->
 
                         <!--<th>Total</th>-->
-                        <th>Name</th>
-                                                <th>Code</th>
-                                                <th>Units Per Day</th>
-                                                <th>Unlimited</th>
-                                                <th>Leave Category</th>
-                                                <th>Periodicity Value</th>
-                                                <th>Periodicity Type</th>
-                                                <th>Carry Forward</th>
-                                                <th>Limits</th>
-                                                
+                        <th class="tdWidth">Name</th>
+                        <th class="tdWidth">Code</th>
+                        <th class="tdWidth">Units Per Day</th>
+                        <th class="tdWidth">Unlimited</th>
+                        <th class="tdWidth">Leave Category</th>
+                        <th class="tdWidth">Periodicity Value</th>
+                        <th class="tdWidth">Periodicity Type</th>
+                        <th class="tdWidth">Carry Forward</th>
+                        <th class="tdWidth">Limits</th>
                         <th class="actionBtnss"></th>
                     </tr>
                 </thead>
@@ -156,27 +160,30 @@
                               <option value="paidLeave">Paid Leave</option>
                              </select>
                         </td> -->
-                        <td>{{item?.name}}</td>
-                                                <td>{{item?.code}}</td>
-                                                <td>{{item?.unitsPerDay === 1 ? 'Full': item?.unitsPerDay === 2? 'Half':'One Third'}}</td>
-                                                <td>{{item?.unlimited === false ? 'No': 'Yes'}}</td>
-                                                <td>{{item?.category}}</td>
-                                                <td>{{item?.periodicity?.value}}</td>
-                                                <td>{{item?.periodicity?.type}}</td>
-                                                <td>{{item?.carryForward}}</td>
-                                                <td></td>
-                                                 <td>   
-                        <td>
-                                <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="isEdit = true;leaveTypeModel = item;">
+                        <td>{{item?.name  || '--'}}</td>
+                        <td class="tdWidth">{{item?.code  || '--'}}</td>
+                        <td class="tdWidth">{{item?.unitsPerDay === 1 ? 'Full': item?.unitsPerDay === 2? 'Half':'One Third'}}</td>
+                        <td class="tdWidth">{{item?.unlimited === false ? 'No': 'Yes'}}</td>
+                        <td class="tdWidth">{{item?.category  || '--'}}</td>
+                        <td class="tdWidth">{{item?.periodicity?.value  || '--'}}</td>
+                        <td class="tdWidth">{{item?.periodicity?.type  || '--'}}</td>
+                        <td class="tdWidth">{{item?.carryForward  || '--'}}</td>
+                        <td class="tdWidth">{{item?.limits  || '--'}}</td>
+
+                        <td class="tdWidth">
+                            <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="isEdit = true;leaveTypeModel = item;">
                                 <md-icon>edit</md-icon>
                             </button>
-                            <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Delete" [mdTooltipPosition]="'above'" (click)="remove(item)">
+                            <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Delete" [mdTooltipPosition]="'above'"
+                                (click)="remove(item)">
                                 <md-icon>delete</md-icon>
                             </button>
-                            <button *ngIf="item?.isEdit" [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" md-icon-button class="button_align cursor " (click)="saveLeaveType(item)" mdTooltip="Save" [mdTooltipPosition]="'above'">
+                            <button *ngIf="item?.isEdit" [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" md-icon-button class="button_align cursor "
+                                (click)="saveLeaveType(item)" mdTooltip="Save" [mdTooltipPosition]="'above'">
                                 <md-icon>save</md-icon>
                             </button>
-                            <button *ngIf="item?.isEdit" [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" md-icon-button class="button_align cursor" (click)="toggleLeaveType(item, false)" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
+                            <button *ngIf="item?.isEdit" [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" md-icon-button class="button_align cursor"
+                                (click)="toggleLeaveType(item, false)" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
                                 <md-icon>undo</md-icon>
                             </button>
                         </td>
@@ -191,10 +198,10 @@
                 <div class="pageSize">
                     <label>Page Size:</label>
                     <select name="pageSize" [(ngModel)]="leaveTypes.pageSize" (change)="leaveTypes.pageNo = 1;fetchLeaveTypes();">
-                      <option value=10>10</option>
-                      <option value=20>20</option>
-                      <option value=50>50</option>
-                      <option value=100>100</option>
+                        <option value=10>10</option>
+                        <option value=20>20</option>
+                        <option value=50>50</option>
+                        <option value=100>100</option>
                     </select>
                 </div>
             </div>
