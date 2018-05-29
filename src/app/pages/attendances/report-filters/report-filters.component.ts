@@ -14,20 +14,34 @@ export class ReportFiltersComponent implements OnInit {
   reportRequest: ReportRequest = new ReportRequest();
 
   @Input() type: string;
+
+  @Input()
+  reportTypes: [{
+    type: string,
+    name: string
+  }];
+
   isLoading: boolean = false;
+  employee: Employee;
 
   constructor(private amsReportRequest: AmsReportRequestService,
-  private autoCompleteService: AutoCompleteService) {}
+    private autoCompleteService: AutoCompleteService) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ngOnChanges() {
     if (this.type) {
       this.reportRequest.type = this.type;
     }
+
+    if (this.reportTypes) {
+      const reportType = this.reportTypes.find(item => item.type === this.type);
+      if (reportType) {
+        this.reportRequest.reportParams.reportName = reportType.name;
+      }
+    }
   }
 
-  employee: Employee;
 
   onSelectEmp(emp: Employee) {
     this.reportRequest.reportParams.name = emp.name;

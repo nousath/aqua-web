@@ -1,13 +1,13 @@
 <div class="row page_header">
-  <div class="form-group marginLeft">
-    <label for="reportList">Choose Report Type</label>
-    <select class="form-control reportList" [(ngModel)] ="reports.filters.properties['type']['value']" (change)= "getReportLists()">
+    <div class="form-group marginLeft">
+        <label for="reportList">Choose Report Type</label>
+        <select class="form-control reportList" [(ngModel)]="reports.filters.properties['type']['value']" (change)="getReportLists()">
       <option disabled></option>
-      <option *ngFor="let reportType of reportTypes" [value]='reportType'> {{reportType | uppercase}} </option>
+      <option *ngFor="let reportType of reportTypes" [value]='reportType.type'> {{reportType.name}} </option>
     </select>
-  </div>
+    </div>
 
- 
+
 </div>
-<aqua-report-filters *ngIf="reports.filters.properties['type']['value']" [type]="reports.filters.properties['type']['value']"></aqua-report-filters>
-<aqua-report-lists [reportRequests] ="reports" (authorClick)= "getReportLists()"></aqua-report-lists>
+<aqua-report-filters *ngIf="reports.filters.properties['type']['value']" [reportTypes]="reportTypes" [type]="reports.filters.properties['type']['value']"></aqua-report-filters>
+<aqua-report-lists [reportRequests]="reports" (authorClick)="getReportLists()"></aqua-report-lists>
