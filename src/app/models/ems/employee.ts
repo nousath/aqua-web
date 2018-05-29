@@ -16,6 +16,7 @@ export class EmsEmployee {
   picData: string = '';
   picUrl: string = '';
   dob: string = '';
+  doj: string = '';
   email: string = '';
   password: string = '';
   userType: 'admin' | 'superadmin' | 'normal' = 'normal';
@@ -40,6 +41,8 @@ export class Supervisor {
   id: number = null;
   code: string = '';
   name: string = '';
+  designation: string;
+  supervisor: Supervisor;
 }
 
 
