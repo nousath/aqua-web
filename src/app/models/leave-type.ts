@@ -12,6 +12,7 @@ export class LeaveType {
   category: 'lossOfPay' | 'OnDuty' | 'paidLeave' | null = null;
   periodicity: Periodicity = new Periodicity();
   carryForward: number = null;
+  monthlyLimit: number;
   isEdit: boolean = false;
   organization: Organization = new Organization();
 }

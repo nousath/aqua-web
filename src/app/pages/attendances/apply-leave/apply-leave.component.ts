@@ -174,7 +174,11 @@ export class ApplyLeaveComponent implements OnInit {
     });
 
     if (this.leave.properties.days > totalLeaveBalace.days && !totalLeaveBalace.leaveType.unlimited) {
-      return this.toastyService.info({ title: 'Info', msg: `You don't have sufficent leave balance` })
+      return this.toastyService.info({ title: 'Info', msg: `You don't have sufficient leave balance` })
+    }
+
+    if ( totalLeaveBalace.leaveType.monthlyLimit && this.leave.properties.days > totalLeaveBalace.leaveType.monthlyLimit) {
+      return this.toastyService.info({ title: 'Info', msg: `You cannot apply more than ${totalLeaveBalace.leaveType.monthlyLimit} in a month` })
     }
 
     this.leave.save().then(

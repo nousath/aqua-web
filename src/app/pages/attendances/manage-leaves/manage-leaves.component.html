@@ -21,6 +21,11 @@
             <table class="table table-condensed">
                 <thead class="primary_thead">
                     <tr>
+                        <th colspan="5" class="text-center">Details</th>
+                        <th colspan="2" class="text-center">Grant</th>
+                        <th colspan="3" class="text-center">Limits</th>
+                    </tr>
+                    <tr>
                         <th>Name</th>
                         <th>Code</th>
                         <th>Min Per Day</th>
@@ -28,6 +33,7 @@
                         <th>Category</th>
                         <th>Period</th>
                         <th>Credit</th>
+                        <th>Monthly</th>
                         <th>Yearly Carry Forward</th>
                         <th class="actionBtnss"></th>
                     </tr>
@@ -43,9 +49,10 @@
                         <td>{{item?.unitsPerDay === 1 ? 'Full': item?.unitsPerDay === 2? 'Half':'One Third'}}</td>
                         <td>{{item?.unlimited === false ? 'No': 'Yes'}}</td>
                         <td>{{item?.category}}</td>
-                        <td>{{item?.periodicity?.type}}</td>
-                        <td>{{item?.periodicity?.value}}</td>
-                        <td>{{item?.carryForward}}</td>
+                        <td>{{item?.periodicity?.type || 'Manual'}}</td>
+                        <td>{{item?.periodicity?.value || '--'}}</td>
+                        <td>{{item?.monthlyLimit || 'No'}}</td>
+                        <td>{{item?.carryForward || 'All'}}</td>
                         <td>
                             <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="isEdit = true;leaveTypeModel = item;">
                                 <md-icon>edit</md-icon>

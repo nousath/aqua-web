@@ -54,19 +54,19 @@
         </div>
         <div class="form-group col-sm-3 col-md-3 col-lg-3 col-xs-3">
             <label for="periodicityValue">Credit</label>
-            <input class="form-control" type="number" min="0" [(ngModel)]="leaveType.properties.periodicity.value" disabled="{{leaveType.properties.periodicity.type}}">
+            <input class="form-control" type="number" min="0" [(ngModel)]="leaveType.properties.periodicity.value" [disabled]="!leaveType.properties.periodicity.type">
         </div>
 
         <div class="form-group col-sm-3 col-md-3 col-lg-3 col-xs-3">
             <label for="carryForward"> Yearly Carry Forward</label>
             <input class="form-control" type="number" min="0" [(ngModel)]="leaveType.properties.carryForward">
         </div>
-        <!-- 
-          <div class="form-group col-sm-3 col-md-3 col-lg-3 col-xs-3">
+
+        <div class="form-group col-sm-3 col-md-3 col-lg-3 col-xs-3">
             <label for="carryForward">Monthly Limit</label>
-            <input class="form-control" type="number" min="0" [(ngModel)]="leaveType.properties.carryForward">
-          </div>
-        -->
+            <input class="form-control" type="number" min="0" [(ngModel)]="leaveType.properties.monthlyLimit">
+        </div>
+
     </div>
 
     <div class="row text-center">
