@@ -103,7 +103,8 @@
                     <tr>
                         <th>DOB:</th>
                         <td>
-                            <input name="dob" id="dateSelector" type="text" class="form-control input-sm calendar no-spin" [(ngModel)]="employee.properties.dob">
+                            <!-- <input name="dob" id="dateSelector" type="text" class="form-control input-sm calendar no-spin" [(ngModel)]="employee.properties.dob"> -->
+                                <input name="date" class="form-control  calendar no-spin" type="date">
                             <!--<input  type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.dob">-->
                         </td>
                         <th>Father/Husband Name:</th>
@@ -175,9 +176,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>{{ employee.properties.supervisor && employee.properties.supervisor.designation? employee.properties.supervisor.designation: 'Supervisor'}}:</th>
+                        <th>{{ employee.properties.supervisor && employee.properties.supervisor.designation? employee.properties.supervisor.designation: 'Supervisor'}}<span class="asterisk">*</span>:</th>
                         <td>
-                            <input ngui-auto-complete [min-chars]="1" placeholder="Employee search" [(ngModel)]="employee.properties.supervisor" [source]="empSource.bind(this)" [value-formatter]="empFormatter" [list-formatter]="empListFormatter" class="form-control search" name="Supervisor"
+                            <input ngui-auto-complete [min-chars]="1" placeholder="Employee search" [(ngModel)]="employee.properties.supervisor" [source]="empSource.bind(this)" [value-formatter]="empFormatter" [list-formatter]="empListFormatter" class="form-control search" name="Supervisor" required
                             />
                         </td>
                         <th>Department:</th>
@@ -201,7 +202,7 @@
                         </td>
                         <th>Date Of Joining:
                             <td>
-                                <input name="empCode" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.doj">
+                                <input name="doj" class="form-control  calendar no-spin" type="date">
                             </td>
                     </tr>
                 </table>
