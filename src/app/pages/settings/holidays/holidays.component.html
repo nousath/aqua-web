@@ -129,10 +129,10 @@
                         <th class="tdWidth">Date</th>
                         <th class="tdWidth"></th>
                         <th class="tdWidth">
-                            <button [disabled]="holidays?.isLoading   || holiday?.isProcessing" *ngIf="upcoming == false" md-raised-button color="primary"
+                            <button class="btn" [disabled]="holidays?.isLoading   || holiday?.isProcessing" *ngIf="upcoming == false" md-raised-button color="primary"
                                 mdTooltip="All Holidays" class="marginLetf" [mdTooltipPosition]="'above'" (click)="AllHolidays()">ALL</button>
-                            <button [disabled]="holidays?.isLoading   || holiday?.isProcessing" *ngIf="upcoming == true" md-raised-button color="primary"
-                                mdTooltip="All Holidays" class="marginLetf" [mdTooltipPosition]="'above'" (click)="Upcoming()">Upcoming</button>
+                            <button class="btn" [disabled]="holidays?.isLoading   || holiday?.isProcessing" *ngIf="upcoming == true" md-raised-button color="primary"
+                                mdTooltip="Upcoming" class="marginLetf" [mdTooltipPosition]="'above'" (click)="Upcoming()">Upcoming</button>
                         </th>
                     </tr>
                 </thead>
@@ -154,7 +154,16 @@
                                 <md-icon>check_cirle</md-icon>
                             </a>
                         </td>
-                        <td></td>
+                        <td class="tdWidth text-center">
+                            <a md-icon-button class="button_align cursor" mdTooltip="Edit details" [mdTooltipPosition]="'above'" >
+                                <md-icon>edit</md-icon>
+                            </a>
+                            &nbsp;
+                            <button [disabled]="employees?.isLoading || employee?.isProcessing" md-icon-button class="button_align cursor" mdTooltip="Terminate"
+                                [mdTooltipPosition]="'above'">
+                                <i class="fa fa-user-times fa-lg" aria-hidden="true"></i>
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
