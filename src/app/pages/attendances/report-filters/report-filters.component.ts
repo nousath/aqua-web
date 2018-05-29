@@ -4,6 +4,11 @@ import { ReportRequest } from "../../../models/report-request";
 import { Observable } from "rxjs/Observable";
 import { Employee } from "../../../models";
 import { AutoCompleteService } from "../../../services";
+import { AmsTagService } from "../../../services/ams/ams-tag.service";
+import { Page } from "../../../common/contracts/page";
+import { TagType } from "../../../models/tag";
+import { Tags } from "../daily/daily.component";
+import { ToastyService } from "ng2-toasty";
 
 @Component({
   selector: "aqua-report-filters",
@@ -12,28 +17,34 @@ import { AutoCompleteService } from "../../../services";
 })
 export class ReportFiltersComponent implements OnInit {
   reportRequest: ReportRequest = new ReportRequest();
+  tagTypes: Page<TagType>;
+  tags: Tags = new Tags();
 
   @Input() type: string;
-
   @Input()
-  reportTypes: [{
-    type: string,
-    name: string
-  }];
-
+ reportTypes: [{
+   type: string,
+   name: string
+ }];
   isLoading: boolean = false;
-  employee: Employee;
 
   constructor(private amsReportRequest: AmsReportRequestService,
-    private autoCompleteService: AutoCompleteService) { }
+  private autoCompleteService: AutoCompleteService,
+  private toastyService: ToastyService,
+  private tagService: AmsTagService) {
+    this.tagTypes = new Page({
+      api: tagService.tagTypes
+    });
 
-  ngOnInit() { }
+    this.tagTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+  }
+
+  ngOnInit() {}
 
   ngOnChanges() {
     if (this.type) {
       this.reportRequest.type = this.type;
     }
-
     if (this.reportTypes) {
       const reportType = this.reportTypes.find(item => item.type === this.type);
       if (reportType) {
@@ -42,14 +53,16 @@ export class ReportFiltersComponent implements OnInit {
     }
   }
 
+  employee: Employee;
+  supervisor: Employee;
 
   onSelectEmp(emp: Employee) {
     this.reportRequest.reportParams.name = emp.name;
     this.reportRequest.reportParams.code = emp.code;
-    // if (emp.id) {
-    //   this.router.navigate(['pages/attendances/daily', emp.id]);
-    //   this.selectedEmp = new Employee();
-    // }
+  }
+
+  onSelectSup(emp: Employee) {
+    this.reportRequest.reportParams.supervisor = emp.id;
   }
 
   empSource(keyword: string): Observable<Employee[]> {
@@ -65,14 +78,21 @@ export class ReportFiltersComponent implements OnInit {
   }
 
   onSubmit() {
+    let tags: string[] = [];
+    this.tags.selected.forEach((tag: any) => {
+      tags.push(tag.tagId)
+    })
+    this.reportRequest.reportParams.tagIds = tags;
     this.isLoading = true;
     this.amsReportRequest.reportRequests
       .create(this.reportRequest)
       .then(response => {
         this.isLoading = false;
+        this.tags.reset()
       })
       .catch(err => {
         this.isLoading = false;
+        this.tags.reset()
       });
   }
 }
