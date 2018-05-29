@@ -28,6 +28,7 @@ export class Employee {
   abilities: Abilities = new Abilities();
   currentAblitiy: 'maualAttendance' | 'manualByBeacon' | 'manualByGeoFencing' | 'manualByWifi' | 'none' = 'none';
   userType: 'admin' | 'superadmin' | 'normal' = 'normal';
+  fingerPrints: string[] = [] ;
   devices: Device[] = [];
 }
 

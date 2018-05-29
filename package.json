@@ -15,7 +15,7 @@
         "build:qa": "ng build --env=qa --prod",
         "build:prod": "ng build --env=prod --prod",
         "test": "ng test",
-        "lint": "ng lint",
+        "lint": "ng lint --fix",
         "lint:log": "ng lint --format stylish > lint.log",
         "e2e": "ng e2e",
         "analysis": "ng build && source-map-explorer dist/build/main.bundle.js"
