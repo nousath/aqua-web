@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AmsReportRequestService } from '../../../services';
 import { ReportRequest } from '../../../models/report-request';
 import { Page } from '../../../common/contracts/page';
@@ -10,22 +10,20 @@ import { Page } from '../../../common/contracts/page';
 })
 export class ReportListsComponent implements OnInit {
 
-  reportRequests: Page<ReportRequest>
+  
+  @Input() reportRequests: Page<ReportRequest>
+
+  @Output()
+  authorClick: EventEmitter<String> = new EventEmitter<String>(); 
 
   constructor(private amsReportRequestService: AmsReportRequestService) {
 
-    this.reportRequests = new Page({
-      api: amsReportRequestService.reportRequests
-    });
-    
    }
 
   ngOnInit() {
-    this.getReportLists()
   }
-
-  getReportLists(){
-    this.reportRequests.fetch()
+  onClick(){
+    this.authorClick.emit()
   }
 
   download(url, reportType) {
