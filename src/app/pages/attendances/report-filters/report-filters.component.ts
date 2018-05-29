@@ -1,6 +1,9 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { AmsReportRequestService } from "../../../services/ams/ams-report-request.service";
 import { ReportRequest } from "../../../models/report-request";
+import { Observable } from "rxjs/Observable";
+import { Employee } from "../../../models";
+import { AutoCompleteService } from "../../../services";
 
 @Component({
   selector: "aqua-report-filters",
@@ -13,7 +16,8 @@ export class ReportFiltersComponent implements OnInit {
   @Input() type: string;
   isLoading: boolean = false;
 
-  constructor(private amsReportRequest: AmsReportRequestService) {}
+  constructor(private amsReportRequest: AmsReportRequestService,
+  private autoCompleteService: AutoCompleteService) {}
 
   ngOnInit() {}
 
@@ -21,6 +25,29 @@ export class ReportFiltersComponent implements OnInit {
     if (this.type) {
       this.reportRequest.type = this.type;
     }
+  }
+
+  employee: Employee;
+
+  onSelectEmp(emp: Employee) {
+    this.reportRequest.reportParams.name = emp.name;
+    this.reportRequest.reportParams.code = emp.code;
+    // if (emp.id) {
+    //   this.router.navigate(['pages/attendances/daily', emp.id]);
+    //   this.selectedEmp = new Employee();
+    // }
+  }
+
+  empSource(keyword: string): Observable<Employee[]> {
+    return this.autoCompleteService.searchByKey<Employee>('name', keyword, 'ams', 'employees');
+  }
+
+  empFormatter(data: Employee): string {
+    return data.name;
+  }
+
+  empListFormatter(data: Employee): string {
+    return `${data.name} (${data.code})`;
   }
 
   onSubmit() {
