@@ -1,52 +1,52 @@
 <md-spinner class="custom_spinner" *ngIf="reportRequests?.isLoading" mode="indeterminate"></md-spinner>
 <div class="row page_header">
-  <div class="text-center header">
-    <span class="formatter">REPORTS LIST</span>
-    <span (click)="onClick()" class="glyphicon glyphicon-refresh refresh"></span>
-  </div>
-  </div>
-  <div class="table-responsive">
+    <div class="text-center header">
+        <span class="formatter">REPORTS LIST</span>
+        <span (click)="onClick()" class="glyphicon glyphicon-refresh refresh"></span>
+    </div>
+</div>
+<div class="table-responsive">
     <table class="table">
-      <thead>
-        <tr>
-          <th>S.No</th>
-          <th>Type</th>
-          <th>Staus</th>
-          <th>Date</th>
-          <th>Ago Time</th>
-          <th>Export</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of reportRequests.items | paginate: { id: 'foo',
+        <thead>
+            <tr>
+                <th>S.No</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Ago Time</th>
+                <th>Export</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of reportRequests.items | paginate: { id: 'foo',
         itemsPerPage: reportRequests.pageSize,
         currentPage: reportRequests.pageNo,
         totalItems: reportRequests.totalRecords }; let i=index" class="capitalize">
-          <td>{{i + 1}}</td>
-          <td>{{item.type}}</td>
-          <td>{{item.status}}</td>
-          <td>{{item.date | date}}</td>
-          <td>{{item.agoTime}}</td>
-          <td *ngIf="item.url">
-            <span class="glyphicon glyphicon-download-alt pointer" (click)="download(item.url, item.type)"></span>
-          </td>
-        </tr>
-      </tbody>
+                <td>{{i + 1}}</td>
+                <td>{{item.type}}</td>
+                <td>{{item.status}}</td>
+                <td>{{item.date | date}}</td>
+                <td>{{item.agoTime}}</td>
+                <td *ngIf="item.url">
+                    <span class="glyphicon glyphicon-download-alt pointer" (click)="download(item.url, item.type)"></span>
+                </td>
+            </tr>
+        </tbody>
     </table>
 
-  </div>
-  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+</div>
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <div class="custom_pagination">
-      <pagination-controls id="foo" (pageChange)="reportRequests.pageNo = $event;getReportLists();"></pagination-controls>
-      <label>Total Records: {{reportRequests.totalRecords}}</label>
-      <div class="pageSize">
-        <label>Page Size:</label>
-        <select name="pageSize" [(ngModel)]="reportRequests.pageSize" (change)="reportRequests.pageNo = 1;getReportLists();">
+        <pagination-controls id="foo" (pageChange)="reportRequests.pageNo = $event;onClick();"></pagination-controls>
+        <label>Total Records: {{reportRequests.totalRecords}}</label>
+        <div class="pageSize">
+            <label>Page Size:</label>
+            <select name="pageSize" [(ngModel)]="reportRequests.pageSize" (change)="reportRequests.pageNo = 1;onClick();">
           <option value=10>10</option>
           <option value=50>50</option>
           <option value=100>100</option>
-          <option value=500>500</option>sss
+          <option value=500>500</option>
         </select>
-      </div>
+        </div>
     </div>
-  </div>
+</div>
