@@ -261,12 +261,11 @@
                     <tr>
                         <th>Termination Date</th>
                         <td>
-                            <input name="startdate" class="form-control  calendar no-spin" type="date">
+                            <input name="date" class="form-control  calendar no-spin" type="date">
                         </td>
                         <th>Reason</th>
                         <td>
-                            <input name="address2" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.reason"
-                                required>
+                            <input name="reason" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.reason">
                         </td>
                     </tr>
                     <!-- <tr>
