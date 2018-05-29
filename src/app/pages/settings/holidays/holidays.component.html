@@ -71,7 +71,7 @@
 <div class="row" *ngIf="isNew">
     <md-card class="card">
         <div class="row text-center headr_bar">
-                <h5>
+            <h5>
                 <b>New Holiday</b>
             </h5>
             <div class="actionBtns">
@@ -129,10 +129,10 @@
                         <th class="tdWidth">Date</th>
                         <th class="tdWidth"></th>
                         <th class="tdWidth">
-                            <button [disabled]="holidays?.isLoading   || holiday?.isProcessing" *ngIf="upcoming == false" md-raised-button color="primary" mdTooltip="All Holidays" class="marginLetf"
-                                [mdTooltipPosition]="'above'" (click)="AllHolidays()">ALL</button>
-                            <button [disabled]="holidays?.isLoading   || holiday?.isProcessing" *ngIf="upcoming == true" md-raised-button color="primary" mdTooltip="All Holidays" class="marginLetf"
-                                [mdTooltipPosition]="'above'" (click)="fetchHolidays()">Upcoming</button>
+                            <button [disabled]="holidays?.isLoading   || holiday?.isProcessing" *ngIf="upcoming == false" md-raised-button color="primary"
+                                mdTooltip="All Holidays" class="marginLetf" [mdTooltipPosition]="'above'" (click)="AllHolidays()">ALL</button>
+                            <button [disabled]="holidays?.isLoading   || holiday?.isProcessing" *ngIf="upcoming == true" md-raised-button color="primary"
+                                mdTooltip="All Holidays" class="marginLetf" [mdTooltipPosition]="'above'" (click)="Upcoming()">Upcoming</button>
                         </th>
                     </tr>
                 </thead>
