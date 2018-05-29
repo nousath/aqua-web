@@ -7,3 +7,7 @@
     /* width: 18%; */
     text-align: center;
 }
+
+.bordered-thead {
+    background-color: #eee
+}
