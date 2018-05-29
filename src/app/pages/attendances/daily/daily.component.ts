@@ -219,7 +219,7 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
     $("#dateSelector").datepicker("setDate", new Date());
   }
   downloadlink(){
-    this.router.navigate(['pages/attendances/reports'])
+    this.router.navigate(['pages/attendances/reports'],{ queryParams: { type: 'daily-extra-hours-after-shift-end'} });
   }
   ngOnDestroy() {
 
