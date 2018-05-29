@@ -21,18 +21,20 @@
             <table class="table table-condensed table-bordered">
                 <thead class="primary_thead bordered-thead">
                     <tr>
-                        <th rowspan="2">Name</th>
-                        <th rowspan="2">Code</th>
-                        <th rowspan="2">Min Per Day</th>
-                        <th rowspan="2">Is Unlimited</th>
-                        <th rowspan="2">Category</th>
-                        <th colspan="2" class="text-center">Grant</th>
-                        <th colspan="2" class="text-center">Limits</th>
+
+                        <th colspan="3" class="text-center">Details</th>
+                        <th colspan="3" class="text-center">Grant Rules</th>
+                        <th colspan="3" class="text-center">Limit Rules</th>
                         <th></th>
                     </tr>
                     <tr>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Min Per Day</th>
                         <th>Period</th>
                         <th>Credit</th>
+                        <th>Is Unlimited</th>
                         <th>Monthly</th>
                         <th>Yearly Carry Forward</th>
                         <th class="actionBtnss"></th>
@@ -44,13 +46,13 @@
                                                       currentPage: leaveTypes.pageNo,
                                                       totalItems: leaveTypes.totalRecords };let i = index" class="capitalize">
 
-                        <td>{{item?.name}}</td>
                         <td>{{item?.code}}</td>
-                        <td>{{item?.unitsPerDay === 1 ? 'Full': item?.unitsPerDay === 2? 'Half':'One Third'}}</td>
-                        <td>{{item?.unlimited === false ? 'No': 'Yes'}}</td>
+                        <td>{{item?.name}}</td>
                         <td>{{item?.category}}</td>
+                        <td>{{item?.unitsPerDay === 1 ? 'Full': item?.unitsPerDay === 2? 'Half':'One Third'}}</td>
                         <td>{{item?.periodicity?.type || 'Manual'}}</td>
                         <td>{{item?.periodicity?.value || '--'}}</td>
+                        <td>{{item?.unlimited === false ? 'No': 'Yes'}}</td>
                         <td>{{item?.monthlyLimit || 'No'}}</td>
                         <td>{{item?.carryForward || 'All'}}</td>
                         <td>
