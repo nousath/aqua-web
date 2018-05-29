@@ -8,9 +8,9 @@ describe('FingerPrintComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [FingerPrintComponent]
+      declarations: [ FingerPrintComponent ]
     })
-      .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {

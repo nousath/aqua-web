@@ -2,6 +2,11 @@ import { ShiftType } from './shift-type';
 import { Device } from './device';
 import { Organization } from './organization';
 import { Supervisor } from './ems/employee';
+
+// class Device {
+//   id: 'string';
+//   status: 'string'
+// }
 export class Employee {
   id: string = '';
   name: string = '';
@@ -23,14 +28,9 @@ export class Employee {
   abilities: Abilities = new Abilities();
   currentAblitiy: 'maualAttendance' | 'manualByBeacon' | 'manualByGeoFencing' | 'manualByWifi' | 'none' = 'none';
   userType: 'admin' | 'superadmin' | 'normal' = 'normal';
-  fingerPrint: string;
   devices: Device[] = [];
 }
 
-// export class EffectiveShift {
-//   date: Date = null;
-//   shiftType: string = '';//shiftTypeId
-// }
 
 export class Abilities {
   maualAttendance: boolean = false;

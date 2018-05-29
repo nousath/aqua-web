@@ -7,6 +7,7 @@ import { GenericApi } from "../../../common/generic-api";
 import { Http } from "@angular/http";
 import { IApi } from "../../../common/contracts/api";
 import { ToastyService } from "ng2-toasty";
+import { AnonymousSubject } from "rxjs";
 
 @Component({
   selector: "aqua-finger-print",
@@ -40,16 +41,18 @@ export class FingerPrintComponent implements OnInit {
     });
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   ngOnChanges() {
     if (this.code) {
       this.getAmsDetails();
     }
+  }
 
-    // if(this.employee && this.employee.fingerPrint.toLowerCase() === 'wip'){
-    //   this.toastyService.info('finger print added')
-    // }
+  getWipFingerPrint(employee: Employee){
+    return employee.fingerPrints.find(item=>{
+      return item === 'wip'
+    })
   }
 
   getAmsDetails() {
@@ -59,9 +62,9 @@ export class FingerPrintComponent implements OnInit {
       .then(amsEmployee => {
         this.isLoading = false;
         this.employee = amsEmployee;
-        if (this.employee.fingerPrint) {
+        if (this.employee.fingerPrints && this.employee.fingerPrints.length) {
           this.isFingerPrintExists = true;
-          this.fingerPrint = this.employee.fingerPrint
+          this.fingerPrint = this.getWipFingerPrint(this.employee)
         }
         this.devices.filters.properties["category"].value = "biometric";
         this.devices.fetch();
@@ -71,28 +74,22 @@ export class FingerPrintComponent implements OnInit {
         console.error(err);
       });
   }
+
   isExists(device) {
-    let deviceExits = this.employee.devices.find(item => {
-      return item === device;
+    let deviceExits: any = this.employee.devices.find(item => {
+      return item.id === device;
     });
-    if (deviceExits) {
+    if (deviceExits && deviceExits.status !== 'disable') {
       return true;
     }
     return false;
   }
+
   updateFingerPrint(isExist, addFinger, action, device) {
     const model: any = {
       device: ''
     };
     this.isLoading = true;
-    // if (isExist) {
-    //   this.employee.devices = this.employee.devices.filter(item => {
-    //     return item !== device;
-    //   });
-    // } else {
-    //   this.employee.devices.push(device);
-    // }
-
     this.updatedEmployee = new GenericApi<Employee>(
       `employees/${this.employee.id}/fingerPrint?operation=${action}`,
       this.http,
@@ -109,11 +106,11 @@ export class FingerPrintComponent implements OnInit {
       .then((employee: any) => {
         this.isLoading = false;
         this.employee = employee;
-        if (!this.employee.fingerPrint) {
+        if (!this.employee.fingerPrints.length) {
           this.isFingerPrintExists = false;
         } else {
           this.isFingerPrintExists = true;
-          this.fingerPrint = this.employee.fingerPrint
+          this.fingerPrint = this.getWipFingerPrint(this.employee)
         }
         if (isExist) {
           this.toastyService.success("FingerPrint Removed Succesfully");

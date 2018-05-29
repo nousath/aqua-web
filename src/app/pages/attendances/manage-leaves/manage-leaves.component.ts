@@ -16,7 +16,7 @@ export class ManageLeavesComponent implements OnInit {
 
   leaveTypes: Page<LeaveType>;
   leaveType: Model<LeaveType>;
-  leaveTypeModel : LeaveType = new LeaveType();
+  leaveTypeModel : LeaveType = new LeaveType()
   isNew = false;
   isEdit = false;
 
@@ -41,11 +41,11 @@ export class ManageLeavesComponent implements OnInit {
   toggleNew() {
     this.isNew = !this.isNew;
     if(!this.isNew){
-            this.isEdit = false
-        }
-           this.leaveType.properties = new LeaveType();
-        this.leaveTypeModel = new LeaveType();
-         }
+      this.isEdit = false
+    }
+    this.leaveType.properties = new LeaveType();
+    this.leaveTypeModel = new LeaveType();
+  }
 
   remove(leaveType: LeaveType) {
     this.leaveType.properties = leaveType;

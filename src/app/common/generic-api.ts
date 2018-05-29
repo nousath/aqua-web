@@ -12,7 +12,7 @@ import { environment } from '../../environments/environment';
 export class GenericApi<TModel> implements IApi<TModel> {
 
   private rootUrl: string;
-
+  
   private getHeaders(): Headers {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -240,7 +240,6 @@ export class GenericApi<TModel> implements IApi<TModel> {
         .toPromise()
         .then((response) => {
           const dataModel = response.json();
-    
           if (!dataModel.isSuccess) {
             if (response.status === 200) {
               return this.handleError(dataModel.message || dataModel.error || dataModel.code || 'failed');
