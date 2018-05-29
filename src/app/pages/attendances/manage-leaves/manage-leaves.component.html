@@ -23,12 +23,12 @@
                     <tr>
                         <th>Name</th>
                         <th>Code</th>
-                        <th>Units Per Day</th>
-                        <th>Unlimited</th>
-                        <th>Leave Category</th>
-                        <th>Periodicity Value</th>
-                        <th>Periodicity Type</th>
-                        <th>Carry Forward</th>
+                        <th>Min Per Day</th>
+                        <th>Is Unlimited</th>
+                        <th>Category</th>
+                        <th>Period</th>
+                        <th>Credit</th>
+                        <th>Yearly Carry Forward</th>
                         <th class="actionBtnss"></th>
                     </tr>
                 </thead>
@@ -43,8 +43,8 @@
                         <td>{{item?.unitsPerDay === 1 ? 'Full': item?.unitsPerDay === 2? 'Half':'One Third'}}</td>
                         <td>{{item?.unlimited === false ? 'No': 'Yes'}}</td>
                         <td>{{item?.category}}</td>
-                        <td>{{item?.periodicity?.value}}</td>
                         <td>{{item?.periodicity?.type}}</td>
+                        <td>{{item?.periodicity?.value}}</td>
                         <td>{{item?.carryForward}}</td>
                         <td>
                             <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="isEdit = true;leaveTypeModel = item;">
