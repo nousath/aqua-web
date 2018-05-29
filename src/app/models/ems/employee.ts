@@ -34,6 +34,9 @@ export class EmsEmployee {
   state: string = '';
   district: string = '';
   pincode: string = '';
+  doj: string = '';
+  dol: string = '';
+  reason: string = '';
 }
 
 export class Supervisor {

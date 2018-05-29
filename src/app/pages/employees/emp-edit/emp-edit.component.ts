@@ -142,7 +142,8 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if (this.isNew)
       this.employee.properties.status = 'activate';
-
+     if(this.employee.properties.dol)
+     
     if (this.employee.properties.picUrl)
       this.employee.properties.picUrl = this.employee.properties.picUrl.indexOf('?time=') == -1 ?
         this.employee.properties.picUrl :
@@ -183,14 +184,15 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     );
   }
-  resign(){
-    // save(form: NgForm) {
-    //   if (form.invalid)
+    // terminateEmp(form: NgForm) {
+    //   if (form.invalid) {
     //     return this.toastyService.info({ title: 'Info', msg: 'Please fill all mandatory fields' })
-    //   else
-        return this.toastyService.info({ title: 'Info', msg: 'Employee Will be terminated Automatically' })
-        // this.dialogRef.close();
-    }
+    //   }
+    //   console.log(this.employee.properties.id);
+    //   console.log(this.employee.properties.name);
+      
+
+    // }
     
   
   empSource(keyword: string): Observable<EmsEmployee[]> {

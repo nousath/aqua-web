@@ -127,7 +127,6 @@
                         <th class="srno">Sr No</th>
                         <th class="tdWidth">Name</th>
                         <th class="tdWidth">Date</th>
-                        <th class="tdWidth"></th>
                         <th class="tdWidth">
                             <button class="btn" [disabled]="holidays?.isLoading   || holiday?.isProcessing" *ngIf="upcoming == false" md-raised-button color="primary"
                                 mdTooltip="All Holidays" class="marginLetf" [mdTooltipPosition]="'above'" (click)="AllHolidays()">ALL</button>
@@ -146,14 +145,6 @@
                         <td class="tdWidth">{{item?.name}}</td>
                         <td class="tdWidth">{{item?.date|date}}</td>
                         <!-- <td>{{currentDate| date: UTC  }}</td> -->
-                        <td class="tdWidth" *ngIf="!upcomingHoliday(item)">
-                            <md-icon>highlight_off</md-icon>
-                        </td>
-                        <td class="tdWidth" *ngIf="upcomingHoliday(item)">
-                            <a>
-                                <md-icon>check_cirle</md-icon>
-                            </a>
-                        </td>
                         <td class="tdWidth text-center">
                             <a md-icon-button class="button_align cursor" mdTooltip="Edit details" [mdTooltipPosition]="'above'" >
                                 <md-icon>edit</md-icon>

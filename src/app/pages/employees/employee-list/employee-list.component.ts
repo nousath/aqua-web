@@ -78,7 +78,7 @@ export class EmployeeListComponent implements OnInit {
       }, {
         field: 'code',
         value: null
-      },{
+      }, {
         field: 'status',
         value: 'activate'
       }]
@@ -109,20 +109,23 @@ export class EmployeeListComponent implements OnInit {
   terminateEmp(empId: string, empName: string) {
     let dialog = this.dialog.open(ConfirmDialogComponent, { width: '40%' });
     dialog.componentInstance.msg = `Are you sure to want to terminate ${empName} ?`;
-    dialog.afterClosed().subscribe((value: boolean) => {
-      if (value) {
-        let emp: any = {
-          id: empId,
-          status: 'deactivate'
-        }
-        this.employee.properties = emp;
-        // this.employee.properties.status = 'inactive';
-        this.employee.update().then(
-          data => {
-            this.fetchEmp();
-          }
-        ).catch(err => this.toastyService.error({ title: 'Error', msg: err }))
+    dialog.afterClosed().subscribe((emp: any) => {
+      let empl: any = {
+        id: empId,
+        dol: emp.dol,
+        reason: emp.reason
       }
+      this.employee.properties = empl;
+      // this.employee.properties.id = empId;
+      // this.employee.properties.dol = emp.dol;
+      // this.employee.properties.reason = emp.reason;
+      // this.employee.properties.status = 'inactive';
+      this.employee.update().then(
+        data => {
+          this.fetchEmp();
+        }
+      ).catch(err => this.toastyService.error({ title: 'Error', msg: err }))
+      // }
     })
 
   }

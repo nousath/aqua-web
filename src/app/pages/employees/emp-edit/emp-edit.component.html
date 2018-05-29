@@ -68,7 +68,7 @@
         <md-card>
             <aqua-finger-print [code]="employee.properties.code"></aqua-finger-print>
         </md-card>
-        
+
 
     </div>
     <br>
@@ -106,7 +106,7 @@
                     <tr>
                         <th>DOB:</th>
                         <td>
-                            <input name="dob" id="dateSelector" type="text" class="form-control input-sm calendar no-spin">
+                            <input name="dob" id="dateSelector" type="text" class="form-control input-sm calendar no-spin" [(ngModel)]="employee.properties.dob">
                             <!--<input  type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.dob">-->
                         </td>
                         <th>Father/Husband Name:</th>
@@ -170,8 +170,9 @@
                                 [value-formatter]="empFormatter" [list-formatter]="empListFormatter" class="form-control search"
                                 name="Supervisor" />
                         </td>
-                        <th>Employee Code<span class="asterisk">*</span>:</th>
-                            
+                        <th>Employee Code
+                            <span class="asterisk">*</span>:</th>
+
                         <td>
                             <input name="empCode" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.code"
                                 required>
@@ -201,14 +202,13 @@
                     <tr>
                         <th>HOD:</th>
                         <td>
-                            <input ngui-auto-complete [min-chars]="1" placeholder="Employee search"  [source]="empSource.bind(this)"
-                                [value-formatter]="empFormatter" [list-formatter]="empListFormatter" class="form-control search"
-                                name="Supervisor" />
+                            <input ngui-auto-complete [min-chars]="1" placeholder="Employee search" [source]="empSource.bind(this)" name="Supervisor"
+                            />
                         </td>
                         <th>Date Of Joining:
-                        <td>
-                            <input name="empCode" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.code">
-                        </td>
+                            <td>
+                                <input name="dob" id="dateSelector" type="text" class="form-control input-sm calendar no-spin" [(ngModel)]="employee.properties.doj">
+                            </td>
                     </tr>
                 </table>
             </md-card>
@@ -254,9 +254,10 @@
                         </td>
                     </tr>
                 </table>
+
             </md-card>
             <md-card>
-                    <form #resignationForm="ngForm">
+
                 <div class="dialog_Header text-center">
                     <h5>
                         <b>Terminate</b>
@@ -267,22 +268,24 @@
                     <tr>
                         <th>Termination Date</th>
                         <td>
-                            <input name="startdate" class="form-control  calendar no-spin" type="date" required>
+                            <input name="startdate" class="form-control  calendar no-spin" type="date">
                         </td>
                         <th>Reason</th>
                         <td>
-                            <input name="address2" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.address2">
+                            <input name="address2" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.reason"
+                                required>
                         </td>
                     </tr>
-                    <tr>
-                        <td colspan="2" class="test-center">
-                            <button *ngIf="employee?.properties?.id" md-raised-button [disabled]="employee?.isProcessing || designations?.isLoading"
-                            color="primary" (click)="resign()" style="float:right">Resignation</button>
-                        </td>
-                    </tr>
+                    <!-- <tr>
+                    <td colspan="2" class="test-center">
+                        <button *ngIf="employee?.properties?.id" md-raised-button [disabled]="employee?.isProcessing || designations?.isLoading"
+                        color="primary" (click)="terminateEmp(resignationForm)" style="float:right">Resignation</button>
+                    </td>
+                </tr> -->
                 </table>
-                </form>
             </md-card>
+
+
         </form>
     </div>
 </div>
