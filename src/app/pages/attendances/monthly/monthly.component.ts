@@ -208,7 +208,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
     });
   }
   downloadlink() {
-    this.router.navigate(['pages/attendances/reports'])
+    this.router.navigate(['pages/attendances/reports'],{ queryParams: { type: 'monthly-attendance'} })
   }
 
   ngOnInit() {
