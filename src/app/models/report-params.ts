@@ -4,4 +4,5 @@ export class ReportParams {
   type: string;
   name: string;
   code: string;
+  reportName: string;
 }

@@ -10,10 +10,9 @@
         <thead>
             <tr>
                 <th>S.No</th>
+                <th>Date</th>
                 <th>Type</th>
                 <th>Status</th>
-                <th>Date</th>
-                <th>Ago Time</th>
                 <th>Export</th>
             </tr>
         </thead>
@@ -23,10 +22,14 @@
         currentPage: reportRequests.pageNo,
         totalItems: reportRequests.totalRecords }; let i=index" class="capitalize">
                 <td>{{i + 1}}</td>
-                <td>{{item.type}}</td>
-                <td>{{item.status}}</td>
                 <td>{{item.date | date}}</td>
-                <td>{{item.agoTime}}</td>
+                <td>{{item.reportParams.reportName || item.type}}</td>
+                <td>
+                    <span *ngIf="item.status === 'new'">Requested {{item.agoTime}} ago</span>
+                    <span *ngIf="item.status === 'in-progress'">Started generating {{item.agoTime}} ago</span>
+                    <span *ngIf="item.status === 'ready'">Available</span>
+                    <span *ngIf="item.status === 'errored'">Failed to Generate</span>
+                </td>
                 <td *ngIf="item.url">
                     <span class="glyphicon glyphicon-download-alt pointer" (click)="download(item.url, item.type)"></span>
                 </td>

@@ -1,3 +1,4 @@
+import { AmsShiftService } from '../../../services/ams/ams-shift.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { Subscription } from "rxjs/Rx";
@@ -31,7 +32,7 @@ export class AttendanceLogsComponent implements OnInit {
   subscription: Subscription;
   empId: string;
   ofDate: any;
-  attendance: any
+  attendance: any;
   date: any;
   isButton = true;
   checkTime: any;
@@ -42,6 +43,7 @@ export class AttendanceLogsComponent implements OnInit {
     private toastyService: ToastyService,
     private amsAttendanceService: AmsAttendanceService,
     private amsTimelogsService: AmsTimelogsService,
+    private shiftService: AmsShiftService,
     private angulartics2: Angulartics2,
     private http: Http,
     private amsEmployeeService: AmsEmployeeService) {
@@ -90,7 +92,7 @@ export class AttendanceLogsComponent implements OnInit {
 
       }
     )
-  this.userType = localStorage.getItem('userType')
+    this.userType = localStorage.getItem('userType')
 
   }
 
@@ -98,10 +100,10 @@ export class AttendanceLogsComponent implements OnInit {
   getLocation(latlng: number[], index: number) {
     let api: string = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng[1]},${latlng[0]}&key=AIzaSyA3-BQmJVYB6_soLJPv7cx2lFUMAuELlkM`;
     this.http.get(api).toPromise().then(data => {
-      this.logs.items[index].location.address =  data.json().results[0].formatted_address
+      this.logs.items[index].location.address = data.json().results[0].formatted_address
     }).catch(err => {
       this.logs.items[index].location.address = 'N/A'
-    })
+    });
   }
 
   getAttendance() {
@@ -109,6 +111,12 @@ export class AttendanceLogsComponent implements OnInit {
       (data) => {
         this.attendance = data.items[0];
         this.getLogs();
+        if (this.attendance && this.attendance.shift) {
+          this.shiftService.shifts.get(this.attendance.shift.id).then(shift => {
+            this.employee.properties.shiftType = shift.shiftType;
+          });
+        }
+
       }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
 
   }

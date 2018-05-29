@@ -118,6 +118,12 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
               this.employee.properties.supervisor = this.employee.properties.supervisor ? this.employee.properties.supervisor : new Supervisor();
               // this.employee.properties.designation = this.employee.properties.designation ? this.employee.properties.designation : new Designation();
               this.employee.properties.designation = this.employee.properties.designation ? this.employee.properties.designation.toLowerCase() : null;
+
+              if(this.employee.properties.supervisor) {
+                emsEmployeeService.employees.get(this.employee.properties.supervisor.id).then(supervisor => {
+                  this.employee.properties.supervisor.designation = supervisor.designation;
+                })
+              }
             }
           ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
       }
@@ -193,8 +199,8 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
       
 
     // }
-    
-  
+
+
   empSource(keyword: string): Observable<EmsEmployee[]> {
     return this.autoCompleteService.searchByKey<EmsEmployee>('name', keyword, 'ems', 'employees');
   }
