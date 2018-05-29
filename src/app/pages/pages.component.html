@@ -8,12 +8,10 @@
             <button md-button [routerLink]="['/pages/settings']" routerLinkActive="activeTab"><b>SETTINGS</b></button> -->
             <span class="example-spacer"></span>
             <div *ngIf="employeeSearch" class="searchbar">
-                <input ngui-auto-complete [min-chars]="1" *ngIf="userType == 'superadmin'" placeholder="Employee search" [(ngModel)]="selectedEmp"
-                    (valueChanged)="onSelectEmp($event)" [source]="empSource.bind(this)" [value-formatter]="empFormatter" [list-formatter]="empListFormatter"
+                <input ngui-auto-complete [min-chars]="1" *ngIf="userType == 'superadmin'" placeholder="Employee search" [(ngModel)]="selectedEmp" (valueChanged)="onSelectEmp($event)" [source]="empSource.bind(this)" [value-formatter]="empFormatter" [list-formatter]="empListFormatter"
                     class="form-control searchbarinput search" name="roleId" />
             </div>
-            <button md-icon-button (click)="syncEmployees()" *ngIf="userType == 'superadmin'" [disabled]="isSyncing" mdTooltip="Sync Employees"
-                class="marginLetf" [mdTooltipPosition]="'below'">
+            <button md-icon-button (click)="syncEmployees()" *ngIf="userType == 'superadmin'" [disabled]="isSyncing" mdTooltip="Sync Employees" class="marginLetf" [mdTooltipPosition]="'below'">
                 <i class="fa fa-refresh  fa-lg" [ngClass]="{'fa-spin':isSyncing}" aria-hidden="true"></i>
             </button>
             <button md-button (click)="logout()" class="capitalize" mdTooltip="Logout" class="marginLetf" [mdTooltipPosition]="'below'">{{currentUser?.name}}
@@ -63,13 +61,13 @@
                         <h5>Reports</h5>
                     </a>
                     <a md-list-item [routerLink]="['/pages/attendances/leaves']" routerLinkActive="activeTab" #rla5="routerLinkActive">
-                        <h5>All Leaves</h5>
+                        <h5>Leaves(all)</h5>
                     </a>
                     <a md-list-item [routerLink]="['/pages/attendances/leave-balances']" routerLinkActive="activeTab" #rla6="routerLinkActive">
-                        <h5 angulartics2On="click" angularticsEvent="leaveBalanceClick" angularticsCategory="leaveBalance">Leave Balance</h5>
+                        <h5 angulartics2On="click" angularticsEvent="leaveBalanceClick" angularticsCategory="leaveBalance">Leave Balances</h5>
                     </a>
                     <a md-list-item [routerLink]="['/pages/attendances/manage-leaves']" routerLinkActive="activeTab" #rla7="routerLinkActive">
-                        <h5>Manage Leaves</h5>
+                        <h5>Leave Rules</h5>
                     </a>
                 </div>
                 <p class="subListHeader" (click)="sections.select('settings')">Settings
