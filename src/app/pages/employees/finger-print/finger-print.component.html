@@ -1,8 +1,6 @@
 <div class="container">
   <div class="form-group">
     <label for="fingerPrint">Finger Print :</label>
-    <input *ngIf="fingerPrint !=='wip'" class="form-control" type="input" [disabled]="isFingerPrintExists" [(ngModel)]="fingerPrint">
-    <span *ngIf="!isFingerPrintExists && fingerPrint !=='wip'">Give Name to Finger Print: wip</span>
   </div>
   <div>
     <table class="table table-condensed table-responsive">
