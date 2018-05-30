@@ -228,10 +228,10 @@
                         <td class="tdWidth">{{(item?.attendance?.checkIn | date:'shortTime') || '--'}}</td>
                         <td class="tdWidth">{{(item?.attendance?.checkOut | date:'shortTime') || '--'}}</td>
                         <td class="tdWidth">
-                            <a [routerLink]="['teams',item.id]" *ngIf="item?.team">
+                            <a [routerLink]="['teams',item.id]" *ngIf="item?.supervisor">
                                 <img src="assets/images/team.png" width="30px;">
                             </a>
-                            <span *ngIf="!item.team">--</span>
+                            <span *ngIf="!item.supervisor">--</span>
                         </td>
                     </tr>
 
