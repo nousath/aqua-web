@@ -32,10 +32,12 @@ export class AttendanceLogsComponent implements OnInit {
   subscription: Subscription;
   empId: string;
   ofDate: any;
-  attendance: any;
+  attendance: DayEvent;
   date: any;
   isButton = true;
   checkTime: Date;
+
+  extraShiftCount = 0;
   // checkStatus: any;
 
 
@@ -119,7 +121,35 @@ export class AttendanceLogsComponent implements OnInit {
 
       this.attendance.timeLogs = timeLogs.sort((a, b) => b.time > a.time ? -1 : +1);
 
-    });
+      const shiftType = this.attendance.shift.shiftType;
+
+      let shiftSpan = 0
+      if (shiftType && shiftType.endTime && shiftType.startTime) {
+        const endTime = new Date(shiftType.endTime).getTime()
+        let startTime = new Date(shiftType.startTime).getTime()
+
+        if (startTime > endTime) {
+          startTime = startTime - 24 * 60 * 60 * 1000; // hrs
+        }
+        shiftSpan = endTime - startTime;
+
+      }
+
+      let workSpan = 0
+      if (this.attendance.checkOut && this.attendance.checkIn) {
+        workSpan = new Date(this.attendance.checkOut).getTime() - new Date(this.attendance.checkIn).getTime();
+      }
+
+      if(shiftSpan) {
+        this.extraShiftCount = (workSpan/shiftSpan) -1
+
+        if(this.extraShiftCount < 0) {
+          this.extraShiftCount = 0
+        } else {
+          this.extraShiftCount = parseInt( this.extraShiftCount.toFixed(0))
+        }
+      }
+    }).catch();
     // this.attendances.fetch().then(
     //   (data) => {
     //     this.attendance = data.items[0];

@@ -29,9 +29,9 @@
                 <br>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <table class="table">
-                        <tr class="capitalize">
+                        <tr>
                             <td> Shift : </td>
-                            <td> {{ attendance?.shift?.shiftType.name || employee?.properties?.shiftType?.name}}</td>
+                            <td> {{ (attendance?.shift?.shiftType.name || employee?.properties?.shiftType?.name)| titlecase}} <span *ngIf="extraShiftCount !== 0">+ {{extraShiftCount}} Shift(s)</span></td>
                         </tr>
                         <tr class="capitalize">
                             <td> Shift Time: </td>
