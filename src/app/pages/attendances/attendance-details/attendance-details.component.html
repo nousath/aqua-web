@@ -3,11 +3,10 @@
         <a *ngIf="user == 'superadmin'" md-raised-button class="reply" color="primary" [routerLink]="['/pages/attendances/daily']">
             <md-icon>reply</md-icon>List
         </a>
-        <h5 *ngIf="user == 'normal' || 'admin'">
-            <b>My Attendance</b>
-        </h5>
-        <h5 *ngIf="user == 'superadmin'">
-            <b>Details</b>
+        <h5 [ngSwitch]="user">
+            <b *ngSwitchCase="'normal'">My Attendance</b>
+            <b *ngSwitchCase="'admin'">My Attendance</b>
+            <b *ngSwitchCase="'superadmin'">Details</b>
         </h5>
     </div>
     <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
@@ -62,7 +61,7 @@
                         </tr> -->
                         <tr class="capitalize">
                             <!-- <td>Supervisor:</td> -->
-                            <td>Contractor:</td>
+                            <td>Supervisor:</td>
                             <td>{{employee?.properties?.supervisor?.name}} {{employee?.properties?.supervisor?.code ? '('+employee?.properties?.supervisor?.code+')':'--'}}</td>
                         </tr>
                         <!-- <tr>
