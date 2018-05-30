@@ -49,10 +49,10 @@ export class FingerPrintComponent implements OnInit {
     }
   }
 
-  getWipFingerPrint(employee: Employee){
-    return employee.fingerPrints.find(item=>{
-      return item === 'wip'
-    })
+  getWipFingerPrint(employee: Employee) {
+    return employee.fingerPrints.find(item => {
+      return item === "wip";
+    });
   }
 
   getAmsDetails() {
@@ -64,7 +64,7 @@ export class FingerPrintComponent implements OnInit {
         this.employee = amsEmployee;
         if (this.employee.fingerPrints && this.employee.fingerPrints.length) {
           this.isFingerPrintExists = true;
-          this.fingerPrint = this.getWipFingerPrint(this.employee)
+          this.fingerPrint = this.getWipFingerPrint(this.employee);
         }
         this.devices.filters.properties["category"].value = "biometric";
         this.devices.fetch();
@@ -79,7 +79,7 @@ export class FingerPrintComponent implements OnInit {
     let deviceExits: any = this.employee.devices.find(item => {
       return item.id === device;
     });
-    if (deviceExits && deviceExits.status !== 'disable') {
+    if (deviceExits && deviceExits.status !== "disable") {
       return true;
     }
     return false;
@@ -87,7 +87,7 @@ export class FingerPrintComponent implements OnInit {
 
   updateFingerPrint(isExist, addFinger, action, device) {
     const model: any = {
-      device: ''
+      device: ""
     };
     this.isLoading = true;
     this.updatedEmployee = new GenericApi<Employee>(
@@ -96,6 +96,9 @@ export class FingerPrintComponent implements OnInit {
       "ams"
     );
 
+    if (action === "fetch") {
+      this.fingerPrint = "wip";
+    }
     if (addFinger) {
       model.fingerPrint = this.fingerPrint;
     }
@@ -110,7 +113,7 @@ export class FingerPrintComponent implements OnInit {
           this.isFingerPrintExists = false;
         } else {
           this.isFingerPrintExists = true;
-          this.fingerPrint = this.getWipFingerPrint(this.employee)
+          this.fingerPrint = this.getWipFingerPrint(this.employee);
         }
         if (isExist) {
           this.toastyService.success("FingerPrint Removed Succesfully");
