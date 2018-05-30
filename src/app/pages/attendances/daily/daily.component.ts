@@ -56,7 +56,7 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
   tags: Tags = new Tags();
   date: Date = null
   isUpload: boolean = false;
-  
+
 
   constructor(private amsEmployeeService: AmsEmployeeService,
     private amsShiftService: AmsShiftService,
@@ -136,7 +136,7 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
     this.store.removeItem("daily-attendance-filter");
     $("#dateSelector").datepicker("setDate", new Date());
     this.getAttendance(new Date());
-    
+
   }
 
   checkFiltersInStore() {
@@ -218,8 +218,8 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
     });
     $("#dateSelector").datepicker("setDate", new Date());
   }
-  downloadlink(){
-    this.router.navigate(['pages/attendances/reports'],{ queryParams: { type: 'daily-extra-hours-after-shift-end'} });
+  downloadlink(type: string) {
+    this.router.navigate(['pages/attendances/reports'], { queryParams: { type: type } });
   }
   ngOnDestroy() {
 

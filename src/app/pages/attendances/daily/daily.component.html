@@ -21,10 +21,9 @@
                 <md-icon>cloud_download</md-icon>
             </button>
             <md-menu #appMenu="mdMenu">
-                <button md-menu-item (click)="downloadlink()">Report 1</button>
-                <button md-menu-item (click)="downloadlink()">Report 2
-                </button>
-                <button md-menu-item (click)="downloadlink()">Report 3</button>
+                <button md-menu-item (click)="downloadlink('daily-attendance')">Daily Attendance</button>
+                <button md-menu-item (click)="downloadlink('daily-extra-hours-after-shift-end')">Daily Extra Hours (after shift)</button>
+                <button md-menu-item (click)="downloadlink('daily-extra-hours-after-shift-hours')">Daily Extra Hours (net)</button>
             </md-menu>
             <a class="exl" md-icon-button mdTooltip="Excel Upload" [mdTooltipPosition]="'above'" angulartics2On="click" angularticsEvent="excelUploadClick" angularticsCategory="employee " [angularticsProperties]="{label: 'Fall Campaign'}">
                 <md-icon>cloud_upload</md-icon>
