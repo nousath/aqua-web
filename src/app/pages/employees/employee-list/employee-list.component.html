@@ -39,8 +39,7 @@
         <div class="filtrEmpName">
             <form>
                 <div class="input-group">
-                    <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="employees?.isLoading || employee?.isProcessing"
-                        [(ngModel)]="employees.filters.properties['name']['value']" name="Name" placeholder="Search by employee name">
+                    <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="employees?.isLoading || employee?.isProcessing" [(ngModel)]="employees.filters.properties['name']['value']" name="Name" placeholder="Search by employee name">
                     <span class="input-group-btn">
                         <button [disabled]="employees?.isLoading || employee?.isProcessing" class="btn btn-default" type="submit" (click)="fetchEmp()">Search</button>
                         <!--<button  class="btn btn-default" type="submit" (click)="fetchEmp()">New</button>-->
@@ -52,12 +51,10 @@
         <a class="newEmp" md-icon-button [routerLink]="['new']" mdTooltip="New Employee" [mdTooltipPosition]="'above'">
             <md-icon>add_circle_outline</md-icon>
         </a>
-        <a class="exl" md-icon-button (click)="excel()" mdTooltip="Excel Upload" [mdTooltipPosition]="'above'" angulartics2On="click"
-            angularticsEvent="excelUploadClick" angularticsCategory="employee " [angularticsProperties]="{label: 'Fall Campaign'}">
+        <a class="exl" md-icon-button (click)="excel()" mdTooltip="Excel Upload" [mdTooltipPosition]="'above'" angulartics2On="click" angularticsEvent="excelUploadClick" angularticsCategory="employee " [angularticsProperties]="{label: 'Fall Campaign'}">
             <md-icon>cloud_upload</md-icon>
         </a>
-        <button class="exlD" (click)="downloadlink()" [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing"
-            md-icon-button>
+        <button class="exlD" (click)="downloadlink()" [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button>
             <md-icon>cloud_download</md-icon>
         </button>
 
@@ -71,17 +68,15 @@
                 <b>Select type</b>
             </span>&nbsp;&nbsp;
             <select [disabled]="dailyAttendnace?.isLoading  || isDownloading" placeholder="Status" name="Status" style="width: 50%; height:30px'">
-                <option value="">Employee Add</option>
-                <option value="present">Employee Update</option>
-                <option value="absent">BIometric Add</option>
+                <option value="employee-update">Employee Add/Update</option>
+                <option value="biometric-update">Biometric Add/Update</option>
             </select>
         </div>
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 upload">
             <span style="float: left">
                 <b>Excel Upload</b>
             </span>&nbsp;&nbsp;
-            <input class="file" id="uploader" type="file" ng2FileSelect [uploader]="uploader" angulartics2On="click" angularticsEvent="chooseFileClick"
-                angularticsCategory="employee" [angularticsProperties]="{label: 'Fall Campaign'}" />
+            <input class="file" id="uploader" type="file" ng2FileSelect [uploader]="uploader" angulartics2On="click" angularticsEvent="chooseFileClick" angularticsCategory="employee" [angularticsProperties]="{label: 'Fall Campaign'}" />
             <div *ngFor="let item of uploader.queue" class="queue">
                 <button md-icon-button class="uploadBtn" (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
                     <md-icon>cloud_upload</md-icon>
@@ -135,8 +130,7 @@
                                 <md-icon>edit</md-icon>
                             </a>
                             &nbsp;
-                            <button [disabled]="employees?.isLoading || employee?.isProcessing" md-icon-button class="button_align cursor" mdTooltip="Terminate"
-                                [mdTooltipPosition]="'above'" (click)="terminateEmp(item.id, item.name)">
+                            <button [disabled]="employees?.isLoading || employee?.isProcessing" md-icon-button class="button_align cursor" mdTooltip="Terminate" [mdTooltipPosition]="'above'" (click)="terminateEmp(item.id, item.name)">
                                 <i class="fa fa-user-times fa-lg" aria-hidden="true"></i>
                             </button>
                         </td>

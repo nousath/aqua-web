@@ -14,8 +14,7 @@
             </div>
         </div>
         <div class="headerBtns ">
-            <button [disabled]="dailyAttendnace?.isLoading || employee?.isProcessing" md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters"
-                class="marginLetf" [mdTooltipPosition]="'above'">
+            <button [disabled]="dailyAttendnace?.isLoading || employee?.isProcessing" md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'">
                 <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
             </button>
             <button [matMenuTriggerFor]="appMenu" [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button>
@@ -27,8 +26,7 @@
                 </button>
                 <button md-menu-item (click)="downloadlink()">Report 3</button>
             </md-menu>
-            <a class="exl" md-icon-button mdTooltip="Excel Upload" [mdTooltipPosition]="'above'" angulartics2On="click" angularticsEvent="excelUploadClick"
-                angularticsCategory="employee " [angularticsProperties]="{label: 'Fall Campaign'}">
+            <a class="exl" md-icon-button mdTooltip="Excel Upload" [mdTooltipPosition]="'above'" angulartics2On="click" angularticsEvent="excelUploadClick" angularticsCategory="employee " [angularticsProperties]="{label: 'Fall Campaign'}">
                 <md-icon>cloud_upload</md-icon>
             </a>
 
@@ -43,17 +41,15 @@
                     <b>Select type</b>
                 </span>&nbsp;&nbsp;
                 <select [disabled]="dailyAttendnace?.isLoading  || isDownloading" placeholder="Status" name="Status" style="width: 50%; height:30px'">
-                    <option value="">Employee Add</option>
-                    <option value="present">Employee Update</option>
-                    <option value="absent">BIometric Add</option>
+                    <option value="employee-update">Employee Add/Update</option>
+                    <option value="biometric-update">Biometric Add/Update</option>
                 </select>
             </div>
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 upload">
                 <span style="float: left">
                     <b>Excel Upload</b>
                 </span>&nbsp;&nbsp;
-                <input class="file" id="uploader" type="file" ng2FileSelect [uploader]="uploader" angulartics2On="click" angularticsEvent="chooseFileClick"
-                    angularticsCategory="employee" [angularticsProperties]="{label: 'Fall Campaign'}" />
+                <input class="file" id="uploader" type="file" ng2FileSelect [uploader]="uploader" angulartics2On="click" angularticsEvent="chooseFileClick" angularticsCategory="employee" [angularticsProperties]="{label: 'Fall Campaign'}" />
                 <div *ngFor="let item of uploader.queue" class="queue">
                     <button md-icon-button class="uploadBtn" (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
                         <md-icon>cloud_upload</md-icon>
@@ -96,8 +92,7 @@
                         <label for="email">Name</label>
                     </div>
                     <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading"
-                            [(ngModel)]="dailyAttendnace.filters.properties['name']['value']" name="Name">
+                        <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" [(ngModel)]="dailyAttendnace.filters.properties['name']['value']" name="Name">
                     </div>
                 </div>
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4  form-group">
@@ -105,8 +100,7 @@
                         <label for="pwd">Code</label>
                     </div>
                     <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading"
-                            [(ngModel)]="dailyAttendnace.filters.properties['code']['value']" name="Code">
+                        <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" [(ngModel)]="dailyAttendnace.filters.properties['code']['value']" name="Code">
                     </div>
                 </div>
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-group">
@@ -114,8 +108,7 @@
                         <label>Shift</label>
                     </div>
                     <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <select class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" [(ngModel)]="dailyAttendnace.filters.properties['shiftTypeId']['value']"
-                            placeholder="Shift" name="shift">
+                        <select class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" [(ngModel)]="dailyAttendnace.filters.properties['shiftTypeId']['value']" placeholder="Shift" name="shift">
                             <option *ngFor="let item of shiftTypes.items" [value]="item.id">
                                 {{item?.name}}
                             </option>
@@ -127,8 +120,7 @@
                         <label class="setStatus">Status</label>
                     </div>
                     <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <select class="form-control boxStatus" [disabled]="dailyAttendnace?.isLoading  || isDownloading" [(ngModel)]="dailyAttendnace.filters.properties['status']['value']"
-                            placeholder="Status" name="Status">
+                        <select class="form-control boxStatus" [disabled]="dailyAttendnace?.isLoading  || isDownloading" [(ngModel)]="dailyAttendnace.filters.properties['status']['value']" placeholder="Status" name="Status">
                             <option value="">All</option>
                             <option value="present">Present</option>
                             <option value="absent">Absent</option>
@@ -143,8 +135,7 @@
                         <label>{{item?.name | titlecase}}</label>
                     </div>
                     <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <select class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" #tag (change)="tags.reset();tags.select({tagTypeId:item.id,tagId:tag.value})"
-                            placeholder="Tag" name="tags">
+                        <select class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" #tag (change)="tags.reset();tags.select({tagTypeId:item.id,tagId:tag.value})" placeholder="Tag" name="tags">
                             <option selected [ngValue]="null">select an option</option>
                             <option *ngFor="let tag of item?.tags" [value]="tag.id">
                                 {{tag?.name | titlecase}}
@@ -174,10 +165,8 @@
                     </div>
                 </div>
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 button_align form-group">
-                    <button [disabled]="dailyAttendnace?.isLoading || isDownloading" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'"
-                        (click)="getAttendance(dailyAttendnace.filters.properties['ofDate']['value']);">Apply</button>
-                    <button [disabled]="dailyAttendnace?.isLoading || isDownloading" md-raised-button class="btn_grey" mdTooltip="Reset" [mdTooltipPosition]="'above'"
-                        (click)="reset()">Reset</button>
+                    <button [disabled]="dailyAttendnace?.isLoading || isDownloading" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="getAttendance(dailyAttendnace.filters.properties['ofDate']['value']);">Apply</button>
+                    <button [disabled]="dailyAttendnace?.isLoading || isDownloading" md-raised-button class="btn_grey" mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()">Reset</button>
                 </div>
             </div>
         </form>
