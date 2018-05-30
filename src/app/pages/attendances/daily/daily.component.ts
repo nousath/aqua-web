@@ -179,9 +179,6 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
         page.items.forEach(pageItem => {
 
           const existingAttendance = this.attendances.find(item => item.code === pageItem.code);
-
-          console.log('1', existingAttendance)
-          console.log('2', pageItem)
           if (existingAttendance) {
             if (!existingAttendance.attendance.checkIn || existingAttendance.attendance.checkIn > pageItem.attendance.checkIn) {
               existingAttendance.attendance.checkIn = pageItem.attendance.checkIn;

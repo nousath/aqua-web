@@ -35,7 +35,7 @@ export class AttendanceLogsComponent implements OnInit {
   attendance: any;
   date: any;
   isButton = true;
-  checkTime: any;
+  checkTime: Date;
   // checkStatus: any;
 
 
@@ -90,6 +90,11 @@ export class AttendanceLogsComponent implements OnInit {
         this.employee.fetch(this.empId).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
         this.getAttendance();
 
+
+
+        this.checkTime = new Date(this.ofDate);
+
+
       }
     )
     this.userType = localStorage.getItem('userType')
@@ -107,17 +112,25 @@ export class AttendanceLogsComponent implements OnInit {
   }
 
   getAttendance() {
-    this.attendances.fetch().then(
-      (data) => {
-        this.attendance = data.items[0];
-        this.getLogs();
-        if (this.attendance && this.attendance.shift) {
-          this.shiftService.shifts.get(this.attendance.shift.id).then(shift => {
-            this.employee.properties.shiftType = shift.shiftType;
-          });
-        }
+    this.amsAttendanceService.attendance.get(`${new Date(this.ofDate).toISOString()}?employeeId=${this.empId}`).then(item => {
+      this.attendance = item;
 
-      }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+      const timeLogs: TimeLogs[] = this.attendance.timeLogs || [];
+
+      this.attendance.timeLogs = timeLogs.sort((a, b) => b.time > a.time ? -1 : +1);
+
+    });
+    // this.attendances.fetch().then(
+    //   (data) => {
+    //     this.attendance = data.items[0];
+    //     this.getLogs();
+    //     if (this.attendance && this.attendance.shift) {
+    //       this.shiftService.shifts.get(this.attendance.shift.id).then(shift => {
+    //         this.employee.properties.shiftType = shift.shiftType;
+    //       });
+    //     }
+
+    //   }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
 
   }
 
@@ -142,11 +155,24 @@ export class AttendanceLogsComponent implements OnInit {
     ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
+  dateUpdated($event) {
+    const date: Date = $event.target.valueAsDate;
+    this.checkTime.setFullYear(date.getFullYear(), date.getMonth(), date.getDate());
+  }
+
+  timeUpdated($event) {
+    const time = $event.target.value;
+    let checkTimes: string[] = time.split(':');
+    this.checkTime = new Date(new Date(this.checkTime).setHours(parseInt(checkTimes[0]), parseInt(checkTimes[1])));
+
+  }
+
   checkUpdate() {
     let h: number, m: number;
     this.timeLog.properties.employee.id = this.empId;
-    let checkTimes: string[] = this.checkTime.split(':');
-    this.timeLog.properties.time = new Date(new Date(this.ofDate).setHours(parseInt(checkTimes[0]), parseInt(checkTimes[1]))).toISOString();
+    // let checkTimes: string[] = this.checkTime.split(':');
+    this.timeLog.properties.time = this.checkTime.toISOString();
+    // new Date(new Date(this.ofDate).setHours(parseInt(checkTimes[0]), parseInt(checkTimes[1]))).toISOString();
     this.timeLog.properties.source = 'byAdmin';
     this.timeLog.save().then(data => {
       this.toggleRow();
@@ -158,7 +184,7 @@ export class AttendanceLogsComponent implements OnInit {
   toggleRow() {
     this.angulartics2.eventTrack.next({ action: 'updateAttendanceClcik', properties: { category: 'timeLog' } });
     this.isButton = !this.isButton;
-    this.checkTime = null;
+    // this.checkTime = this.ofDate;
     this.timeLog.properties = new TimeLogs();
   }
 

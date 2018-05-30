@@ -31,11 +31,11 @@
                     <table class="table">
                         <tr class="capitalize">
                             <td> Shift : </td>
-                            <td> {{employee?.properties?.shiftType?.name}}</td>
+                            <td> {{ attendance?.shift?.shiftType.name || employee?.properties?.shiftType?.name}}</td>
                         </tr>
                         <tr class="capitalize">
                             <td> Shift Time: </td>
-                            <td> {{employee?.properties?.shiftType?.startTime | date:'shortTime'}} - {{employee?.properties?.shiftType?.endTime | date:'shortTime'}}</td>
+                            <td> {{(attendance?.shift?.shiftType || employee?.properties?.shiftType)?.startTime | date:'shortTime'}} - {{(attendance?.shift?.shiftType || employee?.properties?.shiftType)?.endTime | date:'shortTime'}}</td>
                         </tr>
                         <tr class="capitalize">
                             <td> CheckIn : </td>
@@ -57,21 +57,23 @@
                     <thead class="primary_thead">
                         <tr>
                             <th>S.No</th>
-                            <th class="tdWidth">Type</th>
-                            <th class="tdWidth">Time</th>
-                            <th class="tdWidth">Device</th>
-                            <th class="tdWidth">IP Address</th>
+                            <th>Time</th>
+                            <th>Type</th>
+                            <th>Device</th>
+                            <th>IP Address</th>
+                            <th>Date</th>
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody *ngIf="attendance">
 
-                        <tr class="capitalize" *ngFor="let item of logs.items; let i=index">
-                            <td *ngIf="!item?.location?.show" class="tdWidth">{{i+1}}</td>
-                            <td *ngIf="!item?.location?.show" class="tdWidth">{{item?.type || '--'}}</td>
-                            <td *ngIf="!item?.location?.show" class="tdWidth">{{item?.time | date : 'shortTime' || '--'}}</td>
-                            <td *ngIf="!item?.location?.show" class="tdWidth">{{item?.source || '--'}}</td>
-                            <td *ngIf="!item?.location?.show" class="tdWidth">{{item?.ipAddress || '--'}}</td>
+                        <tr class="capitalize" *ngFor="let item of attendance.timeLogs; let i=index">
+                            <td *ngIf="!item?.location?.show">{{i+1}}</td>
+                            <td *ngIf="!item?.location?.show">{{item?.time | date: 'h:mm a' || '--'}}</td>
+                            <td *ngIf="!item?.location?.show">{{item?.type || '--'}}</td>
+                            <td *ngIf="!item?.location?.show">{{item?.source || '--'}}</td>
+                            <td *ngIf="!item?.location?.show">{{item?.ipAddress || '--'}}</td>
+                            <td *ngIf="!item?.location?.show">{{item?.time | date: 'dd-MM-yyyy' || '--'}}</td>
                             <td *ngIf="!item?.location?.show">
                                 <button *ngIf="item?.location?.has" (click)="toggleLocation(item?.location)" md-icon-button class="button_align cursor" mdTooltip="{{item?.location?.address}}" [mdTooltipPosition]="'above'">
                                 <md-icon>location_on</md-icon>
@@ -105,27 +107,28 @@
                 </table>
             </div>
             <div class="row" *ngIf="!isButton">
-                <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-                    <!-- <input class="form-control" type="text"> -->
-                    <input class="form-control" type="time" [(ngModel)]="checkTime" (ngModelChange)="checkTime = $event" required>
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <input class="form-control" type="date" [ngModel]="checkTime| date: 'yyyy-MM-dd'" (change)="dateUpdated($event)" required>
                 </div>
-                <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <input class="form-control" type="time" (change)="timeUpdated($event)" required>
+                </div>
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     <!-- <input class="form-control" type="text"> -->
                     <select class="form-control" [(ngModel)]="timeLog.properties.type">
-            <option value='checkIn'>Check In</option>
-            <option value='checkOut'>Check Out</option>
-          </select>
+                      <option value='checkIn'>Check In</option>
+                      <option value='checkOut'>Check Out</option>
+                    </select>
                 </div>
                 <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
                     <button md-icon-button [disabled]="timeLog?.isProcessing" class="doneButton" (click)="checkUpdate()">
-            <md-icon> done </md-icon>
-        </button>
+                      <md-icon> done </md-icon>
+                    </button>
                 </div>
                 <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
                     <button md-icon-button [disabled]="timeLog?.isProcessing" class="doneButton" (click)="toggleRow()">
-            <md-icon> close </md-icon>
-        </button>
-
+                        <md-icon> close </md-icon>
+                    </button>
                 </div>
             </div>
             <div *ngIf="userType == 'superadmin'" class="row text-center">
