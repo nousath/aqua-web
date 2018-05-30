@@ -42,6 +42,9 @@ export class ReportsComponent implements OnInit {
   }, {
     type: 'monthly-early-check-out',
     name: 'Early Check-out (monthly)'
+  }, {
+    type: 'employees-details',
+    name: 'Employee Details'
   }];
 
   reports: Page<ReportRequest>;

@@ -130,7 +130,11 @@ export class EmployeeListComponent implements OnInit {
 
   }
   downloadlink() {
-    this.router.navigate(['pages/attendances/reports'])
+    this.router.navigate(['pages/attendances/reports'], {
+      queryParams: {
+        type: 'employees-details'
+      }
+    })
   }
   ngOnInit() {
   }

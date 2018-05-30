@@ -41,7 +41,7 @@ export class FingerPrintComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ngOnChanges() {
     if (this.code) {
@@ -49,8 +49,8 @@ export class FingerPrintComponent implements OnInit {
     }
   }
 
-  getWipFingerPrint(employee: Employee){
-    return employee.fingerPrints.find(item=>{
+  getWipFingerPrint(employee: Employee) {
+    return employee.fingerPrints.find(item => {
       return item === 'wip'
     })
   }
