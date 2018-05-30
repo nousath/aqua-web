@@ -146,7 +146,7 @@ export class ApplyLeaveComponent implements OnInit {
         if (endDay <= startDay) {
           return this.toastyService.info({ title: 'Info', msg: 'End Date should be greater then Start Date' })
         }
-        this.leave.properties.days = Math.abs((endDay.getTime() - startDay.getTime()) / (oneDay) + 1 );
+        this.leave.properties.days = Math.abs((endDay.getTime() - startDay.getTime()) / (oneDay) );
         this.leave.properties.toDate = new Date(this.leave.properties.toDate).toISOString();
         break;
       case 'full':
