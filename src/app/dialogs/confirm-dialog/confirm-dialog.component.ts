@@ -20,7 +20,6 @@ export class ConfirmDialogComponent implements OnInit {
   msg: string = '';
   constructor(public dialogRef: MdDialogRef<ConfirmDialogComponent>,
     private toastyService: ToastyService, ) {
-    console.log(this.employee)
   }
 
   ngOnInit() {

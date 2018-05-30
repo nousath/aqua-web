@@ -115,6 +115,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
             data => {
               this.uploader.setOptions({ url: `/ems/api/employees/image/${empId}` });
               if (this.employee.properties.dob) { $("#dateSelector").datepicker("setDate", new Date(this.employee.properties.dob)); }
+              if (this.employee.properties.dol) { $("#terminateDate").datepicker("setDate", new Date(this.employee.properties.dol)); }
               this.employee.properties.supervisor = this.employee.properties.supervisor ? this.employee.properties.supervisor : new Supervisor();
               // this.employee.properties.designation = this.employee.properties.designation ? this.employee.properties.designation : new Designation();
               this.employee.properties.designation = this.employee.properties.designation ? this.employee.properties.designation.toLowerCase() : null;
@@ -276,6 +277,15 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
       autoclose: true
     }).on('changeDate', (e) => {
       this.employee.properties.dob = new Date(e.date).toISOString();
+    });
+    if (this.employee.properties.dol) { $("#terminateDate").datepicker("setDate", new Date(this.employee.properties.dol)); }
+    $('#terminateDate').datepicker({
+      format: 'dd/mm/yyyy',
+      minViewMode: 0,
+      maxViewMode: 2,
+      autoclose: true
+    }).on('changeDate', (d) => {
+      this.employee.properties.dol = new Date(d.date).toISOString();
     });
 
   }
