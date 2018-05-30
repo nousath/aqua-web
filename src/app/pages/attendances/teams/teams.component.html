@@ -151,7 +151,7 @@
                         <th class="tdWidth">Code</th>
                         <th class="tdWidth">Designation</th>
                         <!-- <th class="tdWidth">Department</th> -->
-                        <th class="tdWidth">Shift</th>
+                        <!-- <th class="tdWidth">Shift</th> -->
                         <th class="tdWidth">Status</th>
                         <th class="tdWidth">Check In</th>
                         <th class="tdWidth">Check Out</th>
@@ -167,7 +167,7 @@
                         </td>
                         <td class="tdWidth">{{item?.code || '--'}}</td>
                         <td class="tdWidth">{{item?.designation || '--'}}</td>
-                        <td class="tdWidth">{{item?.shiftType?.name || '--'}}</td>
+                        <!-- <td class="tdWidth">{{item?.shiftType?.name || '--'}}</td> -->
                         <td class="tdWidth">
                             <ng-template #elsePart>
                                 <span>{{item?.attendance?.status?.toLowerCase() == 'checkedin' ? 'Present' : item?.attendance?.status}}</span>
