@@ -85,7 +85,7 @@
                         <th class="tdWidth">Reason</th>
                         <th class="tdWidth">Status</th>
                         <th class="tdWidth">Comment</th>
-                        <th><md-checkbox *ngIf="leaves.items.length" ng-model="select" aria-label="Finished?"></md-checkbox></th>
+                        <!-- <th><md-checkbox *ngIf="leaves.items.length" ng-model="select" aria-label="Finished?"></md-checkbox></th> -->
                         <th class="tdWidth text-center" *ngIf="isShowLeaveAction">Action</th>               
                     </tr>
                 </thead>
@@ -101,13 +101,13 @@
                         </td>
                         <td class="tdWidth">{{item?.employee?.code}}</td>
                         <td class="tdWidth">{{item?.date | date}}</td>
-                        <td class="tdWidth">{{setDate(item?.date, item?.days) | date}}</td>
+                        <td class="tdWidth">{{item?.toDate | date}}</td>
                         <td class="tdWidth">{{item?.leaveType?.name}}</td>
                         <td class="tdWidth">{{item?.days}}</td>
                         <td class="tdWidth">{{item?.reason}}</td>
                         <td class="tdWidth">{{item?.status}}</td>
                         <td class="tdWidth">{{item?.comment}}</td>
-                        <td><md-checkbox  *ngIf="item?.status?.toLowerCase() == 'submitted'"  aria-label="Finished?"></md-checkbox></td>
+                        <!-- <td><md-checkbox  *ngIf="item?.status?.toLowerCase() == 'submitted'"  aria-label="Finished?"></md-checkbox></td> -->
                         <td class="tdWidth text-center" *ngIf="isShowLeaveAction" >
                             <!--<button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status?.toLowerCase() == 'approved'
                                       || item?.status?.toLowerCase() == 'submitted'" (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
@@ -132,7 +132,7 @@
 
                 </tbody>
             </table>
-            <button *ngIf="leaves.items.length" [disabled]="leaves?.isLoading || isUpdatingLeaveStatus" md-raised-button color="primary" mdTooltip="Approve" [mdTooltipPosition]="'above'" (click)="ApproveLeave()" style="float: right;">Approve</button>  
+            <!-- <button *ngIf="leaves.items.length" [disabled]="leaves?.isLoading || isUpdatingLeaveStatus" md-raised-button color="primary" mdTooltip="Approve" [mdTooltipPosition]="'above'" (click)="ApproveLeave()" style="float: right;">Approve</button>   -->
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="custom_pagination">
