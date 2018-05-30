@@ -103,7 +103,7 @@
                     <tr>
                         <th>DOB:</th>
                         <td>
-                                <input name="dob" id="dateSelector" type="text" class="form-control input-sm calendar no-spin">
+                            <input name="dob" id="dateSelector" type="text" class="form-control input-sm calendar no-spin">
                         </td>
                         <th>Father/Husband Name:</th>
                         <td>
@@ -167,8 +167,6 @@
                             </select>
                         </td>
                         <th>Employee Code<span class="asterisk">*</span>:</th>
-
-
                         <td>
                             <input name="empCode" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.code" required>
                         </td>
@@ -176,20 +174,15 @@
                     <tr>
                         <th>{{ employee.properties.supervisor && employee.properties.supervisor.designation? employee.properties.supervisor.designation: 'Supervisor'}}<span class="asterisk">*</span>:</th>
                         <td>
-                            <input ngui-auto-complete [min-chars]="1" placeholder="Employee search" [(ngModel)]="employee.properties.supervisor" [source]="empSource.bind(this)" [value-formatter]="empFormatter" [list-formatter]="empListFormatter" class="form-control search" name="Supervisor" required
-                            />
+                            <input ngui-auto-complete [min-chars]="1" placeholder="Employee search" [(ngModel)]="employee.properties.supervisor" [source]="empSource.bind(this)" [value-formatter]="empFormatter" [list-formatter]="empListFormatter" class="form-control search" name="Supervisor"
+                                required />
                         </td>
                         <th>Department:</th>
                         <td>
-                            <select name="department" class="form-control" [(ngModel)]="employee.properties.designation">
-                                <option [ngValue]="null">Select an option</option>
-                                <option>Production</option>
-                                <option>R&D</option>
-                                <option>Purchasing</option>
-                                <option>Marketing</option>
-                                <option>Human Resource Managemen</option>
-                                <option>Accounting and Finance</option>
-                            </select>
+                            <select name="deppartment" class="form-control" [(ngModel)]="employee.properties.departmentId">
+                              <option [ngValue]="null">Select an option</option>
+                              <option *ngFor="let item of departments.items" [value]="item.id">{{item.name}}</option>
+                          </select>
                         </td>
                     </tr>
                     <tr>
@@ -201,7 +194,7 @@
                         <th>Date Of Joining:
                             <td>
                                 <input name="doj" id="joiningDate" type="text" class="form-control input-sm calendar no-spin" required>
-                        </td>
+                            </td>
                     </tr>
                 </table>
             </md-card>

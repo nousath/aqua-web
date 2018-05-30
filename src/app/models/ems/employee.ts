@@ -9,6 +9,7 @@ export class EmsEmployee {
   code: string = '';
   // designation: Designation = new Designation();
   designation: string = '';
+  departmentId = '';
   status: string = '';
   gender: 'male' | 'female' | 'others' | null = null;
   fatherName: string = '';

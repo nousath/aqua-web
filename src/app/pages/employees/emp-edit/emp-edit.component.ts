@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-import { EmsEmployeeService, EmsDesignationService } from '../../../services/ems';
+import { EmsEmployeeService, EmsDesignationService, EmsDepartmentService } from '../../../services/ems';
 import { ToastyService } from 'ng2-toasty';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Model } from '../../../common/contracts/model';
@@ -17,6 +17,7 @@ import * as _ from "lodash";
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { environment } from '../../../../environments/environment.qa';
 import { LeaveActionDialogComponent } from '../../../dialogs/leave-action-dialog/leave-action-dialog.component';
+import { Department } from '../../../models/department';
 declare var $: any;
 
 
@@ -29,6 +30,8 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
 
   employee: Model<EmsEmployee>;
   designations: Page<Designation>;
+  departments: Page<Department>;
+
   subscription: Subscription;
   uploader: FileUploader;
   isChangeImage: boolean = false;
@@ -42,6 +45,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     private autoCompleteService: AutoCompleteService,
     public validatorService: ValidatorService,
     private emsDesignationService: EmsDesignationService,
+    private emsDepartmentService: EmsDepartmentService,
     private store: LocalStorageService,
     private dialog: MdDialog,
     private router: Router) {
@@ -92,12 +96,18 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
       }]
     });
 
+    this.departments = new Page({
+      api: emsDepartmentService.departments,
+    });
+
     this.designations.fetch().then(() => {
       _.each(this.designations.items, (item: Designation) => {
         if (item.name)
           item.name = item.name.toLowerCase();
       })
     }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+
+    this.departments.fetch().then(() => {}).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
 
     this.employee = new Model({
       api: emsEmployeeService.employees,
