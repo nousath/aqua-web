@@ -18,7 +18,7 @@
         </div>
 
 
-        <div class="headerBtns" *ngIf="user == 'superadmin'">
+        <!-- <div class="headerBtns" *ngIf="user == 'superadmin'">
             <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading || isProcessingAttendance" [mdMenuTriggerFor]="appMenu" md-icon-button>
                 <md-icon>cloud_download</md-icon>
             </button>
@@ -26,11 +26,11 @@
                 <button md-menu-item (click)="download(true,false,'Extra hours - after Shift end time')">Extra hours - after Shift end time</button>
                 <button md-menu-item (click)="download(false,true,'Extra hours - after Shift hours')">Extra hours - after Shift hours</button>
                 <button md-menu-item (click)="download(false,false,'Day Attendance')">Day's Attendance</button>
-            </md-menu>
+            </md-menu> -->
             <!-- <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading || isProcessingAttendance" md-icon-button mdTooltip="Download Attendance extraHours" [mdTooltipPosition]="'above'" (click)="download(true)"><md-icon>cloud_download</md-icon></button>
             <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading  || isProcessingAttendance" md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" (click)="download(false)" angulartics2On="click" angularticsEvent="dialyAttendnaceDownloadClick"
                 angularticsCategory="dialyAttendance" [angularticsProperties]="{label: 'Fall Campaign'}"><md-icon >cloud_download</md-icon></button> -->
-        </div>
+        <!-- </div> -->
 
     </div>
 </div>
