@@ -116,11 +116,12 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
               this.uploader.setOptions({ url: `/ems/api/employees/image/${empId}` });
               if (this.employee.properties.dob) { $("#dateSelector").datepicker("setDate", new Date(this.employee.properties.dob)); }
               if (this.employee.properties.dol) { $("#terminateDate").datepicker("setDate", new Date(this.employee.properties.dol)); }
+              if (this.employee.properties.doj) { $("#joiningDate").datepicker("setDate", new Date(this.employee.properties.doj)); }
               this.employee.properties.supervisor = this.employee.properties.supervisor ? this.employee.properties.supervisor : new Supervisor();
               // this.employee.properties.designation = this.employee.properties.designation ? this.employee.properties.designation : new Designation();
               this.employee.properties.designation = this.employee.properties.designation ? this.employee.properties.designation.toLowerCase() : null;
 
-              if(this.employee.properties.supervisor) {
+              if (this.employee.properties.supervisor) {
                 emsEmployeeService.employees.get(this.employee.properties.supervisor.id).then(supervisor => {
                   this.employee.properties.supervisor.designation = supervisor.designation;
                 })
@@ -130,7 +131,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     );
 
-    this.store.setItem('Ems-employeeID',this.employee.properties.id)
+    this.store.setItem('Ems-employeeID', this.employee.properties.id)
 
   }
 
@@ -149,12 +150,12 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if (this.isNew)
       this.employee.properties.status = 'activate';
-     if(this.employee.properties.dol)
-     
-    if (this.employee.properties.picUrl)
-      this.employee.properties.picUrl = this.employee.properties.picUrl.indexOf('?time=') == -1 ?
-        this.employee.properties.picUrl :
-        this.employee.properties.picUrl.slice(0, this.employee.properties.picUrl.indexOf('?time='));
+    if (this.employee.properties.dol)
+
+      if (this.employee.properties.picUrl)
+        this.employee.properties.picUrl = this.employee.properties.picUrl.indexOf('?time=') == -1 ?
+          this.employee.properties.picUrl :
+          this.employee.properties.picUrl.slice(0, this.employee.properties.picUrl.indexOf('?time='));
 
     this.employee.save().then(
       data => {
@@ -191,15 +192,15 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     );
   }
-    // terminateEmp(form: NgForm) {
-    //   if (form.invalid) {
-    //     return this.toastyService.info({ title: 'Info', msg: 'Please fill all mandatory fields' })
-    //   }
-    //   console.log(this.employee.properties.id);
-    //   console.log(this.employee.properties.name);
-      
+  // terminateEmp(form: NgForm) {
+  //   if (form.invalid) {
+  //     return this.toastyService.info({ title: 'Info', msg: 'Please fill all mandatory fields' })
+  //   }
+  //   console.log(this.employee.properties.id);
+  //   console.log(this.employee.properties.name);
 
-    // }
+
+  // }
 
 
   empSource(keyword: string): Observable<EmsEmployee[]> {
@@ -286,6 +287,15 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
       autoclose: true
     }).on('changeDate', (d) => {
       this.employee.properties.dol = new Date(d.date).toISOString();
+    });
+    if (this.employee.properties.doj) { $("#joiningDate").datepicker("setDate", new Date(this.employee.properties.doj)); }
+    $('#joiningDate').datepicker({
+      format: 'dd/mm/yyyy',
+      minViewMode: 0,
+      maxViewMode: 2,
+      autoclose: true
+    }).on('changeDate', (d) => {
+      this.employee.properties.doj = new Date(d.date).toISOString();
     });
 
   }
