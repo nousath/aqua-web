@@ -26,7 +26,9 @@ export class LeavesComponent implements OnInit, AfterViewInit {
   isShowLeaveAction: boolean = false;
   date: Date = null
   userType: string = ''
-  select: boolean = false
+  select: boolean = false;
+  Selected = [];
+  check: boolean = false;
 
 
 
@@ -37,46 +39,50 @@ export class LeavesComponent implements OnInit, AfterViewInit {
     private toastyService: ToastyService,
     private angulartics2: Angulartics2) {
 
-      this.userType = store.getItem('userType');
-      
-    if(this.userType == 'admin'){
-    this.leaves = new Page({
-      api: amsLeaveService.teamLeaves,
-      filters: [{
-        field: 'name',
-        value: null
-      }, {
-        field: 'status',
-        value: null
-      }, {
-        field: 'date',
-        value: null
-      }]
-    });
-  }
-  if(this.userType == 'superadmin'){
-    this.leaves = new Page({
-      api: amsLeaveService.allLeavesOfOrg,
-      filters: [{
-        field: 'name',
-        value: null
-      }, {
-        field: 'status',
-        value: null
-      }, {
-        field: 'date',
-        value: null
-      }]
-    });
-  }
+    this.userType = store.getItem('userType');
+
+    if (this.userType == 'admin') {
+      this.leaves = new Page({
+        api: amsLeaveService.teamLeaves,
+        filters: [{
+          field: 'name',
+          value: null
+        }, {
+          field: 'status',
+          value: null
+        }, {
+          field: 'date',
+          value: null
+        }]
+      });
+    }
+    if (this.userType == 'superadmin') {
+      this.leaves = new Page({
+        api: amsLeaveService.allLeavesOfOrg,
+        filters: [{
+          field: 'name',
+          value: null
+        }, {
+          field: 'status',
+          value: null
+        }, {
+          field: 'date',
+          value: null
+        }]
+      });
+    }
     this.checkFiltersInStore();
   }
+  fetch() {
+    this.check = false;
+    console.log(this.Selected)
+    this.Selected = [];
+    this.fetchLeaves();
+  }
 
-  
   fetchLeaves(date?: Date) {
+
     this.setFiltersToStore();
-
-
 
     this.leaves.fetch().then(
       data => {
@@ -143,6 +149,58 @@ export class LeavesComponent implements OnInit, AfterViewInit {
       this.toastyService.error({ title: 'Error', msg: err });
     });
   }
+  allLeaves(item: string) {
+    if (this.Selected.includes(item)) {
+      const i = this.Selected.indexOf(item)
+      console.log(i)
+      this.Selected.splice(i, 1);
+      console.log(this.Selected)
+    }
+    else {
+      this.Selected.push(item);
+      console.log(this.Selected)
+    }
+  }
+  addLeaves(item: string) {
+    if (this.Selected.includes(item)) {
+      console.log(this.Selected)
+    }
+    else {
+      this.Selected.push(item);
+      console.log(this.Selected)
+    }
+
+  }
+
+  approveLeaves(status: string) {
+    if (status == 'approved') {
+      this.Selected.forEach((item: any) => {
+        item.status = status;
+        this.updateStatus(item);
+        this.Selected = [];
+      })
+    }
+    else {
+
+      let dialogRef = this.dialog.open(LeaveActionDialogComponent, {
+        width: '35%'
+      });
+
+      dialogRef.afterClosed().subscribe((reason: string) => {
+        this.Selected.forEach((item: any) => {
+          if (reason) {
+            item.comment = reason;
+            item.status = status;
+            this.updateStatus(item)
+          }
+          item.status = status;
+          this.updateStatus(item);
+        });
+        this.Selected = [];
+
+      })
+    }
+  }
 
   accept_reject_leave(leave: Leave, status: string) {
 
@@ -178,24 +236,44 @@ export class LeavesComponent implements OnInit, AfterViewInit {
     }).on('changeMonth', (e) => {
       if (e.date) {
         this.date = e.date;
-       let date = new Date(e.date);
+        let date = new Date(e.date);
         this.leaves.filters.properties['date']['value'] = date.toISOString();
       }
       // this.fetchLeaves(e.date);
     });
     // $("#monthSelector").datepicker("setDate", null);
   }
-  selectAll(){
-    if(this.select == true)
-        this.select = false;
-        else
-        this.select = true;
-  }
-  ApproveLeave(){
-    let dialog = this.dialog.open(LeaveConfirmDialogComponent, { width: '40%' });
+  selectAll() {
+    if (this.select == true)
+      this.select = false;
+    else
+      this.select = true;
   }
 
   ngOnInit() {
+  }
+  All() {
+    if (this.Selected.length == this.leaves.items.length) {
+      this.Selected = [];
+      this.check = false;
+      console.log(this.Selected)
+    }
+    else if (this.Selected.length != this.leaves.items.length) {
+      this.leaves.items.forEach((item: any) => {
+        if (item.status === 'submitted') {
+          this.addLeaves(item)
+          this.check = true;
+        }
+      })
+    }
+    else {
+      this.leaves.items.forEach((item: any) => {
+        if (item.status === 'submitted') {
+          this.allLeaves(item)
+          this.check = true;
+        }
+      })
+    }
   }
 
 }
