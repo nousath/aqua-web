@@ -19,9 +19,9 @@
                         <span class="clickable fa fa-user-plus"></span>
                     </td>
                     <td *ngIf="isFingerPrintExists">
-                        <span *ngIf="!isExists(item.id)" data-toggle="tooltip" data-placement="top" title="ADD" (click)="updateFingerPrint(false, false, 'add', item.id)" class=" clickable fa fa-square-o"></span>
-                        <!-- <span *ngIf="isExists(item.id)" data-toggle="tooltip" data-placement="top" title="DISABLE" (click)="updateFingerPrint(true, false, 'remove', item.id)" class=" clickable glyphicon glyphicon-remove"></span> -->
-                        <span *ngIf="isExists(item.id)" data-toggle="tooltip" data-placement="top" title="DELETE" (click)="updateFingerPrint(true, false, 'delete', item.id)" class=" clickable fa fa-check-square-o"></span>
+                        <span *ngIf="!isExists(item.id)" data-toggle="tooltip" data-placement="top" title="ENABLE" (click)="updateFingerPrint(false, false, 'add', item.id)" class=" clickable fa fa-square-o"></span>
+                        <span *ngIf="isExists(item.id)" data-toggle="tooltip" data-placement="top" title="DISABLE" (click)="updateFingerPrint(true, false, 'remove', item.id)" class=" clickable fa fa-check-square-o"></span>&nbsp;&nbsp;&nbsp;
+                        <span data-toggle="tooltip" data-placement="top" title="DELETE" (click)="updateFingerPrint(true, false, 'delete', item.id)" class=" clickable glyphicon glyphicon-remove"></span>
                     </td>
                 </tr>
             </tbody>

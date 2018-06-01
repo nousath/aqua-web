@@ -76,6 +76,7 @@
             <table class="table table-condensed table-hover">
                 <thead class="primary_thead">
                     <tr>
+                        <th><input type="checkbox" [(ngModel)] = "check" (click)="All()"> </th>
                         <th class="tdWidth">Name</th>
                         <th class="tdWidth">Code</th>
                         <th class="tdWidth">Start Date</th>
@@ -85,8 +86,7 @@
                         <th class="tdWidth">Reason</th>
                         <th class="tdWidth">Status</th>
                         <th class="tdWidth">Comment</th>
-                        <!-- <th><md-checkbox *ngIf="leaves.items.length" ng-model="select" aria-label="Finished?"></md-checkbox></th> -->
-                        <th class="tdWidth text-center" *ngIf="isShowLeaveAction">Action</th>               
+                        <th class="tdWidth text-center">Action</th>               
                     </tr>
                 </thead>
                 <tbody>
@@ -94,6 +94,8 @@
                                                       itemsPerPage: leaves.pageSize,
                                                       currentPage: leaves.pageNo,
                                                       totalItems: leaves.totalRecords };" class="capitalize">
+                                                      
+                        <td><input type="checkbox" [checked]="check" (change)="allLeaves(item)" *ngIf="item?.status == 'submitted'"></td>
                         <td>
                             <!--<img *ngIf="item?.picUrl" class="img-circle profile_pic" alt="img" [src]="item?.picUrl">-->
                             <!--<img *ngIf="!item?.picUrl" class="img-circle profile_pic" alt="img" src="assets/images/blank.png"> &nbsp;-->
@@ -107,8 +109,7 @@
                         <td class="tdWidth">{{item?.reason}}</td>
                         <td class="tdWidth">{{item?.status}}</td>
                         <td class="tdWidth">{{item?.comment}}</td>
-                        <!-- <td><md-checkbox  *ngIf="item?.status?.toLowerCase() == 'submitted'"  aria-label="Finished?"></md-checkbox></td> -->
-                        <td class="tdWidth text-center" *ngIf="isShowLeaveAction" >
+                        <td class="tdWidth text-center"  >
                             <!--<button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status?.toLowerCase() == 'approved'
                                       || item?.status?.toLowerCase() == 'submitted'" (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
                                 <md-icon>highlight_off</md-icon>
@@ -132,14 +133,15 @@
 
                 </tbody>
             </table>
-            <!-- <button *ngIf="leaves.items.length" [disabled]="leaves?.isLoading || isUpdatingLeaveStatus" md-raised-button color="primary" mdTooltip="Approve" [mdTooltipPosition]="'above'" (click)="ApproveLeave()" style="float: right;">Approve</button>   -->
+            <button *ngIf="leaves.items.length" [disabled]="leaves?.isLoading || isUpdatingLeaveStatus" md-raised-button color="primary" mdTooltip="Approve" [mdTooltipPosition]="'above'" (click)="approveLeaves('approved')" style="float: right;">Approve</button>  
+            <button *ngIf="leaves.items.length" [disabled]="leaves?.isLoading || isUpdatingLeaveStatus" md-raised-button color="btn_grey" mdTooltip="Reject" [mdTooltipPosition]="'above'" (click)="approveLeaves('rejected')" style="float: right;">Reject</button>  
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="custom_pagination">
-                <pagination-controls id="leavs" (pageChange)="leaves.pageNo = $event;fetchLeaves();"></pagination-controls>
+                <pagination-controls id="leavs" (pageChange)="leaves.pageNo = $event;fetch();"></pagination-controls>
                 <div class="pageSize">
                     <label>Page Size:</label>
-                    <select name="pageSize" [(ngModel)]="leaves.pageSize" (change)="leaves.pageNo = 1;fetchLeaves();">
+                    <select name="pageSize" [(ngModel)]="leaves.pageSize" (change)="leaves.pageNo = 1;fetch();">
                       <option value=10>10</option>
                       <option value=20>20</option>
                       <option value=50>50</option>

@@ -39,7 +39,7 @@
         <div class="filtrEmpName">
             <form>
                 <div class="input-group">
-                    <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="employees?.isLoading || employee?.isProcessing" [(ngModel)]="employees.filters.properties['name']['value']" name="Name" placeholder="Search by employee name">
+                    <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="employees?.isLoading || employee?.isProcessing" [(ngModel)]="employees.filters.properties['name']['value']" name="Name" placeholder="Search by employee name/code">
                     <span class="input-group-btn">
                         <button [disabled]="employees?.isLoading || employee?.isProcessing" class="btn btn-default" type="submit" (click)="fetchEmp()">Search</button>
                         <!--<button  class="btn btn-default" type="submit" (click)="fetchEmp()">New</button>-->
