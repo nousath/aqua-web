@@ -114,6 +114,9 @@
                 <a md-list-item [routerLink]="['/pages/attendances/leaves']" routerLinkActive="activeTab" #rla3="routerLinkActive">
                     <h5>All Leave</h5>
                 </a>
+                <a md-list-item [routerLink]="['/pages/subAdmin/shifts']" routerLinkActive="activeTab" #rla9="routerLinkActive">
+                    <h5>Roster Shift</h5>
+                </a>
             </md-nav-list>
             <md-nav-list *ngIf="userType == 'normal'" dense class="fixedSideNav">
                 <div class="logo_container text-center">

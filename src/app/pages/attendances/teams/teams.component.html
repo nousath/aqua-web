@@ -159,7 +159,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of dailyAttendnace.items">
+                    <tr *ngFor="let item of dailyAttendnace.items| paginate: { id: 'foo',
+                    itemsPerPage: dailyAttendnace.pageSize,
+                    currentPage: dailyAttendnace.pageNo,
+                    totalItems: dailyAttendnace.totalRecords };" class="capitalize">
                         <td>
                             <img *ngIf="item?.picUrl" class="img-circle profile_pic" alt="img" [src]="item?.picUrl" onError="this.src='/assets/images/blank.png'">
                             <img *ngIf="!item?.picUrl" class="img-circle profile_pic" alt="img" src="assets/images/blank.png"> &nbsp;
@@ -189,6 +192,20 @@
                 </tbody>
             </table>
         </div>
-
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="custom_pagination">
+                <pagination-controls id="foo" (pageChange)="dailyAttendnace.pageNo = $event;getAttendance(dailyAttendnace.filters.properties['ofDate']['value']);"></pagination-controls>
+                <label>Total Records: {{dailyAttendnace.totalRecords}}</label>
+                <div class="pageSize">
+                    <label>Page Size:</label>
+                    <select name="pageSize" [(ngModel)]="dailyAttendnace.pageSize" (change)="dailyAttendnace.pageNo = 1;getAttendance(dailyAttendnace.filters.properties['ofDate']['value']);">
+                        <option value=10>10</option>
+                        <option value=50>50</option>
+                        <option value=100>100</option>
+                        <option value=500>500</option>
+                    </select>
+                </div>
+            </div>
+        </div>
     </md-card>
 </div>
