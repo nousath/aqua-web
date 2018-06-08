@@ -39,3 +39,9 @@
 .nameFormat {
     word-break: break-word;
 }
+th{
+    width: 20%;
+}
+td{
+    width: 30%;
+}

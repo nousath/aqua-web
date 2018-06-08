@@ -18,6 +18,7 @@ export class EmsEmployee {
   picUrl: string = '';
   dob: string = '';
   doj: string = '';
+  dom: string = '';
   email: string = '';
   password: string = '';
   userType: 'admin' | 'superadmin' | 'normal' = 'normal';
@@ -29,6 +30,12 @@ export class EmsEmployee {
   leaveBalances: any[];
   avgHours: number = null;
   token: string = '';
+
+  accountno: string = '';
+  ifsc: string = '';
+  bank: string = '';
+  branch: string = '';
+  accountholder: string = '';
 
   address1: string = '';
   address2: string = '';

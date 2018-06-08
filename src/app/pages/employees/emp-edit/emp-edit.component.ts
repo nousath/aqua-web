@@ -127,6 +127,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
               if (this.employee.properties.dob) { $("#dateSelector").datepicker("setDate", new Date(this.employee.properties.dob)); }
               if (this.employee.properties.dol) { $("#terminateDate").datepicker("setDate", new Date(this.employee.properties.dol)); }
               if (this.employee.properties.doj) { $("#joiningDate").datepicker("setDate", new Date(this.employee.properties.doj)); }
+              if (this.employee.properties.doj) { $("#membershipDate").datepicker("setDate", new Date(this.employee.properties.dom)); }
               this.employee.properties.supervisor = this.employee.properties.supervisor ? this.employee.properties.supervisor : new Supervisor();
               // this.employee.properties.designation = this.employee.properties.designation ? this.employee.properties.designation : new Designation();
               this.employee.properties.designation = this.employee.properties.designation ? this.employee.properties.designation.toLowerCase() : null;
@@ -306,6 +307,15 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
       autoclose: true
     }).on('changeDate', (d) => {
       this.employee.properties.doj = new Date(d.date).toISOString();
+    });
+    if (this.employee.properties.dom) { $("#membershipDate").datepicker("setDate", new Date(this.employee.properties.dom)); }
+    $('#membershipDate').datepicker({
+      format: 'dd/mm/yyyy',
+      minViewMode: 0,
+      maxViewMode: 2,
+      autoclose: true
+    }).on('changeDate', (d) => {
+      this.employee.properties.dom = new Date(d.date).toISOString();
     });
 
   }
