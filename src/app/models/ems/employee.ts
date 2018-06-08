@@ -20,6 +20,8 @@ export class EmsEmployee {
   doj: string = '';
   dom: string = '';
   email: string = '';
+  aadhar: string = '';
+  pan: string = '';
   password: string = '';
   userType: 'admin' | 'superadmin' | 'normal' = 'normal';
   phone: string = '';
