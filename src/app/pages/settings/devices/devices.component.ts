@@ -93,6 +93,9 @@ export class DevicesComponent implements OnInit {
         if (!err) {
           let h: number, m: number;
           page.items.forEach(device => {
+            if (!device.type) {
+              device.type = 'both';
+            }
             if (device.mute && device.mute.length > 0) {
               device.mute.forEach(dt => {
                 if (dt.start != null) {
