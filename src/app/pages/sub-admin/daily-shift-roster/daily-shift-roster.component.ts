@@ -1,19 +1,29 @@
 import { Component, OnInit } from '@angular/core';
-import { Page } from '../../common/contracts/page';
-import { Model } from '../../common/contracts/model';
-import { Router, ActivatedRoute } from '@angular/router';
-import { AutoCompleteService } from '../../services/auto-complete.service';
 import { Observable, Subscription } from 'rxjs/Rx';
-import { AmsEmployeeService } from '../../services/ams/ams-employee.service';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ToastyService } from 'ng2-toasty';
-import { ShiftType } from '../../models/shift-type';
-import { EffectiveShift } from '../../models/effective-shift';
-import { AmsEffectiveShiftService } from '../../services/ams/ams-effective-shift.service';
-import { AmsShiftService } from '../../services/ams/ams-shift.service';
-import { LocalStorageService } from '../../services/local-storage.service';
+
+
+// import { Page } from '../../common/contracts/page';
+// import { Model } from '../../common/contracts/model';
+// import { AutoCompleteService } from '../../services/auto-complete.service';
+// import { AmsEmployeeService } from '../../services/ams/ams-employee.service';
+// import { ShiftType } from '../../models/shift-type';
+// import { EffectiveShift } from '../../models/effective-shift';
+// import { AmsEffectiveShiftService } from '../../services/ams/ams-effective-shift.service';
+// import { AmsShiftService } from '../../services/ams/ams-shift.service';
+// import { LocalStorageService } from '../../services/local-storage.service';
+// import { Employee } from '../../models/employee';
+
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { Employee } from '../../models/employee';
+import { ShiftType, EffectiveShift } from '../../../models';
+import { Page } from '../../../common/contracts/page';
+import { AutoCompleteService } from '../../../services/auto-complete.service';
+import { AmsEmployeeService } from '../../../services/ams/ams-employee.service';
+import { AmsEffectiveShiftService } from '../../../services/ams/ams-effective-shift.service';
+import { LocalStorageService } from '../../../services/local-storage.service';
+import { AmsShiftService } from '../../../services/ams/ams-shift.service';
 declare var $: any;
 
 @Component({
