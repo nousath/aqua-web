@@ -1,0 +1,13 @@
+.format {
+    padding-top: 2%;
+    padding-bottom: 2%;
+}
+
+h5 {
+    text-align: center;
+    width: 100%;
+    color: #ccc;
+    /* border-bottom: solid 1px #ccc; */
+    padding-bottom: 4px;
+    margin: 7px 10px;
+}

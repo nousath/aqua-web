@@ -1,12 +1,14 @@
 import { Shift } from './shift';
+import { TimeLogs } from '.';
 
 export class DayEvent {
+  id: string = '';
   checkIn: string = null;
   checkOut: string = null;
   hoursWorked: number = null;
   ofDate: string = null;
-  id = '';
-  status = '';
+  status: string = '';
   shift: Shift = new Shift();
+  timeLogs: TimeLogs[];
   employee: { id: string } = { id: '' };
 }

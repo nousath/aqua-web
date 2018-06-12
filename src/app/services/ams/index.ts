@@ -9,4 +9,4 @@ export * from './ams-holiday.service';
 export * from './ams-timelogs.service';
 export * from './ams-system-usage.service';
 export * from './ams-effective-shift.service';
-export * from './insights.service';
+export * from './ams-report-request.service';

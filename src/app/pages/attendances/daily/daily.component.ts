@@ -13,7 +13,7 @@ import { Model } from '../../../common/contracts/model';
 import { MdDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Filter } from '../../../common/contracts/filters';
-import * as _ from 'lodash';
+import * as _ from "lodash";
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { AmsTagService } from '../../../services/ams/ams-tag.service';
 import { TagType, Tag } from '../../../models/tag';
@@ -27,10 +27,10 @@ export interface SelectedTag {
 export class Tags {
   selected: SelectedTag[] = [];
   select(tag: SelectedTag) {
-    const t: SelectedTag = _.find(this.selected, (i: SelectedTag) => {
-      return i.tagTypeId === tag.tagTypeId;
+    let t: SelectedTag = _.find(this.selected, (i: SelectedTag) => {
+      return i.tagTypeId == tag.tagTypeId;
     });
-    if (t && tag.tagId === 'select an option')
+    if (t && tag.tagId == 'select an option')
       return this.selected.splice(this.selected.indexOf(t), 1);
     if (!t)
       this.selected.push(tag);
@@ -49,13 +49,15 @@ export class Tags {
 export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
 
   dailyAttendnace: Page<DailyAttendance>;
-  isFilter = false;
+  isFilter: boolean = false;
   shiftTypes: Page<ShiftType>;
   employee: Model<Employee>;
   tagTypes: Page<TagType>;
   tags: Tags = new Tags();
-  date: Date = null;
-  isDownloading = false;
+  date: Date = null
+  isUpload: boolean = false;
+
+  attendances: DailyAttendance[] = [];
 
   constructor(private amsEmployeeService: AmsEmployeeService,
     private amsShiftService: AmsShiftService,
@@ -128,18 +130,18 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
   reset() {
     this.dailyAttendnace.filters.reset();
     this.tags.reset();
-    const tagElements: any[] = document.getElementsByName('tags') as any;
+    let tagElements: any[] = document.getElementsByName('tags') as any;
     if (tagElements) {
       tagElements.forEach(item => item.value = '');
     }
-    this.store.removeItem('daily-attendance-filter');
-    $('#dateSelector').datepicker('setDate', new Date());
+    this.store.removeItem("daily-attendance-filter");
+    $("#dateSelector").datepicker("setDate", new Date());
     this.getAttendance(new Date());
 
   }
 
   checkFiltersInStore() {
-    const filters: any = this.store.getObject('daily-attendance-filter');
+    let filters: any = this.store.getObject('daily-attendance-filter');
     if (filters) {
       this.isFilter = true;
       // this.dailyAttendnace.filters.properties['ofDate']['value'] = filters['ofDate'] || new Date();
@@ -151,7 +153,7 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   setFiltersToStore() {
-    const queryParams: any = {};
+    let queryParams: any = {};
     _.each(this.dailyAttendnace.filters.properties, (filter: Filter, key: any, obj: any) => {
       if (filter.value) {
         queryParams[key] = filter.value;
@@ -167,19 +169,38 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
     this.date = date;
     date = new Date(date);
     this.dailyAttendnace.filters.properties['ofDate']['value'] = date.toISOString();
-    const tags: string[] = [];
+    let tags: string[] = [];
     _.each(this.tags.selected, (tag: SelectedTag) => {
       tags.push(tag.tagId)
     })
     this.dailyAttendnace.filters.properties['tagIds']['value'] = tags;
-    this.dailyAttendnace.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+    this.dailyAttendnace.fetch().then(page => {
+      if (page && page.items) {
+        page.items.forEach(pageItem => {
+
+          const existingAttendance = this.attendances.find(item => item.code === pageItem.code);
+          if (existingAttendance) {
+            if (!existingAttendance.attendance.checkIn || existingAttendance.attendance.checkIn > pageItem.attendance.checkIn) {
+              existingAttendance.attendance.checkIn = pageItem.attendance.checkIn;
+            }
+
+            if (!existingAttendance.attendance.checkOut || existingAttendance.attendance.checkOut < pageItem.attendance.checkOut) {
+              existingAttendance.attendance.checkOut = pageItem.attendance.checkOut;
+            }
+          } else {
+            this.attendances.push(pageItem);
+          }
+        });
+      }
+    }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
 
+  isDownloading: boolean = false;
   download(byShiftEnd: boolean, byShiftLength: boolean, reportName: string) {
     this.isDownloading = true;
-    const serverPageInput: ServerPageInput = new ServerPageInput();
-    const queryParams: any = {};
+    let serverPageInput: ServerPageInput = new ServerPageInput();
+    let queryParams: any = {};
     _.each(this.dailyAttendnace.filters.properties, (filter: Filter, key: any, obj: any) => {
       if (filter.value) {
         queryParams[key] = filter.value;
@@ -202,28 +223,23 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    const date = new Date();
-    const today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-
     $('#dateSelector').datepicker({
-      minDate: moment(),
       format: 'dd/mm/yyyy',
-      daysOfWeekDisabled: [0, 6],
       minViewMode: 0,
       maxViewMode: 2,
-      // endDate: '+0d',
       autoclose: true,
       maxDate: new Date()
     }).on('changeDate', (e) => {
       if (new Date(e.date) > new Date()) {
-
         return this.toastyService.info({ title: 'Info', msg: 'Date should be less than or equal to current date' })
       }
       this.getAttendance(e.date);
     });
-    $('#dateSelector').datepicker('setDate', new Date());
+    $("#dateSelector").datepicker("setDate", new Date());
   }
-
+  downloadlink(type: string) {
+    this.router.navigate(['pages/attendances/reports'], { queryParams: { type: type } });
+  }
   ngOnDestroy() {
 
   }

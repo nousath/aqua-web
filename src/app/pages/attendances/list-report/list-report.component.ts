@@ -6,7 +6,6 @@ import { ShiftType } from './../../../models/shift-type';
 import { Insight } from './../../../models/insight.model';
 // import { ReportFiltersComponent } from './../../../shared/components/report-filters/report-filters.component';
 import { Component, OnInit } from '@angular/core';
-import { InsightsService } from '../../../services';
 
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastyService } from 'ng2-toasty';
@@ -18,6 +17,7 @@ import { ValidatorService } from '../../../services/validator.service';
 import { Angulartics2 } from 'angulartics2';
 import { Page } from '../../../common/contracts/page';
 import { Http, Headers } from '@angular/http';
+import { InsightsService } from '../../../services/ams/insights.service';
 
 export interface SelectedTag {
   tagId: string;
@@ -26,10 +26,6 @@ export interface SelectedTag {
 
 interface IValue {
   prop: string
-}
-
-interface MyType {
-  [name: string]: IValue;
 }
 
 @Component({
@@ -51,7 +47,8 @@ export class ListReportComponent implements OnInit {
   isDownloading = false;
 
 
-  constructor(private amsInsightService: InsightsService,
+  constructor(
+    private amsInsightService: InsightsService,
     private toastyService: ToastyService,
     public validatorService: ValidatorService,
     private activatedRoute: ActivatedRoute,
@@ -60,15 +57,10 @@ export class ListReportComponent implements OnInit {
     private http: Http,
     private router: Router) {
 
-
-
-
     this.alert = new Model({
       api: amsInsightService.insights,
       properties: new Insight()
     });
-
-
 
     this.subscription = activatedRoute.params.subscribe(
       params => {

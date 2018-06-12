@@ -11,7 +11,7 @@ import { Employee, Abilities } from '../../../models/employee';
 import { Subscription } from 'rxjs/Rx';
 import { AmsLeaveService, AmsAttendanceService, AmsEmployeeService } from '../../../services/ams';
 import { Page } from '../../../common/contracts/page';
-import { LeaveBalance, Attendance, Leave } from '../../../models/';
+import { LeaveBalance, Attendance, Leave, User } from '../../../models/';
 import * as _ from 'lodash';
 import { DailyAttendance } from '../../../models/daily-attendance';
 import { LeaveActionDialogComponent } from '../../../dialogs/leave-action-dialog/leave-action-dialog.component';
@@ -20,6 +20,8 @@ import { ShiftType } from '../../../models/shift-type';
 import * as moment from 'moment';
 import { AmsShiftService } from '../../../services/ams/ams-shift.service';
 import { LocalStorageService } from '../../../services/local-storage.service';
+import { EmsEmployeeService } from '../../../services/index';
+import { ResetPasswordDialogComponent } from '../../../dialogs/reset-password-dialog/reset-password-dialog.component';
 declare var $: any;
 
 
@@ -33,6 +35,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
 
   subscription: Subscription;
   employee: Model<Employee>;
+  user: string;
   shifTypes: Page<ShiftType>;
   empId: string;
   ofDate: any;
@@ -54,6 +57,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
   today=new Date(moment().startOf("day").toDate()).toISOString();
 
   constructor(private amsEmployeeService: AmsEmployeeService,
+    private emsEmployeeService: EmsEmployeeService,
     private amsLeaveService: AmsLeaveService,
     private amsShiftService: AmsShiftService,
     private amsAttendanceService: AmsAttendanceService,
@@ -94,6 +98,8 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
         value: null
       }]
     });
+
+    this.user = localStorage.getItem('userType');
 
     this.shifTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
     this.subscription = activatedRoute.params.subscribe(
@@ -370,5 +376,25 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
       });
     }
   }
-
+  resetPassword() {
+    let dialog = this.dialog.open(ResetPasswordDialogComponent, { width: '40%' });
+    dialog.afterClosed().subscribe(
+      (password: string) => {
+        if (password) {
+          this.employee.isProcessing = true;
+          let emsUserID : number;
+          let emp: any = {
+            password: password
+          };
+          emsUserID = this.store.getItem('emsUserId')
+          this.emsEmployeeService.employees.update(emsUserID, emp)
+            .then(data => {
+              this.employee.isProcessing = false;
+              this.toastyService.success({ title: 'Success', msg: 'Password updated successfully' });
+            })
+            .catch(err => { this.employee.isProcessing = false; this.toastyService.error({ title: 'Error', msg: err }) });
+        }
+      }
+    );
+  }
 }

@@ -26,20 +26,17 @@ import {
   EmsAuthService,
   AmsTimelogsService,
   AmsSystemUsageService,
-  AmsEffectiveShiftService
+  AmsEffectiveShiftService,
+  AmsReportRequestService
 } from '../services';
 
 import { ValidatorService } from '../services/validator.service';
 import { LocalStorageService } from '../services/local-storage.service';
-import { InsightsService } from '../services/ams/insights.service';
-
 import { TimePipe } from './time.pipe';
 import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
 import { AmsTagService } from '../services/ams/ams-tag.service';
 import { ShiftPickerComponent } from './components/shift-picker/shift-picker.component';
-// importInsightiteScrollModule } from 'ngx-infinite-scroll';
 
-import { Insight } from '../models/insight.model';
 
 import {
   MdTooltipModule,
@@ -78,7 +75,6 @@ import {
 } from '@angular/material';
 
 
-
 export const MaterialModules = [
   MdAutocompleteModule,
   MdButtonModule,
@@ -115,7 +111,7 @@ export const MaterialModules = [
 ];
 
 @NgModule({
-  declarations: [TimePipe, ShiftPickerComponent],
+  declarations: [TimePipe,ShiftPickerComponent],
   providers: [
     EmsEmployeeService,
     EmsDesignationService,
@@ -136,9 +132,7 @@ export const MaterialModules = [
     AmsTagService,
     AmsSystemUsageService,
     AmsEffectiveShiftService,
-    InsightsService
-
-
+    AmsReportRequestService
   ],
   imports: [
     HttpModule,
@@ -149,7 +143,6 @@ export const MaterialModules = [
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyA3-BQmJVYB6_soLJPv7cx2lFUMAuELlkM'
     }),
-    // InfiniteScrollModule,
   ],
   exports: [
     CommonModule,
@@ -163,9 +156,8 @@ export const MaterialModules = [
     NguiAutoCompleteModule,
     AgmCoreModule,
     TimePipe,
-    ShiftPickerComponent,
-  //   InfiniteScrollModule
-   ]
+    ShiftPickerComponent
+  ]
 
 })
 export class SharedModule { }

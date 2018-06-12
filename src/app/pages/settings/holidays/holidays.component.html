@@ -1,14 +1,23 @@
 <div class="row page_header">
     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <h5><b>Holidays</b></h5>
+        <h5>
+            <b>Holidays</b>
+        </h5>
     </div>
     <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
         <div class="headerBtns">
             <!--<button [disabled]="holidays?.isLoading   || holiday?.isProcessing  " md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>-->
-            <button md-icon-button [disabled]="holidays?.isLoading   || holiday?.isProcessing  " mdTooltip="Add" class="marginLetf" [mdTooltipPosition]="'above'" (click)="toggleHoliday(true)"><md-icon >add_circle_outline</md-icon></button>
+            <button md-icon-button [disabled]="holidays?.isLoading   || holiday?.isProcessing  " mdTooltip="Add" class="marginLetf" [mdTooltipPosition]="'above'"
+                (click)="toggleHoliday(true)">
+                <md-icon>add_circle_outline</md-icon>
+            </button>
+
+
         </div>
     </div>
 </div>
+
+
 <md-spinner class="custom_spinner" *ngIf="holidays?.isLoading   || holiday?.isProcessing  " mode="indeterminate"></md-spinner>
 
 <!--<div class="row" *ngIf="isFilter">
@@ -62,24 +71,33 @@
 <div class="row" *ngIf="isNew">
     <md-card class="card">
         <div class="row text-center headr_bar">
-            <h5><b>New Holiday</b></h5>
+            <h5>
+                <b>New Holiday</b>
+            </h5>
             <div class="actionBtns">
-                <button md-icon-button mdTooltip="Close" [mdTooltipPosition]="'above'" (click)="toggleHoliday()"><md-icon >highlight_off</md-icon></button>
+                <button md-icon-button mdTooltip="Close" [mdTooltipPosition]="'above'" (click)="toggleHoliday()">
+                    <md-icon>highlight_off</md-icon>
+                </button>
             </div>
         </div>
         <br>
         <form class="row">
             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  form-group">
                 <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                    <label for="email">Name<span class="asterisk">*</span></label>
+                    <label for="email">Name
+                        <span class="asterisk">*</span>
+                    </label>
                 </div>
                 <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                    <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="holidays?.isLoading   || holiday?.isProcessing  " [(ngModel)]="holiday.properties.name" name="Name" required>
+                    <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="holidays?.isLoading   || holiday?.isProcessing  "
+                        [(ngModel)]="holiday.properties.name" name="Name" required>
                 </div>
             </div>
             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  form-group">
                 <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                    <label for="pwd">Date<span class="asterisk">*</span></label>
+                    <label for="pwd">Date
+                        <span class="asterisk">*</span>
+                    </label>
                 </div>
                 <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
                     <input id="dateSelector" type="text" class="form-control input-sm calendar no-spin">
@@ -89,8 +107,10 @@
             </div>
 
             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 button_align form-group text-center">
-                <button [disabled]="holidays?.isLoading   || holiday?.isProcessing  " type="submit" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="save();">Save</button>&nbsp;&nbsp;
-                <button [disabled]="holidays?.isLoading   || holiday?.isProcessing  " md-raised-button class="btn_grey" mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="toggleHoliday(true)">Reset</button>
+                <button [disabled]="holidays?.isLoading   || holiday?.isProcessing  " type="submit" md-raised-button color="primary" mdTooltip="Apply"
+                    [mdTooltipPosition]="'above'" (click)="saveHoliday();">Save</button>&nbsp;&nbsp;
+                <button [disabled]="holidays?.isLoading   || holiday?.isProcessing  " md-raised-button class="btn_grey" mdTooltip="Reset"
+                    [mdTooltipPosition]="'above'" (click)="toggleHoliday(true)">Reset</button>
             </div>
 
         </form>
@@ -100,52 +120,47 @@
 
 <div class="row">
     <md-card class="card">
-            <div class="row page_header">
         <div class="table-responsive">
             <table class="table table-condensed table-hover">
-                
-                <thead class="thead">
+                <thead class="primary_thead">
                     <tr>
                         <th class="srno">Sr No</th>
                         <th class="tdWidth">Name</th>
-                        <th>Date</th>
+                        <th class="tdWidth">Date</th>
+                        <th class="tdWidth">
+                            <button class="btn" [disabled]="holidays?.isLoading   || holiday?.isProcessing" *ngIf="upcoming == false" md-raised-button color="primary"
+                                mdTooltip="All Holidays" class="marginLetf" [mdTooltipPosition]="'above'" (click)="AllHolidays()">ALL</button>
+                            <button class="btn" [disabled]="holidays?.isLoading   || holiday?.isProcessing" *ngIf="upcoming == true" md-raised-button color="primary"
+                                mdTooltip="Upcoming" class="marginLetf" [mdTooltipPosition]="'above'" (click)="Upcoming()">Upcoming</button>
+                        </th>
                     </tr>
                 </thead>
-                <tbody style="background-color: white;">
+                <tbody>
                     <tr *ngFor="let item of holidays.items | paginate: { id: 'foo',
                                                       itemsPerPage: holidays.pageSize,
                                                       currentPage: holidays.pageNo,
                                                       totalItems: holidays.totalRecords };let i = index" class="capitalize">
 
                         <td class="srno">{{(10 * (holidays.pageNo - 1))+(i+1)}}</td>
-                        <td class="tdWidth">
-                                <input [maxlength]="validatorService.textLength" type="text" [name]="'name_'+i" [readOnly]="holidays.isLoading || holidays.isProcessing || !item?.isEdit" class="number form-control input-xs" [(ngModel)]="item.name">
-                            </td>
-                        <td><input [maxlength]="validatorService.textLength" type="text" [name]="'name_'+i" [readOnly]="holidays.isLoading || holidays.isProcessing || !item?.isEdit" class="number form-control input-xs" [(ngModel)]="item.date "></td>
+                        <td class="tdWidth">{{item?.name}}</td>
+                        <td class="tdWidth">{{item?.date|date}}</td>
+                        <!-- <td>{{currentDate| date: UTC  }}</td> -->
                         <td class="tdWidth text-center">
-                                <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="edit(item, true)">
-                                        <md-icon>edit</md-icon>
-                                    </button>
-                               
-                                <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Delete" [mdTooltipPosition]="'above'" (click)="remove(item)">
-                                <md-icon>delete</md-icon>
-                            </button> 
-                                <button *ngIf="item?.isEdit" [disabled]="holidays.isLoading || holidays.isProcessing" md-icon-button class="button_align cursor " (click)="save(item)" mdTooltip="Save" [mdTooltipPosition]="'above'">
-                                        <md-icon>save</md-icon>
-                                    </button>
-                                        <button *ngIf="item?.isEdit" [disabled]="holidays.isLoading || holidays.isProcessing" md-icon-button class="button_align cursor" (click)="edit(item, false)" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
-                                        <md-icon>undo</md-icon>
-                                    </button>
-                                
-                            </td>   
+                            <a md-icon-button class="button_align cursor" mdTooltip="Edit details" [mdTooltipPosition]="'above'" >
+                                <md-icon>edit</md-icon>
+                            </a>
+                            &nbsp;
+                            <button [disabled]="employees?.isLoading || employee?.isProcessing" md-icon-button class="button_align cursor" mdTooltip="Terminate"
+                                [mdTooltipPosition]="'above'">
+                                <i class="fa fa-user-times fa-lg" aria-hidden="true"></i>
+                            </button>
+                        </td>
                     </tr>
-
                 </tbody>
             </table>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <pagination-controls id="foo" (pageChange)="holidays.pageNo = $event;fetchHolidays();"></pagination-controls>
-        </div>
         </div>
     </md-card>
 </div>

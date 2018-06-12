@@ -9,6 +9,7 @@ export class AmsAttendanceService {
 
   monthlyAttendances: IApi<MonthAttendance>;
   dailyAttendances: IApi<DailyAttendance>;
+  teamMember:IApi<DailyAttendance>;
 
   donwloadMonthlyAttendances: IApi<any>;
   donwloadDailyAttendances: IApi<any>;
@@ -20,10 +21,11 @@ export class AmsAttendanceService {
 
   constructor(private http: Http) {
     const baseApi = 'ams';
-
+    const id ='';
     this.attendance = new GenericApi<DayEvent>('attendances', http, baseApi);
     this.monthlyAttendances = new GenericApi<MonthAttendance>('attendances/employee/month/summary', http, baseApi);
     this.dailyAttendances = new GenericApi<DailyAttendance>('attendances/getOneDayAttendances', http, baseApi);
+    this.teamMember = new GenericApi<any>(`teams/${id}/teamMembers`, http, baseApi);  
     this.donwloadMonthlyAttendances = new GenericApi<any>('attendances/extractor', http, baseApi);
     this.donwloadDailyAttendances = new GenericApi<any>('attendances/dayReport', http, baseApi);
     this.donwloadSingleEmpMonthAtte = new GenericApi<any>('attendances/monthReport', http, baseApi);

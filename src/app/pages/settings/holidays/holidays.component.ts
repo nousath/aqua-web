@@ -1,12 +1,10 @@
-import { Holiday } from './../../../models/holiday';
 import { Component, OnInit } from '@angular/core';
-import * as _ from 'lodash';
+import { Holiday } from '../../../models';
 import { Page } from '../../../common/contracts/page';
 import { AmsHolidayService, ValidatorService } from '../../../services';
 import { ToastyService } from 'ng2-toasty';
+import * as moment from 'moment';
 import { Model } from '../../../common/contracts/model';
-import { LocalStorageService } from '../../../services/local-storage.service';
-import { _def } from '@angular/core/src/view/provider';
 declare var $: any;
 
 @Component({
@@ -18,37 +16,46 @@ export class HolidaysComponent implements OnInit {
 
   holidays: Page<Holiday>
   holiday: Model<Holiday>
-  isFilter = false;
-  isNew = false;
+  isFilter: boolean = false;
+  isNew: boolean = false;
+  upcoming: boolean = true;
+  currentDate: any;
 
   constructor(private amsHolidayService: AmsHolidayService,
     public validatorService: ValidatorService,
-    private store: LocalStorageService,
     private toastyService: ToastyService) {
 
     this.holidays = new Page({
-      api: amsHolidayService.holidays
+      api: amsHolidayService.holidays,
+      filters:[{
+        field: 'date',
+        value: null
+      }]
     });
 
     this.holiday = new Model({
       api: amsHolidayService.holidays,
       properties: new Holiday()
     });
+    this.currentDate = new Date().toISOString();
+    // moment(this.currentDate).utc;
+    // this.currentDate.toUTCString();
+    console.log(this.currentDate)
 
     this.fetchHolidays();
   }
 
-  // fetchHolidays() {
-  //   this.holidays.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
-  // }
+  upcomingHoliday(holiday:any){
+    return moment(moment(holiday.date).startOf('day')).isAfter(moment(this.currentDate).startOf('day'))
+  }
   fetchHolidays() {
-    this.holidays.fetch().then(
-      data => {
-        _.each(this.holidays.items, (item: Holiday) => {
-          item['isEdit'] = false
-        })
-      }
-    ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+    
+    this.holidays.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+  }
+  Upcoming(){
+    this.upcoming = false
+    this.holidays.filters.properties['date'].value = new Date().toISOString();
+    this.holidays.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
   toggleHoliday(isOpen?: boolean) {
@@ -58,15 +65,13 @@ export class HolidaysComponent implements OnInit {
       this.initDatePiker();
     }, 1000);
   }
-  save(holiday?: Holiday) {
-    if (holiday) {
-      this.holiday.properties = holiday;
-    }
+
+  saveHoliday() {
     if (!this.holiday.properties.name)
       return this.toastyService.info({ title: 'Info', msg: 'Enter Holiday Name' });
-    // if (!this.holiday.properties.date)
-    //   return this.toastyService.info({ title: 'Info', msg: 'Select  Date' });
-    // this.holiday.properties.date = new Date(this.holiday.properties.date).toISOString();
+    if (!this.holiday.properties.date)
+      return this.toastyService.info({ title: 'Info', msg: 'Select  Date' });
+    this.holiday.properties.date = new Date(this.holiday.properties.date).toISOString();
     this.holiday.save().then(data => {
       this.toggleHoliday();
       this.fetchHolidays()
@@ -83,51 +88,12 @@ export class HolidaysComponent implements OnInit {
       this.holiday.properties.date = new Date(e.date).toISOString();
     });
   }
-  edit(holiday: Holiday, isEdit: boolean) {
-    if (isEdit) {
-      holiday.isEdit = true;
-      this.store.setObject(`holidayEdit_${holiday.id}`, holiday);
-    } else {
-      holiday.isEdit = false;
-      const d: Holiday = this.store.getObject(`holidayEdit_${holiday.id}`) as Holiday;
-      holiday.code = d.code;
-      holiday.name = d.name;
-      this.store.removeItem(`holidayEdit_${holiday.id}`);
-    }
+  AllHolidays(){
+    this.upcoming = true
+    this.holidays.filters.properties['date'].value = null;
+    this.holidays.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
-  // save(holiday?: Holiday) {
-  //   if (holiday) {
-  //     this.holiday.properties = holiday;
-  //   }
-  //   if (!this.holiday.properties.name)
-  //     return this.toastyService.info({ title: 'Info', msg: 'Enter  Name' });
-  //   if (!this.holiday.properties.date)
-  //     return this.toastyService.info({ title: 'Info', msg: 'Select  Code' });
-  //   this.holiday.save().then(data => {
-  //     if (holiday) {
-  //       holiday.isEdit = false;
-  //       this.store.removeItem(`holidayEdit_${holiday.id}`);
-  //     } else {
-  //       // this.toggleDesignation();
-  //     }
-  //     this.fetchHolidays()
-  //   }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
-  // }
-
-
-
-
   ngOnInit() {
   }
 
-  remove(item) {
-    this.holiday.properties = item;
-    this.holiday.remove()
-      .then(() => {
-        this.toastyService.info({ title: 'Info', msg: 'holidays successfully delete' })
-      })
-      .catch(err => this.toastyService.error({ title: 'Error', msg: err }));
-  }
 }
-
-

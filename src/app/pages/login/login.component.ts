@@ -16,14 +16,14 @@ declare var $: any;
 
 
 class VerifyOTP {
-  char_1 = '';
-  char_2 = '';
-  char_3 = '';
-  char_4 = '';
-  char_5 = '';
-  char_6 = '';
-  maxLength = 1;
-  minLength = 1;
+  char_1: string = '';
+  char_2: string = '';
+  char_3: string = '';
+  char_4: string = '';
+  char_5: string = '';
+  char_6: string = '';
+  maxLength: number = 1;
+  minLength: number = 1;
   concatChar(): string {
     return `${this.char_1}${this.char_2}${this.char_3}${this.char_4}${this.char_5}${this.char_6}`
   }
@@ -43,16 +43,14 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   user: Model<User>;
   otpModel: EmsEmployee;
-  SignUpEmail = '';
-  isLoggingIn = false;
+  signupEmail: string = '';
+  isLoggingIn: boolean = false;
   section: 'SIGNIN' | 'SIGNUP' | 'OTP' | 'COMPLETE' | 'FORGOTPASSWORD' | 'RESETPASSWORD' = 'SIGNIN';
   verifyOTP: VerifyOTP = new VerifyOTP();
   organizations: Page<Organization>;
-  newOrg = false;
+  newOrg: boolean = false;
   profileModel: EmsEmployee = new EmsEmployee();
   subscription: Subscription;
-
-
 
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -66,7 +64,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private toastyService: ToastyService) {
 
     this.subscription = activatedRoute.queryParams.subscribe(queryParams => {
-      const token: string = queryParams['user_access_token'];
+      let token: string = queryParams['user_access_token'];
       let orgCode: string = queryParams['org_code'];
       if (token && orgCode) {
         orgCode = orgCode.toLowerCase();
@@ -96,12 +94,13 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.isLoggingIn = true;
     this.user.create().then(
       (emsUser: User) => {
-        if (emsUser.status.toLowerCase() === 'verified') {
+        if (emsUser.status.toLowerCase() == 'verified') {
           this.section = 'COMPLETE';
           return this.isLoggingIn = false;
         }
         this.store.setItem('external-token', emsUser.token); // for ems its aceess-token
         this.store.setItem('orgCode', emsUser.organization.code);
+        this.store.setItem('emsUserId', emsUser.id);
         this.loginToAms();
       }
     ).catch(err => { this.isLoggingIn = false; this.toastyService.error({ title: 'Error', msg: err }) });
@@ -109,38 +108,45 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 
   loginToAms() {
-    const tempData: any = { 'device': { 'id': 'string' } };
+    let tempData: any = { "device": { "id": "string" } };
     this.isLoggingIn = true;
-    this.amsEmployeeService.amsLogin.create(tempData).then(
+    this.amsEmployeeService.employees.create(tempData).then(
       (amsUser) => {
         this.isLoggingIn = false;
-        if (amsUser.userType === 'normal') {
-          this.router.navigate(['/download']);
-          return this.toastyService.info({ title: 'Info', msg: 'You are not authorized to use this application. Please contact the system administrator if you need to access this application' })
-        }
+        // if (amsUser.userType == 'normal') {
+          
+          // this.router.navigate(['/download']);
+          // this.router.navigate(['/pages/attendances/daily',amsUser.id]);
+          // return this.toastyService.info({ title: 'Info', msg: 'You are not authorized to use this application. Please contact the system administrator if you need to access this application' })
+        // }
         this.store.setItem('ams_token', amsUser.token);
+        this.store.setItem('userId',amsUser.id)
         this.store.setObject('user', amsUser);
+        this.store.setItem('userType', amsUser.userType);
         this.store.setItem('orgCode', amsUser.organization.code.toLowerCase());
-        if (amsUser.userType === 'superadmin')
-          this.router.navigate(['/pages']);
-        if (amsUser.userType === 'admin')
-          this.router.navigate(['/pages/subAdmin']);
+        if (amsUser.userType == 'superadmin')
+          return this.router.navigate(['/pages']);
+          if (amsUser.userType == 'normal' || 'admin')
+          return this.router.navigate(['/pages/attendances/daily',amsUser.id]);
+        // if (amsUser.userType == 'admin')
+        //   return this.router.navigate(['/pages/attendances/daily',amsUser.id]);
+        
       }
     ).catch(err => { this.isLoggingIn = false; this.toastyService.error({ title: 'Error', msg: err }) });
   }
 
   signUp() {
-    if (!this.SignUpEmail) {
+    if (!this.signupEmail) {
       return this.toastyService.info({ title: 'Info', msg: 'Please enter Email' })
     }
 
-    // window.location.href = `${this.registerUrl}/#/signup/${this.SignUpEmail}`;
-    const win = window.open(`${this.registerUrl}/#/signup/${this.SignUpEmail}`, '_blank');
+    // window.location.href = `${this.registerUrl}/#/signup/${this.signupEmail}`;
+    var win = window.open(`${this.registerUrl}/#/signup/${this.signupEmail}`, '_blank');
     if (win) {
-      // Browser has allowed it to be opened
+      //Browser has allowed it to be opened
       win.focus();
     } else {
-      // Browser has blocked it
+      //Browser has blocked it
       alert('Please allow popups for this website');
     }
     // this.isLoggingIn = true;
@@ -150,7 +156,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     // this.emsAuthService.signup.create(model).then(
     //   data => {
     //     this.isLoggingIn = false;
-    //     if (data.status.toLowerCase() === 'verified') {
+    //     if (data.status.toLowerCase() == 'verified') {
     //       this.section = 'COMPLETE';
     //       this.profileModel.id = data.id;
     //     } else {
@@ -163,7 +169,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   validateOtp() {
-    const otp: any = {
+    let otp: any = {
       activationCode: this.verifyOTP.concatChar()
     }
     this.isLoggingIn = true;
@@ -177,13 +183,13 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   onSelectOrg() {
-    this.newOrg = this.profileModel.organization.id === 'new' ? true : false;
+    this.newOrg = this.profileModel.organization.id == 'new' ? true : false;
   }
 
   // focusToNext(currentEle, nextEle) {
   //   let currentElement = document.getElementById('currentEle');
   //   // $(".optboxFocus").keyup(function () {
-  //   //   if (this.value.length === this.maxLength) {
+  //   //   if (this.value.length == this.maxLength) {
   //   //     $(this).next('.optboxFocus').focus();
   //   //   }
   //   // });
@@ -195,7 +201,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       return this.toastyService.error({ title: 'Error', msg: 'Password and Confirm Password should be same' })
     }
     this.isLoggingIn = true;
-    this.profileModel.organization.id = this.profileModel.organization.id === 'new' ? null : this.profileModel.organization.id;
+    this.profileModel.organization.id = this.profileModel.organization.id == 'new' ? null : this.profileModel.organization.id;
     this.emsAuthService.completeSignup.create(this.profileModel, this.profileModel.id).then(
       data => {
         this.store.setItem('external-token', data.token); // for ems its aceess-token
@@ -210,7 +216,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (password2 !== this.profileModel.password) {
       return this.toastyService.error({ title: 'Error', msg: 'Password and Confirm Password should be same' })
     }
-    const resetPassModel = {
+    let resetPassModel = {
       activationCode: this.verifyOTP.concatChar(),
       password: this.profileModel.password
     }
@@ -232,8 +238,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   resendOTP() {
-    const resend: any = {
-      email: this.SignUpEmail
+    let resend: any = {
+      email: this.signupEmail
     }
     this.isLoggingIn = true;
     this.emsAuthService.forgotPassword.create(resend).then(

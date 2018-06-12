@@ -3,16 +3,16 @@ import { EmsEmployeeService } from '../../../services/ems';
 import { Employee } from '../../../models/employee';
 import { Page } from '../../../common/contracts/page';
 import { ToastyService } from 'ng2-toasty';
-import { MdDialog } from '@angular/material';
+import { MdDialog } from "@angular/material";
 import { Model } from '../../../common/contracts/model';
 import { ActivatedRoute, Route, Router } from '@angular/router';
-import { ValidatorService } from 'app/services';
 import { EmsEmployee } from '../../../models/ems/employee';
 import { Filter } from '../../../common/contracts/filters';
-import * as _ from 'lodash';
+import * as _ from "lodash";
 import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-dialog.component';
 import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
-import { LocalStorageService } from 'app/services/local-storage.service';
+import { LocalStorageService } from "app/services/local-storage.service";
+import { ValidatorService } from '../../../services/validator.service';
 
 @Component({
   selector: 'aqua-employee-list',
@@ -25,7 +25,7 @@ export class EmployeeListComponent implements OnInit {
   employee: Model<EmsEmployee>
   statusFilter: string;
   uploader: FileUploader;
-  isUpload = false;
+  isUpload: boolean = false;
   status;
 
 
@@ -37,8 +37,8 @@ export class EmployeeListComponent implements OnInit {
     private router: Router,
     public dialog: MdDialog) {
 
-    const access_Token: string = this.store.getItem('external-token');
-    const orgCode = this.store.getItem('orgCode');
+    let access_Token: string = this.store.getItem('external-token');
+    let orgCode = this.store.getItem('orgCode');
     this.uploader = new FileUploader({
       url: '/ems/api/employees/importer',
       itemAlias: 'file',
@@ -62,7 +62,7 @@ export class EmployeeListComponent implements OnInit {
 
     this.uploader.onCompleteItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
 
-      const res: any = JSON.parse(response);
+      let res: any = JSON.parse(response);
       if (!res.isSuccess)
         return toastyService.error({ title: 'Error', msg: 'excel upload failed' })
       this.fetchEmp();
@@ -74,6 +74,9 @@ export class EmployeeListComponent implements OnInit {
       api: emsEmployeeService.employees,
       filters: [{
         field: 'name',
+        value: null
+      }, {
+        field: 'code',
         value: null
       }, {
         field: 'status',
@@ -90,7 +93,7 @@ export class EmployeeListComponent implements OnInit {
 
   fetchEmp(status?: string) {
     if (status) {
-    this.status = status;
+      this.status = status;
     }
     this.statusFilter = status ? status : 'activate';
     this.employees.filters.properties['status'].value = this.status ? this.status : 'activate';
@@ -104,26 +107,35 @@ export class EmployeeListComponent implements OnInit {
   }
 
   terminateEmp(empId: string, empName: string) {
-    const dialog = this.dialog.open(ConfirmDialogComponent, { width: '40%' });
+    let dialog = this.dialog.open(ConfirmDialogComponent, { width: '40%' });
     dialog.componentInstance.msg = `Are you sure to want to terminate ${empName} ?`;
-    dialog.afterClosed().subscribe((value: boolean) => {
-      if (value) {
-        const emp: any = {
-          id: empId,
-          status: 'deactivate'
-        }
-        this.employee.properties = emp;
-        // this.employee.properties.status = 'inactive';
-        this.employee.update().then(
-          data => {
-            this.fetchEmp();
-          }
-        ).catch(err => this.toastyService.error({ title: 'Error', msg: err }))
+    dialog.afterClosed().subscribe((emp: any) => {
+      let empl: any = {
+        id: empId,
+        dol: emp.dol,
+        reason: emp.reason
       }
+      this.employee.properties = empl;
+      // this.employee.properties.id = empId;
+      // this.employee.properties.dol = emp.dol;
+      // this.employee.properties.reason = emp.reason;
+      // this.employee.properties.status = 'inactive';
+      this.employee.update().then(
+        data => {
+          this.fetchEmp();
+        }
+      ).catch(err => this.toastyService.error({ title: 'Error', msg: err }))
+      // }
     })
 
   }
-
+  downloadlink() {
+    this.router.navigate(['pages/attendances/reports'], {
+      queryParams: {
+        type: 'employees-details'
+      }
+    })
+  }
   ngOnInit() {
   }
 

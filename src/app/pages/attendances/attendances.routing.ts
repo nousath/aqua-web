@@ -1,5 +1,3 @@
-// import { ReportFiltersComponent } from './../../shared/components/report-filters/report-filters.component';
-import { AttendanceLogsComponent } from './attendance-logs/attendance-logs.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AttendancesComponent } from './attendances.component';
@@ -8,19 +6,33 @@ import { DailyComponent } from './daily/daily.component';
 import { AttendanceDetailsComponent } from './attendance-details/attendance-details.component';
 import { ApplyLeaveComponent } from './apply-leave/apply-leave.component';
 import { LeavesComponent } from './leaves/leaves.component';
-import { ReportComponent } from './report/report.component';
-import { DownloadReportComponent } from './download-report/download-report.component';
-import { ListReportComponent } from './list-report/list-report.component';
 import { LeaveBalancesComponent } from './leave-balances/leave-balances.component';
 import { ManageLeavesComponent } from './manage-leaves/manage-leaves.component';
+import { AttendanceLogsComponent } from './attendance-logs/attendance-logs.component';
+import { ReportsComponent } from './reports/reports.component';
+import { TeamsComponent } from './teams/teams.component';
+import { AdminGuard } from '../../guards/admin.guard';
+import { SubAdminGuard } from '../../guards/subadmin.gaurd';
+
 const routes: Routes = [
   {
     path: '', component: AttendancesComponent, children: [
       { path: '', redirectTo: 'daily', pathMatch: 'full' },
       { path: 'monthly', component: MonthlyComponent },
-      { path: 'daily', component: DailyComponent },
+      { path: 'daily', component: DailyComponent  },
+      { path: 'daily/report', component: ReportsComponent },
+      
+      { path: 'reports', component: ReportsComponent },
 
       { path: 'daily/:empId', component: AttendanceDetailsComponent },
+      
+      // {path: 'daily/teams/:empId', component:AttendanceDetailsComponent},
+      { path: 'teams/:empId', component: TeamsComponent },
+      { path: 'daily/teams/:empId', component: TeamsComponent },
+      { path: 'daily/teams/:empId', component: TeamsComponent },
+      
+      // {path: 'myteams/:empId', component: TeamsComponent },
+      
       // { path: 'details/:empId', component: AttendanceDetailsComponent },
       { path: 'monthly/:empId', component: AttendanceDetailsComponent },
       { path: 'leaves/:empId', component: AttendanceDetailsComponent },
@@ -37,12 +49,6 @@ const routes: Routes = [
       { path: 'leave-balances', component: LeaveBalancesComponent },
       { path: 'leave-balances/:empId', component: AttendanceDetailsComponent },
       { path: 'manage-leaves', component: ManageLeavesComponent },
-
-      {path: 'report', component: ReportComponent},
-      // {path:'list-report',component:ListReportComponent},
-      {path: 'list-report/:id', component: ListReportComponent},
-      {path: 'download-report/:id', component: DownloadReportComponent}
-
     ]
   }
 ];

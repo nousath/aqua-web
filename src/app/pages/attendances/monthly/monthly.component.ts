@@ -32,12 +32,12 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
   monthlyAttendnace: Page<MonthAttendance>;
   employee: Model<Employee>;
   shiftTypes: Page<ShiftType>;
-  isFilter = false;
+  isFilter: boolean = false;
   date: Date = null;
-  showDatePicker = false;
+  showDatePicker: boolean = false;
   subscription: Subscription;
   org: any;
-  isDownloading = false;
+
   tagTypes: Page<TagType>;
   tags: Tags = new Tags();
 
@@ -108,7 +108,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
   reset() {
     this.monthlyAttendnace.filters.reset();
     this.tags.reset();
-    const tagElements: any[] = document.getElementsByName('tags') as any;
+    let tagElements: any[] = document.getElementsByName('tags') as any;
     if (tagElements) {
       tagElements.forEach(item => item.value = '');
     }
@@ -119,7 +119,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
 
 
   checkFiltersInStore() {
-    const filters: any = this.store.getObject('monthly-attendance-filters');
+    let filters: any = this.store.getObject('monthly-attendance-filters');
     if (filters) {
       this.isFilter = true;
       // this.monthlyAttendnace.filters.properties['ofDate']['value'] = filters['ofDate'] || new Date();
@@ -132,7 +132,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
   }
 
   setFiltersToStore() {
-    const queryParams: any = {};
+    let queryParams: any = {};
     _.each(this.monthlyAttendnace.filters.properties, (filter: Filter, key: any, obj: any) => {
       if (filter.value) {
         queryParams[key] = filter.value;
@@ -149,7 +149,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
     date = new Date(date);
     this.monthlyAttendnace.filters.properties['ofDate']['value'] = date.toISOString();
 
-    const tags: string[] = [];
+    let tags: string[] = [];
     _.each(this.tags.selected, (tag: SelectedTag) => {
       tags.push(tag.tagId)
     })
@@ -159,10 +159,11 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
 
   }
 
+  isDownloading: boolean = false;
   download(byShiftEnd: boolean, byShiftLength: boolean, reportName: string) {
     this.isDownloading = true;
-    const serverPageInput: ServerPageInput = new ServerPageInput();
-    const queryParams: any = {};
+    let serverPageInput: ServerPageInput = new ServerPageInput();
+    let queryParams: any = {};
     _.each(this.monthlyAttendnace.filters.properties, (filter: Filter, key: any, obj: any) => {
       if (filter.value) {
         queryParams[key] = filter.value;
@@ -180,32 +181,35 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // downloadPdf(jobName) {
-  //   this.isDownloading = true;
-  //   const queryParams: any = {};
-  //   _.each(this.monthlyAttendnace.filters.properties, (filter: Filter, key: any, obj: any) => {
-  //     if (filter.value) {
-  //       queryParams[key] = filter.value;
-  //     }
-  //   });
-  //   const atomsUrl = `http://atoms-api.m-sas.com/api/docs/${jobName}_${this.org}/${queryParams['ofDate']}.pdf?clientCode=msas`;
-  //   this.http.get(atomsUrl, { responseType: ResponseContentType.Blob }).toPromise().then(response => {
-  //     const fileName = `${moment(queryParams['ofDate']).format('MMM_YY')}_monthlyReport.pdf`;
-  //     const blob = new Blob([response['_body']], { type: 'application/pdf' });
-  //     const objectUrl = window.URL.createObjectURL(blob);
-  //     const a = document.createElement('a');
-  //     a.href = objectUrl;
-  //     a.download = fileName;
-  //     a.click();
-  //     URL.revokeObjectURL(objectUrl);
-  //     document.body.appendChild(a);
-  //     document.body.removeChild(a);
-  //     this.isDownloading = false;
-  //   }).catch(err => {
-  //     this.toastyService.error({ title: 'Error', msg: err });
-  //     this.isDownloading = false;
-  //   });
-  // }
+  downloadPdf(jobName) {
+    this.isDownloading = true;
+    const queryParams: any = {};
+    _.each(this.monthlyAttendnace.filters.properties, (filter: Filter, key: any, obj: any) => {
+      if (filter.value) {
+        queryParams[key] = filter.value;
+      }
+    });
+    const atomsUrl = `http://atoms-api.m-sas.com/api/docs/${jobName}_${this.org}/${queryParams['ofDate']}.pdf?clientCode=msas`;
+    this.http.get(atomsUrl, { responseType: ResponseContentType.Blob }).toPromise().then(response => {
+      const fileName = `${moment(queryParams['ofDate']).format('MMM_YY')}_monthlyReport.pdf`;
+      const blob = new Blob([response['_body']], { type: 'application/pdf' });
+      const objectUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = objectUrl;
+      a.download = fileName;
+      a.click();
+      URL.revokeObjectURL(objectUrl);
+      document.body.appendChild(a);
+      document.body.removeChild(a);
+      this.isDownloading = false;
+    }).catch(err => {
+      this.toastyService.error({ title: 'Error', msg: err });
+      this.isDownloading = false;
+    });
+  }
+  downloadlink() {
+    this.router.navigate(['pages/attendances/reports'],{ queryParams: { type: 'monthly-attendance'} })
+  }
 
   ngOnInit() {
   }

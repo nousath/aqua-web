@@ -12,7 +12,7 @@ import { environment } from '../../environments/environment';
 export class GenericApi<TModel> implements IApi<TModel> {
 
   private rootUrl: string;
-
+  
   private getHeaders(): Headers {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -236,6 +236,27 @@ export class GenericApi<TModel> implements IApi<TModel> {
       })
       .catch(this.handleError);
   }
+
+  all(type: any, id?:string , model?: any): Promise<any>{
+        let url = `${this.rootUrl}/${this.key}`;
+        if(id){
+          url = `${this.rootUrl}/${this.key}/${id}`
+        }
+        return this.http[type](url, model, { headers: this.getHeaders() })
+        .toPromise()
+        .then((response) => {
+          const dataModel = response.json();
+          if (!dataModel.isSuccess) {
+            if (response.status === 200) {
+              return this.handleError(dataModel.message || dataModel.error || dataModel.code || 'failed');
+            } else {
+              return this.handleError(response.status);
+            }
+          }
+          return dataModel.data;
+        })
+        .catch(this.handleError);
+      }
 
   update(id: number | string, model: TModel, input?: ServerPageInput, path?: string): Promise<TModel> {
     let parms: URLSearchParams;

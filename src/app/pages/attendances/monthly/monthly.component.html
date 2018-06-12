@@ -1,27 +1,48 @@
 <div class="row page_header">
     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <h5><b>Monthly Attendance</b></h5>
+        <h5>
+            <b>Monthly Attendance</b>
+        </h5>
     </div>
     <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
         <div class="headerInpts">
             <div class="input-group">
                 <span class="input-group-addon" id="basic-addon1">Select Month</span>
-                <input id="monthSelector" type="text" class="form-control input-sm calendar no-spin" style="cursor: pointer;">
+                <input id="monthSelector" type="text" class="form-control input-sm calendar no-spin">
             </div>
         </div>
-        <div class="headerBtns ">
-            <button [disabled]="employee?.isProcessing" md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
-            <button [disabled]= "isDownloading || employee?.isProcessing" [mdMenuTriggerFor]="appMenu" md-icon-button><md-icon>cloud_download</md-icon> </button>
-            <md-menu #appMenu="mdMenu">
-                <button md-menu-item (click)="download(true,false,'Extra hours - after Shift end time')">Extra hours - after Shift end time</button>
-                <button md-menu-item (click)="download(false,true,'Extra hours - after Shift hours')">Extra hours - after Shift hours
-                </button>
-                <button md-menu-item (click)="download(false,false, 'Day Attendance')">Day's Attendance</button>
+        <div class="headerBtns">
+            <button [disabled]="monthlyAttendnace?.isLoading || employee?.isProcessing" md-icon-button mdTooltip="Filters" class="marginLetf"
+                [mdTooltipPosition]="'above'" (click)="isFilter = !isFilter">
+                <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
+            </button>
+            <button (click)="downloadlink()" md-icon-button>
+                <md-icon>cloud_download</md-icon>
+            </button>
+
+            <!-- <button [disabled]="monthlyAttendnace?.isLoading || isDownloading || employee?.isProcessing" [mdMenuTriggerFor]="appMenu"
+                md-icon-button>
+                <md-icon>cloud_download</md-icon>
+            </button> -->
+            <!-- <md-menu #appMenu="mdMenu">
+                <button md-menu-item [matMenuTriggerFor]="appSubMenu1">Extra hours - after Shift end time</button>
+                <button md-menu-item [matMenuTriggerFor]="appSubMenu2">Extra hours - after Shift hours</button>
+                <button md-menu-item [matMenuTriggerFor]="appSubMenu3">Monthly Attendance</button>
             </md-menu>
-            <!-- <button [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button mdTooltip="Download Attendance extraHours" [mdTooltipPosition]="'above'" (click)="download(true)"><md-icon>cloud_download</md-icon> </button>
-            <button [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" (click)="download(false)" angulartics2On="click" angularticsEvent="dialyAttendnaceDownloadClick"
-                angularticsCategory="dialyAttendnace" [angularticsProperties]="{label: 'Fall Campaign'}"><md-icon >cloud_download</md-icon></button> -->
+            <md-menu #appSubMenu1="mdMenu">
+                <button md-menu-item (click)="download(true, false, 'Extra hours - after Shift end time')">Excel</button>
+                <button *ngIf="org ==='sh'" md-menu-item (click)="downloadPdf('attendance3')">PDF</button>
+            </md-menu>
+            <md-menu #appSubMenu2="mdMenu">
+                <button md-menu-item (click)="download(false, true, 'Extra hours - after Shift hours')">Excel</button>
+                <button *ngIf="org ==='sh'" md-menu-item (click)="downloadPdf('attendance2')">PDF</button>
+            </md-menu>
+            <md-menu #appSubMenu3="mdMenu">
+                <button md-menu-item (click)="download(false, false, 'Day Attendance')">Excel</button>
+                <button *ngIf="org ==='sh'" md-menu-item (click)="downloadPdf('attendance')">PDF</button>
+            </md-menu> -->
         </div>
+
     </div>
 </div>
 <md-spinner class="custom_spinner" *ngIf="monthlyAttendnace?.isLoading || isDownloading || employee?.isProcessing" mode="indeterminate"></md-spinner>
@@ -29,9 +50,13 @@
 <div class="row" *ngIf="isFilter">
     <md-card class="card">
         <div class="row text-center headr_bar">
-            <h5><b>Filters</b></h5>
+            <h5>
+                <b>Filters</b>
+            </h5>
             <div class="actionBtns">
-                <button md-icon-button mdTooltip="Close" [mdTooltipPosition]="'above'" (click)="isFilter = !isFilter"><md-icon >highlight_off</md-icon></button>
+                <button md-icon-button mdTooltip="Close" [mdTooltipPosition]="'above'" (click)="isFilter = !isFilter">
+                    <md-icon>highlight_off</md-icon>
+                </button>
             </div>
         </div>
         <form class="row">
@@ -41,7 +66,8 @@
                         <label for="email">Name</label>
                     </div>
                     <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="monthlyAttendnace?.isLoading  || isDownloading" [(ngModel)]="monthlyAttendnace.filters.properties['name']['value']" name="Name">
+                        <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="monthlyAttendnace?.isLoading  || isDownloading"
+                            [(ngModel)]="monthlyAttendnace.filters.properties['name']['value']" name="Name">
                     </div>
                 </div>
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4  form-group">
@@ -49,7 +75,8 @@
                         <label for="pwd">Code</label>
                     </div>
                     <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="monthlyAttendnace?.isLoading  || isDownloading" [(ngModel)]="monthlyAttendnace.filters.properties['code']['value']" name="Code">
+                        <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="monthlyAttendnace?.isLoading  || isDownloading"
+                            [(ngModel)]="monthlyAttendnace.filters.properties['code']['value']" name="Code">
                     </div>
                 </div>
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-group">
@@ -57,11 +84,12 @@
                         <label>Shift</label>
                     </div>
                     <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <select class="form-control" [disabled]="monthlyAttendnace?.isLoading  || isDownloading" [(ngModel)]="monthlyAttendnace.filters.properties['shiftType']['value']" placeholder="Shift" name="shift">
-                   <option *ngFor="let item of shiftTypes.items" [value]="item.id">
-                    {{item?.name}}
-                </option>
-                </select>
+                        <select class="form-control" [disabled]="monthlyAttendnace?.isLoading  || isDownloading" [(ngModel)]="monthlyAttendnace.filters.properties['shiftType']['value']"
+                            placeholder="Shift" name="shift">
+                            <option *ngFor="let item of shiftTypes.items" [value]="item.id">
+                                {{item?.name}}
+                            </option>
+                        </select>
                     </div>
                 </div>
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-group" *ngFor="let item of tagTypes?.items">
@@ -69,12 +97,29 @@
                         <label>{{item?.name | titlecase}}</label>
                     </div>
                     <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <select id="tag" class="form-control" [disabled]="monthlyAttendnace?.isLoading  || isDownloading" #tag (change)="tags.select({tagTypeId:item.id,tagId:tag.value})" placeholder="Tag" name="tags">
+                        <select id="tag" class="form-control" [disabled]="monthlyAttendnace?.isLoading  || isDownloading" #tag (change)="tags.select({tagTypeId:item.id,tagId:tag.value})"
+                            placeholder="Tag" name="tags">
                             <option selected [ngValue]="null">select an option</option>
                             <option *ngFor="let tag of item?.tags" [value]="tag.id">
-                              {{tag?.name | titlecase}}
-                          </option>
-                    </select>
+                                {{tag?.name | titlecase}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4  form-group">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        <label for="email">Department</label>
+                    </div>
+                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                        <input type="text" class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" name="Name">
+                    </div>
+                </div>
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4  form-group">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        <label for="email">Contractor</label>
+                    </div>
+                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                        <input type="text" class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" name="Name">
                     </div>
                 </div>
             </div>
@@ -83,8 +128,11 @@
             </div> -->
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 button_align form-group ">
-                    <button [disabled]="monthlyAttendnace?.isLoading || isDownloading" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="getAttendance(monthlyAttendnace.filters.properties['ofDate']['value']);">Apply</button>
-                    <button [disabled]="monthlyAttendnace?.isLoading || isDownloading" md-raised-button class="btn_grey" mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()">Reset</button>
+
+                    <button [disabled]="monthlyAttendnace?.isLoading || isDownloading" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'"
+                        (click)="getAttendance(monthlyAttendnace.filters.properties['ofDate']['value']);">Apply</button>
+                    <button [disabled]="monthlyAttendnace?.isLoading || isDownloading" md-raised-button class="btn_grey" mdTooltip="Reset" [mdTooltipPosition]="'above'"
+                        (click)="reset()">Reset</button>
                 </div>
             </div>
         </form>
@@ -132,10 +180,10 @@
                 <div class="pageSize">
                     <label>Page Size:</label>
                     <select name="pageSize" [(ngModel)]="monthlyAttendnace.pageSize" (change)="monthlyAttendnace.pageNo = 1;getAttendance(monthlyAttendnace.filters.properties['ofDate']['value']);">
-                      <option value="10">10</option>
-                      <option value="50">50</option>
-                      <option value="100">100</option>
-                      <option value="500">500</option>
+                        <option value=10>10</option>
+                        <option value=50>50</option>
+                        <option value=100>100</option>
+                        <option value=500>500</option>
                     </select>
                 </div>
             </div>

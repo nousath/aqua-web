@@ -1,9 +1,5 @@
-// import { ReportFiltersComponent } from './shared/components/report-filters/report-filters.component';
-import { DownloadReportComponent } from './pages/attendances/download-report/download-report.component';
-import { ListReportComponent } from './pages/attendances/list-report/list-report.component';
-import { ReportComponent } from './pages/attendances/report/report.component';
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule } from "@angular/router";
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PagesComponent } from './pages/pages.component';
@@ -19,8 +15,10 @@ import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
 import { AdminGuard } from './guards/admin.guard';
 import { GkuAttendanceComponent } from './pages/gku-attendance/gku-attendance.component';
 import { SystemUsageComponent } from './pages/system-usage/system-usage.component';
-import { DailyShiftRosterComponent } from './pages/daily-shift-roster/daily-shift-roster.component';
-
+import { ResetPasswordDialogComponent } from './dialogs/reset-password-dialog/reset-password-dialog.component';
+import { DepartmentsComponent } from './pages/employees/departments/departments.component';
+import { EmsDepartmentService } from './services/index';
+import { LeaveConfirmDialogComponent } from './dialogs/leave-confirm-dialog/leave-confirm-dialog.component';
 
 
 @NgModule({
@@ -32,8 +30,8 @@ import { DailyShiftRosterComponent } from './pages/daily-shift-roster/daily-shif
     AppDownloadComponent,
     GkuAttendanceComponent,
     SystemUsageComponent,
-    DailyShiftRosterComponent,
-
+    ResetPasswordDialogComponent,
+    LeaveConfirmDialogComponent,
 
   ],
   imports: [
@@ -44,7 +42,15 @@ import { DailyShiftRosterComponent } from './pages/daily-shift-roster/daily-shif
     AppRoutingModule,
   ],
   providers: [
-    LoginGuard, UserGuard, AdminGuard
+    LoginGuard, UserGuard, AdminGuard,EmsDepartmentService
+  ],
+  entryComponents: [
+    ResetPasswordDialogComponent,
+    LeaveConfirmDialogComponent
+  ],
+  exports:[
+    ResetPasswordDialogComponent,
+    LeaveConfirmDialogComponent
   ],
   bootstrap: [AppComponent]
 })

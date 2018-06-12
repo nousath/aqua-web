@@ -15,8 +15,7 @@
         "build:qa": "ng build --env=qa --prod",
         "build:prod": "ng build --env=prod --prod",
         "test": "ng test",
-        "lint": "ng lint",
-        "cleanup": "ng lint --fix",
+        "lint": "ng lint --fix",
         "lint:log": "ng lint --format stylish > lint.log",
         "e2e": "ng e2e",
         "analysis": "ng build && source-map-explorer dist/build/main.bundle.js"
@@ -51,7 +50,6 @@
         "ng2-file-upload": "^1.2.1",
         "ng2-toasty": "^4.0.3",
         "ngx-bootstrap": "^1.7.1",
-        "ngx-infinite-scroll": "^0.8.2",
         "ngx-pagination": "^3.0.0",
         "rxjs": "^5.4.2",
         "web-animations-js": "^2.2.5",

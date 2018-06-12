@@ -1,293 +1,300 @@
 <div class="row page_header">
-        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-            <a md-raised-button class="reply" color="primary" [routerLink]="['/pages/attendances/daily']">
-                <md-icon>reply</md-icon>List
-            </a>
-            <h5><b>Details</b></h5>
-        </div>
-        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-            <div class="headerInpts">
-                <div class="input-group">
-                    <span class="input-group-addon" id="basic-addon1">Select Month</span>
-                    <input id="monthSelector" type="text" class="form-control input-sm calendar no-spin" style="cursor: pointer;">
-                </div>
-            </div>
-            <div class="headerBtns">
-                <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading || isProcessingAttendance" [mdMenuTriggerFor]="appMenu" md-icon-button>
-                    <md-icon>cloud_download</md-icon>
-                </button>
-                <md-menu #appMenu="mdMenu">
-                    <button md-menu-item (click)="download(true,false,'Extra hours - after Shift end time')">Extra hours - after Shift end time</button>
-                    <button md-menu-item (click)="download(false,true,'Extra hours - after Shift hours')">Extra hours - after Shift hours</button>
-                    <button md-menu-item (click)="download(false,false,'Day Attendance')">Day's Attendance</button>
-                </md-menu>
-                <!-- <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading || isProcessingAttendance" md-icon-button mdTooltip="Download Attendance extraHours" [mdTooltipPosition]="'above'" (click)="download(true)"><md-icon>cloud_download</md-icon></button>
-                <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading  || isProcessingAttendance" md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" (click)="download(false)" angulartics2On="click" angularticsEvent="dialyAttendnaceDownloadClick"
-                    angularticsCategory="dialyAttendance" [angularticsProperties]="{label: 'Fall Campaign'}"><md-icon >cloud_download</md-icon></button> -->
-            </div>
-    
-        </div>
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <a *ngIf="user == 'superadmin'" md-raised-button class="reply" color="primary" [routerLink]="['/pages/attendances/daily']">
+            <md-icon>reply</md-icon>List
+        </a>
+        <h5 [ngSwitch]="user">
+            <b *ngSwitchCase="'normal'">My Attendance</b>
+            <b *ngSwitchCase="'admin'">My Attendance</b>
+            <b *ngSwitchCase="'superadmin'">Details</b>
+        </h5>
     </div>
-    <md-spinner class="custom_spinner" *ngIf="employee?.isProcessing || attendance?.isProcessing || isDownloading || leaveBalances?.isLoading || leavesSubmiited?.isLoading || isProcessingAttendance || isUpdatingLeaveStatus" mode="indeterminate"></md-spinner>
-    <br>
-    <div class="row">
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 profieCrd nameFormat">
-            <md-card>
-                <div class="row">
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 capitalize">
-                        <h4>{{employee?.properties?.name}}</h4>
-                        <h5>{{employee?.properties?.code}}</h5>
-                        <h5>{{employee?.properties?.designation}}</h5>
-                    </div>
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                        <div class="row profileImage">
-                            <img *ngIf="employee?.properties?.picUrl" [src]="employee?.properties?.picUrl" width="100%" onError="this.src='/assets/images/blank.png'">
-                            <img *ngIf="!employee?.properties?.picUrl" alt="img" src="assets/images/blank.png" width="100%">
-                        </div>
-                    </div>
-                    <br>
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <table class="table">
-    
-                            <tr class="capitalize">
-                                <td>Monthly Average Hours:</td>
-                                <td>{{employee?.properties?.avgHours | number:'1.0-2'}}</td>
-                            </tr>
-                            <tr class="capitalize">
-                                <td>Supervisor:</td>
-                                <td>{{employee?.properties?.supervisor?.name}} {{employee?.properties?.supervisor?.code ? '('+employee?.properties?.supervisor?.code+')':'--'}}</td>
-                            </tr>
-                            <tr>
-                                <td>Email:</td>
-                                <td>{{employee?.properties?.email ? employee?.properties?.email : '--'}} </td>
-                            </tr>
-                            <tr class="capitalize">
-                                <td>Mobile:</td>
-                                <td>{{employee?.properties?.phone ? employee?.properties?.phone : '--'}} </td>
-                            </tr>
-                            <tr class="capitalize">
-                                <td>Shift:</td>
-                                <td>{{employee?.properties?.shiftType.name ? employee?.properties?.shiftType.name : '--'}} </td>
-                            </tr>
-                            <tr>
-                                <td>Track Location:</td>
-    
-                                <td>
-                                    <md-slide-toggle [checked]="employee?.properties?.abilities?.trackLocation" (change)="toggleManual('trackLocation')">{{employee?.properties?.abilities?.trackLocation ? 'Enabled':'Disabled'}}</md-slide-toggle>
-                                </td>
-    
-                            </tr>
-                            <tr>
-                                <td>Shift Notifier:&nbsp;</td>
-                                <td>
-                                    <md-slide-toggle [checked]="employee?.properties?.abilities?.shiftNotifier" (change)="toggleManual('shiftNotifier')">{{employee?.properties?.abilities?.shiftNotifier ? 'Enabled':'Disabled'}}</md-slide-toggle>
-                                </td>
-    
-                            </tr>
-                        </table>
-    
-                        <table class="table">
-                            <tr>
-                                <th>Choose Ability</th>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <md-radio-group class="example-radio-group" [(ngModel)]="this.employee.properties['currentAblitiy']" (change)="selectAbility(this.employee.properties['currentAblitiy'])">
-                                        <md-radio-button class="example-radio-button" [value]="'maualAttendance'">
-                                            Manual CheckIn/CheckOut
-                                        </md-radio-button>
-                                        <!-- <md-radio-button class="example-radio-button" [value]="'manualByBeacon'">
-                                            for attendence via app
-                                        </md-radio-button> -->
-                                        <!-- <md-radio-button class="example-radio-button" [value]="'manualByGeoFencing'">
-                                            Manual By Geo Fencing
-                                        </md-radio-button> -->
-                                        <md-radio-button class="example-radio-button" [value]="'manualByWifi'">
-                                            Manual By Wifi
-                                        </md-radio-button>
-                                        <md-radio-button class="example-radio-button" [value]="'none'">
-                                            None
-                                        </md-radio-button>
-                                        <md-radio-button class="example-radio-button" [value]="'manualByWifi'">
-                                            automatic by wifi
-                                        </md-radio-button>
-                                    </md-radio-group>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </md-card>
+    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+        <div class="headerInpts">
+            <div class="input-group">
+                <span class="input-group-addon" id="basic-addon1">Select Month</span>
+                <input id="monthSelector" type="text" class="form-control input-sm calendar no-spin">
+            </div>
         </div>
-    
-        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-            <md-card class="dots">
-                <div class="row">
-                    <div class="dot">
-                        <img src="assets/images/dots/present.png">&nbsp;Present</div>
-                    <div class="dot">
-                        <img src="assets/images/dots/absent.png">&nbsp;Absent</div>
-                    <div class="dot">
-                        <img src="assets/images/dots/leave.png">&nbsp;Leave</div>
-                    <div class="dot">
-                        <img src="assets/images/dots/misswipe.png">&nbsp;Missed Swipe</div>
-                    <div class="dot">
-                        <img src="assets/images/dots/holiday.png">&nbsp;Holiday</div>
-                </div>
-            </md-card>
-            <br>
-            <md-card>
-                <div class="row" angulartics2On="click" angularticsEvent="dailyTimeLogClick" angularticsCategory="dailyTimelog" [angularticsProperties]="{label: 'Fall Campaign'}">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 calHeader text-center cursor" (click)="openCalnder()">
-                        <h5>
-                            <b>{{selectedDate | date:'MMMM y'}}</b>
-                        </h5>
-                    </div>
-                    <br>
-                    <div class="calBox dayName" *ngFor="let item of days">{{item}}</div>
-                    <div class="calBox" *ngFor="let item of emptyStartDays"></div>
-                    <div class="calBox day corners shadow" *ngFor="let item of events;let i = index" (click)="updateDayEvent(item)" [ngClass]="{'present': (item?.status === 'present' || item?.status === 'checkedin'),
-                     'absent':item?.status === 'absent'  && item?.shift?.status === 'working',
-                      'leave':item?.status === 'onleave' || item?.status === 'halfday'  && item?.shift?.status === 'working',
-                     'missedSwipe':item?.status === 'missswipe',
-                      'weekoff':item?.shift?.status === 'weekoff' && (item?.status !== 'present' && item?.status !== 'checkedin' && item?.status !== 'missswipe'),
-                       'holiday':item?.shift?.status === 'holiday' && (item?.status !== 'present' && item?.status !== 'checkedin' && item?.status !== 'missswipe')}">
-                        <h5><b>{{getDate(item?.ofDate)}}</b></h5>
-                        <!--<p>{{i}} {{item?.ofDate | date}}</p>-->
-                        <!--<p>{{item?.ofDate}}</p>-->
-                        <!--<div *ngIf="item?.shift?.status === 'working'">-->
-                        <p *ngIf="item?.status === 'present'
-                        || item?.status === 'checkedin'
-                         || item?.status === 'missswipe'
-                         || item?.status === 'checked-in-again'
-                         || item?.status === 'halfday'">
-                            In - {{item?.checkIn | date:'shortTime'}}
-                        </p>
-                        <p *ngIf="item.ofDate === today" style="border-color: black;">
-                            <span class="calBoxhighlight"></span>
-                        </p>
-                        <p *ngIf="item?.status === 'present'
-                     
-                        || item?.status === 'missswipe'
-                        || item?.status === 'checked-in-again'
-                        || item?.status === 'halfday'">
-                            Out - {{item?.checkOut | date:'shortTime'}}
-                        </p>
-                        <p *ngIf="item?.status === 'onleave'
-                        || item?.status === 'absent'
-                        && item?.shift?.status === 'working'">
-                            <span class="capitalize">{{item?.status}}</span>
-                        </p>
-                        <p *ngIf="item?.status === 'absent'
-                        && item?.shift?.status === 'weekoff'">
-                            <span class="capitalize">{{item?.shift?.status}}</span>
-                        </p>
-                        <p *ngIf="item?.shift?.status === 'holiday' &&
-                          (item?.status !== 'present' && item?.status !== 'checkedin' && item?.status !== 'missswipe')">
-                            <span class="capitalize">{{item?.shift?.holiday?.name}}</span>
-                        </p>
-                        <!--</div>-->
-                    </div>
-                </div>
-            </md-card>
-        </div>
+
+
+        <!-- <div class="headerBtns" *ngIf="user == 'superadmin'">
+            <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading || isProcessingAttendance" [mdMenuTriggerFor]="appMenu" md-icon-button>
+                <md-icon>cloud_download</md-icon>
+            </button>
+            <md-menu #appMenu="mdMenu">
+                <button md-menu-item (click)="download(true,false,'Extra hours - after Shift end time')">Extra hours - after Shift end time</button>
+                <button md-menu-item (click)="download(false,true,'Extra hours - after Shift hours')">Extra hours - after Shift hours</button>
+                <button md-menu-item (click)="download(false,false,'Day Attendance')">Day's Attendance</button>
+            </md-menu> -->
+            <!-- <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading || isProcessingAttendance" md-icon-button mdTooltip="Download Attendance extraHours" [mdTooltipPosition]="'above'" (click)="download(true)"><md-icon>cloud_download</md-icon></button>
+            <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading  || isProcessingAttendance" md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" (click)="download(false)" angulartics2On="click" angularticsEvent="dialyAttendnaceDownloadClick"
+                angularticsCategory="dialyAttendance" [angularticsProperties]="{label: 'Fall Campaign'}"><md-icon >cloud_download</md-icon></button> -->
+        <!-- </div> -->
+
     </div>
-    
-    <br>
-    <div class="row capitalize">
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <md-card>
-                <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 calHeader text-center">
-                        <h5>
-                            <b>Leave Submitted</b>
-                        </h5>
-                        <a md-icon-button [routerLink]="['apply-leave']" class="levbtn" mdTooltip="Apply Leave" [mdTooltipPosition]="'above'">
-                            <md-icon>add_circle_outline</md-icon>
-                        </a>
+</div>
+<md-spinner class="custom_spinner" *ngIf="employee?.isProcessing || attendance?.isProcessing || isDownloading || leaveBalances?.isLoading || leavesSubmiited?.isLoading || isProcessingAttendance || isUpdatingLeaveStatus" mode="indeterminate"></md-spinner>
+<br>
+<div class="row">
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 profieCrd nameFormat">
+        <md-card>
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 capitalize">
+                    <h4>{{employee?.properties?.name}}</h4>
+                    <h5>{{employee?.properties?.code}}</h5>
+                    <h5>{{employee?.properties?.designation}}</h5>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <div class="row profileImage">
+                        <img *ngIf="employee?.properties?.picUrl" [src]="employee?.properties?.picUrl" width="100%" onError="this.src='/assets/images/blank.png'">
+                        <img *ngIf="!employee?.properties?.picUrl" alt="img" src="assets/images/blank.png" width="100%">
                     </div>
-                    <br>
+                </div>
+                <br>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <table class="table">
-                        <tr>
-                            <th>Start Date</th>
-                            <th>Count</th>
-                            <th>Type</th>
-                            <th>Reason</th>
-                            <th>Status</th>
-                            <th class="text-center" *ngIf="isShowLeaveAction">Action</th>
+
+                        <!-- <tr class="capitalize">
+                            <td>Monthly Average Hours:</td>
+                            <td>{{employee?.properties?.avgHours | number:'1.0-2'}}</td>
+                        </tr> -->
+                        <tr class="capitalize">
+                            <!-- <td>Supervisor:</td> -->
+                            <td>Supervisor:</td>
+                            <td>{{employee?.properties?.supervisor?.name}} {{employee?.properties?.supervisor?.code ? '('+employee?.properties?.supervisor?.code+')':'--'}}</td>
                         </tr>
-                        <tr *ngFor="let item of leavesSubmiited.items  | paginate: { id: 'leaveBalanceBar',
-                                                          itemsPerPage: leavesSubmiited.pageSize,
-                                                          currentPage: leavesSubmiited.pageNo,
-                                                          totalItems: leavesSubmiited.totalRecords }">
-                            <td>{{item?.date | date}}</td>
-                            <td>{{item?.days}}</td>
-                            <td>{{item?.leaveType?.name}}</td>
-                            <td>{{item?.reason}}</td>
-                            <td>{{item?.status}}</td>
-                            <td class="text-center" *ngIf="isShowLeaveAction">
-                                <!--<button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status === 'approved'
-                                          || item?.status === 'submitted'" (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
-                                    <md-icon>highlight_off</md-icon>
-                                </button>
-                                <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status === 'rejected'
-                                          || item?.status === 'submitted'
-                                          || item?.status === 'cancelled'" (click)="accept_reject_leave(item, 'approved')" mdTooltip="Approve" [mdTooltipPosition]="'above'">
-                                    <md-icon>check_cirle</md-icon>
-                                </button>-->
-                                <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status === 'submitted'" (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
-                                    <md-icon>highlight_off</md-icon>
-                                </button>
-                                <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status === 'submitted'" (click)="accept_reject_leave(item, 'approved')" mdTooltip="Approve" [mdTooltipPosition]="'above'">
-                                    <md-icon>check_cirle</md-icon>
-                                </button>
-                                <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status?.toLowerCase() === 'approved'" (click)="accept_reject_leave(item, 'cancelled')" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
-                                  <md-icon>close</md-icon>
-                              </button>
+                        <!-- <tr>
+                            <td>Email:</td>
+                            <td>{{employee?.properties?.email ? employee?.properties?.email : '--'}} </td>
+                        </tr> -->
+                        <tr class="capitalize">
+                            <td>Mobile:</td>
+                            <td>{{employee?.properties?.phone ? employee?.properties?.phone : '--'}} </td>
+                        </tr>
+                        <tr class="capitalize">
+                            <td>Department:</td>
+                            <td>R&D </td>
+                        </tr>
+                        <tr class="capitalize">
+                            <td colspan="2"><button class="resetPW" *ngIf="employee?.properties?.id" md-raised-button [disabled]="employee?.isProcessing || designations?.isLoading" color="primary" (click)="resetPassword()">Reset Password</button></td>
+                        </tr>
+                        <!-- <tr class="capitalize">
+                            <td>Shift:</td>
+                            <td>{{employee?.properties?.shiftType.name ? employee?.properties?.shiftType.name : '--'}} </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" angulartics2On="click" angularticsEvent="trackLocation" angularticsCategory="dailyAttendance" [angularticsProperties]="{label: 'Fall Campaign'}">
+                                Track Location:&nbsp;
+                                <md-slide-toggle [checked]="employee?.properties?.abilities?.trackLocation" (change)="toggleManual('trackLocation')">{{employee?.properties?.abilities?.trackLocation ? 'Enabled':'Disabled'}}</md-slide-toggle>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" angulartics2On="click" angularticsEvent="shiftNotifier" angularticsCategory="dailyAttendance" [angularticsProperties]="{label: 'Fall Campaign'}">
+                                Shift Notifier:&nbsp;
+                                <md-slide-toggle [checked]="employee?.properties?.abilities?.shiftNotifier" (change)="toggleManual('shiftNotifier')">{{employee?.properties?.abilities?.shiftNotifier ? 'Enabled':'Disabled'}}</md-slide-toggle>
+                            </td>
+                        </tr> -->
+                    </table>
+
+                    <table *ngIf="user == 'superadmin'" class="table">
+                        <tr>
+                            <th>Choose Ability</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <md-radio-group class="example-radio-group" [(ngModel)]="this.employee.properties['currentAblitiy']" (change)="selectAbility(this.employee.properties['currentAblitiy'])">
+                                    <md-radio-button class="example-radio-button" [value]="'maualAttendance'">
+                                        Manual CheckIn/CheckOut
+                                    </md-radio-button>
+                                    <md-radio-button class="example-radio-button" [value]="'manualByBeacon'">
+                                        Manual By Beacon
+                                    </md-radio-button>
+                                    <md-radio-button class="example-radio-button" [value]="'manualByGeoFencing'">
+                                        Manual By Geo Fencing
+                                    </md-radio-button>
+                                    <md-radio-button class="example-radio-button" [value]="'manualByWifi'">
+                                        Manual By Wifi
+                                    </md-radio-button>
+                                    <md-radio-button class="example-radio-button" [value]="'none'">
+                                        None
+                                    </md-radio-button>
+                                </md-radio-group>
                             </td>
                         </tr>
                     </table>
                 </div>
-                <div class="row">
-                    <div class="custom_pagination">
-                        <pagination-controls id="leaveBalanceBar" (pageChange)="leavesSubmiited.pageNo = $event;fetchSubmittedLeaveBalance();"></pagination-controls>
-                        <div class="pageSize">
-                            <label>Page Size:</label>
-                            <select name="pageSize" [(ngModel)]="leavesSubmiited.pageSize" (change)="leavesSubmiited.pageNo = 1;fetchSubmittedLeaveBalance();">
-                                <option value="10">10</option>
-                                <option value="20">20</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </md-card>
-        </div>
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <md-card>
-                <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 calHeader text-center">
-                        <h5>
-                            <b>Leave Balance</b>
-                        </h5>
-                    </div>
-                    <br>
-                    <table class="table">
-                        <tr>
-                            <th>Type</th>
-                            <th>Opening Balance</th>
-                            <th>Leaves Availed</th>
-                            <th>Pending Balance</th>
-                        </tr>
-                        <tr *ngFor="let item of leaveBalances.items">
-                            <td>{{item?.leaveType?.name}}</td>
-                            <td>{{item?.leaveType?.unlimited ? 'Unlimited': item?.openingBalance}}</td>
-                            <td>{{item?.leaveType?.unlimited ? 'Unlimited': item?.daysAvailed}}</td>
-                            <td>{{item?.leaveType?.unlimited ? 'Unlimited': item?.days}}</td>
-                        </tr>
-                    </table>
-                </div>
-            </md-card>
-        </div>
+            </div>
+        </md-card>
     </div>
+
+    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+        <md-card class="dots">
+            <div class="row">
+                <div class="dot">
+                    <img src="assets/images/dots/present.png">&nbsp;Present</div>
+                <div class="dot">
+                    <img src="assets/images/dots/absent.png">&nbsp;Absent</div>
+                <div class="dot">
+                    <img src="assets/images/dots/leave.png">&nbsp;Leave</div>
+                <div class="dot">
+                    <img src="assets/images/dots/misswipe.png">&nbsp;Missed Swipe</div>
+                <div class="dot">
+                    <img src="assets/images/dots/holiday.png">&nbsp;Holiday</div>
+            </div>
+        </md-card>
+        <br>
+        <md-card>
+            <div class="row" angulartics2On="click" angularticsEvent="dailyTimeLogClick" angularticsCategory="dailyTimelog" [angularticsProperties]="{label: 'Fall Campaign'}">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 calHeader text-center cursor" (click)="openCalnder()">
+                    <h5>
+                        <b>{{selectedDate | date:'MMMM y'}}</b>
+                    </h5>
+                </div>
+                <br>
+                <div class="calBox dayName" *ngFor="let item of days">{{item}}</div>
+                <div class="calBox" *ngFor="let item of emptyStartDays"></div>
+                <div class="calBox day corners shadow" *ngFor="let item of events;let i = index" (click)="updateDayEvent(item)" [ngClass]="{'present': (item?.status === 'present' || item?.status === 'checkedin'),
+                 'absent':item?.status === 'absent'  && item?.shift?.status === 'working',
+                  'leave':item?.status === 'onleave' || item?.status === 'halfday'  && item?.shift?.status === 'working',
+                 'missedSwipe':item?.status === 'missswipe',
+                  'weekoff':item?.shift?.status === 'weekoff' && (item?.status !== 'present' && item?.status !== 'checkedin' && item?.status !== 'missswipe'),
+                   'holiday':item?.shift?.status === 'holiday' && (item?.status !== 'present' && item?.status !== 'checkedin' && item?.status !== 'missswipe')}">
+                    <h5>
+                        <b>{{getDate(item?.ofDate)}}</b>
+                    </h5>
+                    <!--<p>{{i}} {{item?.ofDate | date}}</p>-->
+                    <!--<p>{{item?.ofDate}}</p>-->
+                    <!--<div *ngIf="item?.shift?.status == 'working'">-->
+                    <p *ngIf="item?.status === 'present'
+                     || item?.status === 'checkedin'
+                     || item?.status === 'missswipe'
+                     || item?.status === 'checked-in-again'
+                     || item?.status === 'halfday'">
+                        In - {{item?.checkIn | date:'shortTime'}}
+                    </p>
+                    <p *ngIf="item?.status === 'present'
+                    || item?.status === 'checkedin'
+                    || item?.status === 'missswipe'
+                    || item?.status === 'checked-in-again'
+                    || item?.status === 'halfday'">
+                        Out - {{item?.checkOut | date:'shortTime'}}
+                    </p>
+                    <p *ngIf="item?.status === 'onleave'
+                    || item?.status === 'absent'
+                    && item?.shift?.status === 'working'">
+                        <span class="capitalize">{{item?.status}}</span>
+                    </p>
+                    <p *ngIf="item?.status === 'absent'
+                    && item?.shift?.status === 'weekoff'">
+                        <span class="capitalize">{{item?.shift?.status}}</span>
+                    </p>
+                    <p *ngIf="item?.shift?.status === 'holiday' &&
+                      (item?.status !== 'present' && item?.status !== 'checkedin' && item?.status !== 'missswipe')">
+                        <span class="capitalize">{{item?.shift?.holiday?.name}}</span>
+                    </p>
+                    <!--</div>-->
+                </div>
+            </div>
+        </md-card>
+    </div>
+</div>
+
+<br>
+<div class="row capitalize">
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        <md-card>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 calHeader text-center">
+                    <h5>
+                        <b>Leave Submitted</b>
+                    </h5>
+                    <a md-icon-button [routerLink]="['apply-leave']" class="levbtn" mdTooltip="Apply Leave" [mdTooltipPosition]="'above'">
+                        <md-icon>add_circle_outline</md-icon>
+                    </a>
+                </div>
+                <br>
+                <table class="table">
+                    <tr>
+                        <th>Start Date</th>
+                        <th>Count</th>
+                        <th>Type</th>
+                        <th>Reason</th>
+                        <th>Status</th>
+                        <th class="text-center" *ngIf="isShowLeaveAction && user == 'superadmin || admin'">Action</th>
+                    </tr>
+                    <tr *ngFor="let item of leavesSubmiited.items  | paginate: { id: 'leaveBalanceBar',
+                                                      itemsPerPage: leavesSubmiited.pageSize,
+                                                      currentPage: leavesSubmiited.pageNo,
+                                                      totalItems: leavesSubmiited.totalRecords }">
+                        <td>{{item?.date | date}}</td>
+                        <td>{{item?.days}}</td>
+                        <td>{{item?.leaveType?.name}}</td>
+                        <td>{{item?.reason}}</td>
+                        <td>{{item?.status}}</td>
+                        <td class="text-center" *ngIf="isShowLeaveAction && user == 'superadmin || admin'">
+                            <!--<button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status == 'approved'
+                                      || item?.status == 'submitted'" (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
+                                <md-icon>highlight_off</md-icon>
+                            </button>
+                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status == 'rejected'
+                                      || item?.status == 'submitted'
+                                      || item?.status == 'cancelled'" (click)="accept_reject_leave(item, 'approved')" mdTooltip="Approve" [mdTooltipPosition]="'above'">
+                                <md-icon>check_cirle</md-icon>
+                            </button>-->
+                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status == 'submitted'" (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
+                                <md-icon>highlight_off</md-icon>
+                            </button>
+                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status == 'submitted'" (click)="accept_reject_leave(item, 'approved')" mdTooltip="Approve" [mdTooltipPosition]="'above'">
+                                <md-icon>check_cirle</md-icon>
+                            </button>
+                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status?.toLowerCase() == 'approved'" (click)="accept_reject_leave(item, 'cancelled')" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
+                                <md-icon>close</md-icon>
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="row">
+                <div class="custom_pagination">
+                    <pagination-controls id="leaveBalanceBar" (pageChange)="leavesSubmiited.pageNo = $event;fetchSubmittedLeaveBalance();"></pagination-controls>
+                    <div class="pageSize">
+                        <label>Page Size:</label>
+                        <select name="pageSize" [(ngModel)]="leavesSubmiited.pageSize" (change)="leavesSubmiited.pageNo = 1;fetchSubmittedLeaveBalance();">
+                            <option value=10>10</option>
+                            <option value=20>20</option>
+                            <option value=50>50</option>
+                            <option value=100>100</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </md-card>
+    </div>
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        <md-card>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 calHeader text-center">
+                    <h5>
+                        <b>Leave Balance</b>
+                    </h5>
+                </div>
+                <br>
+                <table class="table">
+                    <tr>
+                        <th>Type</th>
+                        <th>Opening Balance</th>
+                        <th>Leaves Availed</th>
+                        <th>Pending Balance</th>
+                    </tr>
+                    <tr *ngFor="let item of leaveBalances.items">
+                        <td>{{item?.leaveType?.name}}</td>
+                        <td>{{item?.leaveType?.unlimited ? 'Unlimited': item?.openingBalance}}</td>
+                        <td>{{item?.leaveType?.unlimited ? 'Unlimited': item?.daysAvailed}}</td>
+                        <td>{{item?.leaveType?.unlimited ? 'Unlimited': item?.days}}</td>
+                    </tr>
+                </table>
+            </div>
+        </md-card>
+    </div>
+</div>

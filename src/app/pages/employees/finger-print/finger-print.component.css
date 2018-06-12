@@ -1,0 +1,7 @@
+.clickable{
+        cursor: pointer;
+    }
+       .green input:checked {
+        border-color: red;
+        background-color:red;
+    }

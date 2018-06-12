@@ -7,9 +7,11 @@ import { Leave } from '../../../models';
 import { LeaveActionDialogComponent } from '../../../dialogs/leave-action-dialog/leave-action-dialog.component';
 import { MdDialog } from '@angular/material';
 import { Filter } from '../../../common/contracts/filters';
-import * as _ from 'lodash';
-import { LocalStorageService } from '../../../services/local-storage.service';
+import * as _ from "lodash";
+import { LocalStorageService } from "../../../services/local-storage.service";
 import { Angulartics2 } from 'angulartics2';
+import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-dialog.component';
+import { LeaveConfirmDialogComponent } from '../../../dialogs/leave-confirm-dialog/leave-confirm-dialog.component';
 declare var $: any;
 
 @Component({
@@ -20,10 +22,14 @@ declare var $: any;
 export class LeavesComponent implements OnInit, AfterViewInit {
 
   leaves: Page<Leave>;
-  isFilter = false;
-  isShowLeaveAction = false;
+  isFilter: boolean = false;
+  isShowLeaveAction: boolean = false;
   date: Date = null
-  isUpdatingLeaveStatus = false;
+  userType: string = ''
+  select: boolean = false;
+  Selected = [];
+  check: boolean = false;
+
 
 
   constructor(public validatorService: ValidatorService,
@@ -33,31 +39,55 @@ export class LeavesComponent implements OnInit, AfterViewInit {
     private toastyService: ToastyService,
     private angulartics2: Angulartics2) {
 
-    this.leaves = new Page({
-      api: amsLeaveService.allLeavesOfOrg,
-      filters: [{
-        field: 'name',
-        value: null
-      }, {
-        field: 'status',
-        value: null
-      }, {
-        field: 'date',
-        value: null
-      }]
-    });
+    this.userType = store.getItem('userType');
+
+    if (this.userType == 'admin') {
+      this.leaves = new Page({
+        api: amsLeaveService.teamLeaves,
+        filters: [{
+          field: 'name',
+          value: null
+        }, {
+          field: 'status',
+          value: null
+        }, {
+          field: 'date',
+          value: null
+        }]
+      });
+    }
+    if (this.userType == 'superadmin') {
+      this.leaves = new Page({
+        api: amsLeaveService.allLeavesOfOrg,
+        filters: [{
+          field: 'name',
+          value: null
+        }, {
+          field: 'status',
+          value: null
+        }, {
+          field: 'date',
+          value: null
+        }]
+      });
+    }
     this.checkFiltersInStore();
+  }
+  fetch() {
+    this.check = false;
+    console.log(this.Selected)
+    this.Selected = [];
+    this.fetchLeaves();
   }
 
   fetchLeaves(date?: Date) {
+
     this.setFiltersToStore();
-
-
 
     this.leaves.fetch().then(
       data => {
-        const i: any = this.leaves.items.find((item: Leave) => {
-          return item.status.toLowerCase() === 'submitted'
+        let i: any = this.leaves.items.find((item: Leave) => {
+          return item.status.toLowerCase() == 'submitted'
         });
         if (i)
           this.isShowLeaveAction = true;
@@ -73,7 +103,7 @@ export class LeavesComponent implements OnInit, AfterViewInit {
   }
 
   checkFiltersInStore() {
-    const filters: any = this.store.getObject('leaves-filters');
+    let filters: any = this.store.getObject('leaves-filters');
     if (filters) {
       this.isFilter = true;
       this.leaves.filters.properties['status']['value'] = filters['status'] || null;
@@ -83,7 +113,7 @@ export class LeavesComponent implements OnInit, AfterViewInit {
   }
 
   setFiltersToStore() {
-    const queryParams: any = {};
+    let queryParams: any = {};
     _.each(this.leaves.filters.properties, (filter: Filter, key: any, obj: any) => {
       if (filter.value) {
         queryParams[key] = filter.value;
@@ -99,12 +129,14 @@ export class LeavesComponent implements OnInit, AfterViewInit {
     if (days && days < 1) {
       days = 1;
     }
-    const newdays = days ? Math.abs(days - 1) : 0;
-    const newDate = date ? new Date(date) : null;
+    let newdays = days ? Math.abs(days - 1) : 0;
+    let newDate = date ? new Date(date) : null;
     if (newDate) { newDate.setDate(newDate.getDate() + newdays); }
     return date ? newDate : null;
 
   }
+
+  isUpdatingLeaveStatus: boolean = false;
   updateStatus(leave: Leave) {
     this.isUpdatingLeaveStatus = true;
     this.amsLeaveService.leaves.update(leave.id, leave, null, `${leave.id}/action`).then(
@@ -117,6 +149,58 @@ export class LeavesComponent implements OnInit, AfterViewInit {
       this.toastyService.error({ title: 'Error', msg: err });
     });
   }
+  allLeaves(item: string) {
+    if (this.Selected.includes(item)) {
+      const i = this.Selected.indexOf(item)
+      console.log(i)
+      this.Selected.splice(i, 1);
+      console.log(this.Selected)
+    }
+    else {
+      this.Selected.push(item);
+      console.log(this.Selected)
+    }
+  }
+  addLeaves(item: string) {
+    if (this.Selected.includes(item)) {
+      console.log(this.Selected)
+    }
+    else {
+      this.Selected.push(item);
+      console.log(this.Selected)
+    }
+
+  }
+
+  approveLeaves(status: string) {
+    if (status == 'approved') {
+      this.Selected.forEach((item: any) => {
+        item.status = status;
+        this.updateStatus(item);
+        this.Selected = [];
+      })
+    }
+    else {
+
+      let dialogRef = this.dialog.open(LeaveActionDialogComponent, {
+        width: '35%'
+      });
+
+      dialogRef.afterClosed().subscribe((reason: string) => {
+        this.Selected.forEach((item: any) => {
+          if (reason) {
+            item.comment = reason;
+            item.status = status;
+            this.updateStatus(item)
+          }
+          item.status = status;
+          this.updateStatus(item);
+        });
+        this.Selected = [];
+
+      })
+    }
+  }
 
   accept_reject_leave(leave: Leave, status: string) {
 
@@ -127,7 +211,7 @@ export class LeavesComponent implements OnInit, AfterViewInit {
 
     } else {
       this.angulartics2.eventTrack.next({ action: 'rejectLeaveClick', properties: { category: 'allLeave', label: 'myLabel' } });
-      const dialogRef = this.dialog.open(LeaveActionDialogComponent, {
+      let dialogRef = this.dialog.open(LeaveActionDialogComponent, {
         width: '35%'
       });
 
@@ -152,15 +236,44 @@ export class LeavesComponent implements OnInit, AfterViewInit {
     }).on('changeMonth', (e) => {
       if (e.date) {
         this.date = e.date;
-       const date = new Date(e.date);
+        let date = new Date(e.date);
         this.leaves.filters.properties['date']['value'] = date.toISOString();
       }
       // this.fetchLeaves(e.date);
     });
     // $("#monthSelector").datepicker("setDate", null);
   }
+  selectAll() {
+    if (this.select == true)
+      this.select = false;
+    else
+      this.select = true;
+  }
 
   ngOnInit() {
+  }
+  All() {
+    if (this.Selected.length == this.leaves.items.length) {
+      this.Selected = [];
+      this.check = false;
+      console.log(this.Selected)
+    }
+    else if (this.Selected.length != this.leaves.items.length) {
+      this.leaves.items.forEach((item: any) => {
+        if (item.status === 'submitted') {
+          this.addLeaves(item)
+          this.check = true;
+        }
+      })
+    }
+    else {
+      this.leaves.items.forEach((item: any) => {
+        if (item.status === 'submitted') {
+          this.allLeaves(item)
+          this.check = true;
+        }
+      })
+    }
   }
 
 }

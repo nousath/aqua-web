@@ -99,7 +99,7 @@
                             <td class="valueWidth">
                                 <select [(ngModel)]="leave.properties.type.id" (change)="selectLeveType(leave.properties.type.id)" class="form-control" name="selectType" required>
                                  <option [ngValue]="null">select an option </option>
-                                  <option *ngFor="let item of leaveBalances.items" [value]="item.leaveType.id">{{item?.leaveType?.name}} ({{item?.leaveType?.unlimited ? 'Unlimited': item?.days}})</option>
+                                  <option *ngFor="let item of leaveBalances.items" [value]="item.leaveType.id">{{item?.leaveType?.name}} ({{item?.leaveType?.unlimited ? 'Unlimited': (item?.leaveType?.monthlyLimit && item?.days > item?.leaveType?.monthlyLimit? item?.leaveType?.monthlyLimit:item?.days) }})</option>
                                 </select>
                             </td>
                             <td class="lableWidth">
@@ -115,9 +115,9 @@
                                 <md-radio-group [(ngModel)]="duration" name="duration">
                                     <md-radio-button value="multi">Multi</md-radio-button>
                                     <md-radio-button value="full">Full</md-radio-button>
-                                    <md-radio-button *ngIf="leave.properties.leaveType.unitsPerDay === 2" value="half">Half</md-radio-button>
-                                    <md-radio-button *ngIf="leave.properties.leaveType.unitsPerDay === 3" value="1/3">One Third</md-radio-button>
-                                    <md-radio-button *ngIf="leave.properties.leaveType.unitsPerDay === 3" value="2/3">Two Third</md-radio-button>
+                                    <md-radio-button *ngIf="leave.properties.leaveType.unitsPerDay == 2" value="half">Half</md-radio-button>
+                                    <md-radio-button *ngIf="leave.properties.leaveType.unitsPerDay == 3" value="1/3">One Third</md-radio-button>
+                                    <md-radio-button *ngIf="leave.properties.leaveType.unitsPerDay == 3" value="2/3">Two Third</md-radio-button>
                                 </md-radio-group>
                             </td>
                         </tr>
@@ -138,12 +138,24 @@
                             </td>
                             <td>
                                 <input name="startdate" class="form-control  calendar no-spin" type="date" [ngModel]="leave.properties.date  | date:'yyyy-MM-dd'" (ngModelChange)="leave.properties.date = $event" [required]="duration === 'multi'">
+                                <md-radio-group [(ngModel)]="startTime" name="startTime">
+                                    <md-radio-button value="startfull">Full</md-radio-button>
+                                    <md-radio-button *ngIf="leave.properties.leaveType.unitsPerDay == 2" value="starthalf">Half</md-radio-button>
+                                    <md-radio-button *ngIf="leave.properties.leaveType.unitsPerDay == 3" value="start1/3">One Third</md-radio-button>
+                                    <md-radio-button *ngIf="leave.properties.leaveType.unitsPerDay == 3" value="2/3">Two Third</md-radio-button>
+                                </md-radio-group>
                             </td>
                             <td>
                                 <label>End Date:<span class="asterisk">*</span></label>
                             </td>
                             <td>
                                 <input name="enddate" class="form-control  calendar no-spin" type="date" [ngModel]="leave.properties.toDate  | date:'yyyy-MM-dd'" (ngModelChange)="leave.properties.toDate = $event" [required]="duration === 'multi'">
+                                <md-radio-group [(ngModel)]="endTime" name="endTime" style="margin-top:20px;">
+                                    <md-radio-button value="endfull">Full</md-radio-button>
+                                    <md-radio-button *ngIf="leave.properties.leaveType.unitsPerDay == 2" value="endhalf">Half</md-radio-button>
+                                    <md-radio-button *ngIf="leave.properties.leaveType.unitsPerDay == 3" value="end1/3">One Third</md-radio-button>
+                                    <md-radio-button *ngIf="leave.properties.leaveType.unitsPerDay == 3" value="2/3">Two Third</md-radio-button>
+                                </md-radio-group>
                             </td>
                         </tr>
                         <tr>

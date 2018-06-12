@@ -10,7 +10,7 @@ export class AmsLeaveService {
   leaves: IApi<Leave>;
   leaveTypes: IApi<LeaveType>;
   allLeavesOfOrg: IApi<Leave>;
-
+  teamLeaves: IApi<Leave>;
 
   leaveBalances: IApi<LeaveBalance>;
   allLeaveBalances: IApi<OrgLeaveBalance>;
@@ -21,6 +21,7 @@ export class AmsLeaveService {
 
     this.leaves = new GenericApi<Leave>('leaves', http, baseApi);
     this.allLeavesOfOrg = new GenericApi<Leave>('leaves/my/organization', http, baseApi);
+    this.teamLeaves = new GenericApi<Leave>('leaves/my/teamLeaves', http, baseApi);
     this.leaveTypes = new GenericApi<LeaveType>('leaveTypes', http, baseApi);
 
     this.leaveBalances = new GenericApi<LeaveBalance>('leaveBalances', http, baseApi);

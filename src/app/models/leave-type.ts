@@ -1,12 +1,18 @@
 import { Organization } from './organization';
+import { Periodicity } from './periodicity';
+
+
 export class LeaveType {
-  id = '';
-  code = '';
-  name = '';
+  id: string = '';
+  code: string = '';
+  name: string = '';
   unitsPerDay: number = null;
-  unlimited = false;
+  unlimited: boolean = false;
   days: number = null;
   category: 'lossOfPay' | 'OnDuty' | 'paidLeave' | null = null;
-  isEdit = false;
+  periodicity: Periodicity = new Periodicity();
+  carryForward: number = null;
+  monthlyLimit: number;
+  isEdit: boolean = false;
   organization: Organization = new Organization();
 }

@@ -1,8 +1,9 @@
+import { AmsShiftService } from '../../../services/ams/ams-shift.service';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
-import { ToastyService } from 'ng2-toasty';
-import * as _ from 'lodash';
+import { ActivatedRoute } from "@angular/router";
+import { Subscription } from "rxjs/Rx";
+import { ToastyService } from "ng2-toasty";
+import * as _ from "lodash";
 import { TimeLogsLocation, TimeLogs } from '../../../models/time-logs';
 import { Employee } from '../../../models/employee';
 import { Model } from '../../../common/contracts/model';
@@ -24,16 +25,19 @@ import { Http } from '@angular/http';
 })
 export class AttendanceLogsComponent implements OnInit {
   employee: Model<Employee>;
+  userType: string;
   logs: Page<TimeLogs>;
   attendances: Page<DayEvent>;
   timeLog: Model<TimeLogs>;
   subscription: Subscription;
   empId: string;
   ofDate: any;
-  attendance: any
+  attendance: DayEvent;
   date: any;
   isButton = true;
-  checkTime: any;
+  checkTime: Date;
+
+  extraShiftCount = 0;
   // checkStatus: any;
 
 
@@ -41,6 +45,7 @@ export class AttendanceLogsComponent implements OnInit {
     private toastyService: ToastyService,
     private amsAttendanceService: AmsAttendanceService,
     private amsTimelogsService: AmsTimelogsService,
+    private shiftService: AmsShiftService,
     private angulartics2: Angulartics2,
     private http: Http,
     private amsEmployeeService: AmsEmployeeService) {
@@ -87,27 +92,75 @@ export class AttendanceLogsComponent implements OnInit {
         this.employee.fetch(this.empId).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
         this.getAttendance();
 
+
+
+        this.checkTime = new Date(this.ofDate);
+
+
       }
     )
+    this.userType = localStorage.getItem('userType')
 
   }
 
 
   getLocation(latlng: number[], index: number) {
-    const api = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng[1]},${latlng[0]}&key=AIzaSyA3-BQmJVYB6_soLJPv7cx2lFUMAuELlkM`;
+    let api: string = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng[1]},${latlng[0]}&key=AIzaSyA3-BQmJVYB6_soLJPv7cx2lFUMAuELlkM`;
     this.http.get(api).toPromise().then(data => {
       this.logs.items[index].location.address = data.json().results[0].formatted_address
     }).catch(err => {
       this.logs.items[index].location.address = 'N/A'
-    })
+    });
   }
 
   getAttendance() {
-    this.attendances.fetch().then(
-      (data) => {
-        this.attendance = data.items[0];
-        this.getLogs();
-      }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+    this.amsAttendanceService.attendance.get(`${new Date(this.ofDate).toISOString()}?employeeId=${this.empId}`).then(item => {
+      this.attendance = item;
+
+      const timeLogs: TimeLogs[] = this.attendance.timeLogs || [];
+
+      this.attendance.timeLogs = timeLogs.sort((a, b) => b.time > a.time ? -1 : +1);
+
+      const shiftType = this.attendance.shift.shiftType;
+
+      let shiftSpan = 0
+      if (shiftType && shiftType.endTime && shiftType.startTime) {
+        const endTime = new Date(shiftType.endTime).getTime()
+        let startTime = new Date(shiftType.startTime).getTime()
+
+        if (startTime > endTime) {
+          startTime = startTime - 24 * 60 * 60 * 1000; // hrs
+        }
+        shiftSpan = endTime - startTime;
+
+      }
+
+      let workSpan = 0
+      if (this.attendance.checkOut && this.attendance.checkIn) {
+        workSpan = new Date(this.attendance.checkOut).getTime() - new Date(this.attendance.checkIn).getTime();
+      }
+
+      if(shiftSpan) {
+        this.extraShiftCount = (workSpan/shiftSpan) -1
+
+        if(this.extraShiftCount < 0) {
+          this.extraShiftCount = 0
+        } else {
+          this.extraShiftCount = parseInt( this.extraShiftCount.toFixed(0))
+        }
+      }
+    }).catch();
+    // this.attendances.fetch().then(
+    //   (data) => {
+    //     this.attendance = data.items[0];
+    //     this.getLogs();
+    //     if (this.attendance && this.attendance.shift) {
+    //       this.shiftService.shifts.get(this.attendance.shift.id).then(shift => {
+    //         this.employee.properties.shiftType = shift.shiftType;
+    //       });
+    //     }
+
+    //   }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
 
   }
 
@@ -132,12 +185,24 @@ export class AttendanceLogsComponent implements OnInit {
     ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
+  dateUpdated($event) {
+    const date: Date = $event.target.valueAsDate;
+    this.checkTime.setFullYear(date.getFullYear(), date.getMonth(), date.getDate());
+  }
+
+  timeUpdated($event) {
+    const time = $event.target.value;
+    let checkTimes: string[] = time.split(':');
+    this.checkTime = new Date(new Date(this.checkTime).setHours(parseInt(checkTimes[0]), parseInt(checkTimes[1])));
+
+  }
+
   checkUpdate() {
-    const first = 0;
-    const second = 0;
+    let h: number, m: number;
     this.timeLog.properties.employee.id = this.empId;
-    const checkTimes: string[] = this.checkTime.split(':');
-    this.timeLog.properties.time = new Date(new Date(this.ofDate).setHours(parseInt(checkTimes[0]), parseInt(checkTimes[1]))).toISOString();
+    // let checkTimes: string[] = this.checkTime.split(':');
+    this.timeLog.properties.time = this.checkTime.toISOString();
+    // new Date(new Date(this.ofDate).setHours(parseInt(checkTimes[0]), parseInt(checkTimes[1]))).toISOString();
     this.timeLog.properties.source = 'byAdmin';
     this.timeLog.save().then(data => {
       this.toggleRow();
@@ -149,7 +214,7 @@ export class AttendanceLogsComponent implements OnInit {
   toggleRow() {
     this.angulartics2.eventTrack.next({ action: 'updateAttendanceClcik', properties: { category: 'timeLog' } });
     this.isButton = !this.isButton;
-    this.checkTime = null;
+    // this.checkTime = this.ofDate;
     this.timeLog.properties = new TimeLogs();
   }
 

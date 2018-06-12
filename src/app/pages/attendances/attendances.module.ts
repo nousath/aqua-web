@@ -14,10 +14,11 @@ import { DayEventDialogComponent } from '../../dialogs/day-event-dialog/day-even
 import { LeaveActionDialogComponent } from '../../dialogs/leave-action-dialog/leave-action-dialog.component';
 
 import { AttendanceLogsComponent } from './attendance-logs/attendance-logs.component';
-import { DownloadReportComponent } from './download-report/download-report.component';
-import { ListReportComponent } from './list-report/list-report.component';
-import { ReportComponent } from './report/report.component';
-
+import { ReportsComponent } from './reports/reports.component';
+import { ReportFiltersComponent } from './report-filters/report-filters.component';
+import { ReportListsComponent } from './report-lists/report-lists.component';
+import { LeaveTypeComponent } from './leave-type/leave-type.component';
+import { TeamsComponent } from './teams/teams.component';
 
 @NgModule({
   imports: [
@@ -36,15 +37,17 @@ import { ReportComponent } from './report/report.component';
     ManageLeavesComponent,
     DayEventDialogComponent,
     LeaveActionDialogComponent,
-    DownloadReportComponent,
-    ListReportComponent,
-    ReportComponent,
-    // ReportFiltersComponent
+    ReportsComponent,
+    ReportFiltersComponent,
+    ReportListsComponent,
+    LeaveTypeComponent,
+    TeamsComponent,
   ],
   entryComponents: [
     DayEventDialogComponent,
     LeaveActionDialogComponent,
   ],
+ 
   exports: [
     AttendancesComponent,
     MonthlyComponent,
@@ -55,9 +58,6 @@ import { ReportComponent } from './report/report.component';
     LeavesComponent,
     LeaveBalancesComponent,
     ManageLeavesComponent,
-    ReportComponent,
-    ListReportComponent,
-    DownloadReportComponent
   ]
 })
 export class AttendancesModule { }

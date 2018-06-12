@@ -1,0 +1,23 @@
+.header {
+    background: #3f4766!important;
+    position: relative;
+    z-index: 1030;
+    height: 50px!important;
+}
+
+.formatter{
+    color: white;
+    font-size: 20px !important;
+}
+
+.pointer{
+    cursor: pointer;
+}
+
+.refresh{
+    margin-right: 2%;
+    color: white;
+    float: right;
+    margin-top: 1%;
+    cursor: pointer;
+}

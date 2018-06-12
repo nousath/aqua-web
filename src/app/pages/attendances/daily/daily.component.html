@@ -1,41 +1,86 @@
 <div class="row page_header">
     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <h5><b>Daily Attendance</b></h5>
+        <h5>
+            <b>Daily Attendance</b>
+        </h5>
     </div>
     <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
         <div class="headerInpts">
             <div class="input-group">
                 <span class="input-group-addon" id="basic-addon1">Select Date</span>
-                <input id="dateSelector" type="text" class="form-control input-sm calendar no-spin" md-icon-button style="cursor: context-menu;">
+                <input id="dateSelector" type="text" class="form-control input-sm calendar no-spin">
 
                 <!--<input class="form-control input-sm calendar no-spin" type="date" [disabled]="dailyAttendnace?.isLoading  || isDownloading" [ngModel]="date  | date:'yyyy-MM-dd'" (ngModelChange)="date = $event;getAttendance($event)" aria-describedby="basic-addon1">-->
             </div>
         </div>
         <div class="headerBtns ">
-            <button [disabled]="dailyAttendnace?.isLoading || employee?.isProcessing" md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
-            <button [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" [mdMenuTriggerFor]="appMenu" md-icon-button><md-icon>cloud_download</md-icon> </button>
+            <button [disabled]="dailyAttendnace?.isLoading || employee?.isProcessing" md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'">
+                <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
+            </button>
+            <button [matMenuTriggerFor]="appMenu" [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button>
+                <md-icon>cloud_download</md-icon>
+            </button>
             <md-menu #appMenu="mdMenu">
-                <button md-menu-item (click)="download(true,false,'Extra hours - after Shift end time')">Extra hours - after Shift end time</button>
-                <button md-menu-item (click)="download(false,true,'Extra hours - after Shift hours')">Extra hours - after Shift hours
-                </button>
-                <button md-menu-item (click)="download(false,false, 'Day Attendance')">Day's Attendance</button>
+                <button md-menu-item (click)="downloadlink('daily-attendance')">Daily Attendance</button>
+                <button md-menu-item (click)="downloadlink('daily-extra-hours-after-shift-end')">Daily Extra Hours (after shift)</button>
+                <button md-menu-item (click)="downloadlink('daily-extra-hours-after-shift-hours')">Daily Extra Hours (net)</button>
             </md-menu>
+            <a class="exl" md-icon-button mdTooltip="Excel Upload" [mdTooltipPosition]="'above'" angulartics2On="click" angularticsEvent="excelUploadClick" angularticsCategory="employee " [angularticsProperties]="{label: 'Fall Campaign'}">
+                <md-icon>cloud_upload</md-icon>
+            </a>
+
             <!-- <button [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button mdTooltip="Download Attendance extraHours" [mdTooltipPosition]="'above'" (click)="download(true)"><md-icon>cloud_download</md-icon> </button>
             <button [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" (click)="download(false)" angulartics2On="click" angularticsEvent="dialyAttendnaceDownloadClick"
                 angularticsCategory="dialyAttendnace" [angularticsProperties]="{label: 'Fall Campaign'}"><md-icon >cloud_download</md-icon></button> -->
         </div>
+        <div *ngIf="isUpload" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2"></div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 upload">
+                <span style="float: left">
+                    <b>Select type</b>
+                </span>&nbsp;&nbsp;
+                <select [disabled]="dailyAttendnace?.isLoading  || isDownloading" placeholder="Status" name="Status" style="width: 50%; height:30px'">
+                    <option value="employee-update">Employee Add/Update</option>
+                    <option value="biometric-update">Biometric Add/Update</option>
+                </select>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 upload">
+                <span style="float: left">
+                    <b>Excel Upload</b>
+                </span>&nbsp;&nbsp;
+                <input class="file" id="uploader" type="file" ng2FileSelect [uploader]="uploader" angulartics2On="click" angularticsEvent="chooseFileClick" angularticsCategory="employee" [angularticsProperties]="{label: 'Fall Campaign'}" />
+                <div *ngFor="let item of uploader.queue" class="queue">
+                    <button md-icon-button class="uploadBtn" (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                        <md-icon>cloud_upload</md-icon>
+                    </button>
+                    <button md-icon-button class="uploadBtn" (click)="excel()" [disabled]="item.isReady || item.isUploading  || uploader.isUploading">
+                        <md-icon>highlight_off</md-icon>
+                    </button>
+                </div>
+                <button *ngIf="uploader?.queue?.length == 0" class="uploadBtn" (click)="excel()" md-icon-button>
+                    <md-icon>highlight_off</md-icon>
+                </button>
+            </div>
+
+        </div>
 
     </div>
+
 </div>
+
 <md-spinner class="custom_spinner" *ngIf="dailyAttendnace?.isLoading || isDownloading" mode="indeterminate"></md-spinner>
 
 
 <div class="row" *ngIf="isFilter">
     <md-card class="card">
         <div class="row text-center headr_bar">
-            <h5><b>Filters</b></h5>
+            <h5>
+                <b>Filters</b>
+            </h5>
             <div class="actionBtns">
-                <button md-icon-button mdTooltip="Close" [mdTooltipPosition]="'above'" (click)="isFilter = !isFilter"><md-icon >highlight_off</md-icon></button>
+                <button md-icon-button mdTooltip="Close" [mdTooltipPosition]="'above'" (click)="isFilter = !isFilter">
+                    <md-icon>highlight_off</md-icon>
+                </button>
             </div>
         </div>
         <br>
@@ -63,10 +108,10 @@
                     </div>
                     <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                         <select class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" [(ngModel)]="dailyAttendnace.filters.properties['shiftTypeId']['value']" placeholder="Shift" name="shift">
-                       <option *ngFor="let item of shiftTypes.items" [value]="item.id">
-                        {{item?.name}}
-                    </option>
-                    </select>
+                            <option *ngFor="let item of shiftTypes.items" [value]="item.id">
+                                {{item?.name}}
+                            </option>
+                        </select>
                     </div>
                 </div>
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-group">
@@ -75,29 +120,26 @@
                     </div>
                     <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                         <select class="form-control boxStatus" [disabled]="dailyAttendnace?.isLoading  || isDownloading" [(ngModel)]="dailyAttendnace.filters.properties['status']['value']" placeholder="Status" name="Status">
-                        <option value="">All</option>
-                        <option value="present">Present</option>
-                        <option value="absent">Absent</option>
-                        <option value="missSwipe">Missed Swipe</option>
-                        <option value="halfday">Half Day</option>
-                        <option value="onLeave">On Leave</option>
+                            <option value="">All</option>
+                            <option value="present">Present</option>
+                            <option value="absent">Absent</option>
+                            <option value="missSwipe">Missed Swipe</option>
+                            <option value="halfday">Half Day</option>
+                            <option value="onLeave">On Leave</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-group" *ngFor="let item of tagTypes?.items">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" *ngIf="item.name !=='department'">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                         <label>{{item?.name | titlecase}}</label>
                     </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" *ngIf="item.name !=='department'">
+                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                         <select class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" #tag (change)="tags.reset();tags.select({tagTypeId:item.id,tagId:tag.value})" placeholder="Tag" name="tags">
-                        <option selected [ngValue]="null">select an option</option>
-                      <option *ngFor="let tag of item?.tags" [value]="tag.id" >
-                            {{tag?.name | titlecase}}
-                        <!-- <span *ngIf = "tag.name.toLowerCase() !== department">
-
-                          </span> -->
-                    </option>
-                    </select>
+                            <option selected [ngValue]="null">select an option</option>
+                            <option *ngFor="let tag of item?.tags" [value]="tag.id">
+                                {{tag?.name | titlecase}}
+                            </option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -105,7 +147,23 @@
                 <span *ngFor="let item of selectedTags;let i = index" class="badge badge-pill badge-dark"> {{item?.name | titlecase}}&nbsp;<i (click)="removeChip(i)" class="fa fa-times" aria-hidden="true"></i></span>
             </div> -->
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 button_align form-group">
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4  form-group">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        <label for="email">Department</label>
+                    </div>
+                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                        <input type="text" class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" name="Name">
+                    </div>
+                </div>
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4  form-group">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        <label for="email">Contractor</label>
+                    </div>
+                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                        <input type="text" class="form-control" [disabled]="dailyAttendnace?.isLoading  || isDownloading" name="Name">
+                    </div>
+                </div>
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 button_align form-group">
                     <button [disabled]="dailyAttendnace?.isLoading || isDownloading" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="getAttendance(dailyAttendnace.filters.properties['ofDate']['value']);">Apply</button>
                     <button [disabled]="dailyAttendnace?.isLoading || isDownloading" md-raised-button class="btn_grey" mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()">Reset</button>
                 </div>
@@ -115,49 +173,59 @@
 </div>
 
 <div class="row">
-    <div class="row page_header">
-
+    <md-card class="card">
         <div class="table-responsive">
             <table class="table table-condensed table-hover">
-                <thead class="thead">
+                <thead class="primary_thead">
                     <tr>
-                        <th>Name</th>
+                        <th class="td">Name</th>
                         <th class="tdWidth">Code</th>
-                        <th class="tdWidth">Shift</th>
-                        <th class="tdWidth">Hours</th>
+                        <th class="tdWidth">Designation</th>
+                        <!-- <th class="tdWidth">Shift</th> -->
+                        <!-- <th class="tdWidth">Hours</th> -->
                         <th class="tdWidth">Status</th>
+                        <!-- <th class="tdWidth">Department</th> -->
                         <th class="tdWidth">Check In</th>
                         <th class="tdWidth">Check Out</th>
+                        <th class="tdWidth">Team</th>
                         <!-- <th></th> -->
                     </tr>
                 </thead>
-                <tbody style="background-color: white;">
-                    <tr *ngFor="let item of dailyAttendnace.items | paginate: { id: 'foo',
+                <tbody>
+                    <tr *ngFor="let item of attendances | paginate: { id: 'foo',
                                                       itemsPerPage: dailyAttendnace.pageSize,
                                                       currentPage: dailyAttendnace.pageNo,
                                                       totalItems: dailyAttendnace.totalRecords };" class="capitalize">
                         <td>
                             <img *ngIf="item?.picUrl" class="img-circle profile_pic" alt="img" [src]="item?.picUrl" onError="this.src='/assets/images/blank.png'">
-                            <img *ngIf="!item?.picUrl" class="img-circle profile_pic" alt="img" src="assets/images/blank.png"> &nbsp;<a [routerLink]="[item.id]">{{item?.name  || '--'}}</a>
+                            <img *ngIf="!item?.picUrl" class="img-circle profile_pic" alt="img" src="assets/images/blank.png"> &nbsp;
+                            <a [routerLink]="[item.id]">{{item?.name || '--'}}</a>
                         </td>
                         <td class="tdWidth">{{item?.code || '--'}}</td>
-                        <td class="tdWidth">{{item?.shiftType?.name || '--'}}</td>
-                        <td class="tdWidth">{{item?.attendance?.hoursWorked || '--'}}</td>
+                        <td class="tdWidth">{{item?.designation || '--'}}</td>
+                        <!-- <td class="tdWidth">{{item?.shiftType?.name || '--'}}</td> -->
+                        <!-- <td class="tdWidth">{{item?.attendance?.hoursWorked || '--'}}</td> -->
                         <td class="tdWidth">
                             <ng-template #elsePart>
-                                <span>{{item?.attendance?.status?.toLowerCase() === 'checkedin' ? 'Present' : item?.attendance?.status}}</span>
+                                <span>{{item?.attendance?.status?.toLowerCase() == 'checkedin' ? 'Present' : item?.attendance?.status}}</span>
                             </ng-template>
-                            <span *ngIf="item?.attendance?.status === 'absent' && (item?.attendance?.shift?.status === 'weekOff' || item?.attendance?.shift?.status === 'holiday'); else elsePart">{{item?.attendance?.shift?.status | titlecase}}</span>
+                            <span *ngIf="item?.attendance?.status == 'absent' && (item?.attendance?.shift?.status === 'weekOff' || item?.attendance?.shift?.status === 'holiday'); else elsePart">{{item?.attendance?.shift?.status | titlecase}}</span>
                         </td>
+
+                        <!-- <td class="tdWidth">{{item?.department || '--'}}</td> -->
                         <td class="tdWidth">{{(item?.attendance?.checkIn | date:'shortTime') || '--'}}</td>
                         <td class="tdWidth">{{(item?.attendance?.checkOut | date:'shortTime') || '--'}}</td>
-                        <td></td>
+                        <td class="tdWidth">
+                            <a [routerLink]="['teams',item.id]" *ngIf="item?.team">
+                                <img src="assets/images/team.png" width="30px;">
+                            </a>
+                            <span *ngIf="!item.team">--</span>
+                        </td>
                     </tr>
 
                 </tbody>
             </table>
         </div>
-        <br>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="custom_pagination">
                 <pagination-controls id="foo" (pageChange)="dailyAttendnace.pageNo = $event;getAttendance(dailyAttendnace.filters.properties['ofDate']['value']);"></pagination-controls>
@@ -165,14 +233,13 @@
                 <div class="pageSize">
                     <label>Page Size:</label>
                     <select name="pageSize" [(ngModel)]="dailyAttendnace.pageSize" (change)="dailyAttendnace.pageNo = 1;getAttendance(dailyAttendnace.filters.properties['ofDate']['value']);">
-                      <option value="10">10</option>
-                      <option value="50">50</option>
-                      <option value="100">100</option>
-                      <option value="500">500</option>
+                        <option value=10>10</option>
+                        <option value=50>50</option>
+                        <option value=100>100</option>
+                        <option value=500>500</option>
                     </select>
                 </div>
             </div>
         </div>
-
-    </div>
+    </md-card>
 </div>

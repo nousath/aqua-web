@@ -52,7 +52,7 @@ export class Page<TModel> extends PageModel<TModel> implements IPage {
     }
   }
 
-  constructor(private options: PageOptions<TModel>) {
+  constructor(public options: PageOptions<TModel>) {
     super();
     if (options.items) {
       this.items = options.items;

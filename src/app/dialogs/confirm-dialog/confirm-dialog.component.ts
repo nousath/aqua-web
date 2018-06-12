@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MdDialogRef } from '@angular/material';
+import { NgForm } from '@angular/forms';
+import { ToastyService } from 'ng2-toasty';
+import { EmsEmployee } from '../../models/index';
+
 
 @Component({
   selector: 'aqua-confirm-dialog',
@@ -8,10 +12,21 @@ import { MdDialogRef } from '@angular/material';
 })
 export class ConfirmDialogComponent implements OnInit {
 
-  msg = '';
-  constructor(public dialogRef: MdDialogRef<ConfirmDialogComponent>) { }
+  employee: EmsEmployee = new EmsEmployee();
+
+
+  @ViewChild('TerminateForm') TerminateForm: NgForm;
+
+  msg: string = '';
+  constructor(public dialogRef: MdDialogRef<ConfirmDialogComponent>,
+    private toastyService: ToastyService, ) {
+  }
 
   ngOnInit() {
   }
 
+  continue() {
+
+    this.dialogRef.close(this.employee);
+  }
 }

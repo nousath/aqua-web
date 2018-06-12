@@ -1,0 +1,92 @@
+.example-icon {
+    padding: 0 14px;
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.picColm {
+    width: 10%
+}
+
+.td{
+    width: 15%;
+    text-align: center;
+}
+.tdWidth {
+    width: 13%;
+    text-align: center;
+}
+
+.calender {
+    margin-top: 2%
+}
+
+.marginLetf {
+    margin-left: 1%;
+}
+
+.scrollTable {
+    max-height: 400px;
+    overflow: auto;
+}
+
+.toolBarRow {
+    display: none !important;
+}
+
+.profile_pic {
+    width: 33px;
+    height: 33px;
+}
+
+.activeTab {
+    border-bottom: 2px solid yellow;
+}
+
+.seletctag {
+    width: 16%;
+    margin-top: 1%;
+    margin-left: 1%;
+}
+
+.alignText {
+    margin-left: -23px;
+}
+
+@media only screen and (max-width:539px) {
+    .toolBarRow {
+        display: flex !important;
+    }
+    .hideATXS {
+        display: none !important;
+    }
+    .calender {
+        margin-top: 2%;
+        width: 100%;
+    }
+    .profile_pic {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+button.mat-menu-item {
+    width: 100%;
+    font-size: 87%;
+    text-align: center;
+}
+
+.chipsBadge {
+    padding: 0px 2%;
+}
+
+.chipsBadge span {
+    font-weight: 100;
+}
+
+.chipsBadge i {
+    font-weight: 100;
+    cursor: pointer;
+}
