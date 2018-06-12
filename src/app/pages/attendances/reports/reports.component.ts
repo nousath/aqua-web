@@ -1,14 +1,14 @@
-import { Component, OnInit } from "@angular/core";
-import { AmsReportRequestService } from "../../../services";
-import { ReportRequest } from "../../../models/report-request";
-import { Page } from "../../../common/contracts/page";
-import { ActivatedRoute } from "@angular/router";
-import { Subscription } from "rxjs";
+import { Component, OnInit } from '@angular/core';
+import { AmsReportRequestService } from '../../../services';
+import { ReportRequest } from '../../../models/report-request';
+import { Page } from '../../../common/contracts/page';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Location } from '@angular/common'
 import { ToastyService } from 'ng2-toasty';
 @Component({
-  selector: "aqua-reports",
-  templateUrl: "./reports.component.html",
+  selector: 'aqua-reports',
+  templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.css']
 })
 export class ReportsComponent implements OnInit {

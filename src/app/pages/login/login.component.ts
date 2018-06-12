@@ -16,14 +16,14 @@ declare var $: any;
 
 
 class VerifyOTP {
-  char_1: string = '';
-  char_2: string = '';
-  char_3: string = '';
-  char_4: string = '';
-  char_5: string = '';
-  char_6: string = '';
-  maxLength: number = 1;
-  minLength: number = 1;
+  char_1 = '';
+  char_2 = '';
+  char_3 = '';
+  char_4 = '';
+  char_5 = '';
+  char_6 = '';
+  maxLength = 1;
+  minLength = 1;
   concatChar(): string {
     return `${this.char_1}${this.char_2}${this.char_3}${this.char_4}${this.char_5}${this.char_6}`
   }
@@ -43,12 +43,12 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   user: Model<User>;
   otpModel: EmsEmployee;
-  signupEmail: string = '';
-  isLoggingIn: boolean = false;
+  signupEmail = '';
+  isLoggingIn = false;
   section: 'SIGNIN' | 'SIGNUP' | 'OTP' | 'COMPLETE' | 'FORGOTPASSWORD' | 'RESETPASSWORD' = 'SIGNIN';
   verifyOTP: VerifyOTP = new VerifyOTP();
   organizations: Page<Organization>;
-  newOrg: boolean = false;
+  newOrg = false;
   profileModel: EmsEmployee = new EmsEmployee();
   subscription: Subscription;
 
@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private toastyService: ToastyService) {
 
     this.subscription = activatedRoute.queryParams.subscribe(queryParams => {
-      let token: string = queryParams['user_access_token'];
+      const token: string = queryParams['user_access_token'];
       let orgCode: string = queryParams['org_code'];
       if (token && orgCode) {
         orgCode = orgCode.toLowerCase();
@@ -108,29 +108,29 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 
   loginToAms() {
-    let tempData: any = { "device": { "id": "string" } };
+    const tempData: any = { 'device': { 'id': 'string' } };
     this.isLoggingIn = true;
     this.amsEmployeeService.employees.create(tempData).then(
       (amsUser) => {
         this.isLoggingIn = false;
         // if (amsUser.userType == 'normal') {
-          
+
           // this.router.navigate(['/download']);
           // this.router.navigate(['/pages/attendances/daily',amsUser.id]);
           // return this.toastyService.info({ title: 'Info', msg: 'You are not authorized to use this application. Please contact the system administrator if you need to access this application' })
         // }
         this.store.setItem('ams_token', amsUser.token);
-        this.store.setItem('userId',amsUser.id)
+        this.store.setItem('userId', amsUser.id)
         this.store.setObject('user', amsUser);
         this.store.setItem('userType', amsUser.userType);
         this.store.setItem('orgCode', amsUser.organization.code.toLowerCase());
         if (amsUser.userType == 'superadmin')
           return this.router.navigate(['/pages']);
           if (amsUser.userType == 'normal' || 'admin')
-          return this.router.navigate(['/pages/attendances/daily',amsUser.id]);
+          return this.router.navigate(['/pages/attendances/daily', amsUser.id]);
         // if (amsUser.userType == 'admin')
         //   return this.router.navigate(['/pages/attendances/daily',amsUser.id]);
-        
+
       }
     ).catch(err => { this.isLoggingIn = false; this.toastyService.error({ title: 'Error', msg: err }) });
   }
@@ -141,7 +141,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     // window.location.href = `${this.registerUrl}/#/signup/${this.signupEmail}`;
-    var win = window.open(`${this.registerUrl}/#/signup/${this.signupEmail}`, '_blank');
+    const win = window.open(`${this.registerUrl}/#/signup/${this.signupEmail}`, '_blank');
     if (win) {
       //Browser has allowed it to be opened
       win.focus();
@@ -169,7 +169,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   validateOtp() {
-    let otp: any = {
+    const otp: any = {
       activationCode: this.verifyOTP.concatChar()
     }
     this.isLoggingIn = true;
@@ -216,7 +216,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (password2 !== this.profileModel.password) {
       return this.toastyService.error({ title: 'Error', msg: 'Password and Confirm Password should be same' })
     }
-    let resetPassModel = {
+    const resetPassModel = {
       activationCode: this.verifyOTP.concatChar(),
       password: this.profileModel.password
     }
@@ -238,7 +238,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   resendOTP() {
-    let resend: any = {
+    const resend: any = {
       email: this.signupEmail
     }
     this.isLoggingIn = true;

@@ -32,9 +32,9 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
   monthlyAttendnace: Page<MonthAttendance>;
   employee: Model<Employee>;
   shiftTypes: Page<ShiftType>;
-  isFilter: boolean = false;
+  isFilter = false;
   date: Date = null;
-  showDatePicker: boolean = false;
+  showDatePicker = false;
   subscription: Subscription;
   org: any;
 
@@ -108,7 +108,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
   reset() {
     this.monthlyAttendnace.filters.reset();
     this.tags.reset();
-    let tagElements: any[] = document.getElementsByName('tags') as any;
+    const tagElements: any[] = document.getElementsByName('tags') as any;
     if (tagElements) {
       tagElements.forEach(item => item.value = '');
     }
@@ -119,7 +119,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
 
 
   checkFiltersInStore() {
-    let filters: any = this.store.getObject('monthly-attendance-filters');
+    const filters: any = this.store.getObject('monthly-attendance-filters');
     if (filters) {
       this.isFilter = true;
       // this.monthlyAttendnace.filters.properties['ofDate']['value'] = filters['ofDate'] || new Date();
@@ -132,7 +132,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
   }
 
   setFiltersToStore() {
-    let queryParams: any = {};
+    const queryParams: any = {};
     _.each(this.monthlyAttendnace.filters.properties, (filter: Filter, key: any, obj: any) => {
       if (filter.value) {
         queryParams[key] = filter.value;
@@ -149,7 +149,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
     date = new Date(date);
     this.monthlyAttendnace.filters.properties['ofDate']['value'] = date.toISOString();
 
-    let tags: string[] = [];
+    const tags: string[] = [];
     _.each(this.tags.selected, (tag: SelectedTag) => {
       tags.push(tag.tagId)
     })
@@ -159,11 +159,11 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
 
   }
 
-  isDownloading: boolean = false;
+  isDownloading = false;
   download(byShiftEnd: boolean, byShiftLength: boolean, reportName: string) {
     this.isDownloading = true;
-    let serverPageInput: ServerPageInput = new ServerPageInput();
-    let queryParams: any = {};
+    const serverPageInput: ServerPageInput = new ServerPageInput();
+    const queryParams: any = {};
     _.each(this.monthlyAttendnace.filters.properties, (filter: Filter, key: any, obj: any) => {
       if (filter.value) {
         queryParams[key] = filter.value;
@@ -208,7 +208,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
     });
   }
   downloadlink() {
-    this.router.navigate(['pages/attendances/reports'],{ queryParams: { type: 'monthly-attendance'} })
+    this.router.navigate(['pages/attendances/reports'], { queryParams: { type: 'monthly-attendance'} })
   }
 
   ngOnInit() {

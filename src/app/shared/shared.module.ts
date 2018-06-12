@@ -111,7 +111,7 @@ export const MaterialModules = [
 ];
 
 @NgModule({
-  declarations: [TimePipe,ShiftPickerComponent],
+  declarations: [TimePipe, ShiftPickerComponent],
   providers: [
     EmsEmployeeService,
     EmsDesignationService,

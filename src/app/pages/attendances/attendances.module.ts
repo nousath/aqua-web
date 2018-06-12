@@ -47,7 +47,7 @@ import { TeamsComponent } from './teams/teams.component';
     DayEventDialogComponent,
     LeaveActionDialogComponent,
   ],
- 
+
   exports: [
     AttendancesComponent,
     MonthlyComponent,

@@ -8,9 +8,9 @@ import { ToastyService } from 'ng2-toasty';
 import { LocalStorageService } from '../services/local-storage.service';
 
 class Sections {
-  employee: boolean = false;
-  attendance: boolean = false;
-  settings: boolean = false;
+  employee = false;
+  attendance = false;
+  settings = false;
   select(section: string) {
     this[section] = !this[section];
   }
@@ -24,15 +24,15 @@ class Sections {
 export class PagesComponent implements OnInit, OnDestroy {
 
   currentUser: Employee = new Employee();
-  orgCode: string = '';
-  userId: string = '';
+  orgCode = '';
+  userId = '';
   sections: Sections = new Sections();
 
   selectedEmp: Employee = new Employee();
   subscription: Subscription;
-  isSyncing: boolean = false;
-  isShowEmployeeTab: boolean = false;
-  userType: string = '';
+  isSyncing = false;
+  isShowEmployeeTab = false;
+  userType = '';
   employeeSearch = true;
 
   constructor(private store: LocalStorageService,

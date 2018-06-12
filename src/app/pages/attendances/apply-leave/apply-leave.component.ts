@@ -116,21 +116,21 @@ export class ApplyLeaveComponent implements OnInit {
     this.leave.properties.date = new Date(this.leave.properties.date).toISOString();
     switch (this.duration) {
       case 'multi':
-        let oneDay = 24 * 60 * 60 * 1000;
-        let startDay: Date = new Date(this.leave.properties.date);
+        const oneDay = 24 * 60 * 60 * 1000;
+        const startDay: Date = new Date(this.leave.properties.date);
         switch (this.startTime){
           case 'startfull':
           startDay.setHours(0, 0, 0, 0);
           break;
           case 'starthalf':
-          startDay.setHours(12,0, 0, 0);
+          startDay.setHours(12, 0, 0, 0);
           break;
           case 'start1/3':
-          startDay.setHours(8,0, 0, 0);
+          startDay.setHours(8, 0, 0, 0);
           break;
         }
         // startDay.setHours(0, 0, 0, 0);
-        let endDay: Date = new Date(this.leave.properties.toDate);
+        const endDay: Date = new Date(this.leave.properties.toDate);
         switch (this.endTime){
           case 'endfull':
           endDay.setHours(0, 0, 0, 0);

@@ -18,6 +18,7 @@ export class ShiftPickerComponent implements OnInit {
   @Input()
   effectiveShifts: Shift[];
 
+  @Input()
   effectiveShift: Shift = new Shift();
 
   @Input()

@@ -21,18 +21,18 @@ const routes: Routes = [
       { path: 'monthly', component: MonthlyComponent },
       { path: 'daily', component: DailyComponent  },
       { path: 'daily/report', component: ReportsComponent },
-      
+
       { path: 'reports', component: ReportsComponent },
 
       { path: 'daily/:empId', component: AttendanceDetailsComponent },
-      
+
       // {path: 'daily/teams/:empId', component:AttendanceDetailsComponent},
       { path: 'teams/:empId', component: TeamsComponent },
       { path: 'daily/teams/:empId', component: TeamsComponent },
       { path: 'daily/teams/:empId', component: TeamsComponent },
-      
+
       // {path: 'myteams/:empId', component: TeamsComponent },
-      
+
       // { path: 'details/:empId', component: AttendanceDetailsComponent },
       { path: 'monthly/:empId', component: AttendanceDetailsComponent },
       { path: 'leaves/:empId', component: AttendanceDetailsComponent },

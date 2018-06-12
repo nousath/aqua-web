@@ -12,7 +12,7 @@ import { environment } from '../../environments/environment';
 export class GenericApi<TModel> implements IApi<TModel> {
 
   private rootUrl: string;
-  
+
   private getHeaders(): Headers {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -22,21 +22,18 @@ export class GenericApi<TModel> implements IApi<TModel> {
     const orgCode = window.localStorage.getItem('orgCode');
 
     if (this.apiName === 'ams') {
-      if (amsToken) {
+      if (amsToken)
         headers.append('x-access-token', amsToken);
-      }
-      if (externalToken) {
-        headers.append('x-role-key', externalToken)
-      }
+      if (externalToken)
+        headers.append('external-token', externalToken);
       // else if (emsToken)
       //   headers.append('external-token', emsToken);
 
     } else if (this.apiName === 'ems') {
       // if (externalToken)
       //   headers.append('external-token', externalToken)
-      if (externalToken) {
+      if (externalToken)
         headers.append('x-access-token', externalToken);
-      }
     }
 
 
@@ -70,10 +67,9 @@ export class GenericApi<TModel> implements IApi<TModel> {
     _.each(input, (value, key, obj) => {
       if (key === 'query') {
         _.each(value, (keyVal, keyKey) => {
-          if (keyVal) {
+          if (keyVal)
             params.set(keyKey, keyVal);
-          }
-        })
+        });
       } else {
         params.set(key, value);
       }
@@ -237,9 +233,9 @@ export class GenericApi<TModel> implements IApi<TModel> {
       .catch(this.handleError);
   }
 
-  all(type: any, id?:string , model?: any): Promise<any>{
+  all(type: any, id?: string , model?: any): Promise<any>{
         let url = `${this.rootUrl}/${this.key}`;
-        if(id){
+        if (id){
           url = `${this.rootUrl}/${this.key}/${id}`
         }
         return this.http[type](url, model, { headers: this.getHeaders() })

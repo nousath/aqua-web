@@ -3,15 +3,15 @@ import { EmsEmployeeService } from '../../../services/ems';
 import { Employee } from '../../../models/employee';
 import { Page } from '../../../common/contracts/page';
 import { ToastyService } from 'ng2-toasty';
-import { MdDialog } from "@angular/material";
+import { MdDialog } from '@angular/material';
 import { Model } from '../../../common/contracts/model';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { EmsEmployee } from '../../../models/ems/employee';
 import { Filter } from '../../../common/contracts/filters';
-import * as _ from "lodash";
+import * as _ from 'lodash';
 import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-dialog.component';
 import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
-import { LocalStorageService } from "app/services/local-storage.service";
+import { LocalStorageService } from 'app/services/local-storage.service';
 import { ValidatorService } from '../../../services/validator.service';
 
 @Component({
@@ -25,7 +25,7 @@ export class EmployeeListComponent implements OnInit {
   employee: Model<EmsEmployee>
   statusFilter: string;
   uploader: FileUploader;
-  isUpload: boolean = false;
+  isUpload = false;
   status;
 
 
@@ -37,8 +37,8 @@ export class EmployeeListComponent implements OnInit {
     private router: Router,
     public dialog: MdDialog) {
 
-    let access_Token: string = this.store.getItem('external-token');
-    let orgCode = this.store.getItem('orgCode');
+    const access_Token: string = this.store.getItem('external-token');
+    const orgCode = this.store.getItem('orgCode');
     this.uploader = new FileUploader({
       url: '/ems/api/employees/importer',
       itemAlias: 'file',
@@ -62,7 +62,7 @@ export class EmployeeListComponent implements OnInit {
 
     this.uploader.onCompleteItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
 
-      let res: any = JSON.parse(response);
+      const res: any = JSON.parse(response);
       if (!res.isSuccess)
         return toastyService.error({ title: 'Error', msg: 'excel upload failed' })
       this.fetchEmp();
@@ -107,10 +107,10 @@ export class EmployeeListComponent implements OnInit {
   }
 
   terminateEmp(empId: string, empName: string) {
-    let dialog = this.dialog.open(ConfirmDialogComponent, { width: '40%' });
+    const dialog = this.dialog.open(ConfirmDialogComponent, { width: '40%' });
     dialog.componentInstance.msg = `Are you sure to want to terminate ${empName} ?`;
     dialog.afterClosed().subscribe((emp: any) => {
-      let empl: any = {
+      const empl: any = {
         id: empId,
         dol: emp.dol,
         reason: emp.reason

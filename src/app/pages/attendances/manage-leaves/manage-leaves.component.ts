@@ -16,7 +16,7 @@ export class ManageLeavesComponent implements OnInit {
 
   leaveTypes: Page<LeaveType>;
   leaveType: Model<LeaveType>;
-  leaveTypeModel : LeaveType = new LeaveType()
+  leaveTypeModel: LeaveType = new LeaveType()
   isNew = false;
   isEdit = false;
 
@@ -40,7 +40,7 @@ export class ManageLeavesComponent implements OnInit {
 
   toggleNew() {
     this.isNew = !this.isNew;
-    if(!this.isNew){
+    if (!this.isNew){
       this.isEdit = false
     }
     this.leaveType.properties = new LeaveType();
@@ -74,7 +74,7 @@ export class ManageLeavesComponent implements OnInit {
       this.store.setObject(`leaveType${leaveType.id}`, leaveType);
     } else {
       leaveType.isEdit = false;
-      let l: LeaveType = this.store.getObject(`leaveType${leaveType.id}`) as LeaveType;
+      const l: LeaveType = this.store.getObject(`leaveType${leaveType.id}`) as LeaveType;
       leaveType.category = l.category;
       leaveType.unitsPerDay = l.unitsPerDay;
       leaveType.code = l.code;
@@ -97,7 +97,7 @@ export class ManageLeavesComponent implements OnInit {
     if (!this.leaveType.properties.unitsPerDay)
       return this.toastyService.info({ title: 'Info', msg: 'Select units per day' });
 
-    let unlimited: any = "true";
+    const unlimited: any = 'true';
     this.leaveType.properties.unlimited = this.leaveType.properties.unlimited == unlimited ? true : false;
 
     this.leaveType.save(

@@ -1,18 +1,18 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { AmsEmployeeService, AmsDeviceService } from "../../../services";
-import { Employee, Device, Category } from "../../../models";
-import { Page } from "../../../common/contracts/page";
-import { Model } from "../../../common/contracts/model";
-import { GenericApi } from "../../../common/generic-api";
-import { Http } from "@angular/http";
-import { IApi } from "../../../common/contracts/api";
-import { ToastyService } from "ng2-toasty";
-import { AnonymousSubject } from "rxjs";
+import { Component, OnInit, Input } from '@angular/core';
+import { AmsEmployeeService, AmsDeviceService } from '../../../services';
+import { Employee, Device, Category } from '../../../models';
+import { Page } from '../../../common/contracts/page';
+import { Model } from '../../../common/contracts/model';
+import { GenericApi } from '../../../common/generic-api';
+import { Http } from '@angular/http';
+import { IApi } from '../../../common/contracts/api';
+import { ToastyService } from 'ng2-toasty';
+import { AnonymousSubject } from 'rxjs';
 
 @Component({
-  selector: "aqua-finger-print",
-  templateUrl: "./finger-print.component.html",
-  styleUrls: ["./finger-print.component.css"]
+  selector: 'aqua-finger-print',
+  templateUrl: './finger-print.component.html',
+  styleUrls: ['./finger-print.component.css']
 })
 export class FingerPrintComponent implements OnInit {
   @Input() code: string;
@@ -20,8 +20,8 @@ export class FingerPrintComponent implements OnInit {
   devices: Page<Device>;
   device: Model<Device>;
   updatedEmployee: IApi<Employee>;
-  isFingerPrintExists: boolean = false;
-  isLoading: boolean = false;
+  isFingerPrintExists = false;
+  isLoading = false;
   fingerPrint: string;
 
   constructor(
@@ -34,7 +34,7 @@ export class FingerPrintComponent implements OnInit {
       api: amsDeviceService.devices,
       filters: [
         {
-          field: "category",
+          field: 'category',
           value: null
         }
       ]
@@ -51,7 +51,7 @@ export class FingerPrintComponent implements OnInit {
 
   getWipFingerPrint(employee: Employee) {
     return employee.fingerPrints.find(item => {
-      return item === "wip";
+      return item === 'wip';
     });
   }
 
@@ -66,7 +66,7 @@ export class FingerPrintComponent implements OnInit {
           this.isFingerPrintExists = true;
           this.fingerPrint = this.getWipFingerPrint(this.employee);
         }
-        this.devices.filters.properties["category"].value = "biometric";
+        this.devices.filters.properties['category'].value = 'biometric';
         this.devices.fetch();
       })
       .catch(err => {
@@ -76,10 +76,10 @@ export class FingerPrintComponent implements OnInit {
   }
 
   isExists(device) {
-    let deviceExits: any = this.employee.devices.find(item => {
+    const deviceExits: any = this.employee.devices.find(item => {
       return item.id === device;
     });
-    if (deviceExits && deviceExits.status !== "disable") {
+    if (deviceExits && deviceExits.status !== 'disable') {
       return true;
     }
     return false;
@@ -87,17 +87,17 @@ export class FingerPrintComponent implements OnInit {
 
   updateFingerPrint(isExist, addFinger, action, device) {
     const model: any = {
-      device: ""
+      device: ''
     };
     this.isLoading = true;
     this.updatedEmployee = new GenericApi<Employee>(
       `employees/${this.employee.id}/fingerPrint?operation=${action}`,
       this.http,
-      "ams"
+      'ams'
     );
 
-    if (action === "fetch") {
-      this.fingerPrint = "wip";
+    if (action === 'fetch') {
+      this.fingerPrint = 'wip';
     }
     if (addFinger) {
       model.fingerPrint = this.fingerPrint;
@@ -105,7 +105,7 @@ export class FingerPrintComponent implements OnInit {
 
     model.device = device;
     this.updatedEmployee
-      .all("post", null, model)
+      .all('post', null, model)
       .then((employee: any) => {
         this.isLoading = false;
         this.employee = employee;
@@ -116,9 +116,9 @@ export class FingerPrintComponent implements OnInit {
           this.fingerPrint = this.getWipFingerPrint(this.employee);
         }
         if (isExist) {
-          this.toastyService.success("FingerPrint Removed Succesfully");
+          this.toastyService.success('FingerPrint Removed Succesfully');
         } else {
-          this.toastyService.success("FingerPrint Added Successfully");
+          this.toastyService.success('FingerPrint Added Successfully');
         }
       })
       .catch(err => {

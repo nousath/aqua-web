@@ -26,7 +26,7 @@ export class RosterShiftsComponent implements OnInit {
   shiftTypes: Page<ShiftType>;
   change: any;
   date: Date = null;
- 
+
   isDownloading = false;
   uploader: FileUploader;
   isLoading = true;
@@ -152,7 +152,7 @@ export class RosterShiftsComponent implements OnInit {
 
   }
   getAttendance(date: Date) {
-    
+
     this.date = date;
     date = new Date(date);
     this.shiftTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
@@ -172,7 +172,7 @@ export class RosterShiftsComponent implements OnInit {
   ngOnInit() {
 
   }
-  
+
   ngAfterViewInit() {
     const date = new Date();
     const today = new Date(date.getFullYear(), date.getMonth(), date.getDate());

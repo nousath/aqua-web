@@ -12,7 +12,7 @@ export class SubAdminGuard implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
-    let currentUser: Employee = this.store.getObject('user') as Employee;
+    const currentUser: Employee = this.store.getObject('user') as Employee;
     if (currentUser.userType == 'admin') {
       return true;
     }

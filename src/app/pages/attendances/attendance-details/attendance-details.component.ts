@@ -54,7 +54,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
   emptyStartDays: any[] = [];
   emptyEndDays: any[] = [];
   date: any;
-  today=new Date(moment().startOf("day").toDate()).toISOString();
+  today= new Date(moment().startOf('day').toDate()).toISOString();
 
   constructor(private amsEmployeeService: AmsEmployeeService,
     private emsEmployeeService: EmsEmployeeService,
@@ -67,7 +67,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
     public dialog: MdDialog,
     private router: Router) {
     // this.today=new Date(moment().startOf("day").toDate()).toISOString();
-   
+
     this.employee = new Model({
       api: amsEmployeeService.employeesForAdmin,
       properties: new Employee()
@@ -377,13 +377,13 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
     }
   }
   resetPassword() {
-    let dialog = this.dialog.open(ResetPasswordDialogComponent, { width: '40%' });
+    const dialog = this.dialog.open(ResetPasswordDialogComponent, { width: '40%' });
     dialog.afterClosed().subscribe(
       (password: string) => {
         if (password) {
           this.employee.isProcessing = true;
-          let emsUserID : number;
-          let emp: any = {
+          let emsUserID: number;
+          const emp: any = {
             password: password
           };
           emsUserID = this.store.getItem('emsUserId')

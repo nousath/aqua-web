@@ -1,4 +1,4 @@
-import { Employee, ReportParams } from ".";
+import { Employee, ReportParams } from '.';
 
 export class ReportRequest{
     id: string;

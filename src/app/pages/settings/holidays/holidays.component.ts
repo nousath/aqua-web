@@ -16,9 +16,9 @@ export class HolidaysComponent implements OnInit {
 
   holidays: Page<Holiday>
   holiday: Model<Holiday>
-  isFilter: boolean = false;
-  isNew: boolean = false;
-  upcoming: boolean = true;
+  isFilter = false;
+  isNew = false;
+  upcoming = true;
   currentDate: any;
 
   constructor(private amsHolidayService: AmsHolidayService,
@@ -27,7 +27,7 @@ export class HolidaysComponent implements OnInit {
 
     this.holidays = new Page({
       api: amsHolidayService.holidays,
-      filters:[{
+      filters: [{
         field: 'date',
         value: null
       }]
@@ -45,11 +45,11 @@ export class HolidaysComponent implements OnInit {
     this.fetchHolidays();
   }
 
-  upcomingHoliday(holiday:any){
+  upcomingHoliday(holiday: any){
     return moment(moment(holiday.date).startOf('day')).isAfter(moment(this.currentDate).startOf('day'))
   }
   fetchHolidays() {
-    
+
     this.holidays.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
   Upcoming(){
