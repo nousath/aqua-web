@@ -169,6 +169,26 @@ export class RosterShiftsComponent implements OnInit {
       .catch(err => { this.toastyService.error({ title: 'Error', msg: err }) });
   }
 
+  shiftColour = function (shiftType) {
+    let str = 'random';
+
+
+    if (shiftType && shiftType.id) {
+      str = shiftType.id;
+    }
+
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    let colour = '#';
+    for (let i = 0; i < 3; i++) {
+      let value = (hash >> (i * 8)) & 0xFF;
+      colour += ('00' + value.toString(16)).substr(-2);
+    }
+    return colour;
+  }
+
   ngOnInit() {
 
   }
@@ -187,10 +207,9 @@ export class RosterShiftsComponent implements OnInit {
       autoclose: true,
       maxDate: new Date()
     }).on('changeDate', (e) => {
-      if (new Date(e.date) > new Date()) {
-
-        return this.toastyService.info({ title: 'Info', msg: 'Date should be less than or equal to current date' })
-      }
+      // if (new Date(e.date) < new Date()) {
+      //   return this.toastyService.info({ title: 'Info', msg: 'You cannot manage previous' })
+      // }
       this.getAttendance(e.date);
     });
     $('#dateSelector').datepicker('setDate', new Date());

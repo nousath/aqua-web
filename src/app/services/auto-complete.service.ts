@@ -28,7 +28,7 @@ export class AutoCompleteService {
       if (amsToken)
         headers.append('x-access-token', amsToken);
       if (externalToken)
-        headers.append('external-token', externalToken)
+        headers.append('external-token', externalToken);
       // else if (emsToken)
       //   headers.append('external-token', emsToken);
 
@@ -52,10 +52,10 @@ export class AutoCompleteService {
         _.each(value, (keyVal, keyKey) => {
           if (keyVal)
             params.set(keyKey, keyVal);
-        })
+        });
       }
     });
-    return params
+    return params;
   }
 
   searchByKey<TModel>(key: string, value: string, apiName: string, apiKey: string, input?: ServerPageInput): Observable<TModel[]> {
@@ -67,7 +67,7 @@ export class AutoCompleteService {
           _.each(item, (keyVal, keyKey) => {
             if (keyVal)
               params.set(keyKey, keyVal);
-          })
+          });
         }
       });
     }

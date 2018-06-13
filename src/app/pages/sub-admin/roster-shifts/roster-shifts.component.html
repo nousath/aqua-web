@@ -14,8 +14,7 @@
     <div *ngIf="!isUpload" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 " style="float: left;">
         <div *ngIf="!isUpload">
 
-            <button md-icon-button class="dwnldBtn" [disabled]="isDownloading || isLoading" (click)="download(dates[0])" mdTooltip="Download Excel"
-                [mdTooltipPosition]="'above'">
+            <button md-icon-button class="dwnldBtn" [disabled]="isDownloading || isLoading" (click)="download(dates[0])" mdTooltip="Download Excel" [mdTooltipPosition]="'above'">
                 <md-icon>cloud_download</md-icon>
             </button>
             <a md-icon-button [disabled]="isLoading || isDownloading" (click)="excel()" mdTooltip="Upload Excel" [mdTooltipPosition]="'above'">
@@ -60,19 +59,19 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let effectiveShift of effectiveShifts.items | paginate: { id: 'foo',
+                <tr *ngFor="let item of effectiveShifts.items | paginate: { id: 'foo',
         itemsPerPage: effectiveShifts.pageSize,
         currentPage: effectiveShifts.pageNo,
         totalItems: effectiveShifts.totalRecords };">
-                    <td class="customStyle">{{effectiveShift.employee.name || '--'}}
+                    <td class="customStyle">{{item.employee.name || '--'}}
                         <br>
-                        <span class="empCode">{{effectiveShift.employee.code || '--'}}</span>
+                        <span class="empCode">{{item.employee.code || '--'}}</span>
                     </td>
                     <td>
-                        <div class="previousShiftBorder">{{effectiveShift?.previousShift?.shiftType?.name || '--'}}</div>
+                        <div class="previousShiftBorder" [style.border-color]="shiftColour(item?.previousShift?.shiftType)">{{item?.previousShift?.shiftType?.name || '--'}}</div>
                     </td>
                     <td class="tdStyle" *ngFor="let date of dates">
-                        <aqua-shift-picker [shiftTypes]="shiftTypes.items" [effectiveShifts]="effectiveShift.shifts" [date]="date" (onChange)="changeShift($event, date,effectiveShift.employee)"></aqua-shift-picker>
+                        <aqua-shift-picker [startingShift]="item?.previousShift?.shiftType" [shiftTypes]="shiftTypes.items" [effectiveShifts]="item.shifts" [date]="date" (onChange)="changeShift($event, date, item.employee)"></aqua-shift-picker>
                     </td>
                 </tr>
             </tbody>
