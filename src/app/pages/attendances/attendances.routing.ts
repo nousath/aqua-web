@@ -19,27 +19,20 @@ const routes: Routes = [
     path: '', component: AttendancesComponent, children: [
       { path: '', redirectTo: 'daily', pathMatch: 'full' },
       { path: 'monthly', component: MonthlyComponent },
-      { path: 'daily', component: DailyComponent  },
+      { path: 'daily', component: DailyComponent },
       { path: 'daily/report', component: ReportsComponent },
-      
+
       { path: 'reports', component: ReportsComponent },
 
       { path: 'daily/:empId', component: AttendanceDetailsComponent },
-      
-      // {path: 'daily/teams/:empId', component:AttendanceDetailsComponent},
+
       { path: 'teams/:empId', component: TeamsComponent },
       { path: 'daily/teams/:empId', component: TeamsComponent },
       { path: 'daily/teams/:empId', component: TeamsComponent },
-      
-      // {path: 'myteams/:empId', component: TeamsComponent },
-      
-      // { path: 'details/:empId', component: AttendanceDetailsComponent },
+
       { path: 'monthly/:empId', component: AttendanceDetailsComponent },
       { path: 'leaves/:empId', component: AttendanceDetailsComponent },
-
-      // { path: 'details/:empId/apply-leave', component: ApplyLeaveComponent },
       { path: 'daily/:empId/apply-leave', component: ApplyLeaveComponent },
-      // { path: 'details/:empId/attendance-logs/:ofDate', component: AttendanceLogsComponent },
       { path: 'daily/:empId/attendance-logs/:ofDate', component: AttendanceLogsComponent },
       { path: 'monthly/:empId/apply-leave', component: ApplyLeaveComponent },
       { path: 'leaves/:empId/apply-leave', component: ApplyLeaveComponent },

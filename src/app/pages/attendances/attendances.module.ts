@@ -19,6 +19,7 @@ import { ReportFiltersComponent } from './report-filters/report-filters.componen
 import { ReportListsComponent } from './report-lists/report-lists.component';
 import { LeaveTypeComponent } from './leave-type/leave-type.component';
 import { TeamsComponent } from './teams/teams.component';
+import { ApplyLeaveTypeComponent } from './apply-leave-type/apply-leave-type.component';
 
 @NgModule({
   imports: [
@@ -42,12 +43,13 @@ import { TeamsComponent } from './teams/teams.component';
     ReportListsComponent,
     LeaveTypeComponent,
     TeamsComponent,
+    ApplyLeaveTypeComponent
   ],
   entryComponents: [
     DayEventDialogComponent,
     LeaveActionDialogComponent,
   ],
- 
+
   exports: [
     AttendancesComponent,
     MonthlyComponent,

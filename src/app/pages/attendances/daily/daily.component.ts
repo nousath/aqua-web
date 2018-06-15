@@ -17,6 +17,7 @@ import * as _ from "lodash";
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { AmsTagService } from '../../../services/ams/ams-tag.service';
 import { TagType, Tag } from '../../../models/tag';
+import { FileUploader } from 'ng2-file-upload';
 declare var $: any;
 
 export interface SelectedTag {
@@ -41,6 +42,7 @@ export class Tags {
 }
 
 
+
 @Component({
   selector: 'aqua-daily',
   templateUrl: './daily.component.html',
@@ -56,6 +58,7 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
   tags: Tags = new Tags();
   date: Date = null
   isUpload: boolean = false;
+  uploader: FileUploader;
 
   attendances: DailyAttendance[] = [];
 
@@ -239,6 +242,10 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   downloadlink(type: string) {
     this.router.navigate(['pages/attendances/reports'], { queryParams: { type: type } });
+  }
+  excel() {
+    this.isUpload = !this.isUpload;
+    this.uploader.clearQueue();
   }
   ngOnDestroy() {
 

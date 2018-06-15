@@ -9,6 +9,7 @@ import * as _ from "lodash";
 import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-dialog.component';
 import { MdDialog } from '@angular/material';
 import { LocalStorageService } from '../../../services/local-storage.service';
+import { FileUploader } from 'ng2-file-upload';
 
 @Component({
   selector: 'aqua-designations',
@@ -20,6 +21,8 @@ export class DesignationsComponent implements OnInit {
   designations: Page<Designation>
   designation: Model<Designation>
   isNew: boolean = false;
+  uploader: FileUploader;
+  isUpload: boolean = false;
 
   constructor(private emsDesignationService: EmsDesignationService,
     public validatorService: ValidatorService,
@@ -65,6 +68,11 @@ export class DesignationsComponent implements OnInit {
       designation.name = d.name;
       this.store.removeItem(`designationEdit_${designation.id}`);
     }
+  }
+
+  excel() {
+    this.isUpload = !this.isUpload;
+    // this.uploader.clearQueue();
   }
 
   remove(id: number) {

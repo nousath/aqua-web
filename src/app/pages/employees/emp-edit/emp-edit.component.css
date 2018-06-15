@@ -45,3 +45,16 @@ th{
 td{
     width: 30%;
 }
+.uploadBtn {
+    margin: -8px 0px 0px 0px;
+}
+
+.file {
+    width: 38%;
+    float: left;
+    margin-left: 1%;
+    margin-right: 1%;
+}
+.upload{
+    padding-top: 10px;
+}

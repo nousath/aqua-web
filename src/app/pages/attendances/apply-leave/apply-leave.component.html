@@ -1,7 +1,15 @@
 <div class="row page_header">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
-        <h5><b>New Leave</b></h5>
+    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+        <a *ngIf="user == 'superadmin'" md-raised-button class="reply" color="primary" [routerLink]="['/pages/attendances/leaves']">
+            <md-icon>reply</md-icon>Leaves(all)
+        </a>
     </div>
+    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 text-center">
+        <h5>
+            <b>New Leave</b>
+        </h5>
+    </div>
+    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2"></div>
 </div>
 <md-spinner class="custom_spinner" *ngIf="employee?.isProcessing" mode="indeterminate"></md-spinner>
 
@@ -18,18 +26,25 @@
                     <tbody>
                         <tr>
                             <td class="lableWidth">
-                                <label>Name:<span class="asterisk">*</span></label>
+                                <label>Name:
+                                    <span class="asterisk">*</span>
+                                </label>
                             </td>
                             <td class="valueWidth">
-                                <input ngui-auto-complete [min-chars]="1" placeholder="Employee search by name or code" [(ngModel)]="leave.properties.employee" (valueChanged)="onSelectEmp($event)" [source]="empSource.bind(this)" [value-formatter]="empFormatter" [list-formatter]="empListFormatter"
-                                    class="form-control search" name="roleId" [required]="!isEmpId" />
+                                <input ngui-auto-complete [min-chars]="1" placeholder="Employee search by name or code" [(ngModel)]="leave.properties.employee"
+                                    (valueChanged)="onSelectEmp($event)" [source]="empSource.bind(this)" [value-formatter]="empFormatter"
+                                    [list-formatter]="empListFormatter" class="form-control search" name="roleId" [required]="!isEmpId"
+                                />
                                 <!--<input type="text" [(ngModel)]="leave.properties.employee.name" [maxlength]="validatorService.textLength" class="form-control" name="empName" required readonly>-->
                             </td>
                             <td class="lableWidth">
-                                <label>Code:<span class="asterisk">*</span></label>
+                                <label>Code:
+                                    <span class="asterisk">*</span>
+                                </label>
                             </td>
                             <td class="valueWidth">
-                                <input type="text" [(ngModel)]="leave.properties.employee.code" [maxlength]="validatorService.textLength" class="form-control" name="code" [required]="!isEmpId" readonly>
+                                <input type="text" [(ngModel)]="leave.properties.employee.code" [maxlength]="validatorService.textLength" class="form-control"
+                                    name="code" [required]="!isEmpId" readonly>
                             </td>
                         </tr>
                         <tr>
@@ -37,7 +52,8 @@
                                 <label>Designation:</label>
                             </td>
                             <td>
-                                <input type="text" [(ngModel)]="leave.properties.employee.designation" [maxlength]="validatorService.textLength" class="form-control" name="designation" readonly>
+                                <input type="text" [(ngModel)]="leave.properties.employee.designation" [maxlength]="validatorService.textLength" class="form-control"
+                                    name="designation" readonly>
                             </td>
                             <td>
                                 <!--<label>Code:<span class="asterisk">*</span></label>-->
@@ -57,24 +73,33 @@
                     <tbody>
                         <tr>
                             <td class="lableWidth">
-                                <label>Name:<span class="asterisk">*</span></label>
+                                <label>Name:
+                                    <span class="asterisk">*</span>
+                                </label>
                             </td>
                             <td class="valueWidth">
-                                <input type="text" [(ngModel)]="leave.properties.employee.name" [maxlength]="validatorService.textLength" class="form-control" name="empName" [required]="isEmpId" readonly>
+                                <input type="text" [(ngModel)]="leave.properties.employee.name" [maxlength]="validatorService.textLength" class="form-control"
+                                    name="empName" [required]="isEmpId" readonly>
                             </td>
                             <td class="lableWidth">
-                                <label>Code:<span class="asterisk">*</span></label>
+                                <label>Code:
+                                    <span class="asterisk">*</span>
+                                </label>
                             </td>
                             <td class="valueWidth">
-                                <input type="text" [(ngModel)]="leave.properties.employee.code" [maxlength]="validatorService.textLength" class="form-control" name="code" [required]="isEmpId" readonly>
+                                <input type="text" [(ngModel)]="leave.properties.employee.code" [maxlength]="validatorService.textLength" class="form-control"
+                                    name="code" [required]="isEmpId" readonly>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <label>Designation:<span class="asterisk">*</span></label>
+                                <label>Designation:
+                                    <span class="asterisk">*</span>
+                                </label>
                             </td>
                             <td>
-                                <input type="text" [(ngModel)]="leave.properties.employee.designation" [maxlength]="validatorService.textLength" class="form-control" name="designation" [required]="isEmpId" readonly>
+                                <input type="text" [(ngModel)]="leave.properties.employee.designation" [maxlength]="validatorService.textLength" class="form-control"
+                                    name="designation" [required]="isEmpId" readonly>
                             </td>
                             <td>
                                 <!--<label>Code:<span class="asterisk">*</span></label>-->
@@ -93,6 +118,13 @@
                     </thead>
                     <tbody>
                         <tr>
+                            <td colspan="3">
+                                <div *ngFor="let item of leaveBalances.items;let idx = index">
+                                    <aqua-apply-leave-type [leaveBalance]="item" [empl]="isEmpId" [serial]="idx"></aqua-apply-leave-type>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- <tr>
                             <td class="lableWidth">
                                 <label>Type:<span class="asterisk">*</span></label>
                             </td>
@@ -126,7 +158,6 @@
                                 <label>Date:<span class="asterisk">*</span></label>
                             </td>
                             <td>
-                                <!--<input id="startDate1" type="text" class="form-control input-sm calendar no-spin">-->
 
                                 <input name="startdate1" class="form-control  calendar no-spin" type="date" [ngModel]="leave.properties.date  | date:'yyyy-MM-dd'" (ngModelChange)="leave.properties.date = $event" [required]="duration != 'multi'">
                             </td>
@@ -157,20 +188,26 @@
                                     <md-radio-button *ngIf="leave.properties.leaveType.unitsPerDay == 3" value="2/3">Two Third</md-radio-button>
                                 </md-radio-group>
                             </td>
-                        </tr>
-                        <tr>
+                        </tr> -->
+
+
+                        <tr *ngIf="leaveBalances.items.length">
                             <td>
-                                <label>Reason:<span class="asterisk">*</span></label>
+                                <label>Reason:
+                                    <span class="asterisk">*</span>
+                                </label>
                             </td>
                             <td colspan="3">
-                                <textarea type="text" [(ngModel)]="leave.properties.reason" [maxlength]="validatorService.textLength" class="form-control" name="reason" required></textarea>
+                                <textarea type="text" [(ngModel)]="leave.properties.reason" [maxlength]="validatorService.textLength" class="form-control"
+                                    name="reason" required></textarea>
                             </td>
                         </tr>
-                        <tr>
+                        <tr *ngIf="leaveBalances.items.length">
                             <td colspan="4" class="footerBtn">
                                 <button md-raised-button color="primary" [disabled]="leave?.isProcessing" (click)="applyLeave(leaveForm.valid)">
-                                  <span *ngIf="!leave?.isProcessing">Add</span>
-                                  <i *ngIf="leave?.isProcessing"  class="fa fa-spinner fa-spin  fa-fw"></i></button>
+                                    <span *ngIf="!leave?.isProcessing">Add</span>
+                                    <i *ngIf="leave?.isProcessing" class="fa fa-spinner fa-spin  fa-fw"></i>
+                                </button>
                                 <button md-raised-button [disabled]="leave?.isProcessing" (click)="reset()">Reset</button>
                             </td>
                         </tr>

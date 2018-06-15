@@ -9,6 +9,7 @@ import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-
 import { MdDialog } from '@angular/material';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { Department } from '../../../models/department';
+import { FileUploader } from 'ng2-file-upload';
 
 @Component({
   selector: 'aqua-departments',
@@ -19,6 +20,8 @@ export class DepartmentsComponent implements OnInit {
   departments: Page<Department>
   department: Model<Department>
   isNew: boolean = false;
+  uploader: FileUploader;
+  isUpload: boolean = false;
 
   constructor(private emsDepartmentService: EmsDepartmentService,
     public validatorService: ValidatorService,
@@ -108,6 +111,9 @@ export class DepartmentsComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+  excel() {
+    this.isUpload = !this.isUpload;
   }
 
 }

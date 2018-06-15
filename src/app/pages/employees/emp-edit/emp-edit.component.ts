@@ -35,6 +35,8 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
   subscription: Subscription;
   uploader: FileUploader;
   isChangeImage: boolean = false;
+  isUpload: boolean = false;
+
   imgUploadUrl: string = environment.apiUrls.ems;
 
   isNew: boolean = false;
@@ -145,6 +147,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     this.store.setItem('Ems-employeeID', this.employee.properties.id)
 
   }
+  
 
   save(form: NgForm) {
     if (form.invalid) {
@@ -184,6 +187,10 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
+  excel() {
+    this.isUpload = !this.isUpload;
+    this.uploader.clearQueue();
+  }
   resetPassword() {
     let dialog = this.dialog.open(ResetPasswordDialogComponent, { width: '40%' });
     dialog.afterClosed().subscribe(
@@ -318,6 +325,14 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
       this.employee.properties.dom = new Date(d.date).toISOString();
     });
 
+    
+  }
+  downloadlink() {
+    this.router.navigate(['pages/attendances/reports'], {
+      queryParams: {
+        type: 'employees-details'
+      }
+    })
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();

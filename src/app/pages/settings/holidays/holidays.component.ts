@@ -5,6 +5,7 @@ import { AmsHolidayService, ValidatorService } from '../../../services';
 import { ToastyService } from 'ng2-toasty';
 import * as moment from 'moment';
 import { Model } from '../../../common/contracts/model';
+import { FileUploader } from 'ng2-file-upload';
 declare var $: any;
 
 @Component({
@@ -17,9 +18,12 @@ export class HolidaysComponent implements OnInit {
   holidays: Page<Holiday>
   holiday: Model<Holiday>
   isFilter: boolean = false;
+  uploader: FileUploader;
   isNew: boolean = false;
   upcoming: boolean = true;
   currentDate: any;
+  isUpload: boolean = false;
+
 
   constructor(private amsHolidayService: AmsHolidayService,
     public validatorService: ValidatorService,
@@ -43,6 +47,10 @@ export class HolidaysComponent implements OnInit {
     console.log(this.currentDate)
 
     this.fetchHolidays();
+  }
+
+  excel() {
+    this.isUpload = !this.isUpload;
   }
 
   upcomingHoliday(holiday:any){

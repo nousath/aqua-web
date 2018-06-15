@@ -1,3 +1,42 @@
+
+<div>
+    <div *ngIf="!isUpload" style="float: right">
+        <a class="exl" md-icon-button (click)="excel()" mdTooltip="Excel Upload" [mdTooltipPosition]="'above'" angulartics2On="click"
+            angularticsEvent="excelUploadClick" angularticsCategory="employee " [angularticsProperties]="{label: 'Fall Campaign'}">
+            <md-icon>cloud_upload</md-icon>
+        </a>
+        <button class="exlD" (click)="downloadlink()" [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing"
+            md-icon-button>
+            <md-icon>cloud_download</md-icon>
+        </button>
+    </div>
+
+    <div *ngIf="isUpload" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2"></div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 upload">
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 upload">
+            <span style="float: left">
+                <b>Excel Upload</b>
+            </span>&nbsp;&nbsp;
+            <input class="file" id="uploader" type="file" ng2FileSelect [uploader]="uploader" angulartics2On="click" angularticsEvent="chooseFileClick"
+                angularticsCategory="employee" [angularticsProperties]="{label: 'Fall Campaign'}" />
+            <div *ngFor="let item of uploader.queue" class="queue">
+                <button md-icon-button class="uploadBtn" (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                    <md-icon>cloud_upload</md-icon>
+                </button>
+                <button md-icon-button class="uploadBtn" (click)="excel()" [disabled]="item.isReady || item.isUploading  || uploader.isUploading">
+                    <md-icon>highlight_off</md-icon>
+                </button>
+            </div>
+            <button *ngIf="uploader?.queue?.length == 0" class="uploadBtn" (click)="excel()" md-icon-button>
+                <md-icon>highlight_off</md-icon>
+            </button>
+        </div>
+
+    </div>
+</div>
+<br>
 <br>
 <div class="row text-center">
     <a md-raised-button class="reply" color="primary" [routerLink]="['../']">
@@ -152,17 +191,17 @@
                         </td>
                     </tr>
                     <tr>
-                            <th>Aadhar No.:
-                                <span class="asterisk">*</span>
-                            </th>
-                            <td>
-                                <input name="aadhar" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.aadhar" required>
-                            </td>
-                            <th>Pan No.:</th>
-                            <td>
-                                    <input name="pan" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.pan">
-                            </td>
-                        </tr>
+                        <th>Aadhar No.:
+                            <span class="asterisk">*</span>
+                        </th>
+                        <td>
+                            <input name="aadhar" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.aadhar">
+                        </td>
+                        <th>Pan No.:</th>
+                        <td>
+                            <input name="pan" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.pan">
+                        </td>
+                    </tr>
                 </table>
             </md-card>
             <br>
@@ -327,12 +366,12 @@
                         </td>
                         <th>Reason of Releiving</th>
                         <td>
-                                <select name="reason" class="form-control" [(ngModel)]="employee.properties.departmentId">
-                                    <option value="null">Select an option</option>
-                                    <option value="resign">Resign</option>
-                                    <option value="death">Death</option>
-                                </select>
-                            </td>
+                            <select name="reason" class="form-control" [(ngModel)]="employee.properties.departmentId">
+                                <option value="null">Select an option</option>
+                                <option value="resign">Resign</option>
+                                <option value="death">Death</option>
+                            </select>
+                        </td>
                     </tr>
                     <!-- <tr>
                     <td colspan="2" class="test-center">
