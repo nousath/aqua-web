@@ -180,7 +180,6 @@ export class RosterShiftsComponent implements OnInit {
   shiftColour = function (shiftType) {
     let str = 'random';
 
-
     if (shiftType && shiftType.id) {
       str = shiftType.id;
     }

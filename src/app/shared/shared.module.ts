@@ -138,6 +138,7 @@ export const MaterialModules = [
     HttpModule,
     CommonModule,
     FormsModule,
+    MaterialModules,
     Angulartics2Module.forChild(),
     ToastyModule.forRoot(),
     AgmCoreModule.forRoot({

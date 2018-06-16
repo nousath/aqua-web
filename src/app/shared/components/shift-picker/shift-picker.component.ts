@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ShiftType, EffectiveShift, Shift } from '../../../models/index';
 import * as moment from 'moment';
-import { AmsEffectiveShiftService } from '../../../services/ams';
+import { AmsEffectiveShiftService, AmsEmployeeService } from '../../../services/ams';
+import { ToastyService } from 'ng2-toasty';
 
 
 @Component({
@@ -11,15 +12,8 @@ import { AmsEffectiveShiftService } from '../../../services/ams';
 })
 export class ShiftPickerComponent implements OnInit {
 
-  isShow = false;
-
-  startingShift: ShiftType;
-
-  isProcessing = false;
-
   @Input()
   shiftTypes: ShiftType[];
-
 
   @Input()
   effectiveShift: EffectiveShift;
@@ -27,26 +21,38 @@ export class ShiftPickerComponent implements OnInit {
   @Input()
   date: Date;
 
+  day: string;
 
+  startingShift: ShiftType;
 
+  isProcessing = false;
+  isWeeklyOff = false;
   selectedShift: Shift;
   selectedShiftType: ShiftType;
   effectiveShiftType: ShiftType;
 
+  days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
+
   constructor(
-    private amsEffectiveShiftService: AmsEffectiveShiftService
+    private amsEmployeeService: AmsEmployeeService,
+    private amsEffectiveShiftService: AmsEffectiveShiftService,
+    private toastyService: ToastyService
   ) { }
 
   ngOnInit() {
     const pickerDate = new Date(this.date);
+    this.day = this.days[this.date.getDay()]
+
     pickerDate.setHours(0, 0, 0, 0);
     if (this.effectiveShift.previousShift) {
       this.startingShift = this.effectiveShift.previousShift.shiftType
     }
 
+    if (this.effectiveShift.employee.weeklyOff && this.effectiveShift.employee.weeklyOff.isConfigured) {
+      this.isWeeklyOff = this.effectiveShift.employee.weeklyOff[this.day]
+    }
+
     this.setEffectiveShift()
-
-
 
     this.effectiveShift.shifts.forEach(item => {
 
@@ -60,7 +66,6 @@ export class ShiftPickerComponent implements OnInit {
         if (type.id === this.selectedShift.shiftType.id) {
           this.selectedShift.shiftType = type;
           this.selectedShiftType = type;
-          this.isShow = true;
         }
       })
     });
@@ -87,6 +92,42 @@ export class ShiftPickerComponent implements OnInit {
     return colour;
   }
 
+  reset() {
+    if (this.selectedShift && this.selectedShift.shiftType) {
+      this.isProcessing = true;
+      this.amsEffectiveShiftService.effectiveShifts
+        .remove(this.selectedShift.id)
+        .then(() => {
+          this.selectedShiftType = null;
+          this.isProcessing = false;
+        }).catch(err => {
+          this.isProcessing = false;
+          this.toastyService.error({ title: 'Error', msg: err })
+        })
+    }
+  }
+
+  setWeeklyOff() {
+    const employee = this.effectiveShift.employee;
+    this.isWeeklyOff = !this.isWeeklyOff;
+    employee.weeklyOff[this.day] = this.isWeeklyOff
+
+    if (this.isWeeklyOff) {
+      employee.weeklyOff.isConfigured = true;
+    }
+
+    this.amsEmployeeService.employees
+      .update(employee.id, employee)
+      .then(() => {
+        this.selectedShiftType = null;
+        this.isProcessing = false;
+      }).catch(err => {
+        this.isProcessing = false;
+        this.isWeeklyOff = !this.isWeeklyOff;
+        this.toastyService.error({ title: 'Error', msg: err })
+      });
+  }
+
   setEffectiveShift() {
     this.effectiveShiftType = this.startingShift;
 
@@ -101,7 +142,7 @@ export class ShiftPickerComponent implements OnInit {
     });
   }
 
-  onShiftChange(newShiftType: ShiftType) {
+  selectShift(newShiftType: ShiftType) {
     if (this.effectiveShiftType && newShiftType && this.effectiveShiftType.id === newShiftType.id) {
       this.selectedShiftType = null;
 
@@ -114,6 +155,7 @@ export class ShiftPickerComponent implements OnInit {
             this.isProcessing = false;
           }).catch(err => {
             this.isProcessing = false;
+            this.toastyService.error({ title: 'Error', msg: err })
           })
       }
       return;
@@ -127,9 +169,11 @@ export class ShiftPickerComponent implements OnInit {
     this.amsEffectiveShiftService.effectiveShifts
       .update(this.effectiveShift.employee.id, model)
       .then(() => {
+        this.selectedShiftType = newShiftType;
         this.isProcessing = false;
       }).catch(err => {
         this.isProcessing = false;
+        this.toastyService.error({ title: 'Error', msg: err })
       })
   }
 }

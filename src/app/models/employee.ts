@@ -28,8 +28,19 @@ export class Employee {
   abilities: Abilities = new Abilities();
   currentAblitiy: 'maualAttendance' | 'manualByBeacon' | 'manualByGeoFencing' | 'manualByWifi' | 'none' = 'none';
   userType: 'admin' | 'superadmin' | 'normal' = 'normal';
-  fingerPrints: string[] = [] ;
+  fingerPrints: string[] = [];
   devices: Device[] = [];
+  isDynamicShift: Boolean;
+  weeklyOff: {
+    monday: Boolean,
+    tuesday: Boolean,
+    wednesday: Boolean,
+    thursday: Boolean,
+    friday: Boolean,
+    saturday: Boolean,
+    sunday: Boolean,
+    isConfigured: Boolean
+  };
 }
 
 

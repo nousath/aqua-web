@@ -1,28 +1,52 @@
-.shift-selector {
-    height: 32px;
-    width: 100%;
-    overflow: hidden;
+.shift {
     background-color: #f2f2f2;
+    filter: alpha(opacity=10);
+    width: 100%;
+    border: 1px solid #95989A;
+    padding: 4px;
+    padding-left: 10px;
+    height: 32px;
+}
+
+.display-text {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: inherit;
+}
+
+.display-text .continue {
+    color: #aaaaaa;
+}
+
+.display-text .name {
+    white-space: nowrap;
+}
+
+.display-text .off {
+    border: 1px solid #888;
+    background-color: #bbb;
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 5px 15px;
+}
+
+.compressed {
+    line-height: 15px;
+}
+
+.compressed .off {
+    font-size: xx-small;
+    padding: 2px 15px;
+}
+
+.shift.continue {
     border-right: hidden;
-    -webkit-bottom-right-radius: 0px;
-    -moz-bottom-right-radius: 0px;
-    border-bottom-right-radius: 0px;
-    -webkit-top-right-radius: 0px;
-    -moz-top-right-radius: 0px;
-    border-top-right-radius: 0px;
-}
-
-.styled-select {
     border-left: hidden;
-    /* border-color: #95989A !important; */
-    border-color: inherit !important;
-    border-radius: 0px;
 }
 
-.selectStyle {
-    padding-left: 15px;
-    /* border-color: #95989A !important; */
-    border-color: inherit !important;
+.shift.hasValue {
+    border-right: hidden;
     -webkit-bottom-left-radius: 10px;
     -moz-bottom-left-radius: 10px;
     border-bottom-left-radius: 10px;
@@ -31,10 +55,7 @@
     border-top-left-radius: 10px;
 }
 
-select::-ms-expand {
-    display: none !important;
-}
 
-select {
-    -webkit-appearance: none;
-}
+/* .shift.off {
+    border-radius: 10px;
+} */

@@ -1,11 +1,28 @@
-<!-- <div *ngIf="isShow" [style.border-color]="shiftColour()">
-    <select [(ngModel)]="selectedShiftType" class="selectStyle semi-square" (ngModelChange)="onShiftChange($event)">
-        <option *ngFor="let shiftType of shiftTypes" [ngValue]="shiftType">{{shiftType.name}}</option>
-    </select>
-</div> -->
-<div [style.border-color]="shiftColour()">
-    <select [(ngModel)]="selectedShiftType" class="shift-selector" [class.styled-select]="!isShow" [class.selectStyle]="isShow" (ngModelChange)="onShiftChange($event)">
-      <option>&raquo;</option>
-      <option *ngFor="let shiftType of shiftTypes" [ngValue]="shiftType">{{shiftType.name}}</option>
-  </select>
+<div class="shift" [class.hasValue]="selectedShiftType" [class.continue]="!selectedShiftType" [style.border-color]="shiftColour()">
+    <button [mdMenuTriggerFor]="menu" class="display-text">
+      <ng-container *ngIf="selectedShiftType">
+          <span *ngIf="!isWeeklyOff" class="name"> {{selectedShiftType.name}} </span>
+
+          <div *ngIf="isWeeklyOff" class="compressed">
+              <span class="name"> {{selectedShiftType.name}} </span>
+              <span class="off">Off</span>
+          </div>
+          
+      </ng-container>
+
+      <ng-container *ngIf="!selectedShiftType">
+          <span *ngIf="!isWeeklyOff" class="continue">&raquo;</span>
+          <span *ngIf="isWeeklyOff" class="off">Off</span>
+      </ng-container>
+    </button>
+    <md-menu #menu="mdMenu">
+        <button md-menu-item (click)="reset()">
+          <span>Reset</span>
+        </button>
+        <button md-menu-item><span>Off</span>
+          <md-slide-toggle [checked]="isWeeklyOff" (change)="setWeeklyOff()"></md-slide-toggle>
+        </button>
+        <md-divider></md-divider>
+        <button md-menu-item *ngFor="let shiftType of shiftTypes" (click)="selectShift(shiftType)"><span>{{shiftType.name}}</span></button>
+    </md-menu>
 </div>
