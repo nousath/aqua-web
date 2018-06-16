@@ -73,6 +73,7 @@ import {
   StyleModule,
   MaterialModule
 } from '@angular/material';
+import { ShiftTypeFilterPipe } from './pipes/shift-type-filter.pipe';
 
 
 export const MaterialModules = [
@@ -111,7 +112,7 @@ export const MaterialModules = [
 ];
 
 @NgModule({
-  declarations: [TimePipe, ShiftPickerComponent],
+  declarations: [TimePipe, ShiftPickerComponent, ShiftTypeFilterPipe],
   providers: [
     EmsEmployeeService,
     EmsDesignationService,

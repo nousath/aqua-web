@@ -19,10 +19,18 @@
         <button md-menu-item (click)="reset()">
           <span>Reset</span>
         </button>
-        <button md-menu-item><span>Off</span>
-          <md-slide-toggle [checked]="isWeeklyOff" (change)="setWeeklyOff()"></md-slide-toggle>
+        <button md-menu-item (click)="setWeeklyOff()"><span>Off</span>
+          <md-slide-toggle [checked]="isWeeklyOff"></md-slide-toggle>
         </button>
+        <div *ngIf="shiftTypes.length > 5">
+            <input class="search" placeholder="Shifts" [(ngModel)]="shiftSearch" (click)="stopPropagation($event)">
+        </div>
+        <div class="list-label" *ngIf="shiftTypes.length <= 5">
+            <span (click)="stopPropagation($event)">Shifts</span>
+        </div>
         <md-divider></md-divider>
-        <button md-menu-item *ngFor="let shiftType of shiftTypes" (click)="selectShift(shiftType)"><span>{{shiftType.name}}</span></button>
+        <div class="shifts">
+            <button md-menu-item *ngFor="let shiftType of shiftTypes| shiftTypeFilter: shiftSearch" (click)="selectShift(shiftType)"><span>{{shiftType.name}}</span></button>
+        </div>
     </md-menu>
 </div>

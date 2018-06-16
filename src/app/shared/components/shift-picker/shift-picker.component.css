@@ -1,3 +1,8 @@
+.shifts {
+    max-height: 300px;
+    overflow-y: scroll;
+}
+
 .shift {
     background-color: #f2f2f2;
     filter: alpha(opacity=10);
@@ -53,6 +58,27 @@
     -webkit-top-left-radius: 10px;
     -moz-top-left-radius: 10px;
     border-top-left-radius: 10px;
+}
+
+.search,
+.search:focus {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    border: none;
+    background: none;
+    outline: none;
+    resize: none;
+    width: 100%;
+    padding-left: 15px;
+}
+
+.search::placeholder,
+.list-label {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: 15px;
+    color: #dddddd;
+    padding-left: 15px;
 }
 
 

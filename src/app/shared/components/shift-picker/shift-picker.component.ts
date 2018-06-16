@@ -23,6 +23,8 @@ export class ShiftPickerComponent implements OnInit {
 
   day: string;
 
+  shiftSearch: string;
+
   startingShift: ShiftType;
 
   isProcessing = false;
@@ -69,6 +71,10 @@ export class ShiftPickerComponent implements OnInit {
         }
       })
     });
+  }
+
+  stopPropagation(event) {
+    event.stopPropagation();
   }
 
   shiftColour = function () {
