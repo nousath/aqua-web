@@ -1,0 +1,17 @@
+.td{
+    width: 10%;
+    text-align: center;
+}
+.tdWidth {
+    width: 80%;
+}
+.tdLink{
+    width: 10%;
+    text-align: center;
+}
+.glyphicon{
+    height: 5px;
+}
+th{
+    background: #ddd;
+}

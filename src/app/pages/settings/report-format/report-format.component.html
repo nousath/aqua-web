@@ -1,0 +1,25 @@
+<md-card>
+  <table class="table table-condensed table-bordered table-hover">
+    <tr>
+      <th colspan="3">
+        <h5 class="text-center">
+          <b>Report Formats</b>
+        </h5>
+      </th>
+    </tr>
+    <tr>
+      <th class="td">S.no.</th>
+      <th class="tdWidth">Type</th>
+      <th class="tdLink"></th>
+    </tr>
+    <tr *ngFor="let report of reports">
+      <td class="td">{{report.sno}}</td>
+      <td class="tdWidth">{{report.type}}</td>
+      <td class="tdLink">
+        <a [href]="report.link" download>
+          <md-icon>get_app</md-icon>
+        </a>
+      </td>
+    </tr>
+  </table>
+</md-card>

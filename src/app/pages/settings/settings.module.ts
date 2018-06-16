@@ -15,6 +15,7 @@ import { SettingsRoutingModule } from './settings-routing.module';
 import { DeviceDialogComponent } from '../../dialogs/device-dialog/device-dialog.component';
 import { SharedModule } from '../../shared/shared.module';
 import { ChannelTypesComponent } from './channel-types/channel-types.component';
+import { ReportFormatComponent } from './report-format/report-format.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { ChannelTypesComponent } from './channel-types/channel-types.component';
     DeviceLogsComponent,
     ChannelTypesComponent,
     ChannelTypeEditComponent,
-    DeviceDialogComponent  
+    DeviceDialogComponent,
+    ReportFormatComponent
   ],
   entryComponents: [
     DeviceDialogComponent

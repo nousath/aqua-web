@@ -1,4 +1,3 @@
-
 <div>
     <div *ngIf="!isUpload" style="float: right">
         <a class="exl" md-icon-button (click)="excel()" mdTooltip="Excel Upload" [mdTooltipPosition]="'above'" angulartics2On="click"
@@ -214,6 +213,10 @@
                 <br>
                 <table class="table">
                     <tr>
+                        <th>Biometric ID:</th>
+                        <td>
+                            <input name="biometric" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.biometricId">
+                        </td>
                         <th>Designation:</th>
                         <td>
                             <select name="designation" class="form-control" [(ngModel)]="employee.properties.designation">
@@ -221,31 +224,47 @@
                                 <option *ngFor="let item of designations.items" [value]="item.name">{{item.name}}</option>
                             </select>
                         </td>
+                    </tr>
+                    <tr>
                         <th>Employee Code
                             <span class="asterisk">*</span>:</th>
                         <td>
                             <input name="empCode" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.code"
                                 required>
                         </td>
+                        <th>Employee Type
+                            <span class="asterisk">*</span>:</th>
+                        <td>
+                            <select name="designation" class="form-control" [(ngModel)]="employee.properties.employeeType">
+                                <option value="Permanent">Permanent</option>
+                                <option value="Contractor">Contractor</option>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
-                        <th>{{ employee.properties.supervisor && employee.properties.supervisor.designation? employee.properties.supervisor.designation:
-                            'Supervisor'}}
-                            <span class="asterisk">*</span>:</th>
+                        <th>Date Of Joining:</th>
+                        <td>
+                            <input name="doj" id="joiningDate" type="text" class="form-control input-sm calendar no-spin" required>
+                        </td>
+                        <!-- <th>{{ employee.properties.supervisor && employee.properties.supervisor.designation? employee.properties.supervisor.designation:
+                            'Supervisor'}} -->
+                        <th>
+                            <span *ngIf="!employee.properties.employeeType">Supervisor</span>
+                            <span *ngIf="employee.properties.employeeType == 'Contractor'">Contractor</span>
+                            <span *ngIf="employee.properties.employeeType == 'Permanent'">Permanent</span>
+                            <span class="asterisk">*</span>:
+                        </th>
                         <td>
                             <input ngui-auto-complete [min-chars]="1" placeholder="Employee search" [(ngModel)]="employee.properties.supervisor" [source]="empSource.bind(this)"
                                 [value-formatter]="empFormatter" [list-formatter]="empListFormatter" class="form-control search"
                                 name="Supervisor" required />
                         </td>
-                        <th>Department:</th>
-                        <td>
-                            <select name="deppartment" class="form-control" [(ngModel)]="employee.properties.departmentId">
-                                <option [ngValue]="null">Select an option</option>
-                                <option *ngFor="let item of departments.items" [value]="item.id">{{item.name}}</option>
-                            </select>
-                        </td>
                     </tr>
                     <tr>
+                        <th>Date Of Membership:</th>
+                        <td>
+                            <input name="dom" id="membershipDate" type="text" class="form-control input-sm calendar no-spin" required>
+                        </td>
                         <th>{{ employee.properties.supervisor && employee.properties.supervisor.supervisor && employee.properties.supervisor.supervisor.designation?
                             employee.properties.supervisor.supervisor.designation: 'HOD'}}:</th>
                         <td>
@@ -253,16 +272,6 @@
                                 [list-formatter]="empListFormatter" class="form-control search" name="Supervisor" />
 
                         </td>
-                        <th>Date Of Joining:
-                            <td>
-                                <input name="doj" id="joiningDate" type="text" class="form-control input-sm calendar no-spin" required>
-                            </td>
-                    </tr>
-                    <tr>
-                        <th>Date Of Membership:
-                            <td>
-                                <input name="dom" id="membershipDate" type="text" class="form-control input-sm calendar no-spin" required>
-                            </td>
                     </tr>
                 </table>
             </md-card>
@@ -366,7 +375,7 @@
                         </td>
                         <th>Reason of Releiving</th>
                         <td>
-                            <select name="reason" class="form-control" [(ngModel)]="employee.properties.departmentId">
+                            <select name="reason" class="form-control" [(ngModel)]="employee.properties.reason">
                                 <option value="null">Select an option</option>
                                 <option value="resign">Resign</option>
                                 <option value="death">Death</option>

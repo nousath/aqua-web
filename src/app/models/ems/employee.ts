@@ -29,6 +29,8 @@ export class EmsEmployee {
   device: Device = new Device();
   shiftType: ShiftType = new ShiftType();
   supervisor: Supervisor = new Supervisor();
+  employeeType: string;
+  biometricId: string;
   leaveBalances: any[];
   avgHours: number = null;
   token: string = '';
