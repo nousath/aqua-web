@@ -10,7 +10,7 @@ export interface IApi<TModel> {
   search(input: ServerPageInput): Promise<ServerPageModel<TModel>>;
   create(model: TModel, path?: string): Promise<TModel>;
   update(id: number | string, model: TModel, input?: ServerPageInput, path?: string): Promise<TModel>;
-  remove(id: number): Promise<void>;
+  remove(id: number| string): Promise<void>;
   simpePost(model: any): Promise<void>;
   exportReport(input: ServerPageInput, path?: string, reportName?: string): Promise<void>;
   all(type: any, id?: string, model?: any): Promise<void>;

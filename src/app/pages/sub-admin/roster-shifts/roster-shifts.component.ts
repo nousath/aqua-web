@@ -96,12 +96,12 @@ export class RosterShiftsComponent implements OnInit {
     const reportName = `rosterExcel_${moment().format('DD_MMM_YY')}_DailyReport.xlsx`;
     this.amsEffectiveShiftService.downloadRosterExcel.exportReport(serverPageInput, null, reportName)
       .then(
-      (data) => {
-        this.isDownloading = false
-      }).catch(err => {
-        this.toastyService.error({ title: 'Error', msg: err });
-        this.isDownloading = false
-      });
+        (data) => {
+          this.isDownloading = false
+        }).catch(err => {
+          this.toastyService.error({ title: 'Error', msg: err });
+          this.isDownloading = false
+        });
   };
 
   excel() {
@@ -123,7 +123,7 @@ export class RosterShiftsComponent implements OnInit {
 
   getWeek(date) {
     this.dates = [];
-    let startOfWeek = moment(date).add(1, 'd');
+    let startOfWeek = moment(date);
     const endOfWeek = moment(date).add(6, 'd');
     while (startOfWeek <= endOfWeek) {
       this.dates.push(startOfWeek.toDate());
@@ -137,6 +137,14 @@ export class RosterShiftsComponent implements OnInit {
     this.effectiveShifts.fetch().then(() => {
       this.isLoading = false;
     }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+  }
+
+  toggleDynamicShift(employee) {
+    employee.isDynamicShift = !employee.isDynamicShift;
+    this.amsEmployeeService.employees.update(employee.id, employee).then().catch(err => {
+      employee.isDynamicShift = !employee.isDynamicShift;
+      this.toastyService.error({ title: 'Error', msg: err })
+    });
   }
 
   changeShift(shiftTypeId, date, employee) {
@@ -195,7 +203,7 @@ export class RosterShiftsComponent implements OnInit {
 
   ngAfterViewInit() {
     const date = new Date();
-    const today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    // const today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
     $('#dateSelector').datepicker({
       minDate: moment(),

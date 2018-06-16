@@ -1,10 +1,11 @@
-<div *ngIf="isShow" [style.border-color]="shiftColour()">
+<!-- <div *ngIf="isShow" [style.border-color]="shiftColour()">
     <select [(ngModel)]="selectedShiftType" class="selectStyle semi-square" (ngModelChange)="onShiftChange($event)">
-    <option *ngFor="let shiftType of shiftTypes" [ngValue]="shiftType">{{shiftType.name}}</option>
-</select>
-</div>
-<div *ngIf="!isShow" [style.border-color]="shiftColour()">
-    <select [(ngModel)]="selectedShiftType" class="styled-select" (ngModelChange)="onShiftChange($event)">
-    <option *ngFor="let shiftType of shiftTypes" [ngValue]="shiftType">{{shiftType.name}}</option>
-</select>
+        <option *ngFor="let shiftType of shiftTypes" [ngValue]="shiftType">{{shiftType.name}}</option>
+    </select>
+</div> -->
+<div [style.border-color]="shiftColour()">
+    <select [(ngModel)]="selectedShiftType" class="shift-selector" [class.styled-select]="!isShow" [class.selectStyle]="isShow" (ngModelChange)="onShiftChange($event)">
+      <option>&raquo;</option>
+      <option *ngFor="let shiftType of shiftTypes" [ngValue]="shiftType">{{shiftType.name}}</option>
+  </select>
 </div>

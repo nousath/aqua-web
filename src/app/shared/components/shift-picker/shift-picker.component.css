@@ -1,26 +1,9 @@
-.styled-select {
+.shift-selector {
     height: 32px;
     width: 100%;
     overflow: hidden;
     background-color: #f2f2f2;
-    /* background-color: inherit; */
     border-right: hidden;
-    border-left: hidden;
-    /* border-color: #95989A !important; */
-    border-color: inherit !important;
-    border-radius: 0px;
-}
-
-.selectStyle {
-    height: 32px;
-    width: 100%;
-    padding-left: 15px;
-    overflow: hidden;
-    background-color: #f2f2f2;
-    /* background-color: inherit; */
-    border-right: hidden;
-    /* border-color: #95989A !important; */
-    border-color: inherit !important;
     -webkit-bottom-right-radius: 0px;
     -moz-bottom-right-radius: 0px;
     border-bottom-right-radius: 0px;
@@ -29,7 +12,17 @@
     border-top-right-radius: 0px;
 }
 
-.semi-square {
+.styled-select {
+    border-left: hidden;
+    /* border-color: #95989A !important; */
+    border-color: inherit !important;
+    border-radius: 0px;
+}
+
+.selectStyle {
+    padding-left: 15px;
+    /* border-color: #95989A !important; */
+    border-color: inherit !important;
     -webkit-bottom-left-radius: 10px;
     -moz-bottom-left-radius: 10px;
     border-bottom-left-radius: 10px;

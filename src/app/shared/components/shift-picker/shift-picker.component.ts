@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ShiftType, EffectiveShift, Shift } from '../../../models/index';
 import * as moment from 'moment';
+import { AmsEffectiveShiftService } from '../../../services/ams';
 
 
 @Component({
@@ -12,60 +13,61 @@ export class ShiftPickerComponent implements OnInit {
 
   isShow = false;
 
-  @Input()
   startingShift: ShiftType;
+
+  isProcessing = false;
 
   @Input()
   shiftTypes: ShiftType[];
 
-  @Input()
-  effectiveShifts: Shift[];
 
   @Input()
-  effectiveShift: Shift = new Shift();
+  effectiveShift: EffectiveShift;
 
   @Input()
   date: Date;
 
-  @Output()
-  onChange: EventEmitter<any> = new EventEmitter();
 
-  selectedShiftType: ShiftType = new ShiftType();
-  effectiveShiftType: ShiftType = new ShiftType();
 
-  constructor() { }
+  selectedShift: Shift;
+  selectedShiftType: ShiftType;
+  effectiveShiftType: ShiftType;
+
+  constructor(
+    private amsEffectiveShiftService: AmsEffectiveShiftService
+  ) { }
 
   ngOnInit() {
     const pickerDate = new Date(this.date);
     pickerDate.setHours(0, 0, 0, 0);
+    if (this.effectiveShift.previousShift) {
+      this.startingShift = this.effectiveShift.previousShift.shiftType
+    }
 
     this.setEffectiveShift()
 
 
-    this.effectiveShifts.forEach(item => {
+
+    this.effectiveShift.shifts.forEach(item => {
 
       const itemDate = new Date(item.date);
       itemDate.setHours(0, 0, 0, 0);
 
-      if (itemDate.getTime() === pickerDate.getTime()) {
-        this.effectiveShift = item;
+      if (itemDate.getTime() !== pickerDate.getTime()) { return; }
+      this.selectedShift = item;
 
-        this.shiftTypes.forEach(type => {
-          if (type.id === this.effectiveShift.shiftType.id) {
-            this.effectiveShift.shiftType = type;
-            this.selectedShiftType = type;
-            this.isShow = true;
-          }
-        })
-      }
+      this.shiftTypes.forEach(type => {
+        if (type.id === this.selectedShift.shiftType.id) {
+          this.selectedShift.shiftType = type;
+          this.selectedShiftType = type;
+          this.isShow = true;
+        }
+      })
     });
   }
 
-
-
   shiftColour = function () {
     let str = 'random';
-
 
     if (this.selectedShiftType && this.selectedShiftType.id) {
       str = this.selectedShiftType.id;
@@ -90,7 +92,7 @@ export class ShiftPickerComponent implements OnInit {
 
     let lastDate: Date;
 
-    this.effectiveShifts.forEach(item => {
+    this.effectiveShift.shifts.forEach(item => {
       const mDate = moment(item.date);
       if (mDate.isBefore(this.date, 'd') && (!lastDate || mDate.isAfter(lastDate))) {
         lastDate = mDate.toDate();
@@ -99,19 +101,35 @@ export class ShiftPickerComponent implements OnInit {
     });
   }
 
-  onShiftChange(shiftType: ShiftType) {
-    if (this.effectiveShiftType && shiftType && this.effectiveShiftType.id === shiftType.id) {
-      this.selectedShiftType = new ShiftType();
+  onShiftChange(newShiftType: ShiftType) {
+    if (this.effectiveShiftType && newShiftType && this.effectiveShiftType.id === newShiftType.id) {
+      this.selectedShiftType = null;
 
-      if (this.effectiveShift && this.effectiveShift.shiftType && this.effectiveShift.shiftType.id !== shiftType.id) {
-        // TODO: delete this change
-        console.log('TODO: delete')
+      if (this.selectedShift && this.selectedShift.shiftType && this.selectedShift.shiftType.id !== newShiftType.id) {
+
+        this.isProcessing = true;
+        this.amsEffectiveShiftService.effectiveShifts
+          .remove(this.selectedShift.id)
+          .then(() => {
+            this.isProcessing = false;
+          }).catch(err => {
+            this.isProcessing = false;
+          })
       }
       return;
     }
 
-
-    this.onChange.emit(shiftType.id);
+    const model: any = {
+      date: this.date,
+      shiftType: newShiftType
+    };
+    this.isProcessing = true;
+    this.amsEffectiveShiftService.effectiveShifts
+      .update(this.effectiveShift.employee.id, model)
+      .then(() => {
+        this.isProcessing = false;
+      }).catch(err => {
+        this.isProcessing = false;
+      })
   }
-
 }
