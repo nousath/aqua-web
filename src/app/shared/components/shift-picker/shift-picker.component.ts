@@ -23,6 +23,8 @@ export class ShiftPickerComponent implements OnInit {
 
   day: string;
 
+  isDisabled = true;
+
   shiftSearch: string;
 
   startingShift: ShiftType;
@@ -43,6 +45,8 @@ export class ShiftPickerComponent implements OnInit {
 
   ngOnInit() {
     const pickerDate = new Date(this.date);
+
+    this.isDisabled = pickerDate < new Date();
     this.day = this.days[this.date.getDay()]
 
     pickerDate.setHours(0, 0, 0, 0);

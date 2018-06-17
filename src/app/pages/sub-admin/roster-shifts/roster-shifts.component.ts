@@ -25,7 +25,7 @@ export class RosterShiftsComponent implements OnInit {
   effectiveShifts: Page<EffectiveShift>;
   shiftTypes: Page<ShiftType>;
   change: any;
-  date: Date = null;
+  date = new Date();
 
   isDownloading = false;
   uploader: FileUploader;
@@ -36,7 +36,6 @@ export class RosterShiftsComponent implements OnInit {
     private amsEffectiveShiftService: AmsEffectiveShiftService,
     private toastyService: ToastyService,
     private store: LocalStorageService) {
-
 
     const access_Token: string = this.store.getItem('ams_token');
     const orgCode = this.store.getItem('orgCode');
@@ -133,7 +132,7 @@ export class RosterShiftsComponent implements OnInit {
 
   getEffectiveShift(date: Date) {
     this.isLoading = true;
-    this.effectiveShifts.filters.properties['fromDate']['value'] = date;
+    this.effectiveShifts.filters.properties['fromDate']['value'] = date.toUTCString();
     this.effectiveShifts.fetch().then(() => {
       this.isLoading = false;
     }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
@@ -159,13 +158,23 @@ export class RosterShiftsComponent implements OnInit {
     this.updateEffectiveShift(employee.id, model);
 
   }
-  getAttendance(date: Date) {
+  getAttendance() {
 
-    this.date = date;
-    date = new Date(date);
+    // this.date = date;
+    // date = new Date(date);
     this.shiftTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
-    this.getEffectiveShift(date);
-    this.getWeek(date);
+    this.getEffectiveShift(this.date);
+    this.getWeek(this.date);
+  }
+
+  nextWeek() {
+    this.date = moment(this.date).add(7, 'd').toDate()
+    this.getAttendance()
+  }
+
+  previousWeek() {
+    this.date = moment(this.date).add(-7, 'd').toDate()
+    this.getAttendance()
   }
 
   updateEffectiveShift(id, model: any) {
@@ -201,26 +210,6 @@ export class RosterShiftsComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    const date = new Date();
-    // const today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-
-    $('#dateSelector').datepicker({
-      minDate: moment(),
-      format: 'dd/mm/yyyy',
-      daysOfWeekDisabled: [0, 6],
-      minViewMode: 0,
-      maxViewMode: 2,
-      // endDate: '+0d',
-      autoclose: true,
-      maxDate: new Date()
-    }).on('changeDate', (e) => {
-      // if (new Date(e.date) < new Date()) {
-      //   return this.toastyService.info({ title: 'Info', msg: 'You cannot manage previous' })
-      // }
-      this.getAttendance(e.date);
-    });
-    $('#dateSelector').datepicker('setDate', new Date());
+    this.getAttendance()
   }
-
-
 }

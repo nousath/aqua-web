@@ -1,14 +1,20 @@
 <div class="row page_header">
-    <div *ngIf="!isUpload" class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+    <div *ngIf="!isUpload" class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
         <h5>
             <label>
                 <b>Shift Roster</b>
             </label>
         </h5>
     </div>
-    <div *ngIf="!isUpload" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 ">
-        <div *ngIf="!isUpload">
-            <input readonly id="dateSelector" type="text" class="form-control input-sm calendar no-spin" md-icon-button style="cursor: context-menu;">
+    <div *ngIf="!isUpload" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+        <div class="button-row">
+            <button md-icon-button (click)="previousWeek()">&laquo;</button>
+            <md-form-field class="toolbar-input">
+                <input mdInput [(ngModel)]="date" (change)="getAttendance()" [matDatepicker]="picker">
+                <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
+                <md-datepicker #picker></md-datepicker>
+            </md-form-field>
+            <button md-icon-button (click)="nextWeek()">&raquo;</button>
         </div>
     </div>
     <div *ngIf="!isUpload" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 " style="float: left;">
@@ -20,8 +26,6 @@
             <a md-icon-button [disabled]="isLoading || isDownloading" (click)="excel()" mdTooltip="Upload Excel" [mdTooltipPosition]="'above'">
                 <md-icon>cloud_upload</md-icon>
             </a>
-
-
         </div>
     </div>
     <div *ngIf="isUpload" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">

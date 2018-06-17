@@ -16,6 +16,15 @@
     margin: -8px 0px 0px 0px;
 }
 
+.button-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.toolbar-input .mat-form-field-wrapper {
+    padding: none;
+}
+
 .queue {
     width: 13%;
     float: left;
