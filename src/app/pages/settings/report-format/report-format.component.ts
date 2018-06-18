@@ -18,7 +18,7 @@ export class ReportFormatComponent implements OnInit {
     }, {
       sno: '2',
       type: 'Biometric Fingerprint',
-      link: 'assets/reports/BIometric-Fingerprint.xlsx',
+      link: 'assets/reports/Biometric-Fingerprint.xlsx',
     }, {
       sno: '3',
       type: 'Department',
@@ -30,7 +30,7 @@ export class ReportFormatComponent implements OnInit {
     }, {
       sno: '5',
       type: 'Employee',
-      link: 'assets/reports/Employee.xlsx',
+      link: 'assets/reports/Employee Format.xlsx',
     }, {
       sno: '6',
       type: 'Holiday',

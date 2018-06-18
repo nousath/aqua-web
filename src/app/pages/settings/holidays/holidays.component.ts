@@ -57,7 +57,8 @@ export class HolidaysComponent implements OnInit {
     return moment(moment(holiday.date).startOf('day')).isAfter(moment(this.currentDate).startOf('day'))
   }
   fetchHolidays() {
-    
+    this.upcoming = true
+    this.holidays.filters.properties['date'].value = new Date().toISOString();
     this.holidays.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
   Upcoming(){
@@ -97,7 +98,7 @@ export class HolidaysComponent implements OnInit {
     });
   }
   AllHolidays(){
-    this.upcoming = true
+    this.upcoming = false
     this.holidays.filters.properties['date'].value = null;
     this.holidays.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
