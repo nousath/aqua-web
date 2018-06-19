@@ -62,7 +62,7 @@ export class HolidaysComponent implements OnInit {
     this.holidays.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
   Upcoming(){
-    this.upcoming = false
+    this.upcoming = true
     this.holidays.filters.properties['date'].value = new Date().toISOString();
     this.holidays.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
