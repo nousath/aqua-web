@@ -1,14 +1,13 @@
-import { Component, OnInit } from "@angular/core";
-import { AmsReportRequestService } from "../../../services";
-import { ReportRequest } from "../../../models/report-request";
-import { Page } from "../../../common/contracts/page";
-import { ActivatedRoute } from "@angular/router";
-import { Subscription } from "rxjs";
+import { Component, OnInit } from '@angular/core';
+import { AmsReportRequestService } from '../../../services';
+import { ReportRequest } from '../../../models/report-request';
+import { Page } from '../../../common/contracts/page';
+import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common'
 import { ToastyService } from 'ng2-toasty';
 @Component({
-  selector: "aqua-reports",
-  templateUrl: "./reports.component.html",
+  selector: 'aqua-reports',
+  templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.css']
 })
 export class ReportsComponent implements OnInit {
@@ -48,15 +47,13 @@ export class ReportsComponent implements OnInit {
   }];
 
   reports: Page<ReportRequest>;
-  subscription: Subscription;
 
   constructor(
-    private amsReportRequestService: AmsReportRequestService,
     private activatedRoute: ActivatedRoute,
     private toastyService: ToastyService,
-    private location: Location,
+    amsReportRequestService: AmsReportRequestService,
+    location: Location,
   ) {
-
 
     this.reports = new Page({
       api: amsReportRequestService.reportRequests,
@@ -69,7 +66,7 @@ export class ReportsComponent implements OnInit {
       ]
     });
 
-    this.subscription = this.activatedRoute.queryParams.subscribe(query => {
+    this.activatedRoute.queryParams.subscribe(query => {
       this.reports.filters.properties['type']['value'] = query['type'] || '';
     });
   }
@@ -79,7 +76,6 @@ export class ReportsComponent implements OnInit {
   }
 
   getReportLists() {
-    this.reports.filters.properties['type']['value']
     this.reports.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 }

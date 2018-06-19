@@ -3,16 +3,16 @@ import { Periodicity } from './periodicity';
 
 
 export class LeaveType {
-  id: string = '';
-  code: string = '';
-  name: string = '';
+  id = '';
+  code = '';
+  name = '';
   unitsPerDay: number = null;
-  unlimited: boolean = false;
+  unlimited = false;
   days: number = null;
   category: 'lossOfPay' | 'OnDuty' | 'paidLeave' | null = null;
   periodicity: Periodicity = new Periodicity();
   carryForward: number = null;
   monthlyLimit: number;
-  isEdit: boolean = false;
+  isEdit = false;
   organization: Organization = new Organization();
 }

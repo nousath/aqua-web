@@ -6,9 +6,9 @@ export class Leave {
   days: number = null;
   id: string | number = null;
   employee: Employee = new Employee();
-  reason: string = '';
-  comment: string = '';
-  status: string = '';
+  reason = '';
+  comment = '';
+  status = '';
   leaveType: LeaveType = new LeaveType();
   type: LeaveType = new LeaveType();
 }

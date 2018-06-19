@@ -60,4 +60,16 @@ td {
     margin-left: 31%;
     margin-top: 6px;
 }
+.mat-dialog-container {
+    box-shadow: 0 11px 15px -7px rgba(0,0,0,.2), 0 24px 38px 3px rgba(0,0,0,.14), 0 9px 46px 8px rgba(0,0,0,.12);
+    display: block;
+    padding: 2px !important;
+    border-radius: 2px;
+    box-sizing: border-box;
+    overflow: auto;
+    max-width: 80vw;
+    outline: 0;
+    width: 100%;
+    height: 100%;
+}
 

@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ShiftType, EffectiveShift, Shift } from '../../../models/index';
-
+import * as moment from 'moment';
+import { AmsEffectiveShiftService, AmsEmployeeService } from '../../../services/ams';
+import { ToastyService } from 'ng2-toasty';
 
 
 @Component({
@@ -14,45 +16,174 @@ export class ShiftPickerComponent implements OnInit {
   shiftTypes: ShiftType[];
 
   @Input()
-  effectiveShifts: Shift[];
-
-  effectiveShift: Shift=new Shift();
+  effectiveShift: EffectiveShift;
 
   @Input()
   date: Date;
 
-  @Output()
-  onChange: EventEmitter<any> = new EventEmitter();
+  day: string;
 
-  constructor() { }
+  isDisabled = true;
+
+  shiftSearch: string;
+
+  startingShift: ShiftType;
+
+  isProcessing = false;
+  isWeeklyOff = false;
+  selectedShift: Shift;
+  selectedShiftType: ShiftType;
+  effectiveShiftType: ShiftType;
+
+  days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
+
+  constructor(
+    private amsEmployeeService: AmsEmployeeService,
+    private amsEffectiveShiftService: AmsEffectiveShiftService,
+    private toastyService: ToastyService
+  ) { }
 
   ngOnInit() {
-    let pickerDate = new Date(this.date);
+    const pickerDate = new Date(this.date);
+
+    this.isDisabled = pickerDate < new Date();
+    this.day = this.days[this.date.getDay()]
+
     pickerDate.setHours(0, 0, 0, 0);
-    
+    if (this.effectiveShift.previousShift) {
+      this.startingShift = this.effectiveShift.previousShift.shiftType
+    }
 
-    this.effectiveShifts.forEach(item=>{
+    if (this.effectiveShift.employee.weeklyOff && this.effectiveShift.employee.weeklyOff.isConfigured) {
+      this.isWeeklyOff = this.effectiveShift.employee.weeklyOff[this.day]
+    }
 
-      let itemDate = new Date(item.date);
+    this.setEffectiveShift()
+
+    this.effectiveShift.shifts.forEach(item => {
+
+      const itemDate = new Date(item.date);
       itemDate.setHours(0, 0, 0, 0);
-      
-      if(itemDate.getTime() === pickerDate.getTime()) {
-        this.effectiveShift = item;
 
-        this.shiftTypes.forEach(type=>{
-          if(type.id === this.effectiveShift.shiftType.id) {
-            this.effectiveShift.shiftType = type;
-          }
+      if (itemDate.getTime() !== pickerDate.getTime()) { return; }
+      this.selectedShift = item;
+
+      this.shiftTypes.forEach(type => {
+        if (type.id === this.selectedShift.shiftType.id) {
+          this.selectedShift.shiftType = type;
+          this.selectedShiftType = type;
+        }
+      })
+    });
+  }
+
+  stopPropagation(event) {
+    event.stopPropagation();
+  }
+
+  shiftColour = function () {
+    let str = 'random';
+
+    if (this.selectedShiftType && this.selectedShiftType.id) {
+      str = this.selectedShiftType.id;
+    } else if (this.effectiveShiftType && this.effectiveShiftType.id) {
+      str = this.effectiveShiftType.id;
+    }
+
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    let colour = '#';
+    for (let i = 0; i < 3; i++) {
+      const value = (hash >> (i * 8)) & 0xFF;
+      colour += ('00' + value.toString(16)).substr(-2);
+    }
+    return colour;
+  }
+
+  reset() {
+    if (this.selectedShift && this.selectedShift.shiftType) {
+      this.isProcessing = true;
+      this.amsEffectiveShiftService.effectiveShifts
+        .remove(this.selectedShift.id)
+        .then(() => {
+          this.selectedShiftType = null;
+          this.isProcessing = false;
+        }).catch(err => {
+          this.isProcessing = false;
+          this.toastyService.error({ title: 'Error', msg: err })
         })
+    }
+  }
+
+  setWeeklyOff() {
+    const employee = this.effectiveShift.employee;
+    this.isWeeklyOff = !this.isWeeklyOff;
+    employee.weeklyOff[this.day] = this.isWeeklyOff
+
+    if (this.isWeeklyOff) {
+      employee.weeklyOff.isConfigured = true;
+    }
+
+    this.amsEmployeeService.employees
+      .update(employee.id, employee)
+      .then(() => {
+        this.selectedShiftType = null;
+        this.isProcessing = false;
+      }).catch(err => {
+        this.isProcessing = false;
+        this.isWeeklyOff = !this.isWeeklyOff;
+        this.toastyService.error({ title: 'Error', msg: err })
+      });
+  }
+
+  setEffectiveShift() {
+    this.effectiveShiftType = this.startingShift;
+
+    let lastDate: Date;
+
+    this.effectiveShift.shifts.forEach(item => {
+      const mDate = moment(item.date);
+      if (mDate.isBefore(this.date, 'd') && (!lastDate || mDate.isAfter(lastDate))) {
+        lastDate = mDate.toDate();
+        this.effectiveShiftType = item.shiftType
       }
     });
-
   }
 
+  selectShift(newShiftType: ShiftType) {
+    if (this.effectiveShiftType && newShiftType && this.effectiveShiftType.id === newShiftType.id) {
+      this.selectedShiftType = null;
 
-  onShiftChange(shiftType: ShiftType) {   
-    this.onChange.emit(shiftType.id);        
-    
+      if (this.selectedShift && this.selectedShift.shiftType && this.selectedShift.shiftType.id !== newShiftType.id) {
+
+        this.isProcessing = true;
+        this.amsEffectiveShiftService.effectiveShifts
+          .remove(this.selectedShift.id)
+          .then(() => {
+            this.isProcessing = false;
+          }).catch(err => {
+            this.isProcessing = false;
+            this.toastyService.error({ title: 'Error', msg: err })
+          })
+      }
+      return;
+    }
+
+    const model: any = {
+      date: this.date,
+      shiftType: newShiftType
+    };
+    this.isProcessing = true;
+    this.amsEffectiveShiftService.effectiveShifts
+      .update(this.effectiveShift.employee.id, model)
+      .then(() => {
+        this.selectedShiftType = newShiftType;
+        this.isProcessing = false;
+      }).catch(err => {
+        this.isProcessing = false;
+        this.toastyService.error({ title: 'Error', msg: err })
+      })
   }
-
 }

@@ -163,12 +163,12 @@
                             </td>
 
                         </tr>
-                        <tr *ngIf="duration == 'multi'">
+                        <tr *ngIf="duration === 'multi'">
                             <td>
                                 <label>Start Date:<span class="asterisk">*</span></label>
                             </td>
                             <td>
-                                <input name="startdate" class="form-control  calendar no-spin" type="date" [ngModel]="leave.properties.date  | date:'yyyy-MM-dd'" (ngModelChange)="leave.properties.date = $event" [required]="duration == 'multi'">
+                                <input name="startdate" class="form-control  calendar no-spin" type="date" [ngModel]="leave.properties.date  | date:'yyyy-MM-dd'" (ngModelChange)="leave.properties.date = $event" [required]="duration === 'multi'">
                                 <md-radio-group [(ngModel)]="startTime" name="startTime">
                                     <md-radio-button value="startfull">Full</md-radio-button>
                                     <md-radio-button *ngIf="leave.properties.leaveType.unitsPerDay == 2" value="starthalf">Half</md-radio-button>
@@ -180,7 +180,7 @@
                                 <label>End Date:<span class="asterisk">*</span></label>
                             </td>
                             <td>
-                                <input name="enddate" class="form-control  calendar no-spin" type="date" [ngModel]="leave.properties.toDate  | date:'yyyy-MM-dd'" (ngModelChange)="leave.properties.toDate = $event" [required]="duration == 'multi'">
+                                <input name="enddate" class="form-control  calendar no-spin" type="date" [ngModel]="leave.properties.toDate  | date:'yyyy-MM-dd'" (ngModelChange)="leave.properties.toDate = $event" [required]="duration === 'multi'">
                                 <md-radio-group [(ngModel)]="endTime" name="endTime" style="margin-top:20px;">
                                     <md-radio-button value="endfull">Full</md-radio-button>
                                     <md-radio-button *ngIf="leave.properties.leaveType.unitsPerDay == 2" value="endhalf">Half</md-radio-button>

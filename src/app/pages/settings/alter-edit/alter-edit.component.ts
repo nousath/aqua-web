@@ -6,7 +6,7 @@ import { AmsAlert } from '../../../models';
 import { Model } from '../../../common/contracts/model';
 import { Subscription } from 'rxjs/Rx';
 import * as _ from 'lodash';
-import { AlertParameter } from '../../../models/alert';
+import { AlertParameter } from '../../../models/alert-parameter.model';
 import { ValidatorService } from '../../../services/validator.service';
 import { Angulartics2 } from 'angulartics2';
 
@@ -25,7 +25,7 @@ interface MyType {
 })
 export class AlterEditComponent implements OnInit {
 
-  alert: Model<AmsAlert>; l
+  alert: Model<AmsAlert>;
   subscription: Subscription;
   reset: Function;
   resetConfig: Boolean = false;
@@ -47,15 +47,15 @@ export class AlterEditComponent implements OnInit {
 
       // }
       this.resetConfig = true;
-      this.alert.properties.config.processor['channel'] = "";
+      this.alert.properties.config.processor['channel'] = '';
       this.resetConfig = false;
 
     }
 
     this.subscription = activatedRoute.params.subscribe(
       params => {
-        let alertId: string = params['id'];
-        this.alert.fetch(alertId).then(
+
+        this.alert.fetch( params['id']).then(
           data => {
             // _.each(this.alert.properties.alertType.trigger.parameters, (i: AlertParameter) => {
             //   i.type = i.type.toLowerCase();
@@ -72,7 +72,7 @@ export class AlterEditComponent implements OnInit {
 
   configure() {
     this.angulartics2.eventTrack.next({ action: 'alertClick', properties: { category: 'alertConfigurations' }});
-    let trigger: any = {};
+    const trigger: any = {};
     _.each(this.alert.properties.alertType.trigger.parameters, (i: AlertParameter) => {
       trigger[i.name] = i.value
     });

@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AmsCommunicationAppsService } from "../../../services/ams/ams-communication-apps.service";
-import { Router, ActivatedRoute, Params } from "@angular/router";
+import { AmsCommunicationAppsService } from '../../../services/ams/ams-communication-apps.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { ToastyService } from 'ng2-toasty';
 import { Channel, ChannelType, ChannelTypeParams } from '../../../models';
-import { Subscription } from "rxjs/Subscription";
-import { Model } from "../../../common/contracts/model";
+import { Subscription } from 'rxjs/Subscription';
+import { Model } from '../../../common/contracts/model';
 import * as _ from 'lodash';
 
 
@@ -51,7 +51,7 @@ export class ChannelTypeEditComponent implements OnInit {
 
     this.amsCommunicationAppService.channel.simpePost(this.channel)
       .then(data => {
-        this.router.navigateByUrl("/pages/settings/channelTypes");
+        this.router.navigateByUrl('/pages/settings/channelTypes');
         console.log(data);
       })
       .catch(err => {
@@ -70,10 +70,10 @@ export class ChannelTypeEditComponent implements OnInit {
       }
     });
 
-    this.amsCommunicationAppService.channel.update(this.channel.id,this.channel)
+    this.amsCommunicationAppService.channel.update(this.channel.id, this.channel)
       .then(data => {
-        this.router.navigateByUrl("/pages/settings/channelTypes");
-        this.toastyService.info({ title: 'Information', msg: 'Saved Successfully' });        
+        this.router.navigateByUrl('/pages/settings/channelTypes');
+        this.toastyService.info({ title: 'Information', msg: 'Saved Successfully' });
       })
       .catch(err => {
         this.toastyService.error({ title: 'Error', msg: err });

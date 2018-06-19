@@ -18,8 +18,8 @@ import { ApplyLeaveComponent } from '../apply-leave/apply-leave.component';
 })
 export class ApplyLeaveTypeComponent {
 
-  startDate: string = ''
-  endDate: string = ''
+  startDate = ''
+  endDate = ''
   days: number;
   bulkLeaves: {
     id: string,
@@ -42,11 +42,11 @@ export class ApplyLeaveTypeComponent {
   @Input()
   empl: string;
 
-  // @Output() allLeaves: EventEmitter = new EventEmitter();  
+  // @Output() allLeaves: EventEmitter = new EventEmitter();
 
   leave: Leave;
   leaveBalances: Page<LeaveBalance>;
-  duration: string = 'multi';
+  duration = 'multi';
   endFirstHalf: boolean
   endSecondHalf: boolean
   startFirstHalf: boolean
@@ -61,8 +61,8 @@ export class ApplyLeaveTypeComponent {
   selected() {
 
     if (this.startDate && this.endDate) {
-      let oneDay = 24 * 60 * 60 * 1000;
-      let startDay: Date = new Date(this.startDate);
+      const oneDay = 24 * 60 * 60 * 1000;
+      const startDay: Date = new Date(this.startDate);
       if (this.startFirstHalf && this.startSecondHalf)
         startDay.setHours(0, 0, 0, 0);
       else if (this.endFirstHalf)
@@ -72,7 +72,7 @@ export class ApplyLeaveTypeComponent {
       else
         return this.toastyService.info({ title: 'Info', msg: 'Select Half' })
 
-      let endDay: Date = new Date(this.endDate);
+      const endDay: Date = new Date(this.endDate);
 
       if (this.endFirstHalf && this.endSecondHalf)
         endDay.setHours(0, 0, 0, 0);
@@ -88,12 +88,9 @@ export class ApplyLeaveTypeComponent {
       }
       if (this.endFirstHalf && this.endSecondHalf && this.startFirstHalf && this.startSecondHalf) {
         this.days = Math.abs(((endDay.getTime() - startDay.getTime()) / (oneDay)) + 1);
-      }
-      else
+      } else {
         this.days = Math.abs((endDay.getTime() - startDay.getTime()) / (oneDay));
-
-
-
+      }
 
       if (this.days > this.leaveBalance.days && !this.leaveBalance.leaveType.unlimited) {
         return this.toastyService.info({ title: 'Info', msg: `You don't have sufficient leave balance` })
@@ -102,7 +99,7 @@ export class ApplyLeaveTypeComponent {
       if (this.leaveBalance.leaveType.monthlyLimit && this.days > this.leaveBalance.leaveType.monthlyLimit) {
         return this.toastyService.info({ title: 'Info', msg: `You cannot apply more than ${this.leaveBalance.leaveType.monthlyLimit} in a month` })
       }
-      let lea: any = {
+      const lea: any = {
         id: this.leaveBalance.id,
         type: this.leaveBalance.leaveType,
         days: this.days

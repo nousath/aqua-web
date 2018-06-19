@@ -1,12 +1,35 @@
-<!-- <p>{{effectiveShift?.shiftType.name}}</p> -->
-<div>
-    <select [(ngModel)]="effectiveShift.shiftType" (ngModelChange)="onShiftChange($event)">
-        <!-- <option class="capitalize" [ngValue]="null">{{effectiveShift?.shiftType?.name}}</option> -->
-        <option *ngFor="let shiftType of shiftTypes" class="capitalize form-control input-sm" [ngValue]="shiftType">{{shiftType.name}}</option>
-    </select>
+<div class="shift" [class.hasValue]="selectedShiftType" [class.continue]="!selectedShiftType" [style.border-color]="shiftColour()">
+    <button [mdMenuTriggerFor]="menu" class="display-text" [disabled]="isDisabled">
+      <ng-container *ngIf="selectedShiftType">
+          <span *ngIf="!isWeeklyOff" class="name"> {{selectedShiftType.name}} </span>
+
+          <div *ngIf="isWeeklyOff" class="compressed">
+              <span class="name"> {{selectedShiftType.name}} </span>
+              <span class="off">Off</span>
+          </div>
+      </ng-container>
+
+      <ng-container *ngIf="!selectedShiftType">
+          <span *ngIf="!isWeeklyOff" class="continue">&raquo;</span>
+          <span *ngIf="isWeeklyOff" class="off">Off</span>
+      </ng-container>
+    </button>
+    <md-menu #menu="mdMenu">
+        <button md-menu-item (click)="reset()">
+          <span>Reset</span>
+        </button>
+        <button md-menu-item (click)="setWeeklyOff()"><span>Off</span>
+          <md-slide-toggle [checked]="isWeeklyOff"></md-slide-toggle>
+        </button>
+        <div *ngIf="shiftTypes.length > 5">
+            <input class="search" placeholder="Shifts" [(ngModel)]="shiftSearch" (click)="stopPropagation($event)">
+        </div>
+        <div class="list-label" *ngIf="shiftTypes.length <= 5">
+            <span (click)="stopPropagation($event)">Shifts</span>
+        </div>
+        <md-divider></md-divider>
+        <div class="shifts">
+            <button md-menu-item *ngFor="let shiftType of shiftTypes| shiftTypeFilter: shiftSearch" (click)="selectShift(shiftType)"><span>{{shiftType.name}}</span></button>
+        </div>
+    </md-menu>
 </div>
-
-
-   
-
-

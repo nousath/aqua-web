@@ -17,12 +17,12 @@ export class HolidaysComponent implements OnInit {
 
   holidays: Page<Holiday>
   holiday: Model<Holiday>
-  isFilter: boolean = false;
+  isFilter = false;
   uploader: FileUploader;
-  isNew: boolean = false;
-  upcoming: boolean = true;
+  isNew = false;
+  upcoming = true;
   currentDate: any;
-  isUpload: boolean = false;
+  isUpload = false;
 
 
   constructor(private amsHolidayService: AmsHolidayService,
@@ -31,7 +31,7 @@ export class HolidaysComponent implements OnInit {
 
     this.holidays = new Page({
       api: amsHolidayService.holidays,
-      filters:[{
+      filters: [{
         field: 'date',
         value: null
       }]
@@ -53,7 +53,7 @@ export class HolidaysComponent implements OnInit {
     this.isUpload = !this.isUpload;
   }
 
-  upcomingHoliday(holiday:any){
+  upcomingHoliday(holiday: any) {
     return moment(moment(holiday.date).startOf('day')).isAfter(moment(this.currentDate).startOf('day'))
   }
   fetchHolidays() {
@@ -61,7 +61,7 @@ export class HolidaysComponent implements OnInit {
     this.holidays.filters.properties['date'].value = new Date().toISOString();
     this.holidays.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
-  Upcoming(){
+  Upcoming() {
     this.upcoming = true
     this.holidays.filters.properties['date'].value = new Date().toISOString();
     this.holidays.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
@@ -97,7 +97,7 @@ export class HolidaysComponent implements OnInit {
       this.holiday.properties.date = new Date(e.date).toISOString();
     });
   }
-  AllHolidays(){
+  AllHolidays() {
     this.upcoming = false
     this.holidays.filters.properties['date'].value = null;
     this.holidays.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));

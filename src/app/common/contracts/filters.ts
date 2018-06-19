@@ -129,7 +129,7 @@ export class Filters {
         params = params || {};
 
 
-        let urlSearchParams = this.location ? (new URLSearchParams(this.location.path().split('?')[1])) : null;
+        const urlSearchParams = this.location ? (new URLSearchParams(this.location.path().split('?')[1])) : null;
 
         let count = 0;
 
@@ -149,7 +149,7 @@ export class Filters {
         });
 
         if (urlSearchParams) {
-            let url = this.location.path().split('?')[0];
+            const url = this.location.path().split('?')[0];
             this.location.replaceState(url, urlSearchParams.toString());
         }
 

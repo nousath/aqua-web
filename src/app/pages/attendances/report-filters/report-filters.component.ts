@@ -1,37 +1,41 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { AmsReportRequestService } from "../../../services/ams/ams-report-request.service";
-import { ReportRequest } from "../../../models/report-request";
-import { Observable } from "rxjs/Observable";
-import { Employee } from "../../../models";
-import { AutoCompleteService } from "../../../services";
-import { AmsTagService } from "../../../services/ams/ams-tag.service";
-import { Page } from "../../../common/contracts/page";
-import { TagType } from "../../../models/tag";
-import { Tags } from "../daily/daily.component";
-import { ToastyService } from "ng2-toasty";
+import { Component, OnInit, Input } from '@angular/core';
+import { AmsReportRequestService } from '../../../services/ams/ams-report-request.service';
+import { ReportRequest } from '../../../models/report-request';
+import { Observable } from 'rxjs/Observable';
+import { Employee } from '../../../models';
+import { AutoCompleteService } from '../../../services';
+import { AmsTagService } from '../../../services/ams/ams-tag.service';
+import { Page } from '../../../common/contracts/page';
+import { TagType } from '../../../models/tag';
+import { Tags } from '../daily/daily.component';
+import { ToastyService } from 'ng2-toasty';
 
 @Component({
-  selector: "aqua-report-filters",
-  templateUrl: "./report-filters.component.html",
-  styleUrls: ["./report-filters.component.css"]
+  selector: 'aqua-report-filters',
+  templateUrl: './report-filters.component.html',
+  styleUrls: ['./report-filters.component.css']
 })
 export class ReportFiltersComponent implements OnInit {
   reportRequest: ReportRequest = new ReportRequest();
   tagTypes: Page<TagType>;
   tags: Tags = new Tags();
 
+  employee: Employee;
+  supervisor: Employee;
+
+
   @Input() type: string;
   @Input()
- reportTypes: [{
-   type: string,
-   name: string
- }];
-  isLoading: boolean = false;
+  reportTypes: [{
+    type: string,
+    name: string
+  }];
+  isLoading = false;
 
   constructor(private amsReportRequest: AmsReportRequestService,
-  private autoCompleteService: AutoCompleteService,
-  private toastyService: ToastyService,
-  private tagService: AmsTagService) {
+    private autoCompleteService: AutoCompleteService,
+    private toastyService: ToastyService,
+    private tagService: AmsTagService) {
     this.tagTypes = new Page({
       api: tagService.tagTypes
     });
@@ -39,7 +43,7 @@ export class ReportFiltersComponent implements OnInit {
     this.tagTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ngOnChanges() {
     if (this.type) {
@@ -53,8 +57,6 @@ export class ReportFiltersComponent implements OnInit {
     }
   }
 
-  employee: Employee;
-  supervisor: Employee;
 
   onSelectEmp(emp: Employee) {
     this.reportRequest.reportParams.name = emp.name;
@@ -78,7 +80,7 @@ export class ReportFiltersComponent implements OnInit {
   }
 
   onSubmit() {
-    let tags: string[] = [];
+    const tags: string[] = [];
     this.tags.selected.forEach((tag: any) => {
       tags.push(tag.tagId)
     })

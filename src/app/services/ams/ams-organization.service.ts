@@ -8,7 +8,7 @@ import { Organization } from '../../models';
 export class AmsOrganizationService {
 
   organizations: IApi<Organization>;
-  downloadSyncApp: IApi<ResponseContentType.Blob>
+  downloadSyncApp: IApi<ResponseContentType.Blob>;
 
   constructor(private http: Http) {
     const baseApi = 'ams';

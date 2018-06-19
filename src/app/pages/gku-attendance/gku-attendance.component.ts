@@ -42,7 +42,7 @@ export class GkuAttendanceComponent implements OnInit, OnDestroy {
     this.subscription = activatedRoute.params.subscribe(
       params => {
         this.isProcessingAttendance = true;
-        let externalToken: string = params['token'];
+        const externalToken: string = params['token'];
         let orgCode: string = params['orgCode'];
         if (!externalToken || !orgCode) {
           return alert('Token or Org Not Found')
@@ -60,7 +60,7 @@ export class GkuAttendanceComponent implements OnInit, OnDestroy {
 
 
   login() {
-    let tempData: any = { "device": { "id": "string" } };
+    const tempData: any = { 'device': { 'id': 'string' } };
     this.amsEmployeeService.signInViaExternalToken.create(tempData).then(
       (amsUser) => {
         this.store.setItem('ams_token', amsUser.token);
@@ -76,39 +76,39 @@ export class GkuAttendanceComponent implements OnInit, OnDestroy {
   getAttendance(empId: string) {
     this.selectedDate = new Date()
     this.isProcessingAttendance = true;
-    let date = new Date();
-    let y = date.getFullYear(), m = date.getMonth();
-    let firstDay = new Date(y, m, 1);
-    let lastDay = new Date(y, m + 1, 1);
+    const date = new Date();
+    const y = date.getFullYear(), m = date.getMonth();
+    const firstDay = new Date(y, m, 1);
+    const lastDay = new Date(y, m + 1, 1);
 
-    let serverPageInput: ServerPageInput = new ServerPageInput();
+    const serverPageInput: ServerPageInput = new ServerPageInput();
     serverPageInput.query['fromDate'] = firstDay.toISOString();
     serverPageInput.query['toDate'] = lastDay.toISOString();
     serverPageInput.query['employee'] = empId;
-    let param: IGetParams = {
+    const param: IGetParams = {
       serverPageInput: serverPageInput
     };
 
     this.amsAttendanceService.attendance.simpleGet(param).then((data: DayEvent[]) => {
       this.events = [];
       let startDay = new Date(firstDay).getDay();
-      startDay = startDay == 0 ? 7 : startDay;
+      startDay = startDay === 0 ? 7 : startDay;
 
-      let dateVar: Date = new Date(this.selectedDate);
-      let year: number = dateVar.getFullYear();
-      let monthInNumber: number = dateVar.getMonth();
+      const dateVar: Date = new Date(this.selectedDate);
+      const year: number = dateVar.getFullYear();
+      const monthInNumber: number = dateVar.getMonth();
       // let totalDaysInMonth: number;
 
       // _.each(this.months, (value: Month, key: string, obj: Months) => {
-      //   if (value.id == m + 1)
+      //   if (value.id === m + 1)
       //     totalDaysInMonth = value.days;
       // });
 
-      let lastDateOfMonth: Date = new Date(y, monthInNumber + 1, 0);
+      const lastDateOfMonth: Date = new Date(y, monthInNumber + 1, 0);
 
-      let lastDayOfMonth = lastDateOfMonth.getDate();
+      const lastDayOfMonth = lastDateOfMonth.getDate();
 
-      let days: number[] = [];
+      const days: number[] = [];
       for (let i = 0; i < lastDayOfMonth; i++) {
         days.push(i);
       }
@@ -117,7 +117,7 @@ export class GkuAttendanceComponent implements OnInit, OnDestroy {
         let dateEvent: DayEvent;
 
         dateEvent = _.find(data, (item: DayEvent) => {
-          return new Date(item.ofDate).getDate() == day + 1;
+          return new Date(item.ofDate).getDate() === day + 1;
         });
 
         if (dateEvent) {
@@ -129,7 +129,7 @@ export class GkuAttendanceComponent implements OnInit, OnDestroy {
           dateEvent.shift.status = dateEvent.shift.status ? dateEvent.shift.status.toLowerCase() : '';
           this.events.push(dateEvent)
         } else {
-          let newEvent: DayEvent = new DayEvent();
+          const newEvent: DayEvent = new DayEvent();
           newEvent.ofDate = new Date(year, monthInNumber, day + 1).toISOString();
           this.events.push(newEvent);
         }

@@ -1,0 +1,74 @@
+<div *ngIf="isHeader === 'true'" class="row page_header header">
+    <div col-xs-3 col-sm-3 col-md-3 col-lg-3 class="shiftRoster">
+        <span>
+      <h3> Shift Roster</h3>
+    </span>
+    </div>
+</div>
+
+<!-- <div class="col"> //todo
+  <div class="row">
+    <md-toolbar class="searchEmp">
+      <div class="searchbar">
+        <input ngui-auto-complete [min-chars]="1" placeholder="Employee search" [(ngModel)]="selectedEmp" (valueChanged)="onSelectEmp($event)" [source]="empSource.bind(this)" [value-formatter]="empFormatter" [list-formatter]="empListFormatter"  class="form-control searchbarinput search" name="roleId"
+        />
+      </div>
+    </md-toolbar>
+  </div>
+</div> -->
+
+<md-spinner [ngClass]="{'bottomSpinner':isSpinnerDown}" class="custom_spinner" *ngIf="isLoading" mode="indeterminate"></md-spinner>
+
+<div class="col">
+    <md-toolbar class="calender">
+        <div style="width:100%;">
+            <input id="dateSelector" type="text" class="showCalender">
+        </div>
+
+    </md-toolbar>
+</div>
+
+<div class="row" data-infinite-scroll debounce (scrolled)="onScrollDown()" (scrolledUp)="onUp()">
+    <div class="col-12">
+        <md-card>
+            <table class="table table-condensed table-hover table-responsive">
+                <tbody>
+                    <tr *ngFor="let effectiveShift of effectiveShifts.items ">
+                        <td>
+                            <img *ngIf="effectiveShift?.employee?.picUrl" class="img-circle profile_pic" alt="img" [src]="effectiveShift?.employee?.picUrl" onError="this.src='/assets/images/blank.png'">
+                            <img *ngIf="!effectiveShift?.employee?.picUrl" class="img-circle profile_pic" alt="img" src="assets/images/blank.png"> &nbsp;
+                        </td>
+                        <td>
+                            <strong> {{effectiveShift.employee.name || '--'}}</strong>
+                            <br>
+                            <small>{{effectiveShift.employee.code || '--'}} </small>
+                        </td>
+                        <td *ngIf="!effectiveShift?.shifts[0]?.date">
+                            <!-- <strong>Previous Shift</strong> -->
+                            <!-- <br> -->
+                            <strong>{{effectiveShift?.previousShift?.shiftType.name ||'--'}}</strong>
+                            <br>
+                            <small>{{effectiveShift?.previousShift?.shiftType.startTime|date:'H:mm' ||'--'}} - {{effectiveShift?.previousShift?.shiftType.endTime|date:'H:mm' || '--'}} </small>
+
+                        </td>
+                        <td *ngIf="effectiveShift?.shifts[0]?.date">
+                            <strong>{{effectiveShift?.shifts[0].shiftType.name || '--'}}</strong>
+                            <br>
+                            <small>{{effectiveShift?.shifts[0].shiftType.startTime|date:'H:mm' || '--'}} - {{effectiveShift?.shifts[0].shiftType.endTime|date:'H:mm' || '--'}}</small>
+                        </td>
+                        <td>
+                            <button md-icon-button [mdMenuTriggerFor]="menu">
+                <md-icon>more_vert</md-icon>
+              </button>
+                            <md-menu #menu="mdMenu">
+                                <button md-menu-item *ngFor="let shiftType of shiftTypes.items" (click)="changeShift(shiftType,date,effectiveShift.employee)">{{shiftType.name}}</button>
+                            </md-menu>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </md-card>
+    </div>
+
+</div>

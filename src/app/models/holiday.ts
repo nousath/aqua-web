@@ -1,5 +1,7 @@
 export class Holiday {
-  id: string = '';
-  name: string = '';
-  date: string = '';
+  id = '';
+  name = '';
+  date = '';
+  code = '';
+  isEdit = false;
 }

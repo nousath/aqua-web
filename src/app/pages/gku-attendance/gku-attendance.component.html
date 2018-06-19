@@ -30,7 +30,7 @@ margin: 0 auto;word-break: break-all;
                 <h6>{{getDate(item?.ofDate)}}</h6>
                 <!--<p>{{i}} {{item?.ofDate | date}}</p>-->
                 <!--<p>{{item?.ofDate}}</p>-->
-                <!--<div *ngIf="item?.shift?.status == 'working'">-->
+                <!--<div *ngIf="item?.shift?.status === 'working'">-->
                 <p *ngIf="item?.status === 'present'
              || item?.status === 'checkedin'
              || item?.status === 'missswipe'

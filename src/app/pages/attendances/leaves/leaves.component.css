@@ -4,7 +4,7 @@
 }
 
 .tdWidth {
-    width: 10%;
+    width: 8% !important;
     /*text-align: center;*/
 }
 
@@ -27,4 +27,30 @@
 .chipsBadge i {
     font-weight: 100;
     cursor: pointer;
+}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: baseline !important;
+    border-top: 1px solid #ddd;
+}
+.page_header {
+    background-color: #e4e4e4;
+    padding-top: 0.5%;
+    padding-left: 0.5%;
+    padding-right: 0% !important;
+}
+.mat-icon-button {
+    padding: 0;
+    min-width: 0px;
+    width: 25px !important;
+    height: 40px;
+    flex-shrink: 0;
+    line-height: 40px;
+    border-radius: 50%;
+}
+.table[_ngcontent-c7] > tbody[_ngcontent-c7] > tr[_ngcontent-c7] > td[_ngcontent-c7], .table[_ngcontent-c7] > tbody[_ngcontent-c7] > tr[_ngcontent-c7] > th[_ngcontent-c7], .table[_ngcontent-c7] > tfoot[_ngcontent-c7] > tr[_ngcontent-c7] > td[_ngcontent-c7], .table[_ngcontent-c7] > tfoot[_ngcontent-c7] > tr[_ngcontent-c7] > th[_ngcontent-c7], .table[_ngcontent-c7] > thead[_ngcontent-c7] > tr[_ngcontent-c7] > td[_ngcontent-c7], .table[_ngcontent-c7] > thead[_ngcontent-c7] > tr[_ngcontent-c7] > th[_ngcontent-c7] {
+   
+    padding-left: 13px !important;
+   
 }

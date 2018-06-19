@@ -1,21 +1,21 @@
 import { ShiftType } from './shift-type';
 import { Shift } from './shift';
 export class DailyAttendance {
-  id: string = '';
-  name: string = '';
-  code: string = '';
-  designation: string = '';
-  picData: string = '';
-  picUrl: string = '';
-  email: string = '';
+  id = '';
+  name = '';
+  code = '';
+  designation = '';
+  picData = '';
+  picUrl = '';
+  email = '';
   leaveBalances: number = null;
   shiftType: ShiftType = new ShiftType();
   attendance: Attendance = new Attendance();
 }
 
 export class Attendance {
-  id: string = '';
-  status: string = '';
+  id = '';
+  status = '';
   checkIn: Date = null;
   checkOut: Date = null;
   hoursWorked: number = null;

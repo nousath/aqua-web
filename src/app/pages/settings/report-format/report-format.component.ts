@@ -39,7 +39,7 @@ export class ReportFormatComponent implements OnInit {
       sno: '7',
       type: 'Leave',
       link: 'assets/reports/Leave.xlsx',
-    },]
+    }, ]
   }
 
   ngOnInit() {

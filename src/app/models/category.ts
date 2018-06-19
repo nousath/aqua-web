@@ -1,14 +1,14 @@
 export class Category {
-  id: string = '';
-  name: string = '';
+  id = '';
+  name = '';
   machines: Machine[] = [];
 }
 
 export class Machine {
-  id: string = '';
-  manufacturer: string = '';
-  model: string = '';
-  picData: string = '';
-  picUrl: string = '';
+  id = '';
+  manufacturer = '';
+  model = '';
+  picData = '';
+  picUrl = '';
   port: '';
 }

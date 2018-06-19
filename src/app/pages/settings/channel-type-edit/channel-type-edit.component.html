@@ -34,11 +34,11 @@
                         <p>{{item?.description}}</p>
                     </div>
 
-                    <!--<div *ngIf="item.type.toLowerCase() == 'number' && item.expectedValues.length == 0" class="col-xs-5 col-sm-3 col-md-3 col-lg-3">
+                    <!--<div *ngIf="item.type.toLowerCase() === 'number' && item.expectedValues.length === 0" class="col-xs-5 col-sm-3 col-md-3 col-lg-3">
                         <input type="number" class="form-control" [name]="item?.name">
                     </div>-->
 
-                    <div *ngIf="item.type.toLowerCase() == 'string' && item.expectedValues.length == 0" class="col-xs-5 col-sm-3 col-md-3 col-lg-3">
+                    <div *ngIf="item.type.toLowerCase() === 'string' && item.expectedValues.length === 0" class="col-xs-5 col-sm-3 col-md-3 col-lg-3">
                         <input type="text" class="form-control" [name]="item?.name" [(ngModel)]="item.value" required>
                     </div>
 

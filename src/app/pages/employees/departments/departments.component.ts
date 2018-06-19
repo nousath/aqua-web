@@ -4,7 +4,7 @@ import { Model } from '../../../common/contracts/model';
 import { ValidatorService } from '../../../services';
 import { EmsDepartmentService } from '../../../services/ems/ems-department.service';
 import { ToastyService } from 'ng2-toasty';
-import * as _ from "lodash";
+import * as _ from 'lodash';
 import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-dialog.component';
 import { MdDialog } from '@angular/material';
 import { LocalStorageService } from '../../../services/local-storage.service';
@@ -19,9 +19,9 @@ import { FileUploader } from 'ng2-file-upload';
 export class DepartmentsComponent implements OnInit {
   departments: Page<Department>
   department: Model<Department>
-  isNew: boolean = false;
+  isNew = false;
   uploader: FileUploader;
-  isUpload: boolean = false;
+  isUpload = false;
 
   constructor(private emsDepartmentService: EmsDepartmentService,
     public validatorService: ValidatorService,
@@ -66,7 +66,7 @@ export class DepartmentsComponent implements OnInit {
       this.store.setObject(`departmentEdit_${department.divisionId}`, department);
     } else {
       department.isEdit = false;
-      let d: Department = this.store.getObject(`departmentEdit_${department.divisionId}`) as Department;
+      const d: Department = this.store.getObject(`departmentEdit_${department.divisionId}`) as Department;
       department.code = d.code;
       department.name = d.name;
       this.store.removeItem(`departmentEdit_${department.divisionId}`);
@@ -81,7 +81,7 @@ export class DepartmentsComponent implements OnInit {
   }
 
   removeConfirm(department: Department) {
-    let dialog = this.dialog.open(ConfirmDialogComponent, { width: '40%' });
+    const dialog = this.dialog.open(ConfirmDialogComponent, { width: '40%' });
     dialog.componentInstance.msg = `Are you sure to want to remove department ${department.name} ?`;
     dialog.afterClosed().subscribe((value: boolean) => {
       if (value) {

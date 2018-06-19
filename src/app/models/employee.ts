@@ -8,38 +8,49 @@ import { Supervisor } from './ems/employee';
 //   status: 'string'
 // }
 export class Employee {
-  id: string = '';
-  name: string = '';
-  code: string = '';
-  designation: string = '';
-  status: string = '';
-  picData: string = '';
-  picUrl: string = '';
-  email: string = '';
-  password: string = '';
-  phone: string = '';
+  id = '';
+  name = '';
+  code = '';
+  designation = '';
+  status = '';
+  picData = '';
+  picUrl = '';
+  email = '';
+  password = '';
+  phone = '';
   organization: Organization = new Organization();
   device: Device = new Device();
   shiftType: ShiftType = new ShiftType();
   leaveBalances: any[];
   avgHours: number = null;
-  token: string = '';
+  token = '';
   supervisor: Supervisor = new Supervisor();
   abilities: Abilities = new Abilities();
   currentAblitiy: 'maualAttendance' | 'manualByBeacon' | 'manualByGeoFencing' | 'manualByWifi' | 'none' = 'none';
   userType: 'admin' | 'superadmin' | 'normal' = 'normal';
-  fingerPrints: string[] = [] ;
+  fingerPrints: string[] = [];
   devices: Device[] = [];
+  isDynamicShift: Boolean;
+  weeklyOff: {
+    monday: Boolean,
+    tuesday: Boolean,
+    wednesday: Boolean,
+    thursday: Boolean,
+    friday: Boolean,
+    saturday: Boolean,
+    sunday: Boolean,
+    isConfigured: Boolean
+  };
 }
 
 
 export class Abilities {
-  maualAttendance: boolean = false;
-  manualByBeacon: boolean = false;
-  manualByGeoFencing: boolean = false;
-  manualByWifi: boolean = false;
-  shiftNotifier: boolean = false;
-  trackLocation: boolean = false;
+  maualAttendance = false;
+  manualByBeacon = false;
+  manualByGeoFencing = false;
+  manualByWifi = false;
+  shiftNotifier = false;
+  trackLocation = false;
 }
 
 

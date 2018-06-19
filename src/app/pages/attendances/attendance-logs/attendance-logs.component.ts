@@ -1,9 +1,9 @@
 import { AmsShiftService } from '../../../services/ams/ams-shift.service';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
-import { Subscription } from "rxjs/Rx";
-import { ToastyService } from "ng2-toasty";
-import * as _ from "lodash";
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs/Rx';
+import { ToastyService } from 'ng2-toasty';
+import * as _ from 'lodash';
 import { TimeLogsLocation, TimeLogs } from '../../../models/time-logs';
 import { Employee } from '../../../models/employee';
 import { Model } from '../../../common/contracts/model';
@@ -105,7 +105,7 @@ export class AttendanceLogsComponent implements OnInit {
 
 
   getLocation(latlng: number[], index: number) {
-    let api: string = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng[1]},${latlng[0]}&key=AIzaSyA3-BQmJVYB6_soLJPv7cx2lFUMAuELlkM`;
+    const api = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng[1]},${latlng[0]}&key=AIzaSyA3-BQmJVYB6_soLJPv7cx2lFUMAuELlkM`;
     this.http.get(api).toPromise().then(data => {
       this.logs.items[index].location.address = data.json().results[0].formatted_address
     }).catch(err => {
@@ -140,10 +140,10 @@ export class AttendanceLogsComponent implements OnInit {
         workSpan = new Date(this.attendance.checkOut).getTime() - new Date(this.attendance.checkIn).getTime();
       }
 
-      if(shiftSpan) {
-        this.extraShiftCount = (workSpan/shiftSpan) -1
+      if (shiftSpan) {
+        this.extraShiftCount = (workSpan / shiftSpan) - 1
 
-        if(this.extraShiftCount < 0) {
+        if (this.extraShiftCount < 0) {
           this.extraShiftCount = 0
         } else {
           this.extraShiftCount = parseInt( this.extraShiftCount.toFixed(0))
@@ -192,13 +192,12 @@ export class AttendanceLogsComponent implements OnInit {
 
   timeUpdated($event) {
     const time = $event.target.value;
-    let checkTimes: string[] = time.split(':');
+    const checkTimes: string[] = time.split(':');
     this.checkTime = new Date(new Date(this.checkTime).setHours(parseInt(checkTimes[0]), parseInt(checkTimes[1])));
 
   }
 
   checkUpdate() {
-    let h: number, m: number;
     this.timeLog.properties.employee.id = this.empId;
     // let checkTimes: string[] = this.checkTime.split(':');
     this.timeLog.properties.time = this.checkTime.toISOString();

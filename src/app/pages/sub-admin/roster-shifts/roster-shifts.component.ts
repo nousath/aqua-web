@@ -14,27 +14,31 @@ import * as _ from 'lodash';
 import { LocalStorageService } from '../../../services/local-storage.service';
 declare var $: any;
 
+
 @Component({
   selector: 'aqua-roster-shifts',
   templateUrl: './roster-shifts.component.html',
-  styleUrls: ['./roster-shifts.component.css'],  
+  styleUrls: ['./roster-shifts.component.css'],
 })
 export class RosterShiftsComponent implements OnInit {
-  dates: any = [];  
+  dates: any = [];
   effectiveShifts: Page<EffectiveShift>;
   shiftTypes: Page<ShiftType>;
   change: any;
+  date = new Date();
+
+  isDownloading = false;
   uploader: FileUploader;
-  isUpload: boolean = false;
+  isLoading = true;
+  isUpload = false;
   constructor(private amsEmployeeService: AmsEmployeeService,
     private amsShiftService: AmsShiftService,
     private amsEffectiveShiftService: AmsEffectiveShiftService,
     private toastyService: ToastyService,
     private store: LocalStorageService) {
-      
 
-    let access_Token: string = this.store.getItem('ams_token');
-    let orgCode = this.store.getItem('orgCode');
+    const access_Token: string = this.store.getItem('ams_token');
+    const orgCode = this.store.getItem('orgCode');
     this.uploader = new FileUploader({
       url: '/ams/api/effectiveShifts/shiftUpdate/xl',
       itemAlias: 'record',
@@ -48,115 +52,164 @@ export class RosterShiftsComponent implements OnInit {
     });
 
     this.uploader.onAfterAddingAll = (fileItems: FileItem) => {
-     
+
     };
 
     this.uploader.onErrorItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
       console.log('onErrorItem', response, headers);
     };
-    
+
     this.uploader.onCompleteItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
       this.isDownloading = true;
-      let res: any = JSON.parse(response);
+      const res: any = JSON.parse(response);
       if (!res.isSuccess) {
         this.isDownloading = false;
         return toastyService.error({ title: 'Error', msg: 'excel upload failed' })
-      }    
+      }
       this.isDownloading = false;
       this.isUpload = false;
-      window.location.reload();
-    }; 
+      this.getEffectiveShift(new Date())
+    };
 
     this.shiftTypes = new Page({
       api: amsShiftService.shiftTypes
     });
 
     this.effectiveShifts = new Page({
-      api: amsEffectiveShiftService.effectiveShifts
+      api: amsEffectiveShiftService.effectiveShifts,
+      filters: [{
+        field: 'fromDate',
+        value: null
+      }]
     });
-   
-    this.getWeek(new Date());
-    $("#dateSelector").datepicker("setDate", new Date(new Date().setHours(0, 0, 0, 0)));       
-    this.effectiveShifts.fetch();    
-    this.shiftTypes.fetch();
+
+    this.shiftTypes.fetch().catch((err) => {
+      this.toastyService.error({ title: 'Error', msg: err })
+    });
   }
-  
-  isDownloading: boolean = false;
+
   download(date: Date) {
     this.isDownloading = true;
-    let serverPageInput: ServerPageInput = new ServerPageInput();
+    const serverPageInput: ServerPageInput = new ServerPageInput();
     serverPageInput.query['ofDate'] = date.toISOString();
-    let reportName = `rosterExcel_${moment().format('DD_MMM_YY')}_DailyReport.xlsx`;
+    const reportName = `rosterExcel_${moment().format('DD_MMM_YY')}_DailyReport.xlsx`;
     this.amsEffectiveShiftService.downloadRosterExcel.exportReport(serverPageInput, null, reportName)
       .then(
-      (data) => {      
-        this.isDownloading = false}
-      ).catch(err => {
-        this.toastyService.error({ title: 'Error', msg: err });
-        this.isDownloading = false
-      });
+        (data) => {
+          this.isDownloading = false
+        }).catch(err => {
+          this.toastyService.error({ title: 'Error', msg: err });
+          this.isDownloading = false
+        });
   };
 
-  excel() {           
-    this.isUpload = !this.isUpload;    
-    this.uploader.clearQueue(); 
-    }
-
-
-  ngAfterViewInit() {
-    $('#dateSelector').datepicker({     
-      format: 'dd/mm/yyyy',
-      minViewMode: 0,
-      maxViewMode: 2,
-      autoclose: true
-    }).on('changeDate', (e) => {
-      this.getWeek(e.date);            
-    })
-    $("#dateSelector").datepicker("setDate", new Date(new Date().setHours(0, 0, 0, 0)));    
+  excel() {
+    this.isUpload = !this.isUpload;
+    this.uploader.clearQueue();
   }
+  // AfterViewInit() {
+  //   $('#dateSelector').datepicker({
+  //     format: 'dd/mm/yyyy',
+  //     minViewMode: 0,
+  //     maxViewMode: 2,
+  //     autoclose: true
+  //   }).on('changeDate', (e) => {
+  //     this.getEffectiveShift(e.date);
+  //     this.getWeek(e.date);
+  //   })
+  //   $('#dateSelector').datepicker('setDate', new Date(new Date().setHours(0, 0, 0, 0)));
+  // }
 
   getWeek(date) {
     this.dates = [];
-    var startOfWeek = moment(date)
-    var endOfWeek = moment(date).add(6,'d');
+    let startOfWeek = moment(date);
+    const endOfWeek = moment(date).add(6, 'd');
     while (startOfWeek <= endOfWeek) {
       this.dates.push(startOfWeek.toDate());
-      startOfWeek = startOfWeek.clone().add(1,'d');
-    } 
+      startOfWeek = startOfWeek.clone().add(1, 'd');
+    }
   }
 
-  fetchEmp() {
-    this.effectiveShifts.isLoading = true;
+  getEffectiveShift(date: Date) {
+    this.isLoading = true;
+    this.effectiveShifts.filters.properties['fromDate']['value'] = date.toUTCString();
     this.effectiveShifts.fetch().then(() => {
-      this.effectiveShifts.isLoading = false;
+      this.isLoading = false;
     }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
+  toggleDynamicShift(employee) {
+    employee.isDynamicShift = !employee.isDynamicShift;
+    this.amsEmployeeService.employees.update(employee.id, employee).then().catch(err => {
+      employee.isDynamicShift = !employee.isDynamicShift;
+      this.toastyService.error({ title: 'Error', msg: err })
+    });
+  }
+
   changeShift(shiftTypeId, date, employee) {
-     
-    if(!shiftTypeId || !date) {
+    if (!shiftTypeId || !date) {
       return this.toastyService.info({ title: 'Info', msg: 'Please select Shift' });
     }
     let model: any = {};
-    model = {      
+    model = {
       date: date,
       newShiftType: shiftTypeId
     }
     this.updateEffectiveShift(employee.id, model);
-    
+
+  }
+  getAttendance() {
+
+    // this.date = date;
+    // date = new Date(date);
+    this.shiftTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+    this.getEffectiveShift(this.date);
+    this.getWeek(this.date);
+  }
+
+  nextWeek() {
+    this.date = moment(this.date).add(7, 'd').toDate()
+    this.getAttendance()
+  }
+
+  previousWeek() {
+    this.date = moment(this.date).add(-7, 'd').toDate()
+    this.getAttendance()
   }
 
   updateEffectiveShift(id, model: any) {
-    this.effectiveShifts.isLoading = true;
+    this.isLoading = true;
     this.amsEffectiveShiftService.effectiveShifts.update(id, model)
-    .then(() => {
-      this.effectiveShifts.isLoading = false;
-    })
-    .catch(err => { this.toastyService.error({ title: 'Error', msg: err }) });
+      .then(() => {
+        this.isLoading = false;
+      })
+      .catch(err => { this.toastyService.error({ title: 'Error', msg: err }) });
+  }
+
+  shiftColour = function (shiftType) {
+    let str = 'random';
+
+    if (shiftType && shiftType.id) {
+      str = shiftType.id;
+    }
+
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    let colour = '#';
+    for (let i = 0; i < 3; i++) {
+      const value = (hash >> (i * 8)) & 0xFF;
+      colour += ('00' + value.toString(16)).substr(-2);
+    }
+    return colour;
   }
 
   ngOnInit() {
-    
+
   }
 
+  ngAfterViewInit() {
+    this.getAttendance()
+  }
 }

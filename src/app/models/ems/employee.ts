@@ -4,27 +4,27 @@ import { ShiftType } from '../shift-type';
 import { Designation } from '../designation';
 
 export class EmsEmployee {
-  id: string = '';
-  name: string = '';
-  code: string = '';
+  id = '';
+  name = '';
+  code = '';
   // designation: Designation = new Designation();
-  designation: string = '';
+  designation = '';
   department = '';
-  status: string = '';
+  status = '';
   gender: 'male' | 'female' | 'others' | null = null;
-  fatherName: string = '';
+  fatherName = '';
   bloodGroup: 'A+' | 'B+' | 'O+' | 'AB+' | 'A-' | 'B-' | 'O-' | 'AB-' | null = null;
-  picData: string = '';
-  picUrl: string = '';
-  dob: string = '';
-  doj: string = '';
-  dom: string = '';
-  email: string = '';
-  aadhar: string = '';
-  pan: string = '';
-  password: string = '';
+  picData = '';
+  picUrl = '';
+  dob = '';
+  doj = '';
+  dom = '';
+  email = '';
+  aadhar = '';
+  pan = '';
+  password = '';
   userType: 'admin' | 'superadmin' | 'normal' = 'normal';
-  phone: string = '';
+  phone = '';
   organization: Organization = new Organization();
   device: Device = new Device();
   shiftType: ShiftType = new ShiftType();
@@ -33,28 +33,28 @@ export class EmsEmployee {
   displayCode: string;
   leaveBalances: any[];
   avgHours: number = null;
-  token: string = '';
+  token = '';
 
-  accountno: string = '';
-  ifsc: string = '';
-  bank: string = '';
-  branch: string = '';
-  accountholder: string = '';
+  accountno = '';
+  ifsc = '';
+  bank = '';
+  branch = '';
+  accountholder = '';
 
-  address1: string = '';
-  address2: string = '';
-  city: string = '';
-  state: string = '';
-  district: string = '';
-  pincode: string = '';
-  dol: string = '';
-  reason: string = '';
+  address1 = '';
+  address2 = '';
+  city = '';
+  state = '';
+  district = '';
+  pincode = '';
+  dol = '';
+  reason = '';
 }
 
 export class Supervisor {
   id: number = null;
-  code: string = '';
-  name: string = '';
+  code = '';
+  name = '';
   designation: string;
   supervisor: Supervisor;
 }

@@ -24,24 +24,36 @@ export class ShiftsComponent implements OnInit {
     private router: Router,
     public dialog: MdDialog) {
 
+    // this.shifType = new Model({
+    //   api: amsShiftService.shifts,
+    //   properties: new Shift()
+    // });
 
+
+    this.shifType = new Model({
+      api: amsShiftService.shiftTypes,
+      properties: new ShiftType()
+    });
 
     this.shifTypes = new Page({
       api: amsShiftService.shiftTypes
     });
-
-
-    this.fetchShiftTypes();
-
-
+    this.fetchShifTypes();
   }
 
-  fetchShiftTypes() {
+  fetchShifTypes() {
     this.shifTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
-
   }
 
   ngOnInit() {
   }
 
+  remove(item) {
+    this.shifType.properties = item;
+    this.shifType.remove()
+      .then(() => {
+        this.toastyService.info({ title: 'Info', msg: 'shift successfully delete' })
+      })
+      .catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+  }
 }

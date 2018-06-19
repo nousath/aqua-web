@@ -27,7 +27,7 @@
 <div class="bodyPart row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 rowBody">
         <div class="hidden-xs col-sm-2 col-md-2 col-lg-2">
-            <md-nav-list *ngIf="userType == 'superadmin'" dense class="fixedSideNav">
+            <md-nav-list *ngIf="userType === 'superadmin'" dense class="fixedSideNav">
                 <div class="logo_container text-center">
                     <img class="logo" src="assets/images/splash_logo.png">
                     <br>
@@ -71,6 +71,9 @@
                     <a md-list-item [routerLink]="['/pages/attendances/manage-leaves']" routerLinkActive="activeTab" #rla7="routerLinkActive">
                         <h5>Leave Rules</h5>
                     </a>
+                    <!-- <a md-list-item [routerLink]="['/pages/attendances/report']" routerLinkActive="activeTab" #rla8="routerLinkActive">
+                        <h5>Reports</h5>
+                    </a> -->
                 </div>
                 <p class="subListHeader" (click)="sections.select('settings')">Settings
                     <i *ngIf="!sections.settings" class="material-icons leftIcon">keyboard_arrow_right</i>
@@ -105,7 +108,7 @@
                     </a>
                 </div>
             </md-nav-list>
-            <md-nav-list *ngIf="userType == 'admin'" dense class="fixedSideNav">
+            <md-nav-list *ngIf="userType === 'admin'" dense class="fixedSideNav">
                 <div class="logo_container text-center">
                     <img class="logo" src="assets/images/splash_logo.png">
                     <br>

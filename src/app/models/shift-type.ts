@@ -1,10 +1,11 @@
 import { Organization } from './organization';
 export class ShiftType {
-  id: string = '';
-  name: string = '';
-  code: string = '';
-  startTime: string = '';
-  endTime: string = '';
+  id = '';
+  name = '';
+  code = '';
+  startTime = '';
+  endTime = '';
+
   monday: 'off' | 'full' | 'half' | 'alternate' | null = null;
   tuesday: 'off' | 'full' | 'half' | 'alternate' | null = null;
   wednesday: 'off' | 'full' | 'half' | 'alternate' | null = null;
@@ -12,8 +13,9 @@ export class ShiftType {
   friday: 'off' | 'full' | 'half' | 'alternate' | null = null;
   saturday: 'off' | 'full' | 'half' | 'alternate' | null = null;
   sunday: 'off' | 'full' | 'half' | 'alternate' | null = null;
-  changeType:'now' | 'later' = 'now';
-  status: string = '';
+  changeType: 'now' | 'later' = 'now';
+  status = '';
+
 }
 
 

@@ -5,9 +5,9 @@ import { ToastyService } from 'ng2-toasty';
 import { NgForm } from '@angular/forms';
 
 export class ResetPassword {
-  password: string = '';
-  confirmPassword: string = '';
-  isReset: boolean = false;
+  password = '';
+  confirmPassword = '';
+  isReset = false;
   toggle() {
     this.isReset = !this.isReset;
     this.password = '';

@@ -5,21 +5,21 @@ export class ChannelType {
   id: string;
   name: string;
   category: string;
-  description: string = '';
+  description = '';
   parameters: ChannelTypeParams[] = [];
-  channel: Channel_temp = new Channel_temp();
-  picUrl: string = '';
+  channel: ChannelTemp = new ChannelTemp();
+  picUrl = '';
 }
 
-export class Channel_temp {
+export class ChannelTemp {
   id: string;
   // organization: Organization = new Organization();
-  status: string = '';
+  status = '';
   config: object= {}
 }
 
 export class ChannelTypeParams {
-  id: string = '';
+  id = '';
   name: string;
   title: string;
   type: string;

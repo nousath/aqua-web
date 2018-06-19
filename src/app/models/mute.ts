@@ -1,4 +1,4 @@
-export class Mute{
-    start:any;
-    end:any;
+export class Mute {
+  start: any;
+  end: any;
 }

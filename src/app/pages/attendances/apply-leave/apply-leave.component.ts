@@ -26,7 +26,7 @@ export class ApplyLeaveComponent {
   employee: Model<Employee>;
   subscription: Subscription;
   user: string;
-  isEmpId: boolean = false;
+  isEmpId = false;
   duration: 'multi' | 'full' | 'half' | '1/3' | '2/3' | null = null;
   bulkLeaves = [];
 
@@ -64,7 +64,7 @@ export class ApplyLeaveComponent {
 
     this.subscription = activatedRoute.params.subscribe(
       params => {
-        let empId = params['empId'];
+        const empId = params['empId'];
         if (empId) {
           this.isEmpId = true;
           this.getLeaveBalance(empId);
@@ -105,7 +105,7 @@ export class ApplyLeaveComponent {
   selectLeveType(leaveTypeId: string) {
     if (leaveTypeId)
       this.leave.properties.leaveType.unitsPerDay = this.leaveBalances.items.find((i: LeaveBalance) => {
-        return i.leaveType.id == leaveTypeId
+        return i.leaveType.id === leaveTypeId
       }).leaveType.unitsPerDay;
     else
       this.leave.properties.leaveType.unitsPerDay = null;
@@ -118,9 +118,9 @@ export class ApplyLeaveComponent {
     }
   }
 
-  allLeaves(items:any){
+  allLeaves(items: any) {
     console.log(items)
-    
+
   }
 
   applyLeave(isFormValid: boolean) {
@@ -218,7 +218,7 @@ export class ApplyLeaveComponent {
 
   initDatePiker(type: string) {
     setTimeout(() => {
-      if (this.duration == 'multi') {
+      if (this.duration === 'multi') {
         this.initMultiDatePiker()
       } else {
         this.initOneDayDatePiker()

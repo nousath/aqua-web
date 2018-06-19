@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from "rxjs/Rx";
+import { Subscription } from 'rxjs/Rx';
 import { AmsEmployeeService } from '../../services/ams';
 import { EmsEmployeeService } from '../../services/ems';
 import { ToastyService } from 'ng2-toasty';
@@ -22,7 +22,7 @@ export class OrgLoginComponent implements OnInit, OnDestroy {
     private router: Router,
     private toastyService: ToastyService) {
     this.subscription = activatedRoute.queryParams.subscribe(queryParams => {
-      let token: string = queryParams['user_access_token'];
+      const token: string = queryParams['user_access_token'];
       let orgCode: string = queryParams['org_code'];
       if (!token || !orgCode) {
         return alert('Token or Org Not Found')
@@ -32,7 +32,7 @@ export class OrgLoginComponent implements OnInit, OnDestroy {
       this.store.setItem('external-token', token);
       this.store.setItem('orgCode', orgCode);
 
-      let tempData: any = { "device": { "id": "string" } };
+      const tempData: any = { 'device': { 'id': 'string' } };
 
       this.amsEmployeeService.signInViaExternalToken.create(tempData).then(
         (amsUser) => {

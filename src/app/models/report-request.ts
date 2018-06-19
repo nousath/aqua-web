@@ -1,6 +1,6 @@
-import { Employee, ReportParams } from ".";
+import { Employee, ReportParams } from '.';
 
-export class ReportRequest{
+export class ReportRequest {
     id: string;
     type: string;
     requestedAt: string;

@@ -7,8 +7,8 @@ import { Leave } from '../../../models';
 import { LeaveActionDialogComponent } from '../../../dialogs/leave-action-dialog/leave-action-dialog.component';
 import { MdDialog } from '@angular/material';
 import { Filter } from '../../../common/contracts/filters';
-import * as _ from "lodash";
-import { LocalStorageService } from "../../../services/local-storage.service";
+import * as _ from 'lodash';
+import { LocalStorageService } from '../../../services/local-storage.service';
 import { Angulartics2 } from 'angulartics2';
 import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-dialog.component';
 import { LeaveConfirmDialogComponent } from '../../../dialogs/leave-confirm-dialog/leave-confirm-dialog.component';
@@ -22,13 +22,16 @@ declare var $: any;
 export class LeavesComponent implements OnInit, AfterViewInit {
 
   leaves: Page<Leave>;
-  isFilter: boolean = false;
-  isShowLeaveAction: boolean = false;
+  isFilter = false;
+  isShowLeaveAction = false;
   date: Date = null
-  userType: string = ''
-  select: boolean = false;
+  userType = ''
+  select = false;
   Selected = [];
-  check: boolean = false;
+  check = false;
+
+  isUpdatingLeaveStatus = false;
+
 
 
 
@@ -41,7 +44,7 @@ export class LeavesComponent implements OnInit, AfterViewInit {
 
     this.userType = store.getItem('userType');
 
-    if (this.userType == 'admin') {
+    if (this.userType === 'admin') {
       this.leaves = new Page({
         api: amsLeaveService.teamLeaves,
         filters: [{
@@ -56,7 +59,7 @@ export class LeavesComponent implements OnInit, AfterViewInit {
         }]
       });
     }
-    if (this.userType == 'superadmin') {
+    if (this.userType === 'superadmin') {
       this.leaves = new Page({
         api: amsLeaveService.allLeavesOfOrg,
         filters: [{
@@ -86,8 +89,8 @@ export class LeavesComponent implements OnInit, AfterViewInit {
 
     this.leaves.fetch().then(
       data => {
-        let i: any = this.leaves.items.find((item: Leave) => {
-          return item.status.toLowerCase() == 'submitted'
+        const i: any = this.leaves.items.find((item: Leave) => {
+          return item.status.toLowerCase() === 'submitted'
         });
         if (i)
           this.isShowLeaveAction = true;
@@ -103,7 +106,7 @@ export class LeavesComponent implements OnInit, AfterViewInit {
   }
 
   checkFiltersInStore() {
-    let filters: any = this.store.getObject('leaves-filters');
+    const filters: any = this.store.getObject('leaves-filters');
     if (filters) {
       this.isFilter = true;
       this.leaves.filters.properties['status']['value'] = filters['status'] || null;
@@ -113,7 +116,7 @@ export class LeavesComponent implements OnInit, AfterViewInit {
   }
 
   setFiltersToStore() {
-    let queryParams: any = {};
+    const queryParams: any = {};
     _.each(this.leaves.filters.properties, (filter: Filter, key: any, obj: any) => {
       if (filter.value) {
         queryParams[key] = filter.value;
@@ -129,14 +132,13 @@ export class LeavesComponent implements OnInit, AfterViewInit {
     if (days && days < 1) {
       days = 1;
     }
-    let newdays = days ? Math.abs(days - 1) : 0;
-    let newDate = date ? new Date(date) : null;
+    const newdays = days ? Math.abs(days - 1) : 0;
+    const newDate = date ? new Date(date) : null;
     if (newDate) { newDate.setDate(newDate.getDate() + newdays); }
     return date ? newDate : null;
 
   }
 
-  isUpdatingLeaveStatus: boolean = false;
   updateStatus(leave: Leave) {
     this.isUpdatingLeaveStatus = true;
     this.amsLeaveService.leaves.update(leave.id, leave, null, `${leave.id}/action`).then(
@@ -155,8 +157,7 @@ export class LeavesComponent implements OnInit, AfterViewInit {
       console.log(i)
       this.Selected.splice(i, 1);
       console.log(this.Selected)
-    }
-    else {
+    } else {
       this.Selected.push(item);
       console.log(this.Selected)
     }
@@ -164,8 +165,7 @@ export class LeavesComponent implements OnInit, AfterViewInit {
   addLeaves(item: string) {
     if (this.Selected.includes(item)) {
       console.log(this.Selected)
-    }
-    else {
+    } else {
       this.Selected.push(item);
       console.log(this.Selected)
     }
@@ -173,16 +173,15 @@ export class LeavesComponent implements OnInit, AfterViewInit {
   }
 
   approveLeaves(status: string) {
-    if (status == 'approved') {
+    if (status === 'approved') {
       this.Selected.forEach((item: any) => {
         item.status = status;
         this.updateStatus(item);
         this.Selected = [];
       })
-    }
-    else {
+    } else {
 
-      let dialogRef = this.dialog.open(LeaveActionDialogComponent, {
+      const dialogRef = this.dialog.open(LeaveActionDialogComponent, {
         width: '35%'
       });
 
@@ -211,7 +210,7 @@ export class LeavesComponent implements OnInit, AfterViewInit {
 
     } else {
       this.angulartics2.eventTrack.next({ action: 'rejectLeaveClick', properties: { category: 'allLeave', label: 'myLabel' } });
-      let dialogRef = this.dialog.open(LeaveActionDialogComponent, {
+      const dialogRef = this.dialog.open(LeaveActionDialogComponent, {
         width: '35%'
       });
 
@@ -236,7 +235,7 @@ export class LeavesComponent implements OnInit, AfterViewInit {
     }).on('changeMonth', (e) => {
       if (e.date) {
         this.date = e.date;
-        let date = new Date(e.date);
+        const date = new Date(e.date);
         this.leaves.filters.properties['date']['value'] = date.toISOString();
       }
       // this.fetchLeaves(e.date);
@@ -244,29 +243,24 @@ export class LeavesComponent implements OnInit, AfterViewInit {
     // $("#monthSelector").datepicker("setDate", null);
   }
   selectAll() {
-    if (this.select == true)
-      this.select = false;
-    else
-      this.select = true;
+      this.select = !this.select;
   }
 
   ngOnInit() {
   }
   All() {
-    if (this.Selected.length == this.leaves.items.length) {
+    if (this.Selected.length === this.leaves.items.length) {
       this.Selected = [];
       this.check = false;
       console.log(this.Selected)
-    }
-    else if (this.Selected.length != this.leaves.items.length) {
+    } else if (this.Selected.length !== this.leaves.items.length) {
       this.leaves.items.forEach((item: any) => {
         if (item.status === 'submitted') {
           this.addLeaves(item)
           this.check = true;
         }
       })
-    }
-    else {
+    } else {
       this.leaves.items.forEach((item: any) => {
         if (item.status === 'submitted') {
           this.allLeaves(item)

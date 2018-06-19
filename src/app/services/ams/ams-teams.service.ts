@@ -17,7 +17,7 @@ export class AmsTeamsService {
     const baseApi = 'ams';
 
     this.teamAttendance = new GenericApi<DayEvent>('/teams/{id}/teamMembers', http, baseApi);
-    
+
   }
 
 }

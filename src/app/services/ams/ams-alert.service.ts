@@ -9,7 +9,7 @@ export class AmsAlertService {
 
   alerts: IApi<AmsAlert>;
   alertTypes: IApi<AlertType>;
-  subscribe: IApi<AmsAlert>
+  subscribe: IApi<AmsAlert>;
 
   constructor(private http: Http) {
     const baseApi = 'ams';

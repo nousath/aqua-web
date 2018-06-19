@@ -33,7 +33,7 @@ export class ShiftTypeNewComponent implements OnInit {
 
     this.subscription = activatedRoute.params.subscribe(
       params => {
-        let id: string = params['id'];
+        const id: string = params['id'];
         if (id) {
           this.shiftId = id;
           this.shifType.fetch(id).then(
@@ -62,9 +62,9 @@ export class ShiftTypeNewComponent implements OnInit {
       return this.toastyService.info({ title: 'Info', msg: 'Please fill all mandatory fields' })
     }
 
-    let startTime: string[] = this.shifType.properties.startTime.split(':');
-    let endTime: string[] = this.shifType.properties.endTime.split(':');
-    let date = new Date();
+    const startTime: string[] = this.shifType.properties.startTime.split(':');
+    const endTime: string[] = this.shifType.properties.endTime.split(':');
+    const date = new Date();
     this.shifType.properties.startTime = new Date(date.setHours(parseInt(startTime[0]), parseInt(startTime[1]))).toISOString();
     this.shifType.properties.endTime = new Date(date.setHours(parseInt(endTime[0]), parseInt(endTime[1]))).toISOString();
 

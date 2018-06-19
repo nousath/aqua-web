@@ -5,6 +5,6 @@ export class Channel {
     id: string;
     type: ChannelType = new ChannelType();
     organization: Organization = new Organization();
-    status: string = '';
+    status = '';
     config: object= {}
 }

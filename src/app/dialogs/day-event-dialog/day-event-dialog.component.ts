@@ -16,8 +16,8 @@ export class DayEventDialogComponent implements OnInit {
 
   checkIn: string;
   checkOut: string;
-  isHoliday: boolean = false;
-  hloiday: string = '';
+  isHoliday = false;
+  hloiday = '';
 
 
 
@@ -33,8 +33,8 @@ export class DayEventDialogComponent implements OnInit {
         this.toastyService.info({ title: 'Info', msg: 'Please Enter Check In ' });
     } else {
       this.attendance.ofDate = new Date(this.attendance.ofDate).toISOString();
-      let checkIns: string[] = this.checkIn.split(':');
-      let checkOuts: string[] = this.checkOut.split(':');
+      const checkIns: string[] = this.checkIn.split(':');
+      const checkOuts: string[] = this.checkOut.split(':');
       this.attendance.checkIn = new Date(new Date(this.attendance.ofDate).setHours(parseInt(checkIns[0]), parseInt(checkIns[1]))).toISOString();
       this.attendance.checkOut = new Date(new Date(this.attendance.ofDate).setHours(parseInt(checkOuts[0]), parseInt(checkOuts[1]))).toISOString();
       this.dialogRef.close(this.attendance);

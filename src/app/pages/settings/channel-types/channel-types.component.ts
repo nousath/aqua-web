@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AmsCommunicationAppsService } from "../../../services/ams/ams-communication-apps.service";
+import { AmsCommunicationAppsService } from '../../../services/ams/ams-communication-apps.service';
 import { Channel, ChannelType } from '../../../models';
-import { Page } from "../../../common/contracts/page";
+import { Page } from '../../../common/contracts/page';
 import { ToastyService } from 'ng2-toasty';
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
 
 
 
@@ -14,16 +14,13 @@ import { Router } from "@angular/router";
   styleUrls: ['./channel-types.component.css'],
   providers: [AmsCommunicationAppsService]
 })
-
-
-
-
 export class ChannelTypesComponent implements OnInit {
 
   emailChannelTypes: Page<ChannelType>;
   smsChannelTypes: Page<ChannelType>;
   chatChannelTypes: Page<ChannelType>;
   orgChannelTypes;
+  isSubscribing: boolean;
 
   constructor(private amsCommunicationAppService: AmsCommunicationAppsService,
     private toastyService: ToastyService,
@@ -57,7 +54,7 @@ export class ChannelTypesComponent implements OnInit {
     this.getChatChannelTypes();
   }
 
-  getSMSChannelTypes() {    
+  getSMSChannelTypes() {
    this.smsChannelTypes
       .fetch()
       .catch(err => this.toastyService.error({ title: 'Error', msg: err }));
@@ -74,9 +71,9 @@ export class ChannelTypesComponent implements OnInit {
       .fetch()
       .catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
-  
+
   add(item) {
-    this.route.navigate([`/pages/settings/channelTypes`,item.id]);
+    this.route.navigate([`/pages/settings/channelTypes`, item.id]);
   }
 
   ngOnInit() {

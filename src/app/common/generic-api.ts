@@ -12,20 +12,20 @@ import { environment } from '../../environments/environment';
 export class GenericApi<TModel> implements IApi<TModel> {
 
   private rootUrl: string;
-  
+
   private getHeaders(): Headers {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
-    let externalToken = window.localStorage.getItem('external-token');
-    let amsToken = window.localStorage.getItem('ams_token');
-    let orgCode = window.localStorage.getItem('orgCode');
+    const externalToken = window.localStorage.getItem('external-token');
+    const amsToken = window.localStorage.getItem('ams_token');
+    const orgCode = window.localStorage.getItem('orgCode');
 
     if (this.apiName === 'ams') {
       if (amsToken)
         headers.append('x-access-token', amsToken);
       if (externalToken)
-        headers.append('external-token', externalToken)
+        headers.append('external-token', externalToken);
       // else if (emsToken)
       //   headers.append('external-token', emsToken);
 
@@ -51,7 +51,7 @@ export class GenericApi<TModel> implements IApi<TModel> {
     if (error.status) {
       if (error.status === 401) {
         window.onbeforeunload = function () {
-          console.log("blank function do nothing")
+          console.log('blank function do nothing')
         }
         return;
         // return Promise.reject('Your are logged Out');
@@ -63,13 +63,13 @@ export class GenericApi<TModel> implements IApi<TModel> {
 
   private getQueryParams(input: ServerPageInput): URLSearchParams {
 
-    let params: URLSearchParams = new URLSearchParams();
+    const params: URLSearchParams = new URLSearchParams();
     _.each(input, (value, key, obj) => {
-      if (key === "query") {
+      if (key === 'query') {
         _.each(value, (keyVal, keyKey) => {
           if (keyVal)
             params.set(keyKey, keyVal);
-        })
+        });
       } else {
         params.set(key, value);
       }
@@ -97,15 +97,16 @@ export class GenericApi<TModel> implements IApi<TModel> {
 
   simpleGet(input?: IGetParams): Promise<TModel> {
 
-    let url: string = `${this.rootUrl}/${this.key}`;
+    let url = `${this.rootUrl}/${this.key}`;
     let parms: URLSearchParams = null;
 
     if (input) {
       parms = input.serverPageInput ? this.getQueryParams(input.serverPageInput) : null;
       url = input.id ? `${url}/${input.id}` : url;
       url = input.path ? `${url}/${input.path}` : url;
-      if (input.api)
+      if (input.api) {
         url = input.api;
+      }
     }
 
 
@@ -129,7 +130,7 @@ export class GenericApi<TModel> implements IApi<TModel> {
 
 
   search(input: ServerPageInput): Promise<ServerPageModel<TModel>> {
-    let parms: URLSearchParams = this.getQueryParams(input);
+    const parms: URLSearchParams = this.getQueryParams(input);
     return this.http.get(`${this.rootUrl}/${this.key}`, { headers: this.getHeaders(), search: parms })
       .toPromise()
       .then((response) => {
@@ -149,7 +150,7 @@ export class GenericApi<TModel> implements IApi<TModel> {
 
   create(model: TModel, path?: string): Promise<TModel> {
 
-    let url: string = `${this.rootUrl}/${this.key}`;
+    let url = `${this.rootUrl}/${this.key}`;
     url = path ? `${url}/${path}` : url;
 
     return this.http.post(url, model, { headers: this.getHeaders() })
@@ -170,36 +171,37 @@ export class GenericApi<TModel> implements IApi<TModel> {
   }
 
   exportReport(input: ServerPageInput, path?: string, reportName?: string): Promise<any> {
-    let parms: URLSearchParams = this.getQueryParams(input);
-    let apiPath: string = path ? `${this.rootUrl}/${path}` : `${this.rootUrl}/${this.key}`;
+    const parms: URLSearchParams = this.getQueryParams(input);
+    const apiPath: string = path ? `${this.rootUrl}/${path}` : `${this.rootUrl}/${this.key}`;
 
     return this.http.get(apiPath, { headers: this.getHeaders(), search: parms, responseType: ResponseContentType.Blob }).toPromise()
       .then((resposne) => {
 
-        let contentType = resposne.headers.get("content-type") || 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+        const contentType = resposne.headers.get('content-type') || 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
         // get the headers' content disposition
-        let cd = resposne.headers.get("content-disposition") || resposne.headers.get("Content-Disposition");
+        const cd = resposne.headers.get('content-disposition') || resposne.headers.get('Content-Disposition');
 
         // get the file name with regex
-        let regex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-        let match = regex.exec(cd);
+        const regex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+        const match = regex.exec(cd);
 
         // is there a fiel name?
-        let fileName = match && match[1] || "report";
-        if (reportName)
+        let fileName = match && match[1] || 'report';
+        if (reportName) {
           fileName = reportName;
+        }
 
         // replace leading and trailing slashes that C# added to your file name
-        fileName = fileName.replace(/\"/g, "");
+        fileName = fileName.replace(/\"/g, '');
 
-        let blob = new Blob([resposne['_body']], { type: contentType });
+        const blob = new Blob([resposne['_body']], { type: contentType });
         if (navigator.msSaveBlob) {
           navigator.msSaveBlob(blob, fileName);
         } else {
-          let objectUrl = window.URL.createObjectURL(blob);
+          const objectUrl = window.URL.createObjectURL(blob);
           // window.open(objectUrl);
-          let a = document.createElement("a");
+          const a = document.createElement('a');
           a.href = objectUrl;
           a.download = fileName;
           a.click();
@@ -231,33 +233,33 @@ export class GenericApi<TModel> implements IApi<TModel> {
       .catch(this.handleError);
   }
 
-  all(type: any, id?:string , model?: any): Promise<any>{
-        let url = `${this.rootUrl}/${this.key}`;
-        if(id){
-          url = `${this.rootUrl}/${this.key}/${id}`
-        }
-        return this.http[type](url, model, { headers: this.getHeaders() })
-        .toPromise()
-        .then((response) => {
-          const dataModel = response.json();
-          if (!dataModel.isSuccess) {
-            if (response.status === 200) {
-              return this.handleError(dataModel.message || dataModel.error || dataModel.code || 'failed');
-            } else {
-              return this.handleError(response.status);
-            }
+  all(type: any, id?: string, model?: any): Promise<any> {
+    let url = `${this.rootUrl}/${this.key}`;
+    if (id) {
+      url = `${this.rootUrl}/${this.key}/${id}`
+    }
+    return this.http[type](url, model, { headers: this.getHeaders() })
+      .toPromise()
+      .then((response) => {
+        const dataModel = response.json();
+        if (!dataModel.isSuccess) {
+          if (response.status === 200) {
+            return this.handleError(dataModel.message || dataModel.error || dataModel.code || 'failed');
+          } else {
+            return this.handleError(response.status);
           }
-          return dataModel.data;
-        })
-        .catch(this.handleError);
-      }
+        }
+        return dataModel.data;
+      })
+      .catch(this.handleError);
+  }
 
   update(id: number | string, model: TModel, input?: ServerPageInput, path?: string): Promise<TModel> {
     let parms: URLSearchParams;
     if (input) {
       parms = this.getQueryParams(input);
     }
-    let url = path ? `${this.rootUrl}/${this.key}/${path}` : `${this.rootUrl}/${this.key}/${id}`;
+    const url = path ? `${this.rootUrl}/${this.key}/${path}` : `${this.rootUrl}/${this.key}/${id}`;
     return this.http.put(url, model, { headers: this.getHeaders(), search: parms })
       .toPromise()
       .then((response) => {
@@ -275,7 +277,7 @@ export class GenericApi<TModel> implements IApi<TModel> {
       .catch(this.handleError);
   }
 
-  remove(id: number): Promise<void> {
+  remove(id: number | string): Promise<void> {
     return this.http.delete(`${this.rootUrl}/${this.key}/${id}`, { headers: this.getHeaders() })
       .toPromise()
       .then((response) => {

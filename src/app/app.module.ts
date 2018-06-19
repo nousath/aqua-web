@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from "@angular/router";
-
+import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
-
 import { AppComponent } from './app.component';
 import { PagesComponent } from './pages/pages.component';
 import { LoginComponent } from './pages/login/login.component';
@@ -34,6 +32,7 @@ import { LeaveConfirmDialogComponent } from './dialogs/leave-confirm-dialog/leav
     SystemUsageComponent,
     ResetPasswordDialogComponent,
     LeaveConfirmDialogComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -43,13 +42,13 @@ import { LeaveConfirmDialogComponent } from './dialogs/leave-confirm-dialog/leav
     AppRoutingModule,
   ],
   providers: [
-    LoginGuard, UserGuard, AdminGuard,EmsDepartmentService
+    LoginGuard, UserGuard, AdminGuard, EmsDepartmentService
   ],
   entryComponents: [
     ResetPasswordDialogComponent,
     LeaveConfirmDialogComponent
   ],
-  exports:[
+  exports: [
     ResetPasswordDialogComponent,
     LeaveConfirmDialogComponent
   ],

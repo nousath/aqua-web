@@ -17,7 +17,7 @@ export class ConfirmDialogComponent implements OnInit {
 
   @ViewChild('TerminateForm') TerminateForm: NgForm;
 
-  msg: string = '';
+  msg = '';
   constructor(public dialogRef: MdDialogRef<ConfirmDialogComponent>,
     private toastyService: ToastyService, ) {
   }
