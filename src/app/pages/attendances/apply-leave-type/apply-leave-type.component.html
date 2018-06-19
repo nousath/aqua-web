@@ -10,37 +10,36 @@
       <label>Start Date:
         <span class="asterisk">*</span>
       </label>
-      <input name="startdate" class="form-control  calendar no-spin" type="date" [(ngModel)] ="startDate"
+      <input name="startdate" class="form-control  calendar no-spin" type="date" (change)="selected()" [(ngModel)]="startDate"
         [disabled]="!leaveBalance.days">
-      <md-radio-group [(ngModel)]="startTime" [disabled]="!leaveBalance.days">
-        <input type="checkbox" name="firstHalf_{{leaveBalance.id}}" (click)=selected() *ngIf="leaveBalance?.leaveType?.unitsPerDay == 2"
-          value="firstHalf" checked style="width: 15px; height: 15px; border-radius: 50%">FirstHalf
-        <input type="checkbox" name="secondHalf_{{leaveBalance.id}}" (click)=selected() *ngIf="leaveBalance?.leaveType?.unitsPerDay == 2"
-          value="secondHalf" checked style="width: 15px; height: 15px; border-radius: 50%">SecondHalf
-          
-        <!-- <md-radio-button name="SecondHalf_{{leaveBalance.id}}" *ngIf="leaveBalance?.leaveType?.unitsPerDay == 2" value="SecondHalf"
+      <!-- <md-radio-group [(ngModel)]="startTime" [disabled]="!leaveBalance.days"> -->
+      <input type="checkbox" [(ngModel)]="startFirstHalf" (change)="selected()" name="startFirstHalf" *ngIf="leaveBalance?.leaveType?.unitsPerDay == 2"
+        value="firstHalf" checked style="width: 15px; height: 15px; border-radius: 50%">FirstHalf
+      <input type="checkbox" [(ngModel)]="startSecondHalf" (change)="selected()" name="startSecondHalf" *ngIf="leaveBalance?.leaveType?.unitsPerDay == 2"
+        value="secondHalf" checked style="width: 15px; height: 15px; border-radius: 50%">SecondHalf
+
+      <!-- <md-radio-button name="SecondHalf_{{leaveBalance.id}}" *ngIf="leaveBalance?.leaveType?.unitsPerDay == 2" value="SecondHalf"
           checked>SecondHalf</md-radio-button>
         <md-radio-button name="start1/3_{{leaveBalance.id}}" *ngIf="leaveBalance?.leaveType?.unitsPerDay == 3" value="start1/3" checked>One Third</md-radio-button>
         <md-radio-button name="2/3_{{leaveBalance.id}}" *ngIf="leaveBalance?.leaveType?.unitsPerDay == 3" value="2/3">Two Third</md-radio-button> -->
-      </md-radio-group>
+      <!-- </md-radio-group> -->
     </td>
 
     <td class="col-sm-4 col-xs-4 col-md-4 col-lg-4">
       <label>End Date:
         <span class="asterisk">*</span>
       </label>
-      <input name="enddate" class="form-control  calendar no-spin" type="date" [(ngModel)]="endDate"
-        [disabled]="!leaveBalance.days">
-      <md-radio-group [(ngModel)]="endTime" name="endTime" style="margin-top:20px;" [disabled]="!leaveBalance.days">
-          <input type="checkbox" name="firstHalf_{{leaveBalance.id}}" (click)=selected() *ngIf="leaveBalance?.leaveType?.unitsPerDay == 2"
-          value="firstHalf" checked style="width: 15px; height: 15px; border-radius: 50%">FirstHalf
-        <input type="checkbox" name="secondHalf_{{leaveBalance.id}}" (click)=selected() *ngIf="leaveBalance?.leaveType?.unitsPerDay == 2"
-          value="secondHalf" checked style="width: 15px; height: 15px; border-radius: 50%">SecondHalf
-        <!-- <md-radio-button value="endfull">FirstHalf</md-radio-button>
+      <input name="enddate" class="form-control  calendar no-spin" (change)="selected()" type="date" [(ngModel)]="endDate" [disabled]="!leaveBalance.days">
+      <!-- <md-radio-group [(ngModel)]="endTime" name="endTime" style="margin-top:20px;" [disabled]="!leaveBalance.days"> -->
+      <input type="checkbox" [(ngModel)]="endFirstHalf" (change)="selected()" name="endFirstHalf" *ngIf="leaveBalance?.leaveType?.unitsPerDay == 2"
+        value="firstHalf" checked style="width: 15px; height: 15px; border-radius: 50%">FirstHalf
+      <input type="checkbox" [(ngModel)]="endSecondHalf" (change)="selected()" name="endSecondHalf" *ngIf="leaveBalance?.leaveType?.unitsPerDay == 2"
+        value="secondHalf" checked style="width: 15px; height: 15px; border-radius: 50%">SecondHalf
+      <!-- <md-radio-button value="endfull">FirstHalf</md-radio-button>
         <md-radio-button *ngIf="leaveBalance?.leaveType?.unitsPerDay == 2" value="endhalf">SecondHalf</md-radio-button>
         <md-radio-button *ngIf="leaveBalance?.leaveType?.unitsPerDay == 3" value="end1/3">One Third</md-radio-button>
         <md-radio-button *ngIf="leaveBalance?.leaveType?.unitsPerDay == 3" value="2/3">Two Third</md-radio-button> -->
-      </md-radio-group>
+      <!-- </md-radio-group> -->
     </td>
   </tr>
 </table>

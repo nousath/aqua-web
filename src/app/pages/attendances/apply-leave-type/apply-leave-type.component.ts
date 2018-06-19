@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Leave } from '../../../models/leave';
 import { LeaveBalance } from '../../../models/leave-balance';
 import { Page } from '../../../common/contracts/page';
@@ -9,6 +9,7 @@ import { ToastyService } from 'ng2-toasty';
 import { Output } from '@angular/core/src/metadata/directives';
 import { EventEmitter } from 'selenium-webdriver';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ApplyLeaveComponent } from '../apply-leave/apply-leave.component';
 
 @Component({
   selector: 'aqua-apply-leave-type',
@@ -16,10 +17,21 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./apply-leave-type.component.css']
 })
 export class ApplyLeaveTypeComponent {
-  firstHalf: boolean = true;
 
   startDate: string = ''
   endDate: string = ''
+  days: number;
+  bulkLeaves: {
+    id: string,
+    type: string,
+    days: string
+  }
+  // bulkLeaves:[{
+  //   id:string,
+  //   type:string,
+  //   days: number
+  // }]
+
 
   @Input()
   leaveBalance: LeaveBalance;
@@ -30,12 +42,15 @@ export class ApplyLeaveTypeComponent {
   @Input()
   empl: string;
 
+  // @Output() allLeaves: EventEmitter = new EventEmitter();  
 
-  leave: Model<Leave>;
+  leave: Leave;
   leaveBalances: Page<LeaveBalance>;
   duration: string = 'multi';
-  startTime: 'startFirstHalf' | 'startSecondHalf' | 'start1/3' | null = null
-  endTime: 'endFirstHalf' | 'endSecondHalf' | 'end1/3' | null = null
+  endFirstHalf: boolean
+  endSecondHalf: boolean
+  startFirstHalf: boolean
+  startSecondHalf: boolean
 
   constructor(
     private toastyService: ToastyService,
@@ -45,76 +60,69 @@ export class ApplyLeaveTypeComponent {
 
   selected() {
 
-    if (this.firstHalf == false) {
-      this.firstHalf = true;
-      console.log(this.leaveBalance.id);
+    if (this.startDate && this.endDate) {
+      let oneDay = 24 * 60 * 60 * 1000;
+      let startDay: Date = new Date(this.startDate);
+      if (this.startFirstHalf && this.startSecondHalf)
+        startDay.setHours(0, 0, 0, 0);
+      else if (this.endFirstHalf)
+        startDay.setHours(12, 0, 0, 0);
+      else if (this.endSecondHalf)
+        startDay.setHours(12, 0, 0, 0);
+      else
+        return this.toastyService.info({ title: 'Info', msg: 'Select Half' })
+
+      let endDay: Date = new Date(this.endDate);
+
+      if (this.endFirstHalf && this.endSecondHalf)
+        endDay.setHours(0, 0, 0, 0);
+      else if (this.endFirstHalf)
+        endDay.setHours(12, 0, 0, 0);
+      else if (this.endSecondHalf)
+        endDay.setHours(12, 0, 0, 0);
+      else
+        return this.toastyService.info({ title: 'Info', msg: 'Select Half' })
+
+      if (endDay <= startDay) {
+        return this.toastyService.info({ title: 'Info', msg: 'End Date should be greater then Start Date' })
+      }
+      if (this.endFirstHalf && this.endSecondHalf && this.startFirstHalf && this.startSecondHalf) {
+        this.days = Math.abs(((endDay.getTime() - startDay.getTime()) / (oneDay)) + 1);
+      }
+      else
+        this.days = Math.abs((endDay.getTime() - startDay.getTime()) / (oneDay));
+
+
+
+
+      if (this.days > this.leaveBalance.days && !this.leaveBalance.leaveType.unlimited) {
+        return this.toastyService.info({ title: 'Info', msg: `You don't have sufficient leave balance` })
+      }
+
+      if (this.leaveBalance.leaveType.monthlyLimit && this.days > this.leaveBalance.leaveType.monthlyLimit) {
+        return this.toastyService.info({ title: 'Info', msg: `You cannot apply more than ${this.leaveBalance.leaveType.monthlyLimit} in a month` })
+      }
+      let lea: any = {
+        id: this.leaveBalance.id,
+        type: this.leaveBalance.leaveType,
+        days: this.days
+      }
+
+      this.bulkLeaves = lea
+      console.log(this.bulkLeaves)
+
+      // this.allLeaves.emit(this.bulkLeaves);
+
+      // console.log(this.days);
+      // console.log(this.leaveBalance.leaveType.name)
+      // return this.days;
     }
-    else
-      this.firstHalf = false;
-    console.log(this.leaveBalance.id);
   }
 
   public approveLeave() {
-    this.leave.properties.date = this.startDate
-    this.leave.properties.toDate = this.endDate
-    
+    console.log(this.bulkLeaves)
 
-    if (this.leave.properties.date && this.leave.properties.toDate) {
-      if (this.startTime && this.endTime) {
-        let oneDay = 24 * 60 * 60 * 1000;
-        let startDay: Date = new Date(this.leave.properties.date);
-        switch (this.startTime) {
-          case 'startFirstHalf' && 'startSecondHalf':
-            startDay.setHours(0, 0, 0, 0);
-            break;
-          case 'startFirstHalf':
-            startDay.setHours(12, 0, 0, 0);
-            break;
-          case 'startSecondHalf':
-            startDay.setHours(12, 0, 0, 0);
-            break;
-        }
-
-        let endDay: Date = new Date(this.leave.properties.toDate);
-
-        switch (this.endTime) {
-          case 'endFirstHalf' && 'endSecondHalf':
-            endDay.setHours(0, 0, 0, 0);
-          case 'endFirstHalf':
-            endDay.setHours(12, 0, 0, 0);
-            break;
-          case 'endSecondHalf':
-            endDay.setHours(12, 0, 0, 0);
-            break;
-        }
-        if (endDay <= startDay) {
-          return this.toastyService.info({ title: 'Info', msg: 'End Date should be greater then Start Date' })
-        }
-        this.leave.properties.days = Math.abs((endDay.getTime() - startDay.getTime()) / (oneDay));
-        // this.leave.properties.toDate = new Date(this.leave.properties.toDate).toISOString();
-
-        let totalLeaveBalace: LeaveBalance = this.leaveBalances.items.find((i: LeaveBalance) => {
-          return i.leaveType.id == this.leave.properties.type.id
-        });
-
-        if (this.leave.properties.days > totalLeaveBalace.days && !totalLeaveBalace.leaveType.unlimited) {
-          return this.toastyService.info({ title: 'Info', msg: `You don't have sufficient leave balance` })
-        }
-
-        if (totalLeaveBalace.leaveType.monthlyLimit && this.leave.properties.days > totalLeaveBalace.leaveType.monthlyLimit) {
-          return this.toastyService.info({ title: 'Info', msg: `You cannot apply more than ${totalLeaveBalace.leaveType.monthlyLimit} in a month` })
-        }
-        this.leave.save().then(
-          data => this.empl ? this.router.navigate(['../'], { relativeTo: this.activatedRoute }) : this.router.navigate(['../../'], { relativeTo: this.activatedRoute })
-        ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
-
-        return
-
-      }
-
-    }
 
   }
-
 
 }

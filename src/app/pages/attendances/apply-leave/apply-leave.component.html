@@ -120,7 +120,7 @@
                         <tr>
                             <td colspan="3">
                                 <div *ngFor="let item of leaveBalances.items;let idx = index">
-                                    <aqua-apply-leave-type [leaveBalance]="item" [empl]="isEmpId" [serial]="idx"></aqua-apply-leave-type>
+                                    <aqua-apply-leave-type [leaveBalance]="item" [empl]="isEmpId" (bulkLeaves)="allLeaves($event)"></aqua-apply-leave-type>
                                 </div>
                             </td>
                         </tr>
