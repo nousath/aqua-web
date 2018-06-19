@@ -12,6 +12,6 @@ export class ShiftTypeFilterPipe implements PipeTransform {
       return values;
     }
 
-    return values.filter(item => item.name.toLowerCase().includes(args.toLowerCase()))
+    return values.filter(item => item.name.toLowerCase().startsWith(args.toLowerCase()))
   }
 }
