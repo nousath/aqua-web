@@ -11,15 +11,14 @@
 </div> -->
     <table style="float: left; width: 100%;">
         <tr>
-            <th>Termination Date:</th>&nbsp;
+            <th>Reason of Releiving</th>
             <td>
-                <input name="startdate" class="form-control  calendar no-spin" type="date" [(ngModel)]="employee.dol" required>
-            </td>
-        </tr>
-        <tr>
-            <th>Reason:</th>&nbsp;
-            <td>
-                <input name="address2" type="text" class="form-control" style="width: 100%" [(ngModel)]="employee.reason" required>
+                <select name="reason" class="form-control" [(ngModel)]="employee.reason">
+                    <option disabled value="" selected="selected">Select an reason</option>
+                    <option value="resign">Resign</option>
+                    <option value="death">Death</option>
+                    <option value="terminate">Terminate</option>
+                </select>
             </td>
         </tr>
         <tr style="padding-top: 10px;">

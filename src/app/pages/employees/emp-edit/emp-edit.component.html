@@ -213,9 +213,10 @@
                 <br>
                 <table class="table">
                     <tr>
-                        <th>Biometric ID:</th>
+                        <th>Display Code:</th>
                         <td>
-                            <input name="biometric" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.biometricId">
+                            <input name="biometric" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.code">&nbsp;
+                            <span class="text-center">(Emp-code :- {{employee.properties.code}})</span>
                         </td>
                         <th>Designation:</th>
                         <td>
@@ -230,14 +231,14 @@
                             <span class="asterisk">*</span>:</th>
                         <td>
                             <input name="empCode" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.code"
-                                required>
+                                disabled="employee.properties.code" required>
                         </td>
-                        <th>Employee Type
-                            <span class="asterisk">*</span>:</th>
+                        <th>Employee Type:</th>
                         <td>
                             <select name="designation" class="form-control" [(ngModel)]="employee.properties.employeeType">
-                                <option value="Permanent">Permanent</option>
-                                <option value="Contractor">Contractor</option>
+                                <option disabled value=" " selected>Select an option</option>
+                                <option value="permanent">Permanent</option>
+                                <option value="contract">Contract</option>
                             </select>
                         </td>
                     </tr>
@@ -249,9 +250,7 @@
                         <!-- <th>{{ employee.properties.supervisor && employee.properties.supervisor.designation? employee.properties.supervisor.designation:
                             'Supervisor'}} -->
                         <th>
-                            <span *ngIf="!employee.properties.employeeType">Supervisor</span>
-                            <span *ngIf="employee.properties.employeeType == 'Contractor'">Contractor</span>
-                            <span *ngIf="employee.properties.employeeType == 'Permanent'">Permanent</span>
+                            <span>Supervisor</span>
                             <span class="asterisk">*</span>:
                         </th>
                         <td>
@@ -261,16 +260,39 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>Date Of Membership:</th>
-                        <td>
-                            <input name="dom" id="membershipDate" type="text" class="form-control input-sm calendar no-spin" required>
-                        </td>
                         <th>{{ employee.properties.supervisor && employee.properties.supervisor.supervisor && employee.properties.supervisor.supervisor.designation?
                             employee.properties.supervisor.supervisor.designation: 'HOD'}}:</th>
                         <td>
                             <input ngui-auto-complete [min-chars]="1" placeholder="Employee search" [source]="empSource.bind(this)" [value-formatter]="empFormatter"
                                 [list-formatter]="empListFormatter" class="form-control search" name="Supervisor" />
-
+                        </td>
+                        <th>Department:</th>
+                        <td>
+                            <select name="deppartment" class="form-control" [(ngModel)]="employee.properties.department">
+                                <option [ngValue]="null">Select an option</option>
+                                <option *ngFor="let item of departments.items" [value]="item.id">{{item.name}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </md-card>
+            <br *ngIf="employee.properties.employeeType == 'contract'">
+            <md-card *ngIf="employee.properties.employeeType == 'contract'">
+                <div class="dialog_Header text-center">
+                    <h5>
+                        <b>Contactor Details</b>
+                    </h5>
+                </div>
+                <br>
+                <table class="table">
+                    <tr>
+                        <th>Contractor</th>
+                        <td>
+                            <input name="Contractor" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.contractor">
+                        </td>
+                        <th>Date Of Membership:</th>
+                        <td>
+                            <input name="dom" id="membershipDate" type="text" class="form-control input-sm calendar no-spin" required>
                         </td>
                     </tr>
                 </table>
@@ -376,18 +398,13 @@
                         <th>Reason of Releiving</th>
                         <td>
                             <select name="reason" class="form-control" [(ngModel)]="employee.properties.reason">
-                                <option value="null">Select an option</option>
+                                <option disabled value="null">Select an option</option>
                                 <option value="resign">Resign</option>
+                                <option value="terminate">Terminate</option>
                                 <option value="death">Death</option>
                             </select>
                         </td>
                     </tr>
-                    <!-- <tr>
-                    <td colspan="2" class="test-center">
-                        <button *ngIf="employee?.properties?.id" md-raised-button [disabled]="employee?.isProcessing || designations?.isLoading"
-                        color="primary" (click)="terminateEmp(resignationForm)" style="float:right">Resignation</button>
-                    </td>
-                </tr> -->
                 </table>
             </md-card>
 

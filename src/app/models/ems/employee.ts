@@ -9,7 +9,7 @@ export class EmsEmployee {
   code: string = '';
   // designation: Designation = new Designation();
   designation: string = '';
-  departmentId = '';
+  department = '';
   status: string = '';
   gender: 'male' | 'female' | 'others' | null = null;
   fatherName: string = '';
@@ -30,7 +30,7 @@ export class EmsEmployee {
   shiftType: ShiftType = new ShiftType();
   supervisor: Supervisor = new Supervisor();
   employeeType: string;
-  biometricId: string;
+  displayCode: string;
   leaveBalances: any[];
   avgHours: number = null;
   token: string = '';
