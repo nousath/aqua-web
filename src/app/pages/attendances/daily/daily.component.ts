@@ -20,29 +20,6 @@ import { TagType, Tag } from '../../../models/tag';
 import { FileUploader } from 'ng2-file-upload';
 declare var $: any;
 
-export interface SelectedTag {
-  tagId: string;
-  tagTypeId: string;
-}
-
-export class Tags {
-  selected: SelectedTag[] = [];
-  select(tag: SelectedTag) {
-    const t: SelectedTag = _.find(this.selected, (i: SelectedTag) => {
-      return i.tagTypeId === tag.tagTypeId;
-    });
-    if (t && tag.tagId === 'select an option')
-      return this.selected.splice(this.selected.indexOf(t), 1);
-    if (!t)
-      this.selected.push(tag);
-  }
-  reset() {
-    this.selected = [];
-  }
-}
-
-
-
 @Component({
   selector: 'aqua-daily',
   templateUrl: './daily.component.html',
@@ -52,33 +29,19 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
 
   dailyAttendnace: Page<DailyAttendance>;
   isFilter = false;
-  shiftTypes: Page<ShiftType>;
-  employee: Model<Employee>;
-  tagTypes: Page<TagType>;
-  tags: Tags = new Tags();
-  date: Date = null
   isUpload = false;
   uploader: FileUploader;
 
   attendances: DailyAttendance[] = [];
-  isDownloading = false;
 
   constructor(private amsEmployeeService: AmsEmployeeService,
-    private amsShiftService: AmsShiftService,
     public validatorService: ValidatorService,
     public activatedRoute: ActivatedRoute,
     public router: Router,
-    private store: LocalStorageService,
-    private tagService: AmsTagService,
     private location: Location,
     private amsAttendanceService: AmsAttendanceService,
     private toastyService: ToastyService) {
 
-
-    this.employee = new Model({
-      api: amsEmployeeService.employees,
-      properties: new Employee()
-    });
 
     this.dailyAttendnace = new Page({
       api: amsAttendanceService.dailyAttendances,
@@ -110,118 +73,46 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
       }],
     });
 
-    this.shiftTypes = new Page({
-      api: amsShiftService.shiftTypes
-    });
-
-    this.tagTypes = new Page({
-      api: tagService.tagTypes
-    });
-
-    this.shiftTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
-    this.tagTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
-
-    this.checkFiltersInStore();
-
   }
 
-  addTag(id: string) {
-    console.log(id)
+  applyFilters($event) {
+
+    this.dailyAttendnace.filters.properties['shiftTypeId']['value'] = $event.shiftType ? $event.shiftType.id : null;
+    this.dailyAttendnace.filters.properties['name']['value'] = $event.employeeName;
+    this.dailyAttendnace.filters.properties['code']['value'] = $event.employeeCode;
+    this.dailyAttendnace.filters.properties['status']['value'] = $event.attendanceStatus;
+
+    this.dailyAttendnace.filters.properties['tagIds']['value'] = $event.tagIds;
+    this.getAttendance();
   }
-
-
 
   reset() {
     this.dailyAttendnace.filters.reset();
-    this.tags.reset();
-    const tagElements: any[] = document.getElementsByName('tags') as any;
-    if (tagElements) {
-      tagElements.forEach(item => item.value = '');
-    }
-    this.store.removeItem('daily-attendance-filter');
     $('#dateSelector').datepicker('setDate', new Date());
-    this.getAttendance(new Date());
-
+    this.dailyAttendnace.filters.properties['ofDate']['value'] = new Date();
+    this.getAttendance();
   }
 
-  checkFiltersInStore() {
-    const filters: any = this.store.getObject('daily-attendance-filter');
-    if (filters) {
-      this.isFilter = true;
-      // this.dailyAttendnace.filters.properties['ofDate']['value'] = filters['ofDate'] || new Date();
-      this.dailyAttendnace.filters.properties['name']['value'] = filters['name'] || null;
-      this.dailyAttendnace.filters.properties['code']['value'] = filters['code'] || null;
-      this.dailyAttendnace.filters.properties['shiftTypeId']['value'] = filters['shiftTypeId'] || null;
-    }
-    this.getAttendance(this.dailyAttendnace.filters.properties['ofDate']['value'] || new Date());
-  }
-
-  setFiltersToStore() {
-    const queryParams: any = {};
-    _.each(this.dailyAttendnace.filters.properties, (filter: Filter, key: any, obj: any) => {
-      if (filter.value) {
-        queryParams[key] = filter.value;
-      }
-    })
-    if (queryParams) {
-      this.store.setObject('daily-attendance-filter', queryParams);
-    }
-  }
-
-  getAttendance(date: Date) {
-    this.setFiltersToStore();
-    this.date = date;
-    date = new Date(date);
-    this.dailyAttendnace.filters.properties['ofDate']['value'] = date.toISOString();
-    const tags: string[] = [];
-    _.each(this.tags.selected, (tag: SelectedTag) => {
-      tags.push(tag.tagId)
-    })
-    this.dailyAttendnace.filters.properties['tagIds']['value'] = tags;
+  getAttendance() {
     this.dailyAttendnace.fetch().then(page => {
-      if (page && page.items) {
-        page.items.forEach(pageItem => {
+      if (!page || !page.items) { return; }
+      page.items.forEach(pageItem => {
 
-          const existingAttendance = this.attendances.find(item => item.code === pageItem.code);
-          if (existingAttendance) {
-            if (!existingAttendance.attendance.checkIn || existingAttendance.attendance.checkIn > pageItem.attendance.checkIn) {
-              existingAttendance.attendance.checkIn = pageItem.attendance.checkIn;
-            }
-
-            if (!existingAttendance.attendance.checkOut || existingAttendance.attendance.checkOut < pageItem.attendance.checkOut) {
-              existingAttendance.attendance.checkOut = pageItem.attendance.checkOut;
-            }
-          } else {
-            this.attendances.push(pageItem);
+        const existingAttendance = this.attendances.find(item => item.code === pageItem.code);
+        if (existingAttendance) {
+          if (!existingAttendance.attendance.checkIn || existingAttendance.attendance.checkIn > pageItem.attendance.checkIn) {
+            existingAttendance.attendance.checkIn = pageItem.attendance.checkIn;
           }
-        });
-      }
+
+          if (!existingAttendance.attendance.checkOut || existingAttendance.attendance.checkOut < pageItem.attendance.checkOut) {
+            existingAttendance.attendance.checkOut = pageItem.attendance.checkOut;
+          }
+        } else {
+          this.attendances.push(pageItem);
+        }
+      });
     }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
-
-
-
-  download(byShiftEnd: boolean, byShiftLength: boolean, reportName: string) {
-    this.isDownloading = true;
-    const serverPageInput: ServerPageInput = new ServerPageInput();
-    const queryParams: any = {};
-    _.each(this.dailyAttendnace.filters.properties, (filter: Filter, key: any, obj: any) => {
-      if (filter.value) {
-        queryParams[key] = filter.value;
-      }
-    });
-    queryParams['byShiftEnd'] = byShiftEnd;
-    queryParams['byShiftLength'] = byShiftLength;
-    serverPageInput.query = queryParams;
-    reportName = `${reportName}_${moment(queryParams['ofDate']).format('DD_MMM_YY')}_DailyReport.xlsx`;
-    this.amsAttendanceService.donwloadDailyAttendances.exportReport(serverPageInput, null, reportName).then(
-      data => this.isDownloading = false
-    ).catch(err => {
-      this.toastyService.error({ title: 'Error', msg: err });
-      this.isDownloading = false
-    });
-  };
-
 
   ngOnInit() {
   }
@@ -237,7 +128,10 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
       if (new Date(e.date) > new Date()) {
         return this.toastyService.info({ title: 'Info', msg: 'Date should be less than or equal to current date' })
       }
-      this.getAttendance(e.date);
+
+      this.dailyAttendnace.filters.properties['ofDate']['value'] = e.date
+
+      setTimeout(() => this.getAttendance(), 1)
     });
     $('#dateSelector').datepicker('setDate', new Date());
   }

@@ -74,6 +74,7 @@ import {
   MaterialModule
 } from '@angular/material';
 import { ShiftTypeFilterPipe } from './pipes/shift-type-filter.pipe';
+import { EmployeesFilterComponent } from './components/employees-filter/employees-filter.component';
 
 
 export const MaterialModules = [
@@ -112,7 +113,7 @@ export const MaterialModules = [
 ];
 
 @NgModule({
-  declarations: [TimePipe, ShiftPickerComponent, ShiftTypeFilterPipe],
+  declarations: [TimePipe, ShiftPickerComponent, ShiftTypeFilterPipe, EmployeesFilterComponent],
   providers: [
     EmsEmployeeService,
     EmsDesignationService,
@@ -158,7 +159,8 @@ export const MaterialModules = [
     NguiAutoCompleteModule,
     AgmCoreModule,
     TimePipe,
-    ShiftPickerComponent
+    ShiftPickerComponent,
+    EmployeesFilterComponent
   ]
 
 })

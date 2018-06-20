@@ -7,8 +7,8 @@ import { AutoCompleteService } from '../../../services';
 import { AmsTagService } from '../../../services/ams/ams-tag.service';
 import { Page } from '../../../common/contracts/page';
 import { TagType } from '../../../models/tag';
-import { Tags } from '../daily/daily.component';
 import { ToastyService } from 'ng2-toasty';
+import { Tags } from '../../../shared/components/employees-filter/employees-filter.component';
 
 @Component({
   selector: 'aqua-report-filters',

@@ -63,10 +63,10 @@ body::-webkit-scrollbar-thumb {
 /* .mat-focused.mat-form-field-underline{
     color:  #6c78a8;
 } */
+
 .mat-form-field-ripple {
     background-color: #6c78a8;
 }
-
 
 .capitalize {
     text-transform: capitalize;
@@ -323,4 +323,20 @@ pagination-controls {
 
 .mat-radio-label-content {
     font-weight: 100 !important;
+}
+
+.controls-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.controls-row .spacer {
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+}
+
+.controls-row .input-group {
+    max-width: 200px;
+    padding-top: 5px;
 }

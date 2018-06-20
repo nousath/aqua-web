@@ -20,9 +20,11 @@ import { ReportListsComponent } from './report-lists/report-lists.component';
 import { LeaveTypeComponent } from './leave-type/leave-type.component';
 import { TeamsComponent } from './teams/teams.component';
 import { ApplyLeaveTypeComponent } from './apply-leave-type/apply-leave-type.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
+    RouterModule,
     SharedModule,
     AttendanceRoutingModule
   ],
