@@ -5,7 +5,7 @@ import { AmsEmployeeService, AmsShiftService, AmsAttendanceService } from '../..
 import { ToastyService } from 'ng2-toasty';
 import { MonthAttendance, ShiftType } from '../../../models';
 import * as moment from 'moment';
-import { DailyAttendance } from '../../../models/daily-attendance';
+import { Attendance } from '../../../models/daily-attendance';
 import { ServerPageInput } from '../../../common/contracts/api/page-input';
 import { Employee } from '../../../models';
 import { ValidatorService } from '../../../services/validator.service';
@@ -48,7 +48,7 @@ export class Tags {
 })
 export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  dailyAttendnace: Page<DailyAttendance>;
+  dailyAttendnace: Page<Attendance>;
   isFilter = false;
   shiftTypes: Page<ShiftType>;
   employee: Model<Employee>;
@@ -57,7 +57,7 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
   date: Date = null
   isUpload = false;
 
-  attendances: DailyAttendance[] = [];
+  attendances: Attendance[] = [];
 
   constructor(private amsEmployeeService: AmsEmployeeService,
     private amsShiftService: AmsShiftService,
@@ -176,21 +176,21 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dailyAttendnace.filters.properties['tagIds']['value'] = tags;
     this.dailyAttendnace.fetch().then(page => {
       if (page && page.items) {
-        page.items.forEach(pageItem => {
+      page.items.forEach(pageItem => {
 
-          const existingAttendance = this.attendances.find(item => item.code === pageItem.code);
-          if (existingAttendance) {
-            if (!existingAttendance.attendance.checkIn || existingAttendance.attendance.checkIn > pageItem.attendance.checkIn) {
-              existingAttendance.attendance.checkIn = pageItem.attendance.checkIn;
-            }
-
-            if (!existingAttendance.attendance.checkOut || existingAttendance.attendance.checkOut < pageItem.attendance.checkOut) {
-              existingAttendance.attendance.checkOut = pageItem.attendance.checkOut;
-            }
-          } else {
-            this.attendances.push(pageItem);
+        const existingAttendance = this.attendances.find(item => item.employee.code === pageItem.employee.code);
+        if (existingAttendance) {
+          if (!existingAttendance.checkIn || existingAttendance.checkIn > pageItem.checkIn) {
+            existingAttendance.checkIn = pageItem.checkIn;
           }
-        });
+
+          if (!existingAttendance.checkOut || existingAttendance.checkOut < pageItem.checkOut) {
+            existingAttendance.checkOut = pageItem.checkOut;
+          }
+        } else {
+          this.attendances.push(pageItem);
+        }
+      });
       }
     }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
