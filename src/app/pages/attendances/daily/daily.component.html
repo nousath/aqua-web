@@ -68,10 +68,10 @@
                         <td>
                             <a [routerLink]="[item.employee.id]">{{item.employee.name || '--'}}</a>
                             <br>
-                            <span class="empCode">{{item.employee.code || '--'}}</span>
+                            <span class="sub-text">{{item.employee.code || '--'}}</span>
                         </td>
                         <td class="tdWidth">{{item.employee.designation || '--'}}</td>
-                        <td class="tdWidth">{{'TODO'}}</td>
+                        <td class="tdWidth">{{item.shift.shiftType.name}}</td>
                         <!-- <td class="tdWidth">{{item?.attendance?.hoursWorked || '--'}}</td> -->
                         <td class="tdWidth">
                             <ng-template #elsePart>

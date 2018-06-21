@@ -81,7 +81,7 @@ export class EmployeesFilterComponent implements OnInit {
     this.shiftTypes.fetch().then();
     this.tagTypes.fetch().then();
 
-
+    this.hidden = this.hidden || {};
   }
 
   reset() {
