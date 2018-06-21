@@ -10,6 +10,8 @@ import { Angulartics2 } from 'angulartics2';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { ApplyLeaveTypeComponent } from '../apply-leave-type/apply-leave-type.component';
 import { ToastyService } from 'ng2-toasty';
+import { leave } from '@angular/core/src/profile/wtf_impl';
+import { element } from 'protractor';
 declare var $: any;
 
 @Component({
@@ -28,11 +30,15 @@ export class ApplyLeaveComponent {
   user: string;
   isEmpId = false;
   duration: 'multi' | 'full' | 'half' | '1/3' | '2/3' | null = null;
-  bulkLeaves = [];
+  bulkLeaves: {
+    id: string;
+    start: string;
+    end: string;
+    type: string;
+    days: number;
+  }[]
 
   @ViewChild(ApplyLeaveTypeComponent) private apply: ApplyLeaveTypeComponent
-  // startTime: 'startfull' | 'starthalf' | 'start1/3' | null = null
-  // endTime: 'endfull' | 'endhalf' | 'end1/3' | null = null
   constructor(private amsEmployeeService: AmsEmployeeService,
     private amsLeaveService: AmsLeaveService,
     public validatorService: ValidatorService,
@@ -118,9 +124,11 @@ export class ApplyLeaveComponent {
     }
   }
 
-  allLeaves(items: any) {
-    console.log(items)
+  allLeaves(item: any) {
 
+    this.bulkLeaves = this.bulkLeaves.filter(element => element.id !== item.id)
+    this.bulkLeaves.push(item)
+    console.log(this.bulkLeaves)
   }
 
   applyLeave(isFormValid: boolean) {
@@ -128,92 +136,23 @@ export class ApplyLeaveComponent {
     if (!isFormValid) {
       return this.toastyService.info({ title: 'Info', msg: 'Fill all required fields' })
     }
-    this.apply.approveLeave();
 
-    // this.leaveBalances.items.forEach((item: any) => {
-    //   item = this.leave.properties.reason;
-    //   this.apply.approveLeave();
+    // this.bulkLeaves.forEach((item: any) => {
+    //   this.leave.properties.id = this.bulkLeaves.
+    //   this.leave.save().then(
+    //     data => this.isEmpId ? this.router.navigate(['../'], { relativeTo: this.activatedRoute }) : this.router.navigate(['../../'], { relativeTo: this.activatedRoute })
+    //   ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
 
-      // this.leave.save().then(
-      //   data => this.isEmpId ? this.router.navigate(['../'], { relativeTo: this.activatedRoute }) : this.router.navigate(['../../'], { relativeTo: this.activatedRoute })
-      // ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+    // })
+    // this.apply.approveLeave();
+
+    // this.leave.save().then(
+    //   data => this.isEmpId ? this.router.navigate(['../'], { relativeTo: this.activatedRoute }) : this.router.navigate(['../../'], { relativeTo: this.activatedRoute })
+    // ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
 
     // })
 
   }
-
-  // this.leave.properties.date = new Date(this.leave.properties.date).toISOString();
-  // switch (this.duration = 'multi') {
-  //   case 'multi':
-  //     let oneDay = 24 * 60 * 60 * 1000;
-  //     let startDay: Date = new Date(this.leave.properties.date);
-  //     switch (this.startTime) {
-  //       case 'startfull':
-  //         startDay.setHours(0, 0, 0, 0);
-  //         break;
-  //       case 'starthalf':
-  //         startDay.setHours(12, 0, 0, 0);
-  //         break;
-  //       case 'start1/3':
-  //         startDay.setHours(8, 0, 0, 0);
-  //         break;
-  //     }
-  //     // startDay.setHours(0, 0, 0, 0);
-  //     let endDay: Date = new Date(this.leave.properties.toDate);
-  //     switch (this.endTime) {
-  //       case 'endfull':
-  //         endDay.setHours(0, 0, 0, 0);
-  //         break;
-  //       case 'endhalf':
-  //         endDay.setHours(12, 0, 0, 0);
-  //         break;
-  //       case 'end1/3':
-  //         endDay.setHours(8, 0, 0, 0);
-  //         break;
-  //     }
-  //     if (endDay <= startDay) {
-  //       return this.toastyService.info({ title: 'Info', msg: 'End Date should be greater then Start Date' })
-  //     }
-  //     this.leave.properties.days = Math.abs((endDay.getTime() - startDay.getTime()) / (oneDay));
-  //     this.leave.properties.toDate = new Date(this.leave.properties.toDate).toISOString();
-  //     break;
-  // case 'full':
-  //   this.leave.properties.toDate = this.leave.properties.date;
-  //   this.leave.properties.days = 1;
-  //   break;
-  // case 'half':
-  //   this.leave.properties.toDate = this.leave.properties.date;
-  //   this.leave.properties.days = 1 / 2;
-  //   break;
-  // case '1/3':
-  //   this.leave.properties.toDate = this.leave.properties.date;
-  //   this.leave.properties.days = 1 / 3;
-  //   break;
-  // case '2/3':
-  //   this.leave.properties.toDate = this.leave.properties.date;
-  //   this.leave.properties.days = 2 / 3;
-  //   break;
-  //   default:
-  //     return this.toastyService.info({ title: 'Info', msg: 'Select Duration' })
-  // }
-
-  // let totalLeaveBalace: LeaveBalance = this.leaveBalances.items.find((i: LeaveBalance) => {
-  //   return i.leaveType.id == this.leave.properties.type.id
-  // });
-
-  // if (this.leave.properties.days > totalLeaveBalace.days && !totalLeaveBalace.leaveType.unlimited) {
-  //   return this.toastyService.info({ title: 'Info', msg: `You don't have sufficient leave balance` })
-  // }
-
-  // if (totalLeaveBalace.leaveType.monthlyLimit && this.leave.properties.days > totalLeaveBalace.leaveType.monthlyLimit) {
-  //   return this.toastyService.info({ title: 'Info', msg: `You cannot apply more than ${totalLeaveBalace.leaveType.monthlyLimit} in a month` })
-  // }
-
-  // this.leave.save().then(
-  //   data => this.isEmpId ? this.router.navigate(['../'], { relativeTo: this.activatedRoute }) : this.router.navigate(['../../'], { relativeTo: this.activatedRoute })
-  // ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
-
-
 
 
   initDatePiker(type: string) {

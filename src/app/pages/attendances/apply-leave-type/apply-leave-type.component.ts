@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, EventEmitter, Output } from '@angular/core';
 import { Leave } from '../../../models/leave';
 import { LeaveBalance } from '../../../models/leave-balance';
 import { Page } from '../../../common/contracts/page';
@@ -6,8 +6,6 @@ import { Model } from '../../../common/contracts/model';
 import { LeavesComponent } from '../leaves/leaves.component';
 import { LeaveType } from '../../../models/index';
 import { ToastyService } from 'ng2-toasty';
-import { Output } from '@angular/core/src/metadata/directives';
-import { EventEmitter } from 'selenium-webdriver';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApplyLeaveComponent } from '../apply-leave/apply-leave.component';
 
@@ -21,16 +19,13 @@ export class ApplyLeaveTypeComponent {
   startDate = ''
   endDate = ''
   days: number;
-  bulkLeaves: {
+  bulkLeaves: [{
     id: string,
     type: string,
-    days: string
-  }
-  // bulkLeaves:[{
-  //   id:string,
-  //   type:string,
-  //   days: number
-  // }]
+    start: string,
+    end: string,
+    days: string,
+  }]
 
 
   @Input()
@@ -42,7 +37,7 @@ export class ApplyLeaveTypeComponent {
   @Input()
   empl: string;
 
-  // @Output() allLeaves: EventEmitter = new EventEmitter();
+  @Output() allLeaves: EventEmitter<any> = new EventEmitter();
 
   leave: Leave;
   leaveBalances: Page<LeaveBalance>;
@@ -86,10 +81,10 @@ export class ApplyLeaveTypeComponent {
       if (endDay <= startDay) {
         return this.toastyService.info({ title: 'Info', msg: 'End Date should be greater then Start Date' })
       }
-      if (this.endFirstHalf && this.endSecondHalf && this.startFirstHalf && this.startSecondHalf) {
+      if ((this.endFirstHalf && this.endSecondHalf) && (this.startFirstHalf && this.startSecondHalf)) {
         this.days = Math.abs(((endDay.getTime() - startDay.getTime()) / (oneDay)) + 1);
       } else {
-        this.days = Math.abs((endDay.getTime() - startDay.getTime()) / (oneDay));
+        this.days = Math.abs(((endDay.getTime() - startDay.getTime()) / (oneDay)) + 1);
       }
 
       if (this.days > this.leaveBalance.days && !this.leaveBalance.leaveType.unlimited) {
@@ -99,27 +94,19 @@ export class ApplyLeaveTypeComponent {
       if (this.leaveBalance.leaveType.monthlyLimit && this.days > this.leaveBalance.leaveType.monthlyLimit) {
         return this.toastyService.info({ title: 'Info', msg: `You cannot apply more than ${this.leaveBalance.leaveType.monthlyLimit} in a month` })
       }
-      const lea: any = {
+      const selectedLeave: any = {
         id: this.leaveBalance.id,
         type: this.leaveBalance.leaveType,
+        start: this.startDate,
+        end: this.endDate,
         days: this.days
       }
 
-      this.bulkLeaves = lea
+      this.bulkLeaves = selectedLeave
       console.log(this.bulkLeaves)
 
-      // this.allLeaves.emit(this.bulkLeaves);
-
-      // console.log(this.days);
-      // console.log(this.leaveBalance.leaveType.name)
-      // return this.days;
+      this.allLeaves.emit(this.bulkLeaves);
     }
-  }
-
-  public approveLeave() {
-    console.log(this.bulkLeaves)
-
-
   }
 
 }
