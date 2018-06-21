@@ -1,8 +1,7 @@
 import { ServerPageInput } from './page-input';
-import { ServerDataModel } from './server-data-model';
 import { ServerPageModel } from './server-page-model';
-import { Observable } from 'rxjs/Rx';
 import { IGetParams } from './get-params.interface';
+import { RemoteDataModel } from './remote-data.model';
 
 export interface IApi<TModel> {
   get(id: number | string): Promise<TModel>;
@@ -14,4 +13,5 @@ export interface IApi<TModel> {
   simpePost(model: any): Promise<void>;
   exportReport(input: ServerPageInput, path?: string, reportName?: string): Promise<void>;
   all(type: any, id?: string, model?: any): Promise<void>;
+  bulkCreate(models: TModel[], path?: string): Promise<RemoteDataModel>;
 }

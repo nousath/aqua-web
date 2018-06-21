@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import { ToastyService, ToastyConfig } from 'ng2-toasty';
 import { IGetParams } from './contracts/api/get-params.interface';
 import { environment } from '../../environments/environment';
+import { RemoteDataModel } from './contracts/api/remote-data.model';
 
 export class GenericApi<TModel> implements IApi<TModel> {
 
@@ -170,6 +171,28 @@ export class GenericApi<TModel> implements IApi<TModel> {
       .catch(this.handleError);
   }
 
+  bulkCreate(models: TModel[], path?: string): Promise<RemoteDataModel> {
+
+    let url = `${this.rootUrl}/${this.key}`;
+    url = path ? `${url}/${path}` : `${url}/bulk`;
+
+    return this.http.post(url, {items: models}, { headers: this.getHeaders() })
+      .toPromise()
+      .then((response) => {
+        const dataModel = response.json() as RemoteDataModel;
+
+        if (!dataModel.isSuccess) {
+          if (response.status === 200) {
+            return this.handleError(dataModel.message || dataModel.error || dataModel.code || 'failed');
+          } else {
+            return this.handleError(response.status);
+          }
+        }
+        return dataModel.message;
+      })
+      .catch(this.handleError);
+
+  }
   exportReport(input: ServerPageInput, path?: string, reportName?: string): Promise<any> {
     const parms: URLSearchParams = this.getQueryParams(input);
     const apiPath: string = path ? `${this.rootUrl}/${path}` : `${this.rootUrl}/${this.key}`;

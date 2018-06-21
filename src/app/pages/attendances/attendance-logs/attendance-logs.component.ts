@@ -200,7 +200,7 @@ export class AttendanceLogsComponent implements OnInit {
   checkUpdate() {
     this.timeLog.properties.employee.id = this.empId;
     // let checkTimes: string[] = this.checkTime.split(':');
-    this.timeLog.properties.time = this.checkTime.toISOString();
+    this.timeLog.properties.time = this.checkTime;
     // new Date(new Date(this.ofDate).setHours(parseInt(checkTimes[0]), parseInt(checkTimes[1]))).toISOString();
     this.timeLog.properties.source = 'byAdmin';
     this.timeLog.save().then(data => {
