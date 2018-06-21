@@ -1,14 +1,26 @@
 import { Employee } from './employee';
 import { LeaveType } from './leave-type';
 export class Leave {
-  date: string = null;
-  toDate: string = null;
-  days: number = null;
-  id: string | number = null;
-  employee: Employee = new Employee();
-  reason = '';
-  comment = '';
-  status = '';
-  leaveType: LeaveType = new LeaveType();
-  type: LeaveType = new LeaveType();
+  id: string;
+
+  date: Date;
+  start: {
+    first: boolean,
+    second: boolean
+  };
+
+  toDate: Date;
+  end: {
+    first: boolean,
+    second: boolean
+  };
+
+  units: number;
+  days: number;
+  employee: Employee;
+
+  type: LeaveType;
+  reason: string;
+  comment: string;
+  status: string;
 }

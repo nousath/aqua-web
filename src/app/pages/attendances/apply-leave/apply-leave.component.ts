@@ -10,8 +10,7 @@ import { Angulartics2 } from 'angulartics2';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { ApplyLeaveTypeComponent } from '../apply-leave-type/apply-leave-type.component';
 import { ToastyService } from 'ng2-toasty';
-import { leave } from '@angular/core/src/profile/wtf_impl';
-import { element } from 'protractor';
+import { ServerPageInput } from '../../../common/contracts/api';
 declare var $: any;
 
 @Component({
@@ -21,24 +20,19 @@ declare var $: any;
 })
 export class ApplyLeaveComponent {
 
-  leave: Model<Leave>;
-  leavetype: Model<LeaveType>;
 
-  leaveBalances: Page<LeaveBalance>;
-  employee: Model<Employee>;
-  subscription: Subscription;
-  user: string;
-  isEmpId = false;
-  duration: 'multi' | 'full' | 'half' | '1/3' | '2/3' | null = null;
-  bulkLeaves: {
-    id: string;
-    start: string;
-    end: string;
-    type: string;
-    days: number;
-  }[]
+  leaveBalances: LeaveBalance[];
+  employee: Employee;
+  leaves: Leave[] = [];
+  reason: string;
+  isProcessing = false;
 
-  @ViewChild(ApplyLeaveTypeComponent) private apply: ApplyLeaveTypeComponent
+  employeeSelector = false;
+
+  userType: any;
+
+
+
   constructor(private amsEmployeeService: AmsEmployeeService,
     private amsLeaveService: AmsLeaveService,
     public validatorService: ValidatorService,
@@ -48,52 +42,44 @@ export class ApplyLeaveComponent {
     private store: LocalStorageService,
     private toastyService: ToastyService,
     private angulartics2: Angulartics2, ) {
-    this.user = this.store.getItem('userType');
+    this.userType = this.store.getItem('userType');
 
-    this.employee = new Model({
-      api: amsEmployeeService.employeesForAdmin,
-      properties: new Employee()
-    });
 
-    this.leaveBalances = new Page({
-      api: amsLeaveService.leaveBalances,
-      filters: [{
-        field: 'id',
-        value: null
-      }]
-    });
 
-    this.leave = new Model({
-      api: amsLeaveService.leaves,
-      properties: new Leave()
-    });
-
-    this.subscription = activatedRoute.params.subscribe(
-      params => {
-        const empId = params['empId'];
-        if (empId) {
-          this.isEmpId = true;
-          this.getLeaveBalance(empId);
-          this.employee.fetch(empId).then(
-            data => {
-              this.leave.properties.employee = this.employee.properties;
-            }
-          ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
-        }
+    activatedRoute.params.subscribe(params => {
+      const employeeId = params['employeeId'] || params['empId'];
+      if (!employeeId) {
+        this.employeeSelector = true;
+        return;
       }
-    );
+      this.employeeSelector = false;
+
+      this.getLeaveBalance(employeeId);
+
+      this.amsEmployeeService.employeesForAdmin
+        .get(employeeId)
+        .then(employee => this.employee = employee)
+        .catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+    });
   }
 
-
-  getLeaveBalance(empId: string) {
-    this.leaveBalances.filters.properties['id'].value = empId;
-    this.leaveBalances.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
-    console.log(this.leaveBalances)
+  getLeaveBalance(employeeId: string) {
+    const input = new ServerPageInput();
+    input.serverPaging = false;
+    input.query = {
+      id: employeeId,
+      employeeId: employeeId
+    };
+    this.amsLeaveService.leaveBalances.search(input)
+      .then(page => this.leaveBalances = page.items)
+      .catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
-  onSelectEmp(emp: Employee) {
-    if (emp.id)
-      this.getLeaveBalance(emp.id);
+  onSelectEmp(employee: Employee) {
+    this.employee = employee;
+    if (employee.id) {
+      this.getLeaveBalance(employee.id);
+    }
   }
 
   empSource(keyword: string): Observable<Employee[]> {
@@ -108,27 +94,14 @@ export class ApplyLeaveComponent {
     return `${data.name} (${data.code})`;
   }
 
-  selectLeveType(leaveTypeId: string) {
-    if (leaveTypeId)
-      this.leave.properties.leaveType.unitsPerDay = this.leaveBalances.items.find((i: LeaveBalance) => {
-        return i.leaveType.id === leaveTypeId
-      }).leaveType.unitsPerDay;
-    else
-      this.leave.properties.leaveType.unitsPerDay = null;
-  }
-
   reset() {
-    this.leave.properties = new Leave();
-    if (this.isEmpId) {
-      this.leave.properties.employee = this.employee.properties;
+    if (this.employee) {
+      this.getLeaveBalance(this.employee.id);
     }
   }
 
-  allLeaves(item: any) {
-
-    this.bulkLeaves = this.bulkLeaves.filter(element => element.id !== item.id)
-    this.bulkLeaves.push(item)
-    console.log(this.bulkLeaves)
+  onLeaveCreate(item: Leave, index: number) {
+    this.leaves.push(item)
   }
 
   applyLeave(isFormValid: boolean) {
@@ -153,48 +126,4 @@ export class ApplyLeaveComponent {
     // })
 
   }
-
-
-  initDatePiker(type: string) {
-    setTimeout(() => {
-      if (this.duration === 'multi') {
-        this.initMultiDatePiker()
-      } else {
-        this.initOneDayDatePiker()
-      }
-    }, 1000);
-
-  }
-
-  initMultiDatePiker() {
-    $('#startDate1').datepicker({
-      format: 'dd/mm/yyyy',
-      minViewMode: 0,
-      maxViewMode: 2,
-      autoclose: true
-    }).on('changeDate', (e) => {
-      this.leave.properties.date = e.date;
-    });
-  }
-
-  initOneDayDatePiker() {
-    $('#startDate').datepicker({
-      format: 'dd/mm/yyyy',
-      minViewMode: 0,
-      maxViewMode: 2,
-      autoclose: true
-    }).on('changeDate', (e) => {
-      this.leave.properties.date = e.date;
-    });
-
-    $('#endDate').datepicker({
-      format: 'dd/mm/yyyy',
-      minViewMode: 0,
-      maxViewMode: 2,
-      autoclose: true
-    }).on('changeDate', (e) => {
-      this.leave.properties.toDate = e.date;
-    });
-  }
-
 }

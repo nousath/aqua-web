@@ -7,106 +7,248 @@ import { LeavesComponent } from '../leaves/leaves.component';
 import { LeaveType } from '../../../models/index';
 import { ToastyService } from 'ng2-toasty';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApplyLeaveComponent } from '../apply-leave/apply-leave.component';
+import { Employee } from '../../../models/employee';
 
 @Component({
   selector: 'aqua-apply-leave-type',
   templateUrl: './apply-leave-type.component.html',
   styleUrls: ['./apply-leave-type.component.css']
 })
-export class ApplyLeaveTypeComponent {
+export class ApplyLeaveTypeComponent implements OnInit {
+
 
   startDate = ''
   endDate = ''
   days: number;
-  bulkLeaves: [{
-    id: string,
-    type: string,
-    start: string,
-    end: string,
-    days: string,
-  }]
-
 
   @Input()
-  leaveBalance: LeaveBalance;
+  balance: LeaveBalance;
 
   @Input()
-  serial: any;
+  type: LeaveType;
 
   @Input()
-  empl: string;
+  employee: Employee;
 
-  @Output() allLeaves: EventEmitter<any> = new EventEmitter();
+  @Input()
+  message: string;
 
-  leave: Leave;
-  leaveBalances: Page<LeaveBalance>;
-  duration = 'multi';
-  endFirstHalf: boolean
-  endSecondHalf: boolean
-  startFirstHalf: boolean
-  startSecondHalf: boolean
+  @Output() onChange: EventEmitter<Leave> = new EventEmitter();
+
+  leave = new Leave();
+
+  duration: string;
+
+  enable = {
+    start: {
+      date: false,
+      first: true,
+      second: true
+    },
+    end: {
+      date: false,
+      first: true,
+      second: true
+    },
+    durations: {
+      multi: false,
+      single: false,
+      half: false,
+      oneThird: false,
+      twoThird: false
+    }
+  };
+
+  limitLabel: string;
+  limit: number;
 
   constructor(
     private toastyService: ToastyService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
   ) { }
 
-  selected() {
-
-    if (this.startDate && this.endDate) {
-      const oneDay = 24 * 60 * 60 * 1000;
-      const startDay: Date = new Date(this.startDate);
-      if (this.startFirstHalf && this.startSecondHalf)
-        startDay.setHours(0, 0, 0, 0);
-      else if (this.endFirstHalf)
-        startDay.setHours(12, 0, 0, 0);
-      else if (this.endSecondHalf)
-        startDay.setHours(12, 0, 0, 0);
-      else
-        return this.toastyService.info({ title: 'Info', msg: 'Select Half' })
-
-      const endDay: Date = new Date(this.endDate);
-
-      if (this.endFirstHalf && this.endSecondHalf)
-        endDay.setHours(0, 0, 0, 0);
-      else if (this.endFirstHalf)
-        endDay.setHours(12, 0, 0, 0);
-      else if (this.endSecondHalf)
-        endDay.setHours(12, 0, 0, 0);
-      else
-        return this.toastyService.info({ title: 'Info', msg: 'Select Half' })
-
-      if (endDay <= startDay) {
-        return this.toastyService.info({ title: 'Info', msg: 'End Date should be greater then Start Date' })
+  ngOnInit(): void {
+    this.limit = -1;
+    this.type = this.type || this.balance.leaveType;
+    if (this.type.unlimited) {
+      if (this.type.monthlyLimit) {
+        this.limit = this.type.monthlyLimit;
+        this.limitLabel = `${this.limit} day(s)`;
       }
-      if ((this.endFirstHalf && this.endSecondHalf) && (this.startFirstHalf && this.startSecondHalf)) {
-        this.days = Math.abs(((endDay.getTime() - startDay.getTime()) / (oneDay)) + 1);
+    } else {
+      if (this.type.monthlyLimit) {
+        if (this.balance.days < this.type.monthlyLimit) {
+          this.limit = this.balance.days;
+          this.limitLabel = `${this.limit} day(s)`;
+        } else {
+          this.limit = this.type.monthlyLimit
+          this.limitLabel = `${this.limit} of ${this.balance.days} day(s))`;
+        }
       } else {
-        this.days = Math.abs(((endDay.getTime() - startDay.getTime()) / (oneDay)) + 1);
+        this.limit = this.balance.days;
+        this.limitLabel = `${this.limit} day(s)`;
       }
-
-      if (this.days > this.leaveBalance.days && !this.leaveBalance.leaveType.unlimited) {
-        return this.toastyService.info({ title: 'Info', msg: `You don't have sufficient leave balance` })
-      }
-
-      if (this.leaveBalance.leaveType.monthlyLimit && this.days > this.leaveBalance.leaveType.monthlyLimit) {
-        return this.toastyService.info({ title: 'Info', msg: `You cannot apply more than ${this.leaveBalance.leaveType.monthlyLimit} in a month` })
-      }
-      const selectedLeave: any = {
-        id: this.leaveBalance.id,
-        type: this.leaveBalance.leaveType,
-        start: this.startDate,
-        end: this.endDate,
-        days: this.days
-      }
-
-      this.bulkLeaves = selectedLeave
-      console.log(this.bulkLeaves)
-
-      this.allLeaves.emit(this.bulkLeaves);
     }
+
+    if (this.limit === 0) {
+      this.limitLabel = `out of stock`;
+    }
+
+    this.leave = new Leave();
+    this.leave.type = this.type;
+    this.leave.employee = this.employee;
+
+    this.leave.start = {
+      first: true,
+      second: true
+    };
+
+    this.leave.end = {
+      first: true,
+      second: true
+    };
+
+    if (this.limit !== 0) {
+      this.enable.start.date = true;
+
+      if (this.limit > 1) {
+        this.enable.durations.multi = true;
+        this.enable.durations.single = true;
+        this.duration = 'single';
+      } else if (this.limit === 1) {
+        this.enable.durations.single = true;
+        this.duration = 'single';
+      } else if (this.limit < 1) {
+        this.duration = 'half';
+      }
+
+      if (this.type.unitsPerDay === 2) {
+        this.enable.durations.half = true;
+      }
+
+      if (this.type.unitsPerDay === 3) {
+        this.enable.durations.oneThird = true;
+        this.enable.durations.twoThird = true;
+      }
+
+      if (this.type.unitsPerDay === 6) {
+        this.enable.durations.oneThird = true;
+        this.enable.durations.twoThird = true;
+        this.enable.durations.half = true;
+      }
+
+
+    }
+  }
+
+  changed() {
+
+    switch (this.duration) {
+
+      case 'multi':
+        this.enable.start.first = true;
+        this.enable.end.second = true;
+
+        this.enable.end.first = false;
+        this.enable.start.second = false;
+        this.leave.start.second = true;
+        this.leave.end.first = true;
+
+        this.enable.end.date = !!this.leave.date
+
+        break;
+
+      case 'single':
+        this.enable.start.first = false;
+        this.enable.start.second = false;
+        this.enable.end.first = false;
+        this.enable.end.second = false;
+        this.enable.end.date = false;
+
+        break;
+
+      case 'half':
+        this.enable.start.first = true;
+        this.enable.start.second = true;
+        this.enable.end.first = false;
+        this.enable.end.second = false;
+        this.enable.end.date = false
+
+        break;
+
+      case 'oneThird':
+        this.enable.start.first = true;
+        this.enable.start.second = true;
+        this.enable.end.first = false;
+        this.enable.end.second = false;
+        this.enable.end.date = false
+
+        break;
+
+      case 'twoThird':
+        this.enable.start.first = true;
+        this.enable.start.second = true;
+        this.enable.end.first = false;
+        this.enable.end.second = false;
+        this.enable.end.date = false
+
+        break;
+
+
+    }
+
+
+    // if (this.startDate && this.endDate) {
+    //   const oneDay = 24 * 60 * 60 * 1000;
+    //   const startDay: Date = new Date(this.startDate);
+    //   if (this.startFirstHalf && this.startSecondHalf)
+    //     startDay.setHours(0, 0, 0, 0);
+    //   else if (this.endFirstHalf)
+    //     startDay.setHours(12, 0, 0, 0);
+    //   else if (this.endSecondHalf)
+    //     startDay.setHours(12, 0, 0, 0);
+    //   else
+    //     return this.toastyService.info({ title: 'Info', msg: 'Select Half' })
+
+    //   const endDay: Date = new Date(this.endDate);
+
+    //   if (this.endFirstHalf && this.endSecondHalf)
+    //     endDay.setHours(0, 0, 0, 0);
+    //   else if (this.endFirstHalf)
+    //     endDay.setHours(12, 0, 0, 0);
+    //   else if (this.endSecondHalf)
+    //     endDay.setHours(12, 0, 0, 0);
+    //   else
+    //     return this.toastyService.info({ title: 'Info', msg: 'Select Half' })
+
+    //   if (endDay <= startDay) {
+    //     return this.toastyService.info({ title: 'Info', msg: 'End Date should be greater then Start Date' })
+    //   }
+    //   if ((this.endFirstHalf && this.endSecondHalf) && (this.startFirstHalf && this.startSecondHalf)) {
+    //     this.days = Math.abs(((endDay.getTime() - startDay.getTime()) / (oneDay)) + 1);
+    //   } else {
+    //     this.days = Math.abs(((endDay.getTime() - startDay.getTime()) / (oneDay)) + 1);
+    //   }
+
+    //   if (this.days > this.balance.days && !this.balance.leaveType.unlimited) {
+    //     return this.toastyService.info({ title: 'Info', msg: `You don't have sufficient leave balance` })
+    //   }
+
+    //   if (this.balance.leaveType.monthlyLimit && this.days > this.balance.leaveType.monthlyLimit) {
+    //     return this.toastyService.info({ title: 'Info', msg: `You cannot apply more than ${this.balance.leaveType.monthlyLimit} in a month` })
+    //   }
+    //   const selectedLeave: any = {
+    //     id: this.balance.id,
+    //     type: this.balance.leaveType,
+    //     start: this.startDate,
+    //     end: this.endDate,
+    //     days: this.days
+    //   }
+
+    //   this.bulkLeaves = selectedLeave
+    //   console.log(this.bulkLeaves)
+
+    //   this.onChange.emit(this.leave);
+    // }
   }
 
 }
