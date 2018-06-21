@@ -5,7 +5,7 @@ import { AmsEmployeeService, AmsShiftService, AmsAttendanceService } from '../..
 import { ToastyService } from 'ng2-toasty';
 import { MonthAttendance, ShiftType } from '../../../models';
 import * as moment from 'moment';
-import { DailyAttendance } from '../../../models/daily-attendance';
+import { Attendance } from '../../../models/daily-attendance';
 import { ServerPageInput } from '../../../common/contracts/api/page-input';
 import { Employee } from '../../../models';
 import { ValidatorService } from '../../../services/validator.service';
@@ -27,14 +27,16 @@ declare var $: any;
 })
 export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  dailyAttendnace: Page<DailyAttendance>;
+  dailyAttendnace: Page<Attendance>;
   isFilter = false;
   isUpload = false;
   uploader: FileUploader;
 
-  attendances: DailyAttendance[] = [];
 
-  constructor(private amsEmployeeService: AmsEmployeeService,
+
+  attendances: Attendance[] = [];
+
+  constructor(
     public validatorService: ValidatorService,
     public activatedRoute: ActivatedRoute,
     public router: Router,
@@ -98,14 +100,16 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
       if (!page || !page.items) { return; }
       page.items.forEach(pageItem => {
 
-        const existingAttendance = this.attendances.find(item => item.code === pageItem.code);
+
+        const existingAttendance = this.attendances.find(item => item.employee.code === pageItem.employee.code);
         if (existingAttendance) {
-          if (!existingAttendance.attendance.checkIn || existingAttendance.attendance.checkIn > pageItem.attendance.checkIn) {
-            existingAttendance.attendance.checkIn = pageItem.attendance.checkIn;
+          if (!existingAttendance.checkIn || existingAttendance.checkIn > pageItem.checkIn) {
+            existingAttendance.checkIn = pageItem.checkIn;
           }
 
-          if (!existingAttendance.attendance.checkOut || existingAttendance.attendance.checkOut < pageItem.attendance.checkOut) {
-            existingAttendance.attendance.checkOut = pageItem.attendance.checkOut;
+
+          if (!existingAttendance.checkOut || existingAttendance.checkOut < pageItem.checkOut) {
+            existingAttendance.checkOut = pageItem.checkOut;
           }
         } else {
           this.attendances.push(pageItem);

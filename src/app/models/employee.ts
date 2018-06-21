@@ -31,6 +31,7 @@ export class Employee {
   fingerPrints: string[] = [];
   devices: Device[] = [];
   isDynamicShift: Boolean;
+  hasTeam: Boolean;
   weeklyOff: {
     monday: Boolean,
     tuesday: Boolean,

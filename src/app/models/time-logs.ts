@@ -1,7 +1,7 @@
 import { Employee } from './employee';
 export class TimeLogs {
   type: string;
-  time: string;
+  time: Date;
   device: string;
   ipAddress: string;
   source: string;
