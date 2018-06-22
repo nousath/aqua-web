@@ -114,12 +114,12 @@
                                 </label>
                         </td>
                         <td colspan="3">
-                            <textarea type="text" [ngModel]="reason" [maxlength]="validatorService.textLength" class="form-control" name="reason" required></textarea>
+                            <textarea type="text" [(ngModel)]="reason" [maxlength]="validatorService.textLength" class="form-control" name="reason" required></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="4" class="footerBtn">
-                            <button md-raised-button color="primary" [disabled]="!leaves.length || !reason || isProcessing" (click)="applyLeave()">
+                            <button md-raised-button color="primary" [disabled]="isProcessing" (click)="applyLeave()">
                                     <span>Add</span>
                                     <i [class.fa-spinner]="isProcessing" [class.fa-spin]="isProcessing" [class.fa-save]="!isProcessing" class="fa fa-fw"></i>
                                 </button>

@@ -8,6 +8,8 @@ import { LeaveType } from '../../../models/index';
 import { ToastyService } from 'ng2-toasty';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Employee } from '../../../models/employee';
+import * as moment from 'moment';
+import { leave } from '@angular/core/src/profile/wtf_impl';
 
 @Component({
   selector: 'aqua-apply-leave-type',
@@ -60,6 +62,7 @@ export class ApplyLeaveTypeComponent implements OnInit {
   };
 
   canCreate = false;
+
 
   limitLabel: string;
   limit: number;
@@ -196,24 +199,82 @@ export class ApplyLeaveTypeComponent implements OnInit {
     }
   }
 
+  startDateChanged() {
+    if (!this.startDate) {
+      this.leave.date = null;
+    }
+
+    this.leave.date = moment(this.startDate).toDate();
+
+    this.changed()
+  }
+
+  endDateChanged() {
+    if (!this.endDate) {
+      this.leave.toDate = null;
+    }
+
+    this.leave.toDate = moment(this.endDate).toDate();
+    this.changed();
+  }
+
   changed() {
 
     this.enableControls();
-
-
+    this.leave.days = 0;
 
     switch (this.duration) {
 
       case 'multi':
         this.canCreate = !!this.leave.date && !!this.leave.toDate;
+        this.leave.start.first = this.leave.start.first;
+        this.leave.start.second = this.leave.start.second;
+        this.leave.end.first = this.leave.end.first;
+        this.leave.end.second = this.leave.end.second;
+
+        if (this.canCreate) {
+          this.leave.days = (this.leave.toDate.valueOf() - this.leave.date.valueOf()) / (24 * 60 * 60 * 1000);
+
+          if (!this.leave.start.first) {
+            this.leave.days = this.leave.days - 0.5;
+          }
+
+          if (!this.leave.end.second) {
+            this.leave.days = this.leave.days - 0.5;
+          }
+        }
+
+
         break;
 
       case 'single':
         this.canCreate = !!this.leave.date;
+        this.leave.days = 1;
         break;
 
-      default:
+      case 'twoThird':
         this.canCreate = !!this.leave.date && ((!this.leave.start.first && this.leave.start.second) || (!this.leave.start.first && this.leave.start.second))
+        this.leave.days = 2 / 3;
+
+        this.leave.start.first = this.leave.start.first;
+        this.leave.start.second = this.leave.start.second;
+
+        break;
+
+      case 'half':
+        this.canCreate = !!this.leave.date && ((!this.leave.start.first && this.leave.start.second) || (!this.leave.start.first && this.leave.start.second))
+        this.leave.days = 1 / 2;
+        this.leave.start.first = this.leave.start.first;
+        this.leave.start.second = this.leave.start.second;
+
+        break;
+
+      case 'oneThird':
+        this.canCreate = !!this.leave.date && ((!this.leave.start.first && this.leave.start.second) || (!this.leave.start.first && this.leave.start.second))
+        this.leave.days = 1 / 3;
+        this.leave.start.first = this.leave.start.first;
+        this.leave.start.second = this.leave.start.second;
+
         break;
     }
 

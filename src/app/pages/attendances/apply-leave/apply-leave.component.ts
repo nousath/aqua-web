@@ -108,15 +108,15 @@ export class ApplyLeaveComponent {
   }
 
   applyLeave() {
-    this.angulartics2.eventTrack.next({ action: 'applyLeaveClick', properties: { category: 'allLeave', label: 'myLabel' } });
-
     if (!this.reason) {
       return this.toastyService.error({ title: 'Error', msg: 'Please add a reason' })
     }
 
     const items: Leave[] = [];
 
-    this.leaves.forEach(item => {
+
+    Object.keys(this.leaves).forEach(key => {
+      const item = this.leaves[key] as Leave;
       if (item) {
         item.reason = this.reason;
         items.push(item)
@@ -126,6 +126,8 @@ export class ApplyLeaveComponent {
     if (!items.length) {
       return this.toastyService.error({ title: 'Error', msg: 'No Leaves Selected' })
     }
+
+    this.angulartics2.eventTrack.next({ action: 'applyLeaveClick', properties: { category: 'allLeave', label: 'myLabel' } });
 
     this.amsLeaveService.leaves.bulkCreate(items)
       .then(() => this.reset())
