@@ -31,6 +31,7 @@ export class ShiftPickerComponent implements OnInit {
 
   isProcessing = false;
   isWeeklyOff = false;
+  isDynamic: Boolean;
   selectedShift: Shift;
   selectedShiftType: ShiftType;
   effectiveShiftType: ShiftType;
@@ -44,6 +45,8 @@ export class ShiftPickerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
+    this.isDynamic = this.effectiveShift.employee.isDynamicShift;
     const pickerDate = new Date(this.date);
 
     this.isDisabled = pickerDate < new Date();
