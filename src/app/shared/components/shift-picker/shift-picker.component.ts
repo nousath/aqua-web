@@ -31,7 +31,7 @@ export class ShiftPickerComponent implements OnInit {
 
   isProcessing = false;
   isWeeklyOff = false;
-  isDynamic: Boolean;
+  isDynamic: boolean;
   selectedShift: Shift;
   selectedShiftType: ShiftType;
   effectiveShiftType: ShiftType;

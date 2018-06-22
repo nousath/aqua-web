@@ -30,7 +30,7 @@ export class Employee {
   userType: 'admin' | 'superadmin' | 'normal' = 'normal';
   fingerPrints: string[] = [];
   devices: Device[] = [];
-  isDynamicShift: Boolean;
+  isDynamicShift: boolean;
   hasTeam: Boolean;
   weeklyOff: {
     monday: Boolean,
