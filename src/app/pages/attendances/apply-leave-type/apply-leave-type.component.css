@@ -5,3 +5,7 @@
 .leave-details .footer {
     margin-top: 15px;
 }
+
+.leave-details.ready {
+    background-color: #ddffdd;
+}

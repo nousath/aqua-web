@@ -23,7 +23,7 @@ export class ApplyLeaveComponent {
 
   leaveBalances: LeaveBalance[];
   employee: Employee;
-  leaves: Leave[] = [];
+  leaves: Map<number, Leave> = new Map();
   reason: string;
   isProcessing = false;
 
@@ -95,35 +95,40 @@ export class ApplyLeaveComponent {
   }
 
   reset() {
-    if (this.employee) {
+    if (this.employeeSelector) {
+      this.employee = null;
+      this.leaveBalances = null;
+    } else if (this.employee) {
       this.getLeaveBalance(this.employee.id);
     }
   }
 
   onLeaveCreate(item: Leave, index: number) {
-    this.leaves.push(item)
+    this.leaves[index] = item;
   }
 
-  applyLeave(isFormValid: boolean) {
+  applyLeave() {
     this.angulartics2.eventTrack.next({ action: 'applyLeaveClick', properties: { category: 'allLeave', label: 'myLabel' } });
-    if (!isFormValid) {
-      return this.toastyService.info({ title: 'Info', msg: 'Fill all required fields' })
+
+    if (!this.reason) {
+      return this.toastyService.error({ title: 'Error', msg: 'Please add a reason' })
     }
 
-    // this.bulkLeaves.forEach((item: any) => {
-    //   this.leave.properties.id = this.bulkLeaves.
-    //   this.leave.save().then(
-    //     data => this.isEmpId ? this.router.navigate(['../'], { relativeTo: this.activatedRoute }) : this.router.navigate(['../../'], { relativeTo: this.activatedRoute })
-    //   ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+    const items: Leave[] = [];
 
-    // })
-    // this.apply.approveLeave();
+    this.leaves.forEach(item => {
+      if (item) {
+        item.reason = this.reason;
+        items.push(item)
+      }
+    });
 
-    // this.leave.save().then(
-    //   data => this.isEmpId ? this.router.navigate(['../'], { relativeTo: this.activatedRoute }) : this.router.navigate(['../../'], { relativeTo: this.activatedRoute })
-    // ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+    if (!items.length) {
+      return this.toastyService.error({ title: 'Error', msg: 'No Leaves Selected' })
+    }
 
-    // })
-
+    this.amsLeaveService.leaves.bulkCreate(items)
+      .then(() => this.reset())
+      .catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 }

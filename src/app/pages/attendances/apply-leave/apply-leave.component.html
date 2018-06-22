@@ -102,8 +102,8 @@
                 <tbody>
                     <tr>
                         <td colspan="3">
-                            <div *ngFor="let item of leaveBalances">
-                                <aqua-apply-leave-type [balance]="item" [employee]="employee" (onChange)="onLeaveCreate($event, 1)"></aqua-apply-leave-type>
+                            <div *ngFor="let item of leaveBalances;let idx = index">
+                                <aqua-apply-leave-type [balance]="item" [employee]="employee" (onChange)="onLeaveCreate($event, idx)"></aqua-apply-leave-type>
                             </div>
                         </td>
                     </tr>
@@ -120,7 +120,7 @@
                     <tr>
                         <td colspan="4" class="footerBtn">
                             <button md-raised-button color="primary" [disabled]="!leaves.length || !reason || isProcessing" (click)="applyLeave()">
-                                    <span *ngIf="!isProcessing">Add</span>
+                                    <span>Add</span>
                                     <i [class.fa-spinner]="isProcessing" [class.fa-spin]="isProcessing" [class.fa-save]="!isProcessing" class="fa fa-fw"></i>
                                 </button>
                             <button md-raised-button [disabled]="isProcessing" (click)="reset()">Reset</button>

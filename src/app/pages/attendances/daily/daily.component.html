@@ -95,11 +95,11 @@
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="custom_pagination">
-                <pagination-controls id="foo" (pageChange)="dailyAttendnace.pageNo = $event;getAttendance(dailyAttendnace.filters.properties['ofDate']['value']);"></pagination-controls>
+                <pagination-controls id="foo" (pageChange)="dailyAttendnace.pageNo = $event;getAttendance();"></pagination-controls>
                 <label>Total Records: {{dailyAttendnace.totalRecords}}</label>
                 <div class="pageSize">
                     <label>Page Size:</label>
-                    <select name="pageSize" [(ngModel)]="dailyAttendnace.pageSize" (change)="dailyAttendnace.pageNo = 1;getAttendance(dailyAttendnace.filters.properties['ofDate']['value']);">
+                    <select name="pageSize" [(ngModel)]="dailyAttendnace.pageSize" (change)="dailyAttendnace.pageNo = 1;getAttendance();">
                         <option value=10>10</option>
                         <option value=50>50</option>
                         <option value=100>100</option>

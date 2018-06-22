@@ -59,6 +59,8 @@ export class ApplyLeaveTypeComponent implements OnInit {
     }
   };
 
+  canCreate = false;
+
   limitLabel: string;
   limit: number;
 
@@ -140,8 +142,7 @@ export class ApplyLeaveTypeComponent implements OnInit {
     }
   }
 
-  changed() {
-
+  enableControls() {
     switch (this.duration) {
 
       case 'multi':
@@ -192,9 +193,36 @@ export class ApplyLeaveTypeComponent implements OnInit {
         this.enable.end.date = false
 
         break;
-
-
     }
+  }
+
+  changed() {
+
+    this.enableControls();
+
+
+
+    switch (this.duration) {
+
+      case 'multi':
+        this.canCreate = !!this.leave.date && !!this.leave.toDate;
+        break;
+
+      case 'single':
+        this.canCreate = !!this.leave.date;
+        break;
+
+      default:
+        this.canCreate = !!this.leave.date && ((!this.leave.start.first && this.leave.start.second) || (!this.leave.start.first && this.leave.start.second))
+        break;
+    }
+
+    if (this.canCreate) {
+      this.onChange.emit(this.leave);
+    } else {
+      this.onChange.emit(null);
+    }
+
 
 
     // if (this.startDate && this.endDate) {
