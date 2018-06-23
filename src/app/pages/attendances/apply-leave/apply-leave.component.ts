@@ -45,7 +45,7 @@ export class ApplyLeaveComponent {
     private toastyService: ToastyService,
     private angulartics2: Angulartics2,
     public dialog: MdDialog
-   ) {
+  ) {
     this.userType = this.store.getItem('userType');
 
 
@@ -141,7 +141,22 @@ export class ApplyLeaveComponent {
     const dialogRef: MdDialogRef<FileUploaderDialogComponent> = this.dialog.open(FileUploaderDialogComponent);
     const component = dialogRef.componentInstance;
     component.uploader = this.amsLeaveService.leaves;
-    component.downloadFormat = 'assets/formats/leaves.csv';
+    component.samples = [{
+      name: 'CSV',
+      mapper: 'default',
+      url: 'assets/formats/leaves.csv'
+    }];
+
+    component.mappers = [{
+      name: 'Default',
+      value: 'default'
+    }, {
+      name: 'Zoho',
+      value: 'zoho'
+    }, {
+      name: 'Edualaya',
+      value: 'edu'
+    }]
     component.name = 'Leaves';
     dialogRef.afterClosed().subscribe();
   }

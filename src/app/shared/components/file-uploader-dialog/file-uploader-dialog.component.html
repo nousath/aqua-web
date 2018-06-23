@@ -4,11 +4,20 @@
         <label>File</label>
         <input type="file" class="form-control" (change)="onSelect($event)">
     </div>
-    <div *ngIf="downloadFormat" class="format">
-        <label>Sample</label>
-        <p>
-            <a [href]="downloadFormat">Download</a>
-        </p>
+    <div *ngIf="mappers && mappers.length" class="mappers">
+        <label>Format/Mapper</label>
+        <div>
+            <select [(ngModel)]="selectedMapper" class="form-control">
+                <option *ngFor="let item of mappers" [value]="item.value">{{item.name}}</option>
+              </select>
+        </div>
+
+    </div>
+    <div *ngIf="samples && samples.length">
+        <label>Samples</label>
+        <div class="sample" *ngFor="let sample of samples">
+            <label>{{sample.name}}</label> : <a [href]="sample.url">Download</a>
+        </div>
     </div>
     <div *ngIf="errorMessage" class="error">
         <label>Error</label>
@@ -20,5 +29,5 @@
 <div md-dialog-actions class="controls-row">
     <span class="spacer"></span>
     <button md-button (click)="dialogRef.close(false)">Cancel</button>
-    <button md-raised-button color="primary" (click)="upload()">Upload</button>
+    <button md-raised-button color="primary" [disabled]="!file" (click)="upload()">Upload</button>
 </div>

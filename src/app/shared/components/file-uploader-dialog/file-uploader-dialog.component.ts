@@ -14,11 +14,13 @@ export class FileUploaderDialogComponent implements OnInit {
   name: string;
 
   @Input()
-
-  downloadFormat: string;
+  samples: { name: string, mapper?: string, url: string }[];
 
   @Input()
-  format: string;
+  mappers: { name: string, value: string }[];
+
+  @Input()
+  selectedMapper = 'default';
 
   @Input()
   uploader: IUploader;
@@ -41,8 +43,7 @@ export class FileUploaderDialogComponent implements OnInit {
   }
 
   upload() {
-
-    this.uploader.bulkUpload(this.file, this.format)
+    this.uploader.bulkUpload(this.file, this.selectedMapper)
       .then((message) => {
         message = message || 'Done';
         this.toastyService.info({ title: 'Uploaded', msg: message });

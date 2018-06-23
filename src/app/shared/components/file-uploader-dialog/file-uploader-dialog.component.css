@@ -6,7 +6,11 @@
     height: 75px;
 }
 
-.mat-dialog-content .format {
+.mat-dialog-content .sample {
+    height: 25px;
+}
+
+.mat-dialog-content .mappers {
     height: 75px;
 }
 
