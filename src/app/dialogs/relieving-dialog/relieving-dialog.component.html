@@ -1,0 +1,39 @@
+<form #TerminateForm="ngForm">
+  <div class="row text-center header">
+    <h5>
+      <b>Confirm</b>
+    </h5>
+  </div>
+  <!-- <br> -->
+  <br>
+  <!-- <div class="row text-center">
+    <h5><b>{{msg}}</b></h5>
+</div> -->
+  <table style="float: left; width: 100%;">
+    <tr>
+      <th>Reason of Releiving</th>
+      <td>
+        <select name="reason" class="form-control" [(ngModel)]="employee.reason">
+          <option disabled value="" selected="selected">Select an reason</option>
+          <option value="resign">Resign</option>
+          <option value="death">Death</option>
+          <option value="terminate">Terminate</option>
+        </select>
+      </td>
+    </tr>
+    <tr style="padding-top: 10px;">
+      <td></td>
+      <td colspan="2">
+        <div class="row text-center" style="float:right;padding-right:25px;">
+          <button md-raised-button color="primary" (click)="continue()">Continue</button>
+          <button md-raised-button class="btn_grey" md-dialog-close>Cancel</button>
+        </div>
+      </td>
+    </tr>
+  </table>
+  <br>
+</form>
+<!-- <div class="row text-center">
+    <button md-raised-button color="primary" (click)="dialogRef.close(true)">Continue</button>
+    <button md-raised-button class="btn_grey" md-dialog-close>Cancel</button>
+</div> -->
