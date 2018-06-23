@@ -1,0 +1,21 @@
+.mat-dialog-content {
+    width: 300px;
+}
+
+.mat-dialog-content .file {
+    height: 75px;
+}
+
+.mat-dialog-content .format {
+    height: 75px;
+}
+
+.mat-dialog-content .error p {
+    background-color: #ffcccc;
+    border: #ffaaaa solid 1px;
+    border-radius: 5px;
+    max-height: 100px;
+    max-width: 100%;
+    overflow: scroll;
+    padding: 10px;
+}

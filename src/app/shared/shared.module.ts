@@ -75,6 +75,7 @@ import {
 } from '@angular/material';
 import { ShiftTypeFilterPipe } from './pipes/shift-type-filter.pipe';
 import { EmployeesFilterComponent } from './components/employees-filter/employees-filter.component';
+import { FileUploaderDialogComponent } from './components/file-uploader-dialog/file-uploader-dialog.component';
 
 
 export const MaterialModules = [
@@ -113,7 +114,7 @@ export const MaterialModules = [
 ];
 
 @NgModule({
-  declarations: [TimePipe, ShiftPickerComponent, ShiftTypeFilterPipe, EmployeesFilterComponent],
+  declarations: [TimePipe, ShiftPickerComponent, ShiftTypeFilterPipe, EmployeesFilterComponent, FileUploaderDialogComponent],
   providers: [
     EmsEmployeeService,
     EmsDesignationService,
@@ -161,7 +162,8 @@ export const MaterialModules = [
     TimePipe,
     ShiftPickerComponent,
     EmployeesFilterComponent
-  ]
+  ],
+  entryComponents: [FileUploaderDialogComponent],
 
 })
 export class SharedModule { }

@@ -1,0 +1,24 @@
+<h1 md-dialog-title>Upload {{name}}</h1>
+<div md-dialog-content>
+    <div class="file">
+        <label>File</label>
+        <input type="file" class="form-control" (change)="onSelect($event)">
+    </div>
+    <div *ngIf="downloadFormat" class="format">
+        <label>Sample</label>
+        <p>
+            <a [href]="downloadFormat">Download</a>
+        </p>
+    </div>
+    <div *ngIf="errorMessage" class="error">
+        <label>Error</label>
+        <p>
+            {{errorMessage}}
+        </p>
+    </div>
+</div>
+<div md-dialog-actions class="controls-row">
+    <span class="spacer"></span>
+    <button md-button (click)="dialogRef.close(false)">Cancel</button>
+    <button md-raised-button color="primary" (click)="upload()">Upload</button>
+</div>

@@ -49,7 +49,7 @@ export class ChannelTypeEditComponent implements OnInit {
       }
     });
 
-    this.amsCommunicationAppService.channel.simpePost(this.channel)
+    this.amsCommunicationAppService.channel.simplePost(this.channel)
       .then(data => {
         this.router.navigateByUrl('/pages/settings/channelTypes');
         console.log(data);

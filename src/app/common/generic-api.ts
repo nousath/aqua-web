@@ -9,6 +9,7 @@ import { ToastyService, ToastyConfig } from 'ng2-toasty';
 import { IGetParams } from './contracts/api/get-params.interface';
 import { environment } from '../../environments/environment';
 import { RemoteDataModel } from './contracts/api/remote-data.model';
+import { FileUploader, FileItem } from '../../../node_modules/ng2-file-upload';
 
 export class GenericApi<TModel> implements IApi<TModel> {
 
@@ -176,7 +177,7 @@ export class GenericApi<TModel> implements IApi<TModel> {
     let url = `${this.rootUrl}/${this.key}`;
     url = path ? `${url}/${path}` : `${url}/bulk`;
 
-    return this.http.post(url, {items: models}, { headers: this.getHeaders() })
+    return this.http.post(url, { items: models }, { headers: this.getHeaders() })
       .toPromise()
       .then((response) => {
         const dataModel = response.json() as RemoteDataModel;
@@ -193,23 +194,80 @@ export class GenericApi<TModel> implements IApi<TModel> {
       .catch(this.handleError);
 
   }
+
+  bulkUpload(file: File, format?: string, path?: string): Promise<string> {
+
+    let url = `${this.rootUrl}/${this.key}`;
+    url = path ? `${url}/${path}` : `${url}/bulk`;
+
+    if (format) {
+      url = `${url}?format=${format}`;
+    }
+
+    const headers = [];
+
+    this.getHeaders().forEach((values, name) => {
+      if (name === 'Content-Type') {
+        return;
+      }
+      values.forEach(value => {
+        headers.push({
+          name: name,
+          value: value
+        })
+      });
+    })
+
+    const uploader = new FileUploader({
+      url: url,
+      headers: headers,
+      autoUpload: true
+    });
+
+    uploader.onBeforeUploadItem = (item) => {
+      item.withCredentials = false;
+    }
+
+    return new Promise((resolve, reject) => {
+
+      uploader.onErrorItem = (item: FileItem, response: string, status: number) => {
+        reject(new Error('failed'));
+      }
+
+      uploader.onCompleteItem = (item: FileItem, response: string, status: number) => {
+        const dataModel = JSON.parse(response) as RemoteDataModel;
+
+        if (!dataModel.isSuccess) {
+          if (status === 200) {
+            return reject(dataModel.message || dataModel.error || dataModel.code || 'failed');
+          } else {
+            return reject(status);
+          }
+        }
+        return resolve(dataModel.message);
+      }
+
+      uploader.addToQueue([file]);
+    });
+  }
+
   exportReport(input: ServerPageInput, path?: string, reportName?: string): Promise<any> {
     const parms: URLSearchParams = this.getQueryParams(input);
     const apiPath: string = path ? `${this.rootUrl}/${path}` : `${this.rootUrl}/${this.key}`;
 
     return this.http.get(apiPath, { headers: this.getHeaders(), search: parms, responseType: ResponseContentType.Blob }).toPromise()
-      .then((resposne) => {
+      .then((response) => {
 
-        const contentType = resposne.headers.get('content-type') || 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+        const contentType = response.headers.get('content-type') || 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
         // get the headers' content disposition
-        const cd = resposne.headers.get('content-disposition') || resposne.headers.get('Content-Disposition');
+        const cd = response.headers.get('content-disposition') || response.headers.get('Content-Disposition');
 
         // get the file name with regex
         const regex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
         const match = regex.exec(cd);
 
-        // is there a fiel name?
+        // is there a file name?
         let fileName = match && match[1] || 'report';
         if (reportName) {
           fileName = reportName;
@@ -218,7 +276,7 @@ export class GenericApi<TModel> implements IApi<TModel> {
         // replace leading and trailing slashes that C# added to your file name
         fileName = fileName.replace(/\"/g, '');
 
-        const blob = new Blob([resposne['_body']], { type: contentType });
+        const blob = new Blob([response['_body']], { type: contentType });
         if (navigator.msSaveBlob) {
           navigator.msSaveBlob(blob, fileName);
         } else {
@@ -232,13 +290,11 @@ export class GenericApi<TModel> implements IApi<TModel> {
           document.body.appendChild(a);
           document.body.removeChild(a);
         }
-
-
       })
       .catch(this.handleError);
   }
 
-  simpePost(model: any): Promise<any> {
+  simplePost(model: any): Promise<any> {
     return this.http.post(`${this.rootUrl}/${this.key}`, model, { headers: this.getHeaders() })
       .toPromise()
       .then((response) => {
