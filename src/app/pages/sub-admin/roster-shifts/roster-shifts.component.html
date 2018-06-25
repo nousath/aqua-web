@@ -83,8 +83,7 @@
                         <div *ngIf="!item.employee.isDynamicShift" class="shift previous" [style.border-color]="shiftColour(item?.previousShift?.shiftType)">{{item?.previousShift?.shiftType?.name || '--'}}</div>
                     </td>
                     <td class="tdStyle" *ngFor="let date of dates">
-                        <div *ngIf="item.employee.isDynamicShift" class="shift disabled"></div>
-                        <aqua-shift-picker *ngIf="!item.employee.isDynamicShift" [shiftTypes]="shiftTypes.items" [effectiveShift]="item" [date]="date"></aqua-shift-picker>
+                        <aqua-shift-picker [shiftTypes]="shiftTypes.items" [effectiveShift]="item" [date]="date"></aqua-shift-picker>
                     </td>
                 </tr>
             </tbody>

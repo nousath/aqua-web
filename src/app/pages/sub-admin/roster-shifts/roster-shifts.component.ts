@@ -132,7 +132,7 @@ export class RosterShiftsComponent implements OnInit {
 
   getEffectiveShift(date: Date) {
     this.isLoading = true;
-    this.effectiveShifts.filters.properties['fromDate']['value'] = date.toUTCString();
+    this.effectiveShifts.filters.properties['fromDate']['value'] = date.toUTCString ? date.toUTCString() : date;
     this.effectiveShifts.fetch().then(() => {
       this.isLoading = false;
     }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
