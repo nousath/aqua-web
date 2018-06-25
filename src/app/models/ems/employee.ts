@@ -7,6 +7,10 @@ export class EmsEmployee {
   id = '';
   name = '';
   code = '';
+  displayCode: string;
+  aadhaar = '';
+  pan = '';
+
   // designation: Designation = new Designation();
   designation = '';
   department = '';
@@ -18,10 +22,8 @@ export class EmsEmployee {
   picUrl = '';
   dob = '';
   doj = '';
-  dom = '';
   email = '';
-  aadhar = '';
-  pan = '';
+
   password = '';
   userType: 'admin' | 'superadmin' | 'normal' = 'normal';
   phone = '';
@@ -29,17 +31,16 @@ export class EmsEmployee {
   device: Device = new Device();
   shiftType: ShiftType = new ShiftType();
   supervisor: Supervisor = new Supervisor();
-  employeeType: string;
-  displayCode: string;
+  employmentType: string;
   leaveBalances: any[];
   avgHours: number = null;
   token = '';
 
-  accountno = '';
+  accountNo = '';
+  accountHolder = '';
   ifsc = '';
   bank = '';
   branch = '';
-  accountholder = '';
 
   address1 = '';
   address2 = '';
@@ -47,6 +48,10 @@ export class EmsEmployee {
   state = '';
   district = '';
   pincode = '';
+
+  dom = '';
+  contractor = '';
+
   dol = '';
   reason = '';
 }

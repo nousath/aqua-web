@@ -125,11 +125,14 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
           (this.isNew = true) :
           this.employee.fetch(empId).then(
             data => {
+              if(!this.employee.properties.displayCode) {
+                this.employee.properties.displayCode = this.employee.properties.code
+              }
               this.uploader.setOptions({ url: `/ems/api/employees/image/${empId}` });
               if (this.employee.properties.dob) { $('#dateSelector').datepicker('setDate', new Date(this.employee.properties.dob)); }
               if (this.employee.properties.dol) { $('#terminateDate').datepicker('setDate', new Date(this.employee.properties.dol)); }
               if (this.employee.properties.doj) { $('#joiningDate').datepicker('setDate', new Date(this.employee.properties.doj)); }
-              if (this.employee.properties.doj) { $('#membershipDate').datepicker('setDate', new Date(this.employee.properties.dom)); }
+              if (this.employee.properties.dom) { $('#membershipDate').datepicker('setDate', new Date(this.employee.properties.dom)); }
               this.employee.properties.supervisor = this.employee.properties.supervisor ? this.employee.properties.supervisor : new Supervisor();
               // this.employee.properties.designation = this.employee.properties.designation ? this.employee.properties.designation : new Designation();
               this.employee.properties.designation = this.employee.properties.designation ? this.employee.properties.designation.toLowerCase() : null;
@@ -157,10 +160,16 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.employee.properties.email && !this.validatorService.validateEmail(this.employee.properties.email))
       return this.toastyService.info({ title: 'Info', msg: 'Please fill valid email' })
 
-    const d: any = this.employee.properties.designation ? _.find(this.designations.items, (item: Designation) => {
+    const designation: any = this.employee.properties.designation ? _.find(this.designations.items, (item: Designation) => {
       return item.name.toLowerCase() === this.employee.properties.designation.toLowerCase()
     }) : null;
-    this.employee.properties.designation = d ? d : null;
+    this.employee.properties.designation = designation ? designation : null;
+
+
+    const department: any = this.employee.properties.department ? _.find(this.departments.items, (item: Department) => {
+      return item.name.toLowerCase() === this.employee.properties.department.toLowerCase()
+    }) : null;
+    this.employee.properties.department = department ? department : null;
 
     if (this.isNew)
       this.employee.properties.status = 'activate';
@@ -176,7 +185,8 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.isNew) {
           this.isNew = false;
           this.toastyService.success({ title: 'Success', msg: `${this.employee.properties.name} added successfully` });
-          this.employee.properties.designation = this.employee.properties.designation ? this.employee.properties.designation.toLowerCase() : null;
+          this.employee.properties.designation = this.employee.properties.designation ? this.employee.properties.designation : null;
+          this.employee.properties.department = this.employee.properties.department ? this.employee.properties.department : null;
           this.employee.properties.supervisor = this.employee.properties.supervisor ? this.employee.properties.supervisor : new Supervisor();
           this.router.navigate(['../', this.employee.properties.id], { relativeTo: this.activatedRoute });
         } else {
@@ -226,6 +236,10 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   empFormatter(data: Employee): string {
+    return data.name;
+  }
+
+  contractorFormatter(data: Employee): string {
     return data.name;
   }
 
