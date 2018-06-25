@@ -10,7 +10,6 @@ import { Model } from '../../../common/contracts/model';
 import { TimeLogs, TimeLogsLocation } from '../../../models/time-logs';
 import { Page } from '../../../common/contracts/page';
 import { DayEvent } from '../../../models/day-event';
-import { Subscription } from 'rxjs';
 import { AmsAttendanceService, AmsTimelogsService, AmsShiftService, AmsEmployeeService } from '../../../services/index';
 import { Http } from '@angular/http';
 // import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
@@ -29,7 +28,6 @@ export class AddAttendanceLogsComponent {
   logs: Page<TimeLogs>;
   attendances: Page<DayEvent>;
   timeLog: Model<TimeLogs>;
-  subscription: Subscription;
   empId: string;
   ofDate: any;
   attendance: DayEvent;
@@ -38,11 +36,13 @@ export class AddAttendanceLogsComponent {
   checkTime: Date;
   attendanceLogs = [];
   extraShiftCount = 0;
-  nextDayIn: boolean = false;
-  nextDayOut: boolean = false;
+  nextDayIn = false;
+  nextDayOut = false;
   paramsId: string;
   paramsDate: Date;
 
+  inTime: any;
+  outTime: any;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -90,7 +90,7 @@ export class AddAttendanceLogsComponent {
         value: null
       }]
     })
-    this.subscription = this.activatedRoute.params.subscribe(
+    this.activatedRoute.params.subscribe(
       params => {
         this.paramsId = params['empId'];
         this.paramsDate = params['ofDate'];
@@ -203,7 +203,7 @@ export class AddAttendanceLogsComponent {
 
     }
     if (this.checkTime) {
-      var index = this.attendanceLogs.findIndex(item => item.type === 'checkIn')
+      const index = this.attendanceLogs.findIndex(item => item.type === 'checkIn')
       if (index > -1) {
         this.attendanceLogs.splice(index, 1);
       }
@@ -230,7 +230,7 @@ export class AddAttendanceLogsComponent {
 
     }
     if (this.checkTime) {
-      var index = this.attendanceLogs.findIndex(item => item.type === 'checkOut')
+      const index = this.attendanceLogs.findIndex(item => item.type === 'checkOut')
       if (index > -1) {
         this.attendanceLogs.splice(index, 1);
       }

@@ -48,14 +48,14 @@ import { AddAttendanceLogsComponent } from '../../shared/components/add-attendan
     TeamsComponent,
     ApplyLeaveTypeComponent,
     AddAttendanceLogsComponent
-    
+
   ],
   entryComponents: [
     DayEventDialogComponent,
     LeaveActionDialogComponent,
     AddAttendanceLogsComponent
-    
-    
+
+
   ],
 
   exports: [
@@ -69,7 +69,7 @@ import { AddAttendanceLogsComponent } from '../../shared/components/add-attendan
     LeaveBalancesComponent,
     ManageLeavesComponent,
     AddAttendanceLogsComponent
-    
+
   ]
 })
 export class AttendancesModule { }

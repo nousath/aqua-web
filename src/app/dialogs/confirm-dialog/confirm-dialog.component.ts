@@ -8,7 +8,7 @@ import { MdDialogRef } from '@angular/material';
 })
 export class ConfirmDialogComponent implements OnInit {
 
-  msg: string = '';
+  msg = '';
   constructor(public dialogRef: MdDialogRef<ConfirmDialogComponent>) { }
 
   ngOnInit() {

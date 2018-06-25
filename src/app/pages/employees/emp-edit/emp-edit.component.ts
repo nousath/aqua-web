@@ -125,7 +125,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
           (this.isNew = true) :
           this.employee.fetch(empId).then(
             data => {
-              if(!this.employee.properties.displayCode) {
+              if (!this.employee.properties.displayCode) {
                 this.employee.properties.displayCode = this.employee.properties.code
               }
               this.uploader.setOptions({ url: `/ems/api/employees/image/${empId}` });

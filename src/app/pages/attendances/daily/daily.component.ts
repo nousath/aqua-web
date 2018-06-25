@@ -28,8 +28,8 @@ declare var $: any;
 })
 export class DailyComponent {
 
-  
-  @Output() 
+
+  @Output()
   data: EventEmitter<any> = new EventEmitter();
 
   dailyAttendnace: Page<Attendance>;
@@ -158,8 +158,6 @@ export class DailyComponent {
     this.isUpload = !this.isUpload;
     this.uploader.clearQueue();
   }
-  ngOnDestroy() {
 
-  }
 
 }

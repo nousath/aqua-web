@@ -53,7 +53,7 @@ import { LeaveConfirmDialogComponent } from './dialogs/leave-confirm-dialog/leav
   exports: [
     ResetPasswordDialogComponent,
     LeaveConfirmDialogComponent,
-    
+
   ],
   bootstrap: [AppComponent]
 })

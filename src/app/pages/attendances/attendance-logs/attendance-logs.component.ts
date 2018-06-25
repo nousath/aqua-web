@@ -40,10 +40,13 @@ export class AttendanceLogsComponent implements OnInit {
   checkTime: Date;
   attendanceLogs = [];
   extraShiftCount = 0;
-  nextDayIn: boolean = false;
-  nextDayOut: boolean = false;
+  nextDayIn = false;
+  nextDayOut = false;
   paramsId: string;
   paramsDate: Date;
+
+  outTime: any;
+  inTime: any;
 
   // checkStatus: any;
 
@@ -200,7 +203,7 @@ export class AttendanceLogsComponent implements OnInit {
 
     }
     if (this.checkTime) {
-      var index = this.attendanceLogs.findIndex(item => item.type === 'checkIn')
+      const index = this.attendanceLogs.findIndex(item => item.type === 'checkIn')
       if (index > -1) {
         this.attendanceLogs.splice(index, 1);
       }
@@ -227,7 +230,7 @@ export class AttendanceLogsComponent implements OnInit {
 
     }
     if (this.checkTime) {
-      var index = this.attendanceLogs.findIndex(item => item.type === 'checkOut')
+      const index = this.attendanceLogs.findIndex(item => item.type === 'checkOut')
       if (index > -1) {
         this.attendanceLogs.splice(index, 1);
       }
