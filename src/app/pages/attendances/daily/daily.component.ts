@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Location } from '@angular/common'
 import { Page } from '../../../common/contracts/page';
 import { AmsEmployeeService, AmsShiftService, AmsAttendanceService } from '../../../services/ams';
@@ -18,6 +18,7 @@ import { LocalStorageService } from '../../../services/local-storage.service';
 import { AmsTagService } from '../../../services/ams/ams-tag.service';
 import { TagType, Tag } from '../../../models/tag';
 import { FileUploader } from 'ng2-file-upload';
+import { AddAttendanceLogsComponent } from '../../../shared/components/add-attendance-logs/add-attendance-logs.component';
 declare var $: any;
 
 @Component({
@@ -25,12 +26,17 @@ declare var $: any;
   templateUrl: './daily.component.html',
   styleUrls: ['./daily.component.css']
 })
-export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
+export class DailyComponent {
+
+  
+  @Output() 
+  data: EventEmitter<any> = new EventEmitter();
 
   dailyAttendnace: Page<Attendance>;
   isFilter = false;
   isUpload = false;
   uploader: FileUploader;
+  // data: Attendance;
 
 
 
@@ -42,7 +48,8 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
     public router: Router,
     private location: Location,
     private amsAttendanceService: AmsAttendanceService,
-    private toastyService: ToastyService) {
+    private toastyService: ToastyService,
+    public dialog: MdDialog) {
 
 
     this.dailyAttendnace = new Page({
@@ -96,6 +103,7 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getAttendance() {
+    this.attendances = [];
     this.dailyAttendnace.fetch().then(page => {
       if (!page || !page.items) { return; }
       page.items.forEach(pageItem => {
@@ -118,6 +126,10 @@ export class DailyComponent implements OnInit, AfterViewInit, OnDestroy {
     }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
+  addAttendance(item: Attendance) {
+    console.log(item.id + item.employee.name)
+    const dialog = this.dialog.open(AddAttendanceLogsComponent, { width: '40%', data: item });
+  }
   ngOnInit() {
   }
 

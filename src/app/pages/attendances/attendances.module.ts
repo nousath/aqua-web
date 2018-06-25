@@ -21,6 +21,7 @@ import { LeaveTypeComponent } from './leave-type/leave-type.component';
 import { TeamsComponent } from './teams/teams.component';
 import { ApplyLeaveTypeComponent } from './apply-leave-type/apply-leave-type.component';
 import { RouterModule } from '@angular/router';
+import { AddAttendanceLogsComponent } from '../../shared/components/add-attendance-logs/add-attendance-logs.component';
 
 @NgModule({
   imports: [
@@ -45,11 +46,16 @@ import { RouterModule } from '@angular/router';
     ReportListsComponent,
     LeaveTypeComponent,
     TeamsComponent,
-    ApplyLeaveTypeComponent
+    ApplyLeaveTypeComponent,
+    AddAttendanceLogsComponent
+    
   ],
   entryComponents: [
     DayEventDialogComponent,
     LeaveActionDialogComponent,
+    AddAttendanceLogsComponent
+    
+    
   ],
 
   exports: [
@@ -62,6 +68,8 @@ import { RouterModule } from '@angular/router';
     LeavesComponent,
     LeaveBalancesComponent,
     ManageLeavesComponent,
+    AddAttendanceLogsComponent
+    
   ]
 })
 export class AttendancesModule { }

@@ -57,6 +57,7 @@
                         <th class="tdWidth">Status</th>
                         <th class="text-center">Check In</th>
                         <th class="text-center">Check Out</th>
+                        <th class="text-center">Edit</th>
                         <th class="tdWidth">Team</th>
                     </tr>
                 </thead>
@@ -82,11 +83,11 @@
                         <!-- <td class="tdWidth">{{item?.department || '--'}}</td> -->
                         <td class="attendance"><input type="text" [ngModel]="item.checkIn | date:'shortTime'" [disabled]="dailyAttendnace?.isLoading || item.checkIn"></td>
                         <td class="attendance"><input type="text" [ngModel]="item.checkOut | date:'shortTime'" [disabled]="dailyAttendnace?.isLoading || item.checkOut"></td>
+                        <td class="tdWidth"><a (click)="addAttendance(item)">Logs</a></td>
                         <td class="tdWidth">
                             <a [routerLink]="['teams',item.employee.id]" *ngIf="item.employee.hasTeam">
                                 <img src="assets/images/team.png" width="30px;">
                             </a>
-                            <span *ngIf="!item.team">--</span>
                         </td>
                     </tr>
 

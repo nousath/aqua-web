@@ -1,31 +1,29 @@
-import { AmsShiftService } from '../../../services/ams/ams-shift.service';
-import { Component, OnInit } from '@angular/core';
+
+import { Component, OnInit, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
 import { ToastyService } from 'ng2-toasty';
-import * as moment from 'moment';
+import { Angulartics2 } from 'angulartics2';
 import * as _ from 'lodash';
-import { TimeLogsLocation, TimeLogs } from '../../../models/time-logs';
+import * as moment from 'moment';
 import { Employee } from '../../../models/employee';
 import { Model } from '../../../common/contracts/model';
-import { DayEvent } from '../../../models/day-event';
+import { TimeLogs, TimeLogsLocation } from '../../../models/time-logs';
 import { Page } from '../../../common/contracts/page';
-import { AmsAttendanceService } from '../../../services/ams/ams-attendance.service';
-import { AmsTimelogsService } from '../../../services/ams/ams-timelogs.service';
-import { AmsEmployeeService } from '../../../services/ams/ams-employee.service';
-import { Angulartics2 } from 'angulartics2';
-import { IGetParams } from '../../../common/contracts/api/get-params.interface';
-import 'rxjs/Rx';
+import { DayEvent } from '../../../models/day-event';
+import { Subscription } from 'rxjs';
+import { AmsAttendanceService, AmsTimelogsService, AmsShiftService, AmsEmployeeService } from '../../../services/index';
 import { Http } from '@angular/http';
-import { AddAttendanceLogsComponent } from '../../../shared/components/add-attendance-logs/add-attendance-logs.component';
-
+// import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { Attendance } from '../../../models/daily-attendance';
+import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 
 @Component({
-  selector: 'aqua-attendance-logs',
-  templateUrl: './attendance-logs.component.html',
-  styleUrls: ['./attendance-logs.component.css']
+  selector: 'aqua-add-attendance-logs',
+  templateUrl: './add-attendance-logs.component.html',
+  styleUrls: ['./add-attendance-logs.component.css']
 })
-export class AttendanceLogsComponent implements OnInit {
+export class AddAttendanceLogsComponent {
+
   employee: Model<Employee>;
   userType: string;
   logs: Page<TimeLogs>;
@@ -45,17 +43,22 @@ export class AttendanceLogsComponent implements OnInit {
   paramsId: string;
   paramsDate: Date;
 
-  // checkStatus: any;
 
-
-  constructor(private activatedRoute: ActivatedRoute,
+  constructor(
+    private activatedRoute: ActivatedRoute,
     private toastyService: ToastyService,
     private amsAttendanceService: AmsAttendanceService,
     private amsTimelogsService: AmsTimelogsService,
     private shiftService: AmsShiftService,
     private angulartics2: Angulartics2,
     private http: Http,
-    private amsEmployeeService: AmsEmployeeService) {
+    private amsEmployeeService: AmsEmployeeService,
+    public dialogRef: MdDialogRef<AddAttendanceLogsComponent>,
+    @Inject(MD_DIALOG_DATA) public data: Attendance) {
+
+
+    console.log('data', this.data);
+
     this.employee = new Model({
       api: amsEmployeeService.employeesForAdmin,
       properties: new Employee()
@@ -87,29 +90,29 @@ export class AttendanceLogsComponent implements OnInit {
         value: null
       }]
     })
-
     this.subscription = this.activatedRoute.params.subscribe(
       params => {
-        this.empId = params['empId'];
-        this.ofDate = params['ofDate'];
-        this.attendances.filters.properties['employee'].value = this.empId;
-        this.attendances.filters.properties['ofDate'].value = new Date(this.ofDate).toISOString();
-        this.logs.filters.properties['fromDate'].value = new Date(this.ofDate).toISOString();
-        this.logs.filters.properties['employeeId'].value = this.empId;
-        this.employee.fetch(this.empId).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
-        this.getAttendance();
+        this.paramsId = params['empId'];
+        this.paramsDate = params['ofDate'];
+      })
+    if (this.paramsId && this.paramsDate) {
+      this.empId = this.paramsId
+      this.ofDate = this.paramsDate
+    } else {
+      console.log(this.data.id)
+      this.empId = this.data.employee.id
+      this.ofDate = this.data.ofDate
+    }
+    this.attendances.filters.properties['employee'].value = this.empId;
+    this.attendances.filters.properties['ofDate'].value = new Date(this.ofDate).toISOString();
+    this.logs.filters.properties['fromDate'].value = new Date(this.ofDate).toISOString();
+    this.logs.filters.properties['employeeId'].value = this.empId;
+    this.employee.fetch(this.empId).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+    this.getAttendance();
 
-
-
-        this.checkTime = new Date(this.ofDate);
-
-
-      }
-    )
-    this.userType = localStorage.getItem('userType')
+    this.checkTime = new Date(this.ofDate);
 
   }
-
 
   getLocation(latlng: number[], index: number) {
     const api = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng[1]},${latlng[0]}&key=AIzaSyA3-BQmJVYB6_soLJPv7cx2lFUMAuELlkM`;
@@ -122,7 +125,7 @@ export class AttendanceLogsComponent implements OnInit {
 
   getAttendance() {
 
-
+    console.log(this.data)
     this.amsAttendanceService.attendance.get(`${new Date(this.ofDate).toISOString()}?employeeId=${this.empId}`).then(item => {
       this.attendance = item;
 

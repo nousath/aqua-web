@@ -10,6 +10,7 @@ import { ConfirmDialogComponent } from '../../dialogs/confirm-dialog/confirm-dia
 import { SharedModule } from '../../shared/shared.module';
 import { DepartmentsComponent } from './departments/departments.component';
 import { FingerPrintComponent } from './finger-print/finger-print.component';
+import { RelievingDialogComponent } from '../../dialogs/relieving-dialog/relieving-dialog.component';
 
 @NgModule({
   imports: [
@@ -25,10 +26,12 @@ import { FingerPrintComponent } from './finger-print/finger-print.component';
     FingerPrintComponent,
     DepartmentsComponent,
     FingerPrintComponent,
+    RelievingDialogComponent
     // ResetPasswordDialogComponent
   ],
   entryComponents: [
     ConfirmDialogComponent,
+    RelievingDialogComponent
     // ResetPasswordDialogComponent
   ],
   exports: [

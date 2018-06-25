@@ -33,6 +33,7 @@ import { LeaveConfirmDialogComponent } from './dialogs/leave-confirm-dialog/leav
     ResetPasswordDialogComponent,
     LeaveConfirmDialogComponent,
 
+
   ],
   imports: [
     BrowserModule,
@@ -46,11 +47,13 @@ import { LeaveConfirmDialogComponent } from './dialogs/leave-confirm-dialog/leav
   ],
   entryComponents: [
     ResetPasswordDialogComponent,
-    LeaveConfirmDialogComponent
+    LeaveConfirmDialogComponent,
+
   ],
   exports: [
     ResetPasswordDialogComponent,
-    LeaveConfirmDialogComponent
+    LeaveConfirmDialogComponent,
+    
   ],
   bootstrap: [AppComponent]
 })

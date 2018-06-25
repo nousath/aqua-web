@@ -13,6 +13,7 @@ import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-
 import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
 import { LocalStorageService } from 'app/services/local-storage.service';
 import { ValidatorService } from '../../../services/validator.service';
+import { RelievingDialogComponent } from '../../../dialogs/relieving-dialog/relieving-dialog.component';
 
 @Component({
   selector: 'aqua-employee-list',
@@ -107,7 +108,7 @@ export class EmployeeListComponent implements OnInit {
   }
 
   terminateEmp(empId: string, empName: string) {
-    const dialog = this.dialog.open(ConfirmDialogComponent, { width: '40%' });
+    const dialog = this.dialog.open(RelievingDialogComponent, { width: '40%' });
     dialog.componentInstance.msg = `Are you sure to want to terminate ${empName} ?`;
     dialog.afterClosed().subscribe((emp: any) => {
       if (emp.reason) {
