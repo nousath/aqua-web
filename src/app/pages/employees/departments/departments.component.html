@@ -12,7 +12,7 @@
             </button>
         </div>
         <div *ngIf="!isUpload" style="float: right">
-            <a class="exl" md-icon-button (click)="excel()" mdTooltip="Excel Upload" [mdTooltipPosition]="'above'" angulartics2On="click"
+            <a class="exl" md-icon-button (click)="import()" mdTooltip="Excel Upload" [mdTooltipPosition]="'above'" angulartics2On="click"
                 angularticsEvent="excelUploadClick" angularticsCategory="designation " [angularticsProperties]="{label: 'Fall Campaign'}">
                 <md-icon>cloud_upload</md-icon>
             </a>
@@ -22,13 +22,13 @@
                 <b>Excel Upload</b>
             </span>&nbsp;&nbsp;
             <input class="file" id="uploader" type="file" ng2FileSelect [uploader]="uploader" angulartics2On="click" angularticsEvent="chooseFileClick"
-                angularticsCategory="employee" [angularticsProperties]="{label: 'Fall Campaign'}" style="float: left"/>
-                <button md-icon-button class="uploadBtn" (click)="item.upload()">
-                    <md-icon>cloud_upload</md-icon>
-                </button>
-                <button md-icon-button class="uploadBtn" (click)="excel()">
-                    <md-icon>highlight_off</md-icon>
-                </button>
+                angularticsCategory="employee" [angularticsProperties]="{label: 'Fall Campaign'}" style="float: left" />
+            <button md-icon-button class="uploadBtn" (click)="item.upload()">
+                <md-icon>cloud_upload</md-icon>
+            </button>
+            <button md-icon-button class="uploadBtn" (click)="excel()">
+                <md-icon>highlight_off</md-icon>
+            </button>
         </div>
     </div>
 </div>
@@ -111,19 +111,21 @@
                                 class="number form-control input-xs" [(ngModel)]="item.code">
                         </td>
                         <td class="btnClmWidth">
-                          <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="edit(item, true)">
-                              <md-icon>edit</md-icon>
-                          </button>
-                          <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="removeConfirm(item)">
-                              <md-icon>delete</md-icon>
-                          </button>
-                          <button *ngIf="item?.isEdit" [disabled]=" departments.isLoading ||  department.isProcessing" md-icon-button class="button_align cursor " (click)="save(item)" mdTooltip="Save" [mdTooltipPosition]="'above'">
-                              <md-icon>save</md-icon>
-                          </button>
-                          <button *ngIf="item?.isEdit" [disabled]=" departments.isLoading ||  department.isProcessing" md-icon-button class="button_align cursor" (click)="edit(item, false)" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
-                              <md-icon>undo</md-icon>
-                          </button>
-                      </td>
+                            <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="edit(item, true)">
+                                <md-icon>edit</md-icon>
+                            </button>
+                            <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="removeConfirm(item)">
+                                <md-icon>delete</md-icon>
+                            </button>
+                            <button *ngIf="item?.isEdit" [disabled]=" departments.isLoading ||  department.isProcessing" md-icon-button class="button_align cursor "
+                                (click)="save(item)" mdTooltip="Save" [mdTooltipPosition]="'above'">
+                                <md-icon>save</md-icon>
+                            </button>
+                            <button *ngIf="item?.isEdit" [disabled]=" departments.isLoading ||  department.isProcessing" md-icon-button class="button_align cursor"
+                                (click)="edit(item, false)" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
+                                <md-icon>undo</md-icon>
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>

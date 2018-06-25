@@ -3,7 +3,7 @@ import { EmsEmployeeService } from '../../../services/ems';
 import { Employee } from '../../../models/employee';
 import { Page } from '../../../common/contracts/page';
 import { ToastyService } from 'ng2-toasty';
-import { MdDialog } from '@angular/material';
+import { MdDialog, MdDialogRef } from '@angular/material';
 import { Model } from '../../../common/contracts/model';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { EmsEmployee } from '../../../models/ems/employee';
@@ -14,6 +14,8 @@ import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
 import { LocalStorageService } from 'app/services/local-storage.service';
 import { ValidatorService } from '../../../services/validator.service';
 import { RelievingDialogComponent } from '../../../dialogs/relieving-dialog/relieving-dialog.component';
+import { FileUploaderDialogComponent } from '../../../shared/components/file-uploader-dialog/file-uploader-dialog.component';
+
 
 @Component({
   selector: 'aqua-employee-list',
@@ -102,10 +104,6 @@ export class EmployeeListComponent implements OnInit {
 
   }
 
-  excel() {
-    this.isUpload = !this.isUpload;
-    this.uploader.clearQueue();
-  }
 
   terminateEmp(empId: string, empName: string) {
     const dialog = this.dialog.open(RelievingDialogComponent, { width: '40%' });
@@ -136,6 +134,17 @@ export class EmployeeListComponent implements OnInit {
         type: 'employees-details'
       }
     })
+  }
+
+  import() {
+    const dialogRef: MdDialogRef<FileUploaderDialogComponent> = this.dialog.open(FileUploaderDialogComponent);
+    const component = dialogRef.componentInstance;
+    component.uploader = this.emsEmployeeService.employees
+    component.samples = [{
+      name: 'CSV',
+      mapper: 'default',
+      url: 'assets/formats/Employee.csv'
+    }];
   }
   ngOnInit() {
   }

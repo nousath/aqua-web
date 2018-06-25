@@ -6,6 +6,8 @@ import { ToastyService } from 'ng2-toasty';
 import * as moment from 'moment';
 import { Model } from '../../../common/contracts/model';
 import { FileUploader } from 'ng2-file-upload';
+import { FileUploaderDialogComponent } from '../../../shared/components/file-uploader-dialog/file-uploader-dialog.component';
+import { MdDialogRef, MdDialog } from '@angular/material';
 declare var $: any;
 
 @Component({
@@ -27,7 +29,8 @@ export class HolidaysComponent implements OnInit {
 
   constructor(private amsHolidayService: AmsHolidayService,
     public validatorService: ValidatorService,
-    private toastyService: ToastyService) {
+    private toastyService: ToastyService,
+    public dialog: MdDialog) {
 
     this.holidays = new Page({
       api: amsHolidayService.holidays,
@@ -49,9 +52,6 @@ export class HolidaysComponent implements OnInit {
     this.fetchHolidays();
   }
 
-  excel() {
-    this.isUpload = !this.isUpload;
-  }
 
   upcomingHoliday(holiday: any) {
     return moment(moment(holiday.date).startOf('day')).isAfter(moment(this.currentDate).startOf('day'))
@@ -101,6 +101,17 @@ export class HolidaysComponent implements OnInit {
     this.upcoming = false
     this.holidays.filters.properties['date'].value = null;
     this.holidays.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+  }
+
+  import() {
+    const dialogRef: MdDialogRef<FileUploaderDialogComponent> = this.dialog.open(FileUploaderDialogComponent);
+    const component = dialogRef.componentInstance;
+    component.uploader = this.amsHolidayService.holidays,
+      component.samples = [{
+        name: 'CSV',
+        mapper: 'default',
+        url: 'assets/formats/Holiday.csv'
+      }];
   }
   ngOnInit() {
   }
