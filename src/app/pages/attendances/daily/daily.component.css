@@ -115,7 +115,6 @@ button.mat-menu-item {
 .table>thead:first-child>tr:first-child>td,
 .table>thead:first-child>tr:first-child>th {
     border-top: 0;
-    padding-left: 2.7% !important;
 }
 
 .page_header {
@@ -143,5 +142,5 @@ button.mat-menu-item {
 .table-condensed>thead>tr>td,
 .table-condensed>thead>tr>th {
     padding: 5px;
-    padding-left: 30px !important;
+    /* padding-left: 30px !important; */
 }

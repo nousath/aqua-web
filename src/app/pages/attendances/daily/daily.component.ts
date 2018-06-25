@@ -10,7 +10,7 @@ import { ServerPageInput } from '../../../common/contracts/api/page-input';
 import { Employee } from '../../../models';
 import { ValidatorService } from '../../../services/validator.service';
 import { Model } from '../../../common/contracts/model';
-import { MdDialog } from '@angular/material';
+import { MdDialog, MdDialogRef } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Filter } from '../../../common/contracts/filters';
 import * as _ from 'lodash';
@@ -19,6 +19,7 @@ import { AmsTagService } from '../../../services/ams/ams-tag.service';
 import { TagType, Tag } from '../../../models/tag';
 import { FileUploader } from 'ng2-file-upload';
 import { AddAttendanceLogsComponent } from '../../../shared/components/add-attendance-logs/add-attendance-logs.component';
+import { FileUploaderDialogComponent } from '../../../shared/components/file-uploader-dialog/file-uploader-dialog.component';
 declare var $: any;
 
 @Component({
@@ -154,9 +155,15 @@ export class DailyComponent {
   downloadlink(type: string) {
     this.router.navigate(['pages/attendances/reports'], { queryParams: { type: type } });
   }
-  excel() {
-    this.isUpload = !this.isUpload;
-    this.uploader.clearQueue();
+  import() {
+    const dialogRef: MdDialogRef<FileUploaderDialogComponent> = this.dialog.open(FileUploaderDialogComponent);
+    const component = dialogRef.componentInstance;
+    component.uploader = this.amsAttendanceService.dailyAttendances
+    component.samples = [{
+      name: 'CSV',
+      mapper: 'default',
+      url: 'assets/formats/Attendance.csv'
+    }];
   }
 
 

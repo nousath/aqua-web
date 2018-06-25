@@ -13,23 +13,10 @@
             </button>
         </div>
         <div *ngIf="!isUpload" style="float: right">
-            <a class="exl" md-icon-button (click)="excel()" mdTooltip="Excel Upload" [mdTooltipPosition]="'above'" angulartics2On="click"
+            <a class="exl" md-icon-button (click)="import()" mdTooltip="Excel Upload" [mdTooltipPosition]="'above'" angulartics2On="click"
                 angularticsEvent="excelUploadClick" angularticsCategory="designation " [angularticsProperties]="{label: 'Fall Campaign'}">
                 <md-icon>cloud_upload</md-icon>
             </a>
-        </div>
-        <div *ngIf="isUpload">
-            <span style="float: left">
-                <b>Excel Upload</b>
-            </span>&nbsp;&nbsp;
-            <input class="file" id="uploader" type="file" ng2FileSelect [uploader]="uploader" angulartics2On="click" angularticsEvent="chooseFileClick"
-                angularticsCategory="employee" [angularticsProperties]="{label: 'Fall Campaign'}" style="float: left"/>
-                <button md-icon-button class="uploadBtn" (click)="item.upload()">
-                    <md-icon>cloud_upload</md-icon>
-                </button>
-                <button md-icon-button class="uploadBtn" (click)="excel()">
-                    <md-icon>highlight_off</md-icon>
-                </button>
         </div>
     </div>
 </div>

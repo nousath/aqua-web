@@ -7,9 +7,10 @@ import { EmsDesignationService } from '../../../services/ems/ems-designation.ser
 import { ToastyService } from 'ng2-toasty';
 import * as _ from 'lodash';
 import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-dialog.component';
-import { MdDialog } from '@angular/material';
+import { MdDialog, MdDialogRef } from '@angular/material';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { FileUploader } from 'ng2-file-upload';
+import { FileUploaderDialogComponent } from '../../../shared/components/file-uploader-dialog/file-uploader-dialog.component';
 
 @Component({
   selector: 'aqua-designations',
@@ -70,11 +71,6 @@ export class DesignationsComponent implements OnInit {
     }
   }
 
-  excel() {
-    this.isUpload = !this.isUpload;
-    // this.uploader.clearQueue();
-  }
-
   remove(id: number) {
     this.designation.properties.id = id;
     this.designation.remove().then(data => {
@@ -111,6 +107,18 @@ export class DesignationsComponent implements OnInit {
       this.fetchDesignation()
     }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
+
+  import() {
+    const dialogRef: MdDialogRef<FileUploaderDialogComponent> = this.dialog.open(FileUploaderDialogComponent);
+    const component = dialogRef.componentInstance;
+    component.uploader = this.emsDesignationService.designations
+    component.samples = [{
+      name: 'CSV',
+      mapper: 'default',
+      url: 'assets/formats/Designation.csv'
+    }];
+  }
+
 
   ngOnInit() {
   }

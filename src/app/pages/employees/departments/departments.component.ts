@@ -6,10 +6,11 @@ import { EmsDepartmentService } from '../../../services/ems/ems-department.servi
 import { ToastyService } from 'ng2-toasty';
 import * as _ from 'lodash';
 import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-dialog.component';
-import { MdDialog } from '@angular/material';
+import { MdDialog, MdDialogRef } from '@angular/material';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { Department } from '../../../models/department';
 import { FileUploader } from 'ng2-file-upload';
+import { FileUploaderDialogComponent } from '../../../shared/components/file-uploader-dialog/file-uploader-dialog.component';
 
 @Component({
   selector: 'aqua-departments',
@@ -112,8 +113,16 @@ export class DepartmentsComponent implements OnInit {
 
   ngOnInit() {
   }
-  excel() {
-    this.isUpload = !this.isUpload;
+
+  import() {
+    const dialogRef: MdDialogRef<FileUploaderDialogComponent> = this.dialog.open(FileUploaderDialogComponent);
+    const component = dialogRef.componentInstance;
+    component.uploader = this.emsDepartmentService.departments
+    component.samples = [{
+      name: 'CSV',
+      mapper: 'default',
+      url: 'assets/formats/Department.csv'
+    }];
   }
 
 }

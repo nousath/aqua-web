@@ -1,38 +1,3 @@
-<div>
-    <div *ngIf="!isUpload" style="float: right">
-        <a class="exl" md-icon-button (click)="excel()" mdTooltip="Excel Upload" [mdTooltipPosition]="'above'" angulartics2On="click" angularticsEvent="excelUploadClick" angularticsCategory="employee " [angularticsProperties]="{label: 'Fall Campaign'}">
-            <md-icon>cloud_upload</md-icon>
-        </a>
-        <button class="exlD" (click)="downloadlink()" [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button>
-            <md-icon>cloud_download</md-icon>
-        </button>
-    </div>
-
-    <div *ngIf="isUpload" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2"></div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 upload">
-        </div>
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 upload">
-            <span style="float: left">
-                <b>Excel Upload</b>
-            </span>&nbsp;&nbsp;
-            <input class="file" id="uploader" type="file" ng2FileSelect [uploader]="uploader" angulartics2On="click" angularticsEvent="chooseFileClick" angularticsCategory="employee" [angularticsProperties]="{label: 'Fall Campaign'}" />
-            <div *ngFor="let item of uploader.queue" class="queue">
-                <button md-icon-button class="uploadBtn" (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
-                    <md-icon>cloud_upload</md-icon>
-                </button>
-                <button md-icon-button class="uploadBtn" (click)="excel()" [disabled]="item.isReady || item.isUploading  || uploader.isUploading">
-                    <md-icon>highlight_off</md-icon>
-                </button>
-            </div>
-            <button *ngIf="uploader?.queue?.length == 0" class="uploadBtn" (click)="excel()" md-icon-button>
-                <md-icon>highlight_off</md-icon>
-            </button>
-        </div>
-
-    </div>
-</div>
-<br>
 <br>
 <div class="row text-center">
     <a md-raised-button class="reply" color="primary" [routerLink]="['../']">
@@ -60,9 +25,11 @@
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                     <div class="row profileImage cursor">
-                        <img *ngIf="employee?.properties?.picUrl" class="EmpProile" [src]="employee?.properties?.picUrl" onerror="this.src = 'assets/images/blank.png'" width="100%">
+                        <img *ngIf="employee?.properties?.picUrl" class="EmpProile" [src]="employee?.properties?.picUrl" onerror="this.src = 'assets/images/blank.png'"
+                            width="100%">
                         <img *ngIf="!employee?.properties?.picUrl" class="EmpProile" alt="img" src="assets/images/blank.png" width="100%">
-                        <button *ngIf="employee?.properties?.id" (click)="isChangeImage = !isChangeImage" class="btn chimg" mdTooltip="Change Profile Picture" [mdTooltipPosition]="'above'">
+                        <button *ngIf="employee?.properties?.id" (click)="isChangeImage = !isChangeImage" class="btn chimg" mdTooltip="Change Profile Picture"
+                            [mdTooltipPosition]="'above'">
                             Change Profile Photo
                         </button>
                     </div>
@@ -119,9 +86,12 @@
                 <br>
                 <table class="table">
                     <tr>
-                        <th>Name: <span class="asterisk">*</span></th>
+                        <th>Name:
+                            <span class="asterisk">*</span>
+                        </th>
                         <td>
-                            <input name="empName" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.name" required>
+                            <input name="empName" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.name"
+                                required>
                         </td>
                         <th>Gender:</th>
                         <td>
@@ -173,7 +143,8 @@
                     <tr>
                         <th>Phone:</th>
                         <td>
-                            <input name="phone" type="text" class="form-control" [maxlength]="validatorService.phoneNumberLength" [minLength]="validatorService.phoneNumberLength" [pattern]="validatorService.onlyNumber" [(ngModel)]="employee.properties.phone">
+                            <input name="phone" type="text" class="form-control" [maxlength]="validatorService.phoneNumberLength" [minLength]="validatorService.phoneNumberLength"
+                                [pattern]="validatorService.onlyNumber" [(ngModel)]="employee.properties.phone">
                         </td>
                         <th>Email:</th>
                         <td>
@@ -181,7 +152,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>Aadhaar No:<span class="asterisk">*</span></th>
+                        <th>Aadhaar No:
+                            <span class="asterisk">*</span>
+                        </th>
                         <td>
                             <input name="aadhaar" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.aadhaar">
                         </td>
@@ -202,15 +175,24 @@
                 <br>
                 <table class="table">
                     <tr>
-                        <th>Code:<span class="asterisk">*</span></th>
+                        <th>Code:
+                            <span class="asterisk">*</span>
+                        </th>
                         <td>
-                            <input *ngIf="!employee.properties.code" name="empCode" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.code" disabled="employee.properties.code" required>
-                            <input *ngIf="employee.properties.code" name="biometric" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.displayCode">
-                            <span *ngIf="employee.properties.code && employee.properties.displayCode && employee.properties.displayCode !== employee.properties.code" class="text-center sub-text">({{employee.properties.code}})</span>
+                            <input *ngIf="!employee.properties.code" name="empCode" type="text" class="form-control" [maxlength]="validatorService.textLength"
+                                [(ngModel)]="employee.properties.code" disabled="employee.properties.code" required>
+                            <input *ngIf="employee.properties.code" name="biometric" type="text" class="form-control" [maxlength]="validatorService.textLength"
+                                [(ngModel)]="employee.properties.displayCode">
+                            <span *ngIf="employee.properties.code && employee.properties.displayCode && employee.properties.displayCode !== employee.properties.code"
+                                class="text-center sub-text">({{employee.properties.code}})</span>
                         </td>
-                        <th>Supervisor:<span class="asterisk">*</span></th>
+                        <th>Supervisor:
+                            <span class="asterisk">*</span>
+                        </th>
                         <td>
-                            <input ngui-auto-complete [min-chars]="1" placeholder="Employee search" [(ngModel)]="employee.properties.supervisor" [source]="empSource.bind(this)" [value-formatter]="empFormatter" [list-formatter]="empListFormatter" class="form-control search" name="Supervisor" required />
+                            <input ngui-auto-complete [min-chars]="1" placeholder="Employee search" [(ngModel)]="employee.properties.supervisor" [source]="empSource.bind(this)"
+                                [value-formatter]="empFormatter" [list-formatter]="empListFormatter" class="form-control search"
+                                name="Supervisor" required />
                         </td>
                     </tr>
                     <tr>
@@ -232,7 +214,7 @@
                     <tr>
                         <th>Employee Type:</th>
                         <td>
-                            <select name="employmentType" class="form-control" [(ngModel)]="employee.properties.employmentType">
+                            <select name="employmentType" class="form-control" [(ngModel)]="employee.properties.employmentType" (change)="contractorDetails()">
                                 <option disabled value=" " selected>Select an option</option>
                                 <option value="permanent">Permanent</option>
                                 <option value="contract">Contract</option>
@@ -246,7 +228,7 @@
                 </table>
             </md-card>
             <br *ngIf="employee.properties.employmentType == 'contract'">
-            <md-card *ngIf="employee.properties.employmentType == 'contract'">
+            <md-card [class.show]="employee.properties.employmentType == 'contract'" [class.hide]="employee.properties.employmentType != 'contract'">
                 <div class="dialog_Header text-center">
                     <h5>
                         <b>Contractor Details</b>
@@ -257,7 +239,9 @@
                     <tr>
                         <th>Contractor</th>
                         <td>
-                            <input ngui-auto-complete [min-chars]="1" placeholder="Contractor search" [(ngModel)]="employee.properties.contractor" [source]="empSource.bind(this)" [value-formatter]="contractorFormatter" [list-formatter]="empListFormatter" class="form-control search" name="Contractor"/>
+                            <input ngui-auto-complete [min-chars]="1" placeholder="Contractor search" [(ngModel)]="employee.properties.contractor" [source]="empSource.bind(this)"
+                                [value-formatter]="contractorFormatter" [list-formatter]="empListFormatter" class="form-control search"
+                                name="Contractor" />
                         </td>
                         <th>Date:</th>
                         <td>
@@ -302,7 +286,8 @@
                         </td>
                         <th>Pin Code:</th>
                         <td>
-                            <input name="pincode" #pincode="ngModel" type="text" class="form-control" [maxlength]="validatorService.pinCodeLength" [minlength]="validatorService.pinCodeLength" [pattern]="validatorService.onlyNumber" [(ngModel)]="employee.properties.pincode">
+                            <input name="pincode" #pincode="ngModel" type="text" class="form-control" [maxlength]="validatorService.pinCodeLength" [minlength]="validatorService.pinCodeLength"
+                                [pattern]="validatorService.onlyNumber" [(ngModel)]="employee.properties.pincode">
                             <span class="asterisk" *ngIf="pincode.invalid">Enter 6 digit valid pin code</span>
                         </td>
                     </tr>
