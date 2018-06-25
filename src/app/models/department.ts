@@ -4,5 +4,6 @@ export class Department {
   code = '';
   divisionId = 1;
   isEdit = false;
+  incharge = '';
 }
 
