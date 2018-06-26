@@ -7,6 +7,9 @@
     width: 8% !important;
     /*text-align: center;*/
 }
+.selector{
+    width: 3%
+}
 
 .filerRow {
     width: 100%;
