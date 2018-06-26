@@ -45,12 +45,12 @@ export class AttendanceLogsComponent implements OnInit {
   paramsId: string;
   paramsDate: Date;
 
-  outTime: any;
-  inTime: any;
-
-  // checkStatus: any;
-
-
+  addAttendanceLogs = [{
+    day: false,
+    time: '',
+    type: ''
+  }];
+  
   constructor(private activatedRoute: ActivatedRoute,
     private toastyService: ToastyService,
     private amsAttendanceService: AmsAttendanceService,
@@ -90,6 +90,17 @@ export class AttendanceLogsComponent implements OnInit {
         value: null
       }]
     })
+
+    this.addAttendanceLogs = [{
+      'day': false,
+      'time': null,
+      'type': 'checkIn'
+    }, {
+      'day': false,
+      'time': null,
+      'type': 'checkOut'
+    }];
+
 
     this.subscription = this.activatedRoute.params.subscribe(
       params => {
@@ -188,99 +199,46 @@ export class AttendanceLogsComponent implements OnInit {
     this.checkTime.setFullYear(date.getFullYear(), date.getMonth(), date.getDate());
   }
 
-  checkInUpdated($event) {
-    const inTime = $event.target.value;
-    const checkTimes: string[] = inTime.split(':');
-    if (this.nextDayOut === true) {
-
-      this.checkTime = new Date(new Date(this.checkTime).setHours(parseInt(checkTimes[0]), parseInt(checkTimes[1])));
-      this.checkTime = moment(this.checkTime).add(1, 'day').toDate()
-      console.log('check' + this.checkTime)
-    } else {
-      this.checkTime = new Date(new Date(this.checkTime).setHours(parseInt(checkTimes[0]), parseInt(checkTimes[1])));
-      this.checkTime = moment(this.checkTime).utc().toDate()
-      console.log('uncheck' + this.checkTime)
-
-    }
-    if (this.checkTime) {
-      const index = this.attendanceLogs.findIndex(item => item.type === 'checkIn')
-      if (index > -1) {
-        this.attendanceLogs.splice(index, 1);
-      }
-      this.attendanceLogs.push({
-        type: 'checkIn',
-        time: this.checkTime
-      });
-      console.log(this.attendanceLogs)
-
-    }
-  }
-  checkOutUpdated($event) {
-    const outTime = $event.target.value;
-    const checkTimes: string[] = outTime.split(':');
-    if (this.nextDayOut === true) {
-
-      this.checkTime = new Date(new Date(this.checkTime).setHours(parseInt(checkTimes[0]), parseInt(checkTimes[1])));
-      this.checkTime = moment(this.checkTime).add(1, 'day').toDate()
-      console.log('check' + this.checkTime)
-    } else {
-      this.checkTime = new Date(new Date(this.checkTime).setHours(parseInt(checkTimes[0]), parseInt(checkTimes[1])));
-      this.checkTime = moment(this.checkTime).utc().toDate()
-      console.log('uncheck' + this.checkTime)
-
-    }
-    if (this.checkTime) {
-      const index = this.attendanceLogs.findIndex(item => item.type === 'checkOut')
-      if (index > -1) {
-        this.attendanceLogs.splice(index, 1);
-      }
-      this.attendanceLogs.push({
-        type: 'checkOut',
-        time: this.checkTime
-      });
-      console.log(this.attendanceLogs)
-
-    }
-  }
-
   updateLogs() {
-    console.log(this.attendanceLogs)
-    this.attendanceLogs.forEach(item => {
-      this.timeLog.properties.employee.id = this.empId;
-      this.timeLog.properties.time = item.time;
-      this.timeLog.properties.type = item.type;
-      this.timeLog.properties.source = 'byAdmin';
-      this.timeLog.save().then(data => {
-        // this.toggleRow();
-        this.getAttendance();
-      }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+    this.addAttendanceLogs.forEach(item => {
+      if (item.time) {
+        const time = item.time
+        const checkTimes: string[] = time.split(':');
+        if (item.day === true) {
 
+          this.checkTime = new Date(new Date(this.checkTime).setHours(parseInt(checkTimes[0]), parseInt(checkTimes[1])));
+          this.checkTime = moment(this.checkTime).add(1, 'day').toDate()
+          console.log('check' + this.checkTime)
+        } else {
+          this.checkTime = new Date(new Date(this.checkTime).setHours(parseInt(checkTimes[0]), parseInt(checkTimes[1])));
+          this.checkTime = moment(this.checkTime).utc().toDate()
+          console.log('uncheck' + this.checkTime)
+
+        }
+        this.timeLog.properties.employee.id = this.empId;
+        this.timeLog.properties.time = this.checkTime;
+        this.timeLog.properties.type = item.type;
+        this.timeLog.properties.source = 'byAdmin';
+        this.timeLog.save().then(data => {
+          this.getAttendance();
+        }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+
+      }
     })
-
-    console.log(this.attendanceLogs)
+    console.log(this.addAttendanceLogs)
   }
 
-  checkUpdate() {
-    this.timeLog.properties.employee.id = this.empId;
-    // let checkTimes: string[] = this.checkTime.split(':');
-    this.timeLog.properties.time = this.checkTime;
-    // new Date(new Date(this.ofDate).setHours(parseInt(checkTimes[0]), parseInt(checkTimes[1]))).toISOString();
-    this.timeLog.properties.source = 'byAdmin';
-    this.timeLog.save().then(data => {
-      // this.toggleRow();
-      this.getAttendance();
-    }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
-
+  addNewRow() {
+    this.addAttendanceLogs.push({
+      day: false,
+      time: null,
+      type: 'checkIn'
+    }, {
+        day: false,
+        time: null,
+        type: 'checkOut'
+      })
   }
-
-  // toggleRow() {
-  //   var table = document.getElementById("addLogs");
-  //   var row = table.insertRow(0)
-  //   var cell1 = row.insertCell(0);
-  //   var cell2 = row.insertCell(1);
-  //   cell1.innerHTML = "NEW CELL1";
-  //   cell2.innerHTML = "NEW CELL2";
-  // }
 
   toggleLocation(loc: TimeLogsLocation) {
     loc.show = !loc.show;
