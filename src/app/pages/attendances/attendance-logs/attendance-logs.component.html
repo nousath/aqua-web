@@ -80,7 +80,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div>
+                <div *ngIf="userType === 'superadmin' || userType === 'admin'">
                     <table class="table table-condensed table-hover">
                         <thead class="primary_thead">
                             <tr>
