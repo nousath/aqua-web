@@ -49,41 +49,41 @@
         </div>
         <br>
         <form class="row">
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  form-group">
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4  form-group">
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     <label for="email">Name
                         <span class="asterisk">*</span>
                     </label>
                 </div>
-                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                     <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]=" departments?.isLoading   ||  department?.isProcessing  "
                         [(ngModel)]=" department.properties.name" name="Name" required>
                 </div>
             </div>
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  form-group">
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4  form-group">
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     <label for="pwd">Code
                         <span class="asterisk">*</span>
                     </label>
                 </div>
-                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                     <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]=" departments?.isLoading   ||  department?.isProcessing  "
                         [(ngModel)]=" department.properties.code" name="code" required>
                 </div>
             </div>
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  form-group">
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-group">
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     <label for="pwd">Incharge
                         <span class="asterisk">*</span>
                     </label>
                 </div>
-                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                     <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]=" departments?.isLoading   ||  department?.isProcessing  "
                         [(ngModel)]=" department.properties.incharge" name="incharge" required>
                 </div>
             </div>
 
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 button_align form-group text-center">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 button_align form-group text-center" style="float:right">
                 <button [disabled]=" departments?.isLoading   ||  department?.isProcessing  " type="submit" md-raised-button color="primary"
                     mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="save();">Save</button>&nbsp;&nbsp;
                 <button [disabled]=" departments?.isLoading   ||  department?.isProcessing  " md-raised-button class="btn_grey" mdTooltip="Reset"

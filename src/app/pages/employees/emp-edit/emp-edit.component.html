@@ -186,12 +186,11 @@
                                 class="text-center sub-text">({{employee.properties.code}})</span>
                         </td>
                         <th>Supervisor:
-                            <span class="asterisk">*</span>
                         </th>
                         <td>
                             <input ngui-auto-complete [min-chars]="1" placeholder="Employee search" [(ngModel)]="employee.properties.supervisor" [source]="empSource.bind(this)"
                                 [value-formatter]="empFormatter" [list-formatter]="empListFormatter" class="form-control search"
-                                name="Supervisor" required />
+                                name="Supervisor" />
                         </td>
                     </tr>
                     <tr>
@@ -227,7 +226,7 @@
                     <tr>
                         <th>Date Of Joining:</th>
                         <td>
-                            <input name="doj" id="joiningDate" type="text" class="form-control input-sm calendar no-spin" required>
+                            <input name="doj" id="joiningDate" type="text" class="form-control input-sm calendar no-spin">
                         </td>
                     </tr>
                 </table>
