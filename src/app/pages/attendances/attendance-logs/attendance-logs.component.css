@@ -19,6 +19,9 @@
     background-color: #57686b;
 }
 
+th,td{
+    width: 33%
+}
 .indexCl {
     width: 6%;
     float: left;

@@ -6,3 +6,6 @@ input{
 .nextday{
     width: 20%
 }
+th,td{
+    width: 33%
+}
