@@ -26,6 +26,7 @@ export class RosterShiftsComponent implements OnInit {
   shiftTypes: Page<ShiftType>;
   change: any;
   date = new Date();
+  isDateToday = moment().startOf('day').toDate();
 
   isDownloading = false;
   uploader: FileUploader;
@@ -95,12 +96,12 @@ export class RosterShiftsComponent implements OnInit {
     const reportName = `rosterExcel_${moment().format('DD_MMM_YY')}_DailyReport.xlsx`;
     this.amsEffectiveShiftService.downloadRosterExcel.exportReport(serverPageInput, null, reportName)
       .then(
-        (data) => {
-          this.isDownloading = false
-        }).catch(err => {
-          this.toastyService.error({ title: 'Error', msg: err });
-          this.isDownloading = false
-        });
+      (data) => {
+        this.isDownloading = false
+      }).catch(err => {
+        this.toastyService.error({ title: 'Error', msg: err });
+        this.isDownloading = false
+      });
   };
 
   excel() {
@@ -120,15 +121,18 @@ export class RosterShiftsComponent implements OnInit {
   //   $('#dateSelector').datepicker('setDate', new Date(new Date().setHours(0, 0, 0, 0)));
   // }
 
-  getWeek(date) {
+  getWeek(currentDate) {
     this.dates = [];
-    let startOfWeek = moment(date);
-    const endOfWeek = moment(date).add(6, 'd');
+    let startOfWeek = moment(currentDate).startOf('week')
+    const endOfWeek = moment(currentDate).endOf('week')
     while (startOfWeek <= endOfWeek) {
       this.dates.push(startOfWeek.toDate());
       startOfWeek = startOfWeek.clone().add(1, 'd');
     }
+    console.log(this.dates);
+    console.log(this.isDateToday);
   }
+
 
   getEffectiveShift(date: Date) {
     this.isLoading = true;

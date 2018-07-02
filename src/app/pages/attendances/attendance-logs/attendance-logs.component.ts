@@ -44,13 +44,13 @@ export class AttendanceLogsComponent implements OnInit {
   nextDayOut = false;
   paramsId: string;
   paramsDate: Date;
-
+  checkedDate: boolean = true;
   addAttendanceLogs = [{
     day: false,
     time: '',
     type: ''
   }];
-  
+
   constructor(private activatedRoute: ActivatedRoute,
     private toastyService: ToastyService,
     private amsAttendanceService: AmsAttendanceService,
