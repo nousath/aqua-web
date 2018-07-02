@@ -32,6 +32,7 @@ export class AddAttendanceLogsComponent {
   ofDate: any;
   attendance: DayEvent;
   date: any;
+  checkedDate: boolean = true;
   isButton = true;
   checkTime: Date;
   attendanceLogs = [];
@@ -40,6 +41,7 @@ export class AddAttendanceLogsComponent {
   nextDayOut = false;
   paramsId: string;
   paramsDate: Date;
+  currentDate: Date;
   addAttendanceLogs = [{
     day: false,
     time: '',
@@ -128,7 +130,8 @@ export class AddAttendanceLogsComponent {
     this.getAttendance();
 
     this.checkTime = new Date(this.ofDate);
-
+    this.currentDate = new Date();
+    console.log(this.currentDate);
   }
 
   getLocation(latlng: number[], index: number) {
@@ -142,7 +145,7 @@ export class AddAttendanceLogsComponent {
 
   getAttendance() {
 
-    console.log(this.data)
+    console.log('get' + this.data)
     this.amsAttendanceService.attendance.get(`${new Date(this.ofDate).toISOString()}?employeeId=${this.empId}`).then(item => {
       this.attendance = item;
 

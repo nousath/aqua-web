@@ -1,36 +1,56 @@
-<div class="shift" [class.hasValue]="selectedShiftType && !isDynamic" [class.continue]="!selectedShiftType || isDynamic" [style.border-color]="shiftColour()">
-    <button [mdMenuTriggerFor]="menu" class="display-text" [disabled]="isDisabled">
-      <ng-container *ngIf="selectedShiftType && !isDynamic">
-          <span *ngIf="!isWeeklyOff" class="name"> {{selectedShiftType.name}} </span>
-          <div *ngIf="isWeeklyOff" class="compressed">
-              <span class="name"> {{selectedShiftType.name}} </span>
-              <span class="off">Off</span>
-          </div>
-      </ng-container>
+<div class="shift" [class.hasValue]="selectedShiftType && !isDynamic" [class.continue]="!selectedShiftType || isDynamic"
+    [style.border-color]="shiftColour()">
+    <button [mdMenuTriggerFor]="menu" class="display-text" [disabled]="isDisabled" (click)="getOnDuty()">
+        <ng-container *ngIf="selectedShiftType && !isDynamic">
+            <span *ngIf="!isWeeklyOff" class="name"> {{selectedShiftType.name}} </span>
+            <div *ngIf="isWeeklyOff" class="compressed">
+                <span class="name"> {{selectedShiftType.name}} </span>
+                <span class="off">Off</span>
+            </div>
+        </ng-container>
 
-      <ng-container *ngIf="!selectedShiftType || isDynamic">
-          <span *ngIf="!isWeeklyOff" class="continue">&raquo;</span>
-          <span *ngIf="isWeeklyOff" class="off">Off</span>
-      </ng-container>
+        <ng-container *ngIf="!selectedShiftType || isDynamic">
+            <span *ngIf="!isWeeklyOff && !isOnDuty" class="continue">&raquo;</span>
+            <span *ngIf="isWeeklyOff" class="off">Off</span>
+            <span *ngIf="isOnDuty" class="off">On Duty</span>
+        </ng-container>
     </button>
     <md-menu #menu="mdMenu">
         <button md-menu-item (click)="reset()">
-          <span>Reset</span>
+            <span>Reset</span>
         </button>
-        <button md-menu-item (click)="setWeeklyOff()"><span>Off</span>
-          <md-slide-toggle [checked]="isWeeklyOff"></md-slide-toggle>
+        <button md-menu-item (click)="selectedLeave(item)" *ngFor="let item of OnDutyBalance">{{item.leaveType.name}}</button>
+        <button md-menu-item (click)="setWeeklyOff()">
+            <span>Off</span>
+            <md-slide-toggle [checked]="isWeeklyOff"></md-slide-toggle>
         </button>
-        <ng-container *ngIf="!isDynamic">
-            <div *ngIf="shiftTypes.length > 5">
-                <input class="search" placeholder="Shifts" [(ngModel)]="shiftSearch" (click)="stopPropagation($event)">
+        <!-- <div *ngIf="shiftTypes.length > 5">
+                <input class="search" placeholder="Shifts" [(ngModel)]="shiftSearch" [mdMenuTriggerFor]="shifts" (click)="stopPropagation($event)">
             </div>
-            <div class="list-label" *ngIf="shiftTypes.length <= 5">
-                <span (click)="stopPropagation($event)">Shifts</span>
-            </div>
-            <md-divider></md-divider>
-            <div class="shifts">
-                <button md-menu-item *ngFor="let shiftType of shiftTypes| shiftTypeFilter: shiftSearch" (click)="selectShift(shiftType)"><span>{{shiftType.name}}</span></button>
-            </div>
-        </ng-container>
+            <div *ngIf="shiftTypes.length <= 5">
+                <span  [mdMenuTriggerFor]="shifts" (click)="stopPropagation($event)">Shifts</span>
+            </div> -->
+        <!-- <md-divider></md-divider> -->
+        <button md-menu-item [mdMenuTriggerFor]="leaves" (onMenuOpen)="getLeaveBalance($event)">Apply Leave</button>
+        <md-menu #leaves="mdMenu" class="leaves" xPosition="after" [overlapTrigger]="false">
+            <ng-container *ngIf="leaveBalances.length && !isFetchingLeaveBalances">
+                <button *ngFor="let leave of leaveBalances" md-menu-item (click)="selectedLeave(leave)">
+                    <span>{{leave.leaveType.name}}({{leave.days}})</span>
+                </button>
+            </ng-container>
+            <span *ngIf="!leaveBalances.length && !isFetchingLeaveBalances">No Balance</span>
+            <span *ngIf="isFetchingLeaveBalances">Fetching</span>
+        </md-menu>
+
+        <button md-menu-item [mdMenuTriggerFor]="shifts" (click)="stopPropagation($event)">Shifts</button>
+        <md-menu #shifts="mdMenu" class="shifts" xPosition="after" [overlapTrigger]="false">
+            <ng-container *ngIf="!isDynamic">
+                <button md-menu-item *ngFor="let shiftType of shiftTypes| shiftTypeFilter: shiftSearch" (click)="selectShift(shiftType)">
+                    <span>{{shiftType.name}}</span>
+                </button>
+            </ng-container>
+        </md-menu>
+
+
     </md-menu>
 </div>

@@ -9,7 +9,8 @@
     </div>
     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
         <h5>
-            <b>Date: </b> {{ofDate | date}}</h5>
+            <b>Date: </b> {{ofDate | date}}
+        </h5>
     </div>
 </div>
 <md-spinner class="custom_spinner" *ngIf="employee?.isProcessing || logs?.isLoading || attendances?.isLoading || timeLog?.isProcessing"
@@ -60,63 +61,58 @@
     <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
         <div>
             <md-card>
-                <div class="table-responsive">
-                    <table class="table table-condensed table-hover">
-                        <thead class="primary_thead">
-                            <tr>
-                                <th class="text-center">S.No</th>
-                                <th class="text-center">Time</th>
-                                <th class="text-center">Type</th>
-                            </tr>
-                        </thead>
-                        <tbody *ngIf="attendance">
+                <div>
+                    <div class="table-responsive">
+                        <table class="table table-condensed table-hover">
+                            <thead class="primary_thead">
+                                <tr>
+                                    <th class="text-center">NextDay</th>
+                                    <th class="text-center">Time</th>
+                                    <th class="text-center">Type</th>
+                                </tr>
+                            </thead>
+                            <tbody *ngIf="attendance">
 
-                            <tr class="capitalize" *ngFor="let item of attendance.timeLogs; let i=index">
-                                <td class="text-center" *ngIf="!item?.location?.show">{{i+1}}</td>
-                                <td class="text-center" *ngIf="!item?.location?.show">{{item?.time | date: 'h:mm a' || '--'}}</td>
-                                <td class="text-center" *ngIf="!item?.location?.show && item.type =='checkIn'">In</td>
-                                <td class="text-center" *ngIf="!item?.location?.show && item.type =='checkOut'">Out</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div *ngIf="userType === 'superadmin' || userType === 'admin'">
-                    <table class="table table-condensed table-hover">
-                        <thead class="primary_thead">
-                            <tr>
-                                <th class="text-center">NextDay</th>
-                                <th class="text-center">Time</th>
-                                <th class="text-center">Type</th>
-                                <!-- <th>Date</th> -->
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let item of addAttendanceLogs">
-                                <td class="text-center">
-                                    <md-checkbox type="checkbox"[(ngModel)]="item.day"></md-checkbox>
-                                </td>
-                                <td class="text-center">
-                                    <input class="form-control" type="time" [(ngModel)]="item.time" required>
-                                </td>
-                                <td class="text-center" *ngIf="item.type == 'checkIn'">In</td>
-                                <td class="text-center" *ngIf="item.type == 'checkOut'">Out</td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td class="text-center">
-                                    <button md-raised-button color="primary" (click)="updateLogs()">
-                                        Save
-                                    </button>
-                                </td>
-                                <td>
-                                    <a md-icon-button mdTooltip="New Row" [mdTooltipPosition]="'above'" (click)="addNewRow()" style="float: right">
-                                        <md-icon>add_circle_outline</md-icon>
-                                    </a>
+                                <tr class="capitalize" *ngFor="let item of attendance.timeLogs;">
+                                    <td class="text-center">
+                                        <md-checkbox type="checkbox" *ngIf="item?.time > ofDate" [disabled]="item"></md-checkbox>
+                                        <md-checkbox type="checkbox" *ngIf="item?.time < ofDate" [(ngModel)]="checkedDate" [disabled]="item"></md-checkbox>
+                                    </td>
+                                    <!-- <td class="text-center" *ngIf="!item?.location?.show && item">{{item?.time | date: 'dd MM yyyy' || '--'}}</td> -->
+                                    <td class="text-center" *ngIf="!item?.location?.show && item">{{item?.time | date: 'h:mm a' || '--'}}</td>
+                                    <td class="text-center" *ngIf="!item?.location?.show && item.type =='checkIn'">In</td>
+                                    <td class="text-center" *ngIf="!item?.location?.show && item.type =='checkOut'">Out</td>
+                                </tr>
+                                <tr *ngFor="let item of addAttendanceLogs">
+                                    <td class="text-center">
+                                        <md-checkbox type="checkbox" [(ngModel)]="item.day"></md-checkbox>
+                                    </td>
+                                    <td class="text-center">
+                                        <input class="form-control" type="time" [(ngModel)]="item.time" required>
+                                    </td>
+                                    <td class="text-center" *ngIf="item.type == 'checkIn'">In</td>
+                                    <td class="text-center" *ngIf="item.type == 'checkOut'">Out</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td class="text-center">
 
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                    </td>
+                                    <td>
+                                        <a md-icon-button mdTooltip="New Row" [mdTooltipPosition]="'above'" (click)="addNewRow()" style="float: right">
+                                            <md-icon>add_circle_outline</md-icon>
+                                        </a>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="text-center">
+                            <button md-raised-button color="primary" (click)="updateLogs()">
+                                Save
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </md-card>
         </div>

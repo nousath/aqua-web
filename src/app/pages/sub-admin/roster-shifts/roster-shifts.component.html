@@ -10,7 +10,7 @@
         <div class="button-row">
             <button md-icon-button (click)="previousWeek()">&laquo;</button>
             <md-form-field class="toolbar-input">
-                <input mdInput [(ngModel)]="date" (change)="getAttendance()" [matDatepicker]="picker">
+                <input mdInput [(ngModel)]="currentDate" (change)="getAttendance()" [matDatepicker]="picker">
                 <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
                 <md-datepicker #picker></md-datepicker>
             </md-form-field>
@@ -20,7 +20,8 @@
     <div *ngIf="!isUpload" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 " style="float: left;">
         <div *ngIf="!isUpload">
 
-            <button md-icon-button class="dwnldBtn" [disabled]="isDownloading || isLoading" (click)="download(dates[0])" mdTooltip="Download Excel" [mdTooltipPosition]="'above'">
+            <button md-icon-button class="dwnldBtn" [disabled]="isDownloading || isLoading" (click)="download(dates[0])" mdTooltip="Download Excel"
+                [mdTooltipPosition]="'above'">
                 <md-icon>cloud_download</md-icon>
             </button>
             <a md-icon-button [disabled]="isLoading || isDownloading" (click)="excel()" mdTooltip="Upload Excel" [mdTooltipPosition]="'above'">
@@ -60,10 +61,19 @@
                     <th rowspan="2">Name/Code</th>
                     <th rowspan="2">Auto</th>
                     <th class="tdWidth" rowspan="2">Previous</th>
-                    <th class="tdWidth" *ngFor="let date of dates">{{date | date:'EEE'}}</th>
+                    <th class="text-center tdWidth" *ngFor="let date of dates">
+                        <!-- <span>{{date | date:'EEE'}}</span> -->
+                        <span *ngIf="date < isDateToday" style="color: gray">{{date | date:'EEE'}}</span>
+                        <span *ngIf="(date | date:'dd/MM/yyyy') === (isDateToday | date:'dd/MM/yyyy')" style="color: blue">{{date | date:'EEE'}}</span>
+                        <span *ngIf="date > isDateToday" style="color: green">{{date | date:'EEE'}}</span>
+                    </th>
                 </tr>
                 <tr>
-                    <th class="tdWidth" *ngFor="let date of dates">{{date | date:'dd/MM'}}</th>
+                    <th class="text-center tdWidth" *ngFor="let date of dates">
+                        <span *ngIf="date < isDateToday" style="color: gray">{{date | date:'dd/MM'}}</span>
+                        <span *ngIf="(date | date:'dd/MM/yyyy') === (isDateToday | date:'dd/MM/yyyy')" style="color: blue">{{date | date:'dd/MM'}}</span>
+                        <span *ngIf="date > isDateToday" style="color: green">{{date | date:'dd/MM'}}</span>
+                    </th>
                 </tr>
             </thead>
             <tbody>
