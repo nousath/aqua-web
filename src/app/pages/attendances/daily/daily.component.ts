@@ -99,7 +99,7 @@ export class DailyComponent {
   reset() {
     this.dailyAttendnace.filters.reset();
     $('#dateSelector').datepicker('setDate', new Date());
-    this.dailyAttendnace.filters.properties['ofDate']['value'] = new Date();
+    this.dailyAttendnace.filters.properties['ofDate']['value'] = moment().toISOString();
     this.getAttendance();
   }
 
@@ -146,7 +146,7 @@ export class DailyComponent {
         return this.toastyService.info({ title: 'Info', msg: 'Date should be less than or equal to current date' })
       }
 
-      this.dailyAttendnace.filters.properties['ofDate']['value'] = e.date
+      this.dailyAttendnace.filters.properties['ofDate']['value'] = moment(e.date).toISOString()
 
       setTimeout(() => this.getAttendance(), 1)
     });
