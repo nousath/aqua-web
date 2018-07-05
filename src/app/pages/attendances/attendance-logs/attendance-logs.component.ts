@@ -17,6 +17,7 @@ import { Angulartics2 } from 'angulartics2';
 import { IGetParams } from '../../../common/contracts/api/get-params.interface';
 import 'rxjs/Rx';
 import { Http } from '@angular/http';
+import { Location } from '@angular/common';
 import { AddAttendanceLogsComponent } from '../../../shared/components/add-attendance-logs/add-attendance-logs.component';
 
 
@@ -58,7 +59,9 @@ export class AttendanceLogsComponent implements OnInit {
     private shiftService: AmsShiftService,
     private angulartics2: Angulartics2,
     private http: Http,
-    private amsEmployeeService: AmsEmployeeService) {
+    private amsEmployeeService: AmsEmployeeService,
+    public _location: Location,
+  ) {
     this.employee = new Model({
       api: amsEmployeeService.employeesForAdmin,
       properties: new Employee()
@@ -246,5 +249,7 @@ export class AttendanceLogsComponent implements OnInit {
 
   ngOnInit() {
   }
-
+  backClicked() {
+    this._location.back();
+  }
 }

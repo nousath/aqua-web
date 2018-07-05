@@ -1,6 +1,6 @@
 <div class="row page_header">
     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-        <a *ngIf="userType === 'superadmin'" md-raised-button class="reply" color="primary" [routerLink]="['/pages/attendances/leaves']">
+        <a *ngIf="userType === 'superadmin'" md-raised-button class="reply" color="primary" (click)="backClicked()">
             <md-icon>reply</md-icon>Leaves(all)
         </a>
     </div>
