@@ -17,6 +17,9 @@ body::-webkit-scrollbar {
     width: 8px;
     background-color: #3f4766;
 }
+.app-full-bleed-dialog .mat-dialog-container {
+    padding: 0;
+  }
 
 body::-webkit-scrollbar-thumb {
     border-radius: 10px;

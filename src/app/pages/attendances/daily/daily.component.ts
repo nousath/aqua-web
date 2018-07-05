@@ -129,7 +129,7 @@ export class DailyComponent {
 
   addAttendance(item: Attendance) {
     console.log(item.id + item.employee.name)
-    const dialog = this.dialog.open(AddAttendanceLogsComponent, { width: '50%',height:'55%', data: item });
+    const dialog = this.dialog.open(AddAttendanceLogsComponent, { panelClass: 'app-full-bleed-dialog', width: '50%', height: '55%', data: item });
   }
   ngOnInit() {
   }

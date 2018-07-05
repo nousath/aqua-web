@@ -1,20 +1,22 @@
-<div>
+<div class="container">
+  <div class="row header">
+
+    <div class="col-sm-9 col-xs-9 col-lg-9 col-md-9">
+      <h5>
+        <b>{{data.employee.name}}</b>({{data.employee.code}})
+      </h5>
+    </div>
+    <div class="col-sm-3 col-xs-3 col-lg-3 col-md-3">
+      <h5>
+        <b>Date: </b> {{ofDate | date}}
+      </h5>
+    </div>
+  </div>
+  <br>
+  <br>
   <div class="table-responsive">
     <table class="table table-condensed table-hover">
       <thead class="primary_thead">
-        <tr class="header" style="background-color: #3f4766;">
-          <td colspan="2">
-            <h5>
-              <b>{{data.employee.name}}</b>({{data.employee.code}})
-            </h5>
-          </td>
-          <td>
-            <h5 class="text-right">
-              <b>Date: </b> {{ofDate | date}}
-            </h5>
-          </td>
-        </tr>
-        <tr></tr>
         <tr>
           <th class="text-center">NextDay</th>
           <th class="text-center">Time</th>
@@ -61,7 +63,6 @@
         Save
       </button>
       <button md-raised-button class="btn_grey" md-dialog-close>Cancel</button>
-
     </div>
   </div>
 </div>
