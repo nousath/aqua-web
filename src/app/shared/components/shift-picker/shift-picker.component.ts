@@ -340,7 +340,7 @@ export class ShiftPickerComponent implements OnInit {
 
   applyLeave(item) {
     const dialogRef = this.dialog.open(LeaveReasonDialogComponent, { width: '40%', data: item })
-    dialogRef.afterClosed().subscribe((leave: Leave) => {
+    dialogRef.afterClosed().subscribe((leave: any) => {
       item.reason = leave.reason
       console.log(item)
       this.selectedLeave(item)

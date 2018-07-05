@@ -13,10 +13,10 @@
   <table style="float: left; width: 100%;">
     <tr>
       <th>Reason</th>
-      <td *ngIf="data.type.code == 'CO'">
+      <td *ngIf="data.leaveType.code == 'CO'">
         <input type="date" class="form-control" [(ngModel)]="data.reason" [ngModelOptions]="{standalone: true}">
       </td>
-      <td *ngIf="data.type.code != 'CO'">
+      <td *ngIf="data.leaveType.code != 'CO'">
         <input type="text" class="form-control" [(ngModel)]="data.reason" [ngModelOptions]="{standalone: true}">
       </td>
     </tr>
