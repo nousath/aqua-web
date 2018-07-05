@@ -179,11 +179,11 @@
                         </th>
                         <td>
                             <input *ngIf="!employee.properties.code" name="empCode" type="text" class="form-control" [maxlength]="validatorService.textLength"
-                                [(ngModel)]="employee.properties.code" disabled="employee.properties.code" required>
+                                [(ngModel)]="employee.properties.code" required>
                             <input *ngIf="employee.properties.code" name="biometric" type="text" class="form-control" [maxlength]="validatorService.textLength"
                                 [(ngModel)]="employee.properties.displayCode">
-                            <span *ngIf="employee.properties.code && employee.properties.displayCode && employee.properties.displayCode !== employee.properties.code"
-                                class="text-center sub-text">({{employee.properties.code}})</span>
+                            <!-- <span *ngIf="employee.properties.code && employee.properties.displayCode && employee.properties.displayCode !== employee.properties.code"
+                                class="text-center sub-text">({{employee.properties.code}})</span> -->
                         </td>
                         <th>Supervisor:
                         </th>
@@ -194,18 +194,24 @@
                         </td>
                     </tr>
                     <tr>
+                        <th>Unique Code:</th>
+                        <td>
+                            <input *ngIf="employee.properties.code && employee.properties.displayCode && employee.properties.displayCode !== employee.properties.code"
+                                name="empCode" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.code"
+                                disabled="employee.properties.code" required>
+                            <input *ngIf="employee.properties.code && employee.properties.displayCode && employee.properties.displayCode === employee.properties.code"
+                                name="empCode" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.code"
+                                disabled="employee.properties.code" required>
+                            <!-- <span *ngIf="employee.properties.code && employee.properties.displayCode && employee.properties.displayCode !== employee.properties.code"
+                                class="text-center sub-text">({{employee.properties.code}})</span>
+                            <span *ngIf="employee.properties.code && employee.properties.displayCode && employee.properties.displayCode === employee.properties.code"
+                                class="text-center sub-text">({{employee.properties.code}})</span> -->
+                        </td>
                         <th>Designation:</th>
                         <td>
                             <select name="designation" class="form-control" [(ngModel)]="employee.properties.designation">
                                 <option [ngValue]="null">Select an option</option>
                                 <option *ngFor="let item of designations.items" [value]="item.name">{{item.name}}</option>
-                            </select>
-                        </td>
-                        <th>Department:</th>
-                        <td>
-                            <select name="department" class="form-control" [(ngModel)]="employee.properties.department">
-                                <option [ngValue]="null">Select an option</option>
-                                <option *ngFor="let item of departments.items" [value]="item.name">{{item.name}}</option>
                             </select>
                         </td>
                     </tr>
@@ -218,15 +224,22 @@
                                 <option value="contract">Contract</option>
                             </select>
                         </td>
-                        <th>Departmental Incharge</th>
+                        <th>Department:</th>
                         <td>
-                            <input name="incharge" type="text" class="form-control" [(ngModel)]="employee.properties.department">
+                            <select name="department" class="form-control" [(ngModel)]="employee.properties.department">
+                                <option [ngValue]="null">Select an option</option>
+                                <option *ngFor="let item of departments.items" [value]="item.name">{{item.name}}</option>
+                            </select>
                         </td>
                     </tr>
                     <tr>
                         <th>Date Of Joining:</th>
                         <td>
                             <input name="doj" id="joiningDate" type="text" class="form-control input-sm calendar no-spin">
+                        </td>
+                        <th>Departmental Incharge</th>
+                        <td>
+                            <input name="incharge" type="text" class="form-control" [(ngModel)]="employee.properties.incharge" disabled>
                         </td>
                     </tr>
                 </table>

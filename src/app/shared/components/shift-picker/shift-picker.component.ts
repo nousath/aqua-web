@@ -8,6 +8,8 @@ import { LeaveBalance } from '../../../models/leave-balance';
 import { Model } from '../../../common/contracts/model';
 import { Leave } from '../../../models/leave';
 import { Employee } from '../../../models/employee';
+import { MdDialog } from '@angular/material';
+import { LeaveReasonDialogComponent } from '../../../dialogs/leave-reason-dialog/leave-reason-dialog.component';
 
 
 @Component({
@@ -36,17 +38,34 @@ export class ShiftPickerComponent implements OnInit {
 
   isProcessing = false;
   isWeeklyOff = false;
+  thisWeekOff = false;
   isDynamic: boolean;
   leave: Model<Leave>
   employee: Employee;
+  attendances: any;
+  leaves: any;
   selectedShift: Shift;
   selectedShiftType: ShiftType;
   effectiveShiftType: ShiftType;
   leaveBalances: LeaveBalance[] = [];
-  OnDutyBalance: LeaveBalance[] = [];
+  OnDutyBalance: LeaveBalance
+  isLeave: boolean = false;
+  compOffBalance: LeaveBalance
+  // compOffBalance: {
+  //   name: '',
+  //   code: ''
+  // }; 
   isFetchingLeaveBalances = false;
   isUpdatingLeaveStatus = false;
   isOnDuty = false;
+  currentDate: ''
+  onSelectedDate = [{
+    type: '',
+    date: '',
+    status: '',
+    units: ''
+  }]
+  reason: ''
 
   days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
 
@@ -55,6 +74,7 @@ export class ShiftPickerComponent implements OnInit {
     private amsEffectiveShiftService: AmsEffectiveShiftService,
     private toastyService: ToastyService,
     private amsLeaveService: AmsLeaveService,
+    public dialog: MdDialog
   ) {
     this.leave = new Model({
       api: amsLeaveService.leaves,
@@ -97,7 +117,64 @@ export class ShiftPickerComponent implements OnInit {
         }
       })
     });
+
+    this.getStatus();
+
+  }
+
+  getStatus() {
     this.employee = this.effectiveShift.employee
+    this.attendances = this.effectiveShift.attendances
+    this.attendances.forEach(item => {
+      if (moment(item.ofDate).toISOString() === moment(this.date).toISOString()) {
+        this.onSelectedDate.push({
+          type: item.status,
+          date: item.ofDate,
+          status: null,
+          units: null
+        })
+      }
+
+    })
+
+    this.leaves = this.effectiveShift.leaves
+    this.leaves.forEach(onLeave => {
+      if (onLeave.date === moment(this.date).toISOString()) {
+        this.onSelectedDate.slice(2)
+        if (onLeave.status === 'submitted' || 'approved') {
+          if (onLeave.days === 1) {
+            this.onSelectedDate.push({
+              type: onLeave.leaveType.code,
+              date: onLeave.date,
+              status: onLeave.status,
+              units: 'full'
+            })
+          } else if (onLeave.days < 1) {
+            this.onSelectedDate.push({
+              type: onLeave.leaveType.code,
+              date: onLeave.date,
+              status: onLeave.status,
+              units: 'first'
+            })
+          }
+        }
+      }
+      // else if(onLeave.status === 'approved') {
+      //   this.onSelectedDate.push({
+      //     type: onLeave.code,
+      //     date: onLeave.ofDate,
+      //     status: false,
+      //   })
+      // }
+      // }
+      // if (onLeave.date === moment(this.date).toISOString()) {
+
+      // }
+    })
+    // console.log(this.employee.name)
+    // console.log(this.date)
+    // console.log(this.onSelectedDate)
+    // console.log('Next')
 
   }
 
@@ -140,6 +217,12 @@ export class ShiftPickerComponent implements OnInit {
         })
     }
   }
+  setThisWeekOff() {
+    const attendance = this.effectiveShift.attendances;
+    this.thisWeekOff = !this.thisWeekOff
+    attendance.ofDate = this.date;
+    attendance.status = 'off'
+  }
 
   setWeeklyOff() {
     const employee = this.effectiveShift.employee;
@@ -163,22 +246,42 @@ export class ShiftPickerComponent implements OnInit {
   }
 
   getOnDuty() {
-    this.OnDutyBalance = []
+    // this.OnDutyBalance = []
     const input = new ServerPageInput();
     input.serverPaging = false;
     input.query = {
       id: this.effectiveShift.employee.id,
       employeeId: this.effectiveShift.employee.id
     };
-    // this.isFetchingLeaveBalances = true;
+    console.log('onduty', this.leaves)
+    if (this.leaves.length) {
+      console.log('in onduty', this.leaves)
+      this.leaves.forEach(item => {
+        // console.log(item.includes(status = 'approved'));
+        if (item.status.toLowerCase() === 'approved' && item.date === this.date.toISOString()) {
+          this.isLeave = true
+        }
+      })
+    }
+    console.log(this.isLeave)
     this.amsLeaveService.leaveBalances.search(input)
       .then(page => {
         page.items.forEach(item => {
-          if ((item.leaveType.code == 'On Duty') && (item.leaveType.unlimited == true)) {
-            this.OnDutyBalance.push(item)
+          if ((item.leaveType.unlimited == false) && item.leaveType.code.toLowerCase() == 'co' && (this.isLeave == false)) {
+            this.compOffBalance = item
+            console.log(this.compOffBalance)
+          }
+
+        })
+      })
+    this.amsLeaveService.leaveBalances.search(input)
+      .then(page => {
+        page.items.forEach(item => {
+          if ((item.leaveType.unlimited == true) && item.leaveType.code.toLowerCase() == 'dl' && this.isLeave == false) {
+            this.OnDutyBalance = item
+            console.log('test', this.OnDutyBalance)
           }
         })
-        // this.isFetchingLeaveBalances = false;
       })
       .catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
@@ -235,21 +338,30 @@ export class ShiftPickerComponent implements OnInit {
       })
   }
 
+  applyLeave(item) {
+    const dialogRef = this.dialog.open(LeaveReasonDialogComponent, { width: '40%', data: item })
+    dialogRef.afterClosed().subscribe((leave: Leave) => {
+      item.reason = leave.reason
+      console.log(item)
+      this.selectedLeave(item)
+    })
+  }
   selectedLeave(item) {
     console.log(item.leaveType.id)
     this.leave.properties.date = this.date
     this.leave.properties.toDate = this.date;
     this.leave.properties.days = 1;
-    this.leave.properties.reason = "By Admin";
+    this.leave.properties.reason = item.reason;
     this.leave.properties.status = 'approved';
     this.leave.properties.type = item.leaveType.code;
     this.leave.properties.employee = this.employee;
     this.leave.save()
+    this.getStatus()
+    this.setEffectiveShift()
     console.log(this.leave.properties)
   }
 
-  getLeaveBalance(event) {
-    //this.stopPropagation(event)
+  getLeaveBalance() {
     console.log(this.effectiveShift)
     this.leaveBalances = []
     const input = new ServerPageInput();
@@ -270,6 +382,5 @@ export class ShiftPickerComponent implements OnInit {
       })
       .catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
-
 
 }

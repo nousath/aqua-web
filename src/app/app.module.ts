@@ -19,6 +19,7 @@ import { ResetPasswordDialogComponent } from './dialogs/reset-password-dialog/re
 import { DepartmentsComponent } from './pages/employees/departments/departments.component';
 import { EmsDepartmentService } from './services/index';
 import { LeaveConfirmDialogComponent } from './dialogs/leave-confirm-dialog/leave-confirm-dialog.component';
+import { LeaveReasonDialogComponent } from './dialogs/leave-reason-dialog/leave-reason-dialog.component';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import { LeaveConfirmDialogComponent } from './dialogs/leave-confirm-dialog/leav
     SystemUsageComponent,
     ResetPasswordDialogComponent,
     LeaveConfirmDialogComponent,
+    LeaveReasonDialogComponent,
 
 
   ],
@@ -48,12 +50,12 @@ import { LeaveConfirmDialogComponent } from './dialogs/leave-confirm-dialog/leav
   entryComponents: [
     ResetPasswordDialogComponent,
     LeaveConfirmDialogComponent,
-
+    LeaveReasonDialogComponent
   ],
   exports: [
     ResetPasswordDialogComponent,
     LeaveConfirmDialogComponent,
-
+    LeaveReasonDialogComponent
   ],
   bootstrap: [AppComponent]
 })
