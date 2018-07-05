@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, Observable } from 'rxjs/Rx';
 import { Angulartics2 } from 'angulartics2';
 import { LocalStorageService } from '../../../services/local-storage.service';
-
+import { Location } from '@angular/common';
 import { ToastyService } from 'ng2-toasty';
 import { ServerPageInput } from '../../../common/contracts/api';
 import { MdDialogRef, MdDialog } from '@angular/material';
@@ -44,7 +44,8 @@ export class ApplyLeaveComponent {
     private store: LocalStorageService,
     private toastyService: ToastyService,
     private angulartics2: Angulartics2,
-    public dialog: MdDialog
+    public dialog: MdDialog,
+    public _location: Location
   ) {
     this.userType = this.store.getItem('userType');
 
@@ -137,31 +138,7 @@ export class ApplyLeaveComponent {
       .catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
-  import() {
-    const dialogRef: MdDialogRef<FileUploaderDialogComponent> = this.dialog.open(FileUploaderDialogComponent);
-    const component = dialogRef.componentInstance;
-    component.uploader = this.amsLeaveService.leaves;
-    component.samples = [{
-      name: 'CSV',
-      mapper: 'default',
-      url: 'assets/formats/leaves.csv'
-    // }, {
-    //   name: 'EXCEL',
-    //   mapper: 'default',
-    //   url: 'assets/formats/leaves.csv'
-    }];
-
-    // component.mappers = [{
-    //   name: 'Default',
-    //   value: 'default'
-    // }, {
-    //   name: 'Zoho',
-    //   value: 'zoho'
-    // }, {
-    //   name: 'Edualaya',
-    //   value: 'edu'
-    // }]
-    component.name = 'Leaves';
-    dialogRef.afterClosed().subscribe();
+    backClicked() {
+      this._location.back();
   }
 }

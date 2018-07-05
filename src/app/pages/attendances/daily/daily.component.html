@@ -55,13 +55,13 @@
                 <thead class="primary_thead">
 
                     <tr>
-                        <th class="td text-center">Name</th>
+                        <th class="tdWidth text-center">Name</th>
                         <th class="tdWidth">Designation</th>
                         <th class="tdWidth">Shift</th>
                         <th class="tdWidth">Status</th>
-                        <th class="text-center">Check In</th>
-                        <th class="text-center">Check Out</th>
-                        <th class="text-center">Edit</th>
+                        <th class="text-center tdWidth">Check In</th>
+                        <th class="text-center tdWidth">Check Out</th>
+                        <th class="text-center tdWidth">Edit</th>
                         <th class="tdWidth">Team</th>
                     </tr>
                 </thead>
@@ -85,8 +85,8 @@
                             <span *ngIf="item.status == 'absent' && (item.shift.status === 'weekOff' || item.shift.status === 'holiday'); else elsePart">{{item.shift.status | titlecase}}</span>
                         </td>
                         <!-- <td class="tdWidth">{{item?.department || '--'}}</td> -->
-                        <td class="attendance">{{item.checkIn | date:'shortTime'}}</td>
-                        <td class="attendance">{{item.checkOut | date:'shortTime'}}</td>
+                        <td class=" tdWidth">{{item.checkIn | date:'shortTime'}}</td>
+                        <td class=" tdWidth">{{item.checkOut | date:'shortTime'}}</td>
                         <td class="tdWidth">
                             <a (click)="addAttendance(item)">Logs</a>
                         </td>

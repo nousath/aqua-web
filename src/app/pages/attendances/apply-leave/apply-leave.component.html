@@ -1,6 +1,6 @@
 <div class="row page_header">
     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-        <a *ngIf="userType === 'superadmin'" md-raised-button class="reply" color="primary" [routerLink]="['/pages/attendances/leaves']">
+        <a *ngIf="userType === 'superadmin'" md-raised-button class="reply" color="primary" (click)="backClicked()">
             <md-icon>reply</md-icon>Leaves(all)
         </a>
     </div>
@@ -8,11 +8,6 @@
         <h5>
             <b>New Leave</b>
         </h5>
-    </div>
-    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-        <button *ngIf="userType === 'superadmin'" md-icon-button (click)="import()">
-          <md-icon>cloud_upload</md-icon>
-        </button>
     </div>
 </div>
 <md-spinner class="custom_spinner" *ngIf="isProcessing" mode="indeterminate"></md-spinner>

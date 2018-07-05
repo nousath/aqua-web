@@ -11,6 +11,7 @@ import { AutoCompleteService } from '../../../services/auto-complete.service';
 import { NgForm } from '@angular/forms';
 import { Page } from '../../../common/contracts/page';
 import { MdDialog } from '@angular/material';
+import { Location } from '@angular/common';
 import { ResetPasswordDialogComponent } from '../../../dialogs/reset-password-dialog/reset-password-dialog.component';
 import { FileUploader, ParsedResponseHeaders, FileItem, FileLikeObject } from 'ng2-file-upload';
 import * as _ from 'lodash';
@@ -50,7 +51,8 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     private emsDepartmentService: EmsDepartmentService,
     private store: LocalStorageService,
     private dialog: MdDialog,
-    private router: Router) {
+    private router: Router,
+    public _location: Location) {
 
     const access_Token: string = this.store.getItem('external-token');
     const orgCode = this.store.getItem('orgCode');
@@ -352,4 +354,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subscription.unsubscribe();
   }
 
+  backClicked() {
+    this._location.back();
+}
 }
