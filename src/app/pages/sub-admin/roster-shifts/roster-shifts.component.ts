@@ -32,6 +32,7 @@ export class RosterShiftsComponent implements OnInit {
   uploader: FileUploader;
   isLoading = true;
   isUpload = false;
+  isFilter: boolean;
   constructor(private amsEmployeeService: AmsEmployeeService,
     private amsShiftService: AmsShiftService,
     private amsEffectiveShiftService: AmsEffectiveShiftService,
@@ -129,14 +130,12 @@ export class RosterShiftsComponent implements OnInit {
       this.dates.push(startOfWeek.toDate());
       startOfWeek = startOfWeek.clone().add(1, 'd');
     }
-    console.log(this.dates);
-    console.log(this.isDateToday);
   }
 
 
   getEffectiveShift(date: Date) {
     this.isLoading = true;
-    this.effectiveShifts.filters.properties['fromDate']['value'] = date.toUTCString ? date.toUTCString() : date;
+    this.effectiveShifts.filters.properties['fromDate']['value'] = moment(date).startOf('week').toISOString();
     this.effectiveShifts.fetch().then(() => {
       this.isLoading = false;
     }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));

@@ -233,6 +233,7 @@ export class AddAttendanceLogsComponent {
         }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
 
       }
+      item.time = null
     })
     console.log(this.addAttendanceLogs)
   }

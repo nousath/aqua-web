@@ -27,6 +27,9 @@
             <a md-icon-button [disabled]="isLoading || isDownloading" (click)="excel()" mdTooltip="Upload Excel" [mdTooltipPosition]="'above'">
                 <md-icon>cloud_upload</md-icon>
             </a>
+            <button md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'">
+                <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
+            </button>
         </div>
     </div>
     <div *ngIf="isUpload" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -47,6 +50,22 @@
         </button>
     </div>
 </div>
+<div class="row" *ngIf="isFilter">
+    <md-card class="card">
+        <div class="row text-center headr_bar">
+            <h5>
+                <b>Filters</b>
+            </h5>
+            <div class="actionBtns">
+                <button md-icon-button mdTooltip="Close" [mdTooltipPosition]="'above'" (click)="isFilter = !isFilter">
+                    <md-icon>highlight_off</md-icon>
+                </button>
+            </div>
+        </div>
+        <aqua-employees-filter (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter>
+    </md-card>
+</div>
+
 <md-spinner class="custom_spinner" *ngIf="isDownloading || isLoading" mode="indeterminate"></md-spinner>
 <div class="row">
     <md-card class="card">
@@ -102,7 +121,7 @@
             <div class="custom_pagination">
                 <pagination-controls id="foo" (pageChange)="effectiveShifts.pageNo = $event;getEffectiveShift(effectiveShifts.filters.properties['fromDate']['value']);"></pagination-controls>
                 <label>Total Records: {{effectiveShifts.totalRecords}}</label>
-                <div class="pageSize">
+                <div class="pageSize" style="display: none;">
                     <label>Page Size:</label>
                     <select name="pageSize" [(ngModel)]="effectiveShifts.pageSize" (change)="effectiveShifts.pageNo = 1;getEffectiveShift(effectiveShifts.filters.properties['fromDate']['value'])">
                         <option value="10">10</option>

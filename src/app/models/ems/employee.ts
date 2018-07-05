@@ -14,6 +14,7 @@ export class EmsEmployee {
   // designation: Designation = new Designation();
   designation = '';
   department = '';
+  incharge = ''
   status = '';
   gender: 'male' | 'female' | 'others' | null = null;
   fatherName = '';

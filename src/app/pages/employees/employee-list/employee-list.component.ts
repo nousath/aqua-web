@@ -137,7 +137,7 @@ export class EmployeeListComponent implements OnInit {
   }
 
   import() {
-    const dialogRef: MdDialogRef<FileUploaderDialogComponent> = this.dialog.open(FileUploaderDialogComponent, { width: '60%' });
+    const dialogRef: MdDialogRef<FileUploaderDialogComponent> = this.dialog.open(FileUploaderDialogComponent);
     const component = dialogRef.componentInstance;
     component.uploader = this.emsEmployeeService.employees
     component.samples = [{

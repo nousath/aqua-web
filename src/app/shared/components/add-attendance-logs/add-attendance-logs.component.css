@@ -9,9 +9,11 @@ input{
 th,td{
     width: 33%
 }
-header{
+.header{
     background-color: #3f4766;
+    width: 662px;
+    position: absolute;
 }
-h5{
+.header h5{
     color: white;
 }
