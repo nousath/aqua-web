@@ -16,7 +16,7 @@ export class LeaveReasonDialogComponent implements OnInit {
 
   constructor(public dialogRef: MdDialogRef<LeaveReasonDialogComponent>,
     private toastyService: ToastyService,
-    @Inject(MD_DIALOG_DATA) public data: Leave) {
+    @Inject(MD_DIALOG_DATA) public data: any) {
   }
 
   ngOnInit() {
