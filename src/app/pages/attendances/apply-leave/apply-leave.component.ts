@@ -137,31 +137,5 @@ export class ApplyLeaveComponent {
       .catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
-  import() {
-    const dialogRef: MdDialogRef<FileUploaderDialogComponent> = this.dialog.open(FileUploaderDialogComponent);
-    const component = dialogRef.componentInstance;
-    component.uploader = this.amsLeaveService.leaves;
-    component.samples = [{
-      name: 'CSV',
-      mapper: 'default',
-      url: 'assets/formats/leaves.csv'
-    // }, {
-    //   name: 'EXCEL',
-    //   mapper: 'default',
-    //   url: 'assets/formats/leaves.csv'
-    }];
-
-    // component.mappers = [{
-    //   name: 'Default',
-    //   value: 'default'
-    // }, {
-    //   name: 'Zoho',
-    //   value: 'zoho'
-    // }, {
-    //   name: 'Edualaya',
-    //   value: 'edu'
-    // }]
-    component.name = 'Leaves';
-    dialogRef.afterClosed().subscribe();
-  }
+  
 }
