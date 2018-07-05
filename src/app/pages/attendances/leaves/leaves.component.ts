@@ -5,13 +5,14 @@ import { ToastyService } from 'ng2-toasty';
 import { Page } from '../../../common/contracts/page';
 import { Leave } from '../../../models';
 import { LeaveActionDialogComponent } from '../../../dialogs/leave-action-dialog/leave-action-dialog.component';
-import { MdDialog } from '@angular/material';
+import { MdDialog, MdDialogRef } from '@angular/material';
 import { Filter } from '../../../common/contracts/filters';
 import * as _ from 'lodash';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { Angulartics2 } from 'angulartics2';
 import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-dialog.component';
 import { LeaveConfirmDialogComponent } from '../../../dialogs/leave-confirm-dialog/leave-confirm-dialog.component';
+import { FileUploaderDialogComponent } from '../../../shared/components/file-uploader-dialog/file-uploader-dialog.component';
 declare var $: any;
 
 @Component({
@@ -268,6 +269,33 @@ export class LeavesComponent implements OnInit, AfterViewInit {
         }
       })
     }
+  }
+  import() {
+    const dialogRef: MdDialogRef<FileUploaderDialogComponent> = this.dialog.open(FileUploaderDialogComponent);
+    const component = dialogRef.componentInstance;
+    component.uploader = this.amsLeaveService.leaves;
+    component.samples = [{
+      name: 'CSV',
+      mapper: 'default',
+      url: 'assets/formats/leaves.csv'
+    // }, {
+    //   name: 'EXCEL',
+    //   mapper: 'default',
+    //   url: 'assets/formats/leaves.csv'
+    }];
+
+    // component.mappers = [{
+    //   name: 'Default',
+    //   value: 'default'
+    // }, {
+    //   name: 'Zoho',
+    //   value: 'zoho'
+    // }, {
+    //   name: 'Edualaya',
+    //   value: 'edu'
+    // }]
+    component.name = 'Leaves';
+    dialogRef.afterClosed().subscribe();
   }
 
 }

@@ -76,8 +76,9 @@
                     <span>{{leave.leaveType.name}}({{leave.days}})</span>
                 </button>
             </ng-container>
-            <span *ngIf="!leaveBalances.length && !isFetchingLeaveBalances">No Balance</span>
+            <span *ngIf="!leaveBalances.length && !isFetchingLeaveBalances && !isLeaveExists">No Balance</span>
             <span *ngIf="isFetchingLeaveBalances">Fetching</span>
+            <span *ngIf="isLeaveExists">Already Applied</span>
         </md-menu>
 
         <button md-menu-item [mdMenuTriggerFor]="shifts" (click)="stopPropagation($event)">Shifts</button>

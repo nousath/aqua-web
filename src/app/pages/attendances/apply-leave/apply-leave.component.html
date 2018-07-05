@@ -9,11 +9,6 @@
             <b>New Leave</b>
         </h5>
     </div>
-    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-        <button *ngIf="userType === 'superadmin'" md-icon-button (click)="import()">
-          <md-icon>cloud_upload</md-icon>
-        </button>
-    </div>
 </div>
 <md-spinner class="custom_spinner" *ngIf="isProcessing" mode="indeterminate"></md-spinner>
 <div class="row">
