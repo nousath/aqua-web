@@ -121,11 +121,11 @@
             <div class="custom_pagination">
                 <pagination-controls id="foo" (pageChange)="effectiveShifts.pageNo = $event;getEffectiveShift(effectiveShifts.filters.properties['fromDate']['value']);"></pagination-controls>
                 <label>Total Records: {{effectiveShifts.totalRecords}}</label>
-                <div class="pageSize">
+                <div class="pageSize" style="display: none;">
                     <label>Page Size:</label>
                     <select name="pageSize" [(ngModel)]="effectiveShifts.pageSize" (change)="effectiveShifts.pageNo = 1;getEffectiveShift(effectiveShifts.filters.properties['fromDate']['value'])">
                         <option value="10">10</option>
-                        <option value="2">20</option>
+                        <option value="20">20</option>
                         <option value="50">50</option>
                         <option value="100">100</option>
                     </select>
