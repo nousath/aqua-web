@@ -76,17 +76,14 @@
             <table class="table table-condensed table-hover">
                 <thead class="primary_thead">
                     <tr>
-                        <th class="selector"><input type="checkbox" [(ngModel)] = "check" (click)="All()"> </th>
-                        <th class="tdWidth">Name</th>
-                        <th class="tdWidth">Code</th>
-                        <th class="tdWidth">Start Date</th>
-                        <th class="tdWidth">End Date</th>
+                        <th class="selector"><input type="checkbox" [(ngModel)]="check" (click)="All()"> </th>
+                        <th class="tdWidth">Employee</th>
+                        <th class="tdWidth">Date</th>
                         <th class="tdWidth">Type</th>
                         <th class="tdWidth">Count</th>
-                        <th class="tdWidth">Reason</th>
                         <th class="tdWidth">Status</th>
-                        <th class="tdWidth">Comment</th>
-                        <th class="tdWidth text-center">Action</th>               
+                        <th class="tdWidth">Reason/Comment</th>
+                        <th class="tdWidth text-center">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -94,22 +91,41 @@
                                                       itemsPerPage: leaves.pageSize,
                                                       currentPage: leaves.pageNo,
                                                       totalItems: leaves.totalRecords };" class="capitalize">
-                                                      
+
                         <td class="selector"><input type="checkbox" [checked]="check" (change)="allLeaves(item)" *ngIf="item?.status == 'submitted'"></td>
                         <td class="tdWidth">
-                            <!--<img *ngIf="item?.picUrl" class="img-circle profile_pic" alt="img" [src]="item?.picUrl">-->
-                            <!--<img *ngIf="!item?.picUrl" class="img-circle profile_pic" alt="img" src="assets/images/blank.png"> &nbsp;-->
-                            <a [routerLink]="[item?.employee?.id]">{{item?.employee?.name}}</a>
+                            <a [routerLink]="[item.employee.id]">{{item.employee.name || '--'}}</a>
+                            <br>
+                            <span class="sub-text">{{item.employee.code || '--'}}</span>
                         </td>
-                        <td class="tdWidth">{{item?.employee?.code}}</td>
-                        <td class="tdWidth">{{item?.date | date}}</td>
-                        <td class="tdWidth">{{item?.toDate | date}}</td>
+                        <td class="tdWidth">
+                            {{item?.date | date}}
+                            <ng-container *ngIf="item.start">
+                                <span class="badge" *ngIf="item.start.first && !item.start.second">F</span>
+                                <span class="badge" *ngIf="!item.start.first && item.start.second">S</span>
+                            </ng-container>
+                            <ng-container *ngIf="item.toDate && item.toDate !== item.date">
+                                <br>
+                                <span class="sub-text text-center">to</span>
+                                <br> {{item?.toDate | date}}
+                                <ng-container *ngIf="item.end">
+                                    <span class="badge" *ngIf="item.end.first && !item.end.second">F</span>
+                                    <span class="badge" *ngIf="!item.end.first && item.end.second">S</span>
+                                </ng-container>
+                            </ng-container>
+
+                        </td>
                         <td class="tdWidth">{{item?.leaveType?.name}}</td>
                         <td class="tdWidth">{{item?.days}}</td>
-                        <td class="tdWidth">{{item?.reason}}</td>
                         <td class="tdWidth">{{item?.status}}</td>
-                        <td class="tdWidth">{{item?.comment}}</td>
-                        <td class="tdWidth text-center"  >
+                        <td class="tdWidth">
+                            {{item?.reason}}
+                            <ng-container *ngIf="item?.comment">
+                                <br>
+                                <span class="sub-text">{{item?.comment}}</span>
+                            </ng-container>
+                        </td>
+                        <td class="tdWidth text-center">
                             <!--<button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status?.toLowerCase() == 'approved'
                                       || item?.status?.toLowerCase() == 'submitted'" (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
                                 <md-icon>highlight_off</md-icon>
@@ -128,13 +144,13 @@
                             <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status?.toLowerCase() == 'approved'" (click)="accept_reject_leave(item, 'cancelled')" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
                               <md-icon>close</md-icon>
                           </button>
-                        </td>                        
+                        </td>
                     </tr>
 
                 </tbody>
             </table>
-            <button *ngIf="leaves.items.length" [disabled]="leaves?.isLoading || isUpdatingLeaveStatus" md-raised-button color="primary" mdTooltip="Approve" [mdTooltipPosition]="'above'" (click)="approveLeaves('approved')" style="float: right;">Approve</button>  
-            <button *ngIf="leaves.items.length" [disabled]="leaves?.isLoading || isUpdatingLeaveStatus" md-raised-button color="btn_grey" mdTooltip="Reject" [mdTooltipPosition]="'above'" (click)="approveLeaves('rejected')" style="float: right;">Reject</button>  
+            <button *ngIf="leaves.items.length" [disabled]="leaves?.isLoading || isUpdatingLeaveStatus" md-raised-button color="primary" mdTooltip="Approve" [mdTooltipPosition]="'above'" (click)="approveLeaves('approved')" style="float: right;">Approve</button>
+            <button *ngIf="leaves.items.length" [disabled]="leaves?.isLoading || isUpdatingLeaveStatus" md-raised-button color="btn_grey" mdTooltip="Reject" [mdTooltipPosition]="'above'" (click)="approveLeaves('rejected')" style="float: right;">Reject</button>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="custom_pagination">
