@@ -14,8 +14,11 @@
             <a *ngIf="userType == 'superadmin'" md-icon-button [routerLink]="['new/apply']" mdTooltip="New Leave" [mdTooltipPosition]="'above'">
                 <md-icon>add_circle_outline</md-icon>
             </a>
+            <button *ngIf="userType === 'superadmin'" md-icon-button (click)="import()">
+                <md-icon>cloud_upload</md-icon>
+              </button>
         </div>
-
+       
     </div>
 </div>
 <md-spinner class="custom_spinner" *ngIf="leaves?.isLoading || isUpdatingLeaveStatus" mode="indeterminate"></md-spinner>

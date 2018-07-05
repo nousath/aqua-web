@@ -56,6 +56,7 @@ export class ShiftPickerComponent implements OnInit {
   //   code: ''
   // }; 
   isFetchingLeaveBalances = false;
+  isLeaveExists = false
   isUpdatingLeaveStatus = false;
   isOnDuty = false;
   currentDate: ''
@@ -143,6 +144,7 @@ export class ShiftPickerComponent implements OnInit {
         this.onSelectedDate.slice(2)
         if (onLeave.status === 'submitted' || 'approved') {
           if (onLeave.days === 1) {
+            this.onSelectedDate = [];
             this.onSelectedDate.push({
               type: onLeave.leaveType.code,
               date: onLeave.date,
@@ -150,6 +152,7 @@ export class ShiftPickerComponent implements OnInit {
               units: 'full'
             })
           } else if (onLeave.days < 1) {
+            this.onSelectedDate = [];
             this.onSelectedDate.push({
               type: onLeave.leaveType.code,
               date: onLeave.date,
@@ -159,17 +162,6 @@ export class ShiftPickerComponent implements OnInit {
           }
         }
       }
-      // else if(onLeave.status === 'approved') {
-      //   this.onSelectedDate.push({
-      //     type: onLeave.code,
-      //     date: onLeave.ofDate,
-      //     status: false,
-      //   })
-      // }
-      // }
-      // if (onLeave.date === moment(this.date).toISOString()) {
-
-      // }
     })
     // console.log(this.employee.name)
     // console.log(this.date)
@@ -363,6 +355,7 @@ export class ShiftPickerComponent implements OnInit {
 
   getLeaveBalance() {
     console.log(this.effectiveShift)
+    if(this.isLeave == false){
     this.leaveBalances = []
     const input = new ServerPageInput();
     input.serverPaging = false;
@@ -381,6 +374,10 @@ export class ShiftPickerComponent implements OnInit {
         this.isFetchingLeaveBalances = false;
       })
       .catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+    }
+    else {
+      this.isLeaveExists = !this.isLeaveExists
+    }
   }
 
 }
