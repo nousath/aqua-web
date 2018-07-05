@@ -18,6 +18,7 @@ import { LeaveActionDialogComponent } from '../../../dialogs/leave-action-dialog
 import { Shift } from '../../../models/shift';
 import { ShiftType } from '../../../models/shift-type';
 import * as moment from 'moment';
+import { Location } from '@angular/common';
 import { AmsShiftService } from '../../../services/ams/ams-shift.service';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { EmsEmployeeService } from '../../../services/index';
@@ -65,6 +66,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
     private activatedRoute: ActivatedRoute,
     private store: LocalStorageService,
     public dialog: MdDialog,
+    public _location: Location,
     private router: Router) {
     // this.today=new Date(moment().startOf("day").toDate()).toISOString();
 
@@ -396,5 +398,8 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
         }
       }
     );
+  }
+    backClicked() {
+      this._location.back();
   }
 }

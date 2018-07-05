@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, Observable } from 'rxjs/Rx';
 import { Angulartics2 } from 'angulartics2';
 import { LocalStorageService } from '../../../services/local-storage.service';
-
+import { Location } from '@angular/common';
 import { ToastyService } from 'ng2-toasty';
 import { ServerPageInput } from '../../../common/contracts/api';
 import { MdDialogRef, MdDialog } from '@angular/material';
@@ -44,7 +44,8 @@ export class ApplyLeaveComponent {
     private store: LocalStorageService,
     private toastyService: ToastyService,
     private angulartics2: Angulartics2,
-    public dialog: MdDialog
+    public dialog: MdDialog,
+    public _location: Location
   ) {
     this.userType = this.store.getItem('userType');
 
@@ -137,5 +138,7 @@ export class ApplyLeaveComponent {
       .catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
-  
+    backClicked() {
+      this._location.back();
+  }
 }
