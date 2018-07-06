@@ -22,10 +22,10 @@
             </div>
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                 <select class="form-control" [(ngModel)]="selectedShiftType" placeholder="Shift" name="shift">
-                  <option *ngFor="let item of shiftTypes.items" [value]="item">
-                      {{item?.name}}
-                  </option>
-              </select>
+                    <option *ngFor="let item of shiftTypes.items" [value]="item">
+                        {{item?.name}}
+                    </option>
+                </select>
             </div>
         </div>
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-group" *ngIf="!hidden.attendanceStatus">
@@ -34,26 +34,45 @@
             </div>
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                 <select class="form-control boxStatus" [(ngModel)]="selectedAttendanceStatus" placeholder="Status" name="Status">
-                  <option value="">All</option>
-                  <option value="present">Present</option>
-                  <option value="absent">Absent</option>
-                  <option value="missSwipe">Missed Swipe</option>
-                  <option value="halfday">Half Day</option>
-                  <option value="onLeave">On Leave</option>
-              </select>
+                    <option value="">All</option>
+                    <option value="present">Present</option>
+                    <option value="absent">Absent</option>
+                    <option value="missSwipe">Missed Swipe</option>
+                    <option value="halfday">Half Day</option>
+                    <option value="onLeave">On Leave</option>
+                </select>
             </div>
         </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-group" *ngFor="let item of tagTypes?.items">
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                <label>{{item?.name | titlecase}}</label>
+        <div *ngIf="!hidden.attendanceStatus">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-group" *ngFor="let item of tagTypes?.items">
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" *ngIf="item.name != 'userType'">
+                    <label>{{item?.name | titlecase}}</label>
+                </div>
+                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" *ngIf="item.name != 'userType'">
+                    <select class="form-control" #tag (change)="tags.reset();tags.select({tagTypeId:item.id,tagId:tag.value})" placeholder="Tag"
+                        name="tags">
+                        <option selected [ngValue]="null">select an option</option>
+                        <option *ngFor="let tag of item?.tags" [value]="tag.id">
+                            {{tag?.name | titlecase}}
+                        </option>
+                    </select>
+                </div>
             </div>
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                <select class="form-control" #tag (change)="tags.reset();tags.select({tagTypeId:item.id,tagId:tag.value})" placeholder="Tag" name="tags">
-                  <option selected [ngValue]="null">select an option</option>
-                  <option *ngFor="let tag of item?.tags" [value]="tag.id">
-                      {{tag?.name | titlecase}}
-                  </option>
-              </select>
+        </div>
+        <div *ngIf="hidden.attendanceStatus">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-group" *ngFor="let item of tagTypes?.items">
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" *ngIf="item.name != 'userType'">
+                    <label>{{item?.name | titlecase}}</label>
+                </div>
+                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" *ngIf="item.name != 'userType'">
+                    <select class="form-control" #tag (change)="tags.reset();tags.select({tagTypeId:item.id,tagId:tag.value})" placeholder="Tag"
+                        name="tags">
+                        <option selected [ngValue]="null">select an option</option>
+                        <option *ngFor="let tag of item?.tags" [value]="tag.id">
+                            {{tag?.name | titlecase}}
+                        </option>
+                    </select>
+                </div>
             </div>
         </div>
     </div>

@@ -355,25 +355,25 @@ export class ShiftPickerComponent implements OnInit {
 
   getLeaveBalance() {
     console.log(this.effectiveShift)
-    if(this.isLeave == false){
-    this.leaveBalances = []
-    const input = new ServerPageInput();
-    input.serverPaging = false;
-    input.query = {
-      id: this.effectiveShift.employee.id,
-      employeeId: this.effectiveShift.employee.id
-    };
-    this.isFetchingLeaveBalances = true;
-    this.amsLeaveService.leaveBalances.search(input)
-      .then(page => {
-        page.items.forEach(item => {
-          if (item.days >= 1) {
-            this.leaveBalances.push(item)
-          }
+    if (this.isLeave == false){
+      this.leaveBalances = []
+      const input = new ServerPageInput();
+      input.serverPaging = false;
+      input.query = {
+        id: this.effectiveShift.employee.id,
+        employeeId: this.effectiveShift.employee.id
+      };
+      this.isFetchingLeaveBalances = true;
+      this.amsLeaveService.leaveBalances.search(input)
+        .then(page => {
+          page.items.forEach(item => {
+            if (item.days >= 1) {
+              this.leaveBalances.push(item)
+            }
+          })
+          this.isFetchingLeaveBalances = false;
         })
-        this.isFetchingLeaveBalances = false;
-      })
-      .catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+        .catch(err => this.toastyService.error({ title: 'Error', msg: err }));
     }
     else {
       this.isLeaveExists = !this.isLeaveExists

@@ -11,15 +11,33 @@
 
         <ng-container *ngIf="!selectedShiftType || isDynamic">
             <div *ngFor="let item of onSelectedDate" class="continue">
-                <span *ngIf="!isWeeklyOff && !isOnDuty && (item.date | date:'dd/MM/yyyy') === (date | date:'dd/MM/yyyy') && item.status == null">{{item.type | uppercase}}</span>
+                <!-- <span *ngIf="!isWeeklyOff && !isOnDuty && (item.date | date:'dd/MM/yyyy') === (date | date:'dd/MM/yyyy') && item.status == null">{{item.type | uppercase}}</span> -->
+                <span *ngIf="!isWeeklyOff && !isOnDuty && (item.date | date:'dd/MM/yyyy') === (date | date:'dd/MM/yyyy') && item.type === 'present'"
+                    style="color:lightskyblue">{{item.type | uppercase}}</span>
+                <span *ngIf="!isWeeklyOff && !isOnDuty && (item.date | date:'dd/MM/yyyy') === (date | date:'dd/MM/yyyy') && item.type === 'missSwipe'"
+                    style="color:darkorange">{{item.type | uppercase}}</span>
+                <span *ngIf="!isWeeklyOff && !isOnDuty && (item.date | date:'dd/MM/yyyy') === (date | date:'dd/MM/yyyy') && item.type === 'absent'"
+                    style="color:rgb(248, 91, 117)">{{item.type | uppercase}}</span>
                 <span class="approvedFirst" *ngIf="!isWeeklyOff && !isOnDuty && (item.date | date:'dd/MM/yyyy') === (date | date:'dd/MM/yyyy') && item.status === 'approved' && item.units === 'first'">{{item.type | uppercase}}</span>
                 <span class="approvedSecond" *ngIf="!isWeeklyOff && !isOnDuty && (item.date | date:'dd/MM/yyyy') === (date | date:'dd/MM/yyyy') && item.status === 'approved' && item.units === 'second'">{{item.type | uppercase}}</span>
                 <span class="approvedFull" *ngIf="!isWeeklyOff && !isOnDuty && (item.date | date:'dd/MM/yyyy') === (date | date:'dd/MM/yyyy') && item.status === 'approved' && item.units === 'full'">{{item.type | uppercase}}</span>
-                <span class="submittedFirst" *ngIf="!isWeeklyOff && !isOnDuty && (item.date | date:'dd/MM/yyyy') === (date | date:'dd/MM/yyyy') && item.status === 'submitted' && item.units === 'first'">{{item.type | uppercase}}</span>
-                <span class="submittedSecond" *ngIf="!isWeeklyOff && !isOnDuty && (item.date | date:'dd/MM/yyyy') === (date | date:'dd/MM/yyyy') && item.status === 'submitted' && item.units === 'second'">{{item.type | uppercase}}</span>
-                <span class="submittedFull" *ngIf="!isWeeklyOff && !isOnDuty && (item.date | date:'dd/MM/yyyy') === (date | date:'dd/MM/yyyy') && item.status === 'submitted' && item.units === 'full'">{{item.type | uppercase}}</span>
+                <span class="approvedFirst" *ngIf="!isWeeklyOff && !isOnDuty && (item.date | date:'dd/MM/yyyy') === (date | date:'dd/MM/yyyy') && item.status === 'submitted' && item.units === 'first'">
+                    <span class="asterisk">*</span>
+                    {{item.type | uppercase}}</span>
+                <span class="approvedSecond" *ngIf="!isWeeklyOff && !isOnDuty && (item.date | date:'dd/MM/yyyy') === (date | date:'dd/MM/yyyy') && item.status === 'submitted' && item.units === 'second'">
+                    <span class="asterisk">*</span>
+                    {{item.type | uppercase}}</span>
+                <span class="approvedFull" *ngIf="!isWeeklyOff && !isOnDuty && (item.date | date:'dd/MM/yyyy') === (date | date:'dd/MM/yyyy') && item.status === 'submitted' && item.units === 'full'">
+                    <span class="asterisk">*</span>
+                    {{item.type | uppercase}}
+                </span>
             </div>
-            <span *ngIf="isWeeklyOff" class="off">Off</span>
+            <div *ngIf="onSelectedDate.length == 1 && !isWeeklyOff && !thisWeekOff">
+                <div *ngFor="let item of onSelectedDate">
+                    <span *ngIf="item.status !== 'approved'">>></span>
+                </div>
+            </div>
+            <span *ngIf="isWeeklyOff || this.thisWeekOff" class="off">Off</span>
             <span *ngIf="isOnDuty" class="off">On Duty</span>
             <span *ngIf="isOnLeave"></span>
         </ng-container>
@@ -28,25 +46,12 @@
         <button md-menu-item (click)="reset()">
             <span>Reset</span>
         </button>
-        <!-- <span  md-menu-item *ngFor="let item of OnDutyBalance" [mdMenuTriggerFor]="CompOff">
-            <button md-menu-item >
-                <span>{{item.leaveType.name}}</span>
-                </button>
-        </span> -->
-
-        <!-- <button md-menu-item (click)="selectedLeave(item)" *ngFor="let item of OnDutyBalance">
-        <span  *ngIf="item.leaveType.code != 'CO'">{{item.leaveType.name}}</span>
-        </button> -->
-        <!-- <button md-menu-item *ngFor="let item of compOffBalance" [mdMenuTriggerFor]="CompOff"> -->
         <button md-menu-item *ngIf="compOffBalance" (click)="applyLeave(compOffBalance)">
             {{compOffBalance?.leaveType?.name}}
         </button>
         <button md-menu-item *ngIf="OnDutyBalance" (click)="applyLeave(OnDutyBalance)">
             {{OnDutyBalance?.leaveType?.name}}
         </button>
-
-
-
         <button md-menu-item (click)="selectedLeave(item)" *ngFor="">{{item.leaveType.name}}</button>
         <button md-menu-item [mdMenuTriggerFor]="off">
             <span>Off</span>
@@ -54,11 +59,11 @@
         </button>
         <md-menu #off="mdMenu" class="off" xPosition="after" [overlapTrigger]="false">
             <button md-menu-item (click)="setWeeklyOff()">
-                <span>This Week</span>
+                <span>Every Week</span>
                 <md-slide-toggle [checked]="isWeeklyOff"></md-slide-toggle>
             </button>
             <button md-menu-item (click)="setThisWeekOff()">
-                <span>Every Week</span>
+                <span>This Week</span>
                 <md-slide-toggle [checked]="thisWeekOff"></md-slide-toggle>
             </button>
         </md-menu>
@@ -76,9 +81,9 @@
                     <span>{{leave.leaveType.name}}({{leave.days}})</span>
                 </button>
             </ng-container>
-            <span *ngIf="!leaveBalances.length && !isFetchingLeaveBalances && !isLeaveExists">No Balance</span>
-            <span *ngIf="isFetchingLeaveBalances">Fetching</span>
-            <span *ngIf="isLeaveExists">Already Applied</span>
+            <span md-menu-item *ngIf="!leaveBalances.length && !isFetchingLeaveBalances && !isLeaveExists">No Balance</span>
+            <span md-menu-item *ngIf="isFetchingLeaveBalances">Fetching</span>
+            <span md-menu-item *ngIf="isLeaveExists">Already Applied</span>
         </md-menu>
 
         <button md-menu-item [mdMenuTriggerFor]="shifts" (click)="stopPropagation($event)">Shifts</button>

@@ -36,22 +36,22 @@
     padding: 5px 15px;
 }
 .display-text .approvedFull {
-    border: 1px solid blue;
+    border: 1px solid #888;
     background-color: lightskyblue;
     color: #ffffff;
     border-radius: 10px;
     padding: 5px 15px;
 }
 .display-text .approvedFirst {
-    background: linear-gradient(to right,#3f4766 0%, #3f4766 50%, lightskyblue 50%, lightskyblue 50%);
-    border: 1px solid #3f4766;
+    background: linear-gradient(to right,lightskyblue 0%, lightskyblue 50%, #3f4766 50%, #3f4766 50%);
+    border: 1px solid #888;
     background-color: lightskyblue;
     color: #ffffff;
     border-radius: 10px;
     padding: 5px 15px;
 }
 .display-text .submittedFull {
-    border: 1px solid yellow;
+    border: 1px solid #888;
     background-color: rgb(255, 255, 188);
     text-decoration-color: Black;
     color: black;

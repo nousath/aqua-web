@@ -82,6 +82,27 @@ export class RosterShiftsComponent implements OnInit {
       filters: [{
         field: 'fromDate',
         value: null
+      }, {
+        field: 'name',
+        value: null
+      }, {
+        field: 'code',
+        value: null
+      }, {
+        field: 'designation',
+        value: null
+      }, {
+        field: 'shiftType',
+        value: null
+      }, {
+        field: 'byShiftEnd',
+        value: false
+      }, {
+        field: 'byShiftLength',
+        value: false
+      }, {
+        field: 'tagIds',
+        value: ''
       }]
     });
 
@@ -89,6 +110,22 @@ export class RosterShiftsComponent implements OnInit {
       this.toastyService.error({ title: 'Error', msg: err })
     });
   }
+  applyFilters($event) {
+
+    this.effectiveShifts.filters.properties['shiftType']['value'] = $event.shiftType ? $event.shiftType.id : null;
+    this.effectiveShifts.filters.properties['name']['value'] = $event.employeeName;
+    this.effectiveShifts.filters.properties['code']['value'] = $event.employeeCode;
+    this.effectiveShifts.filters.properties['tagIds']['value'] = $event.tagIds;
+    this.getEffectiveShift(this.date)
+  }
+
+  reset() {
+    this.effectiveShifts.filters.reset();
+    $('#dateSelector').datepicker('setDate', new Date());
+    this.effectiveShifts.filters.properties['ofDate']['value'] = new Date();
+    this.getAttendance();
+  }
+
 
   download(date: Date) {
     this.isDownloading = true;
