@@ -29,7 +29,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
 
 
   constructor(
-    amsAttendanceService: AmsAttendanceService,
+    private amsAttendanceService: AmsAttendanceService,
     public validatorService: ValidatorService,
     private router: Router,
     private toastyService: ToastyService) {
@@ -68,7 +68,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
   reset() {
     this.monthlyAttendnace.filters.reset();
     $('#monthSelector').datepicker('setDate', new Date());
-    this.monthlyAttendnace.filters.properties['ofDate']['value'] = new Date();
+    this.monthlyAttendnace.filters.properties['ofDate']['value'] = moment().toISOString();
     this.getAttendance();
   }
 
@@ -87,6 +87,17 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
 
   downloadlink() {
     this.router.navigate(['pages/attendances/reports'], { queryParams: { type: 'monthly-attendance' } })
+  }
+
+  regenerate() {
+    const model = {
+      period: 'month',
+      date: this.monthlyAttendnace.filters.properties['ofDate']['value'] || moment().toISOString()
+    }
+
+    this.amsAttendanceService.attendance.simplePost(model, 'regenerate').then(() => {
+      this.toastyService.info({ title: 'Status', msg: 'Submitted' })
+    })
   }
 
   ngOnInit() {

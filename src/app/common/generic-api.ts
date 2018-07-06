@@ -294,8 +294,13 @@ export class GenericApi<TModel> implements IApi<TModel> {
       .catch(this.handleError);
   }
 
-  simplePost(model: any): Promise<any> {
-    return this.http.post(`${this.rootUrl}/${this.key}`, model, { headers: this.getHeaders() })
+  simplePost(model: any, key?: string): Promise<any> {
+    let url = `${this.rootUrl}/${this.key}`;
+    if (key) {
+      url = `${url}/${key}`
+    }
+
+    return this.http.post(url, model, { headers: this.getHeaders() })
       .toPromise()
       .then((response) => {
         const dataModel = response.json();
