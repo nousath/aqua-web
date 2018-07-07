@@ -1,0 +1,3 @@
+tr.invalid .form-control {
+    border-color: red;
+}

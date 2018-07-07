@@ -15,7 +15,7 @@ import { AmsTimelogsService } from '../../../services/ams/ams-timelogs.service';
 import { AmsEmployeeService } from '../../../services/ams/ams-employee.service';
 import { Angulartics2 } from 'angulartics2';
 import { IGetParams } from '../../../common/contracts/api/get-params.interface';
-import 'rxjs/Rx';
+import 'rxjs';
 import { Http } from '@angular/http';
 import { Location } from '@angular/common';
 import { AddAttendanceLogsComponent } from '../../../shared/components/add-attendance-logs/add-attendance-logs.component';

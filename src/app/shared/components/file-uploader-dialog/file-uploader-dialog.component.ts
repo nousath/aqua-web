@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { IUploader } from '../../../common/contracts/api/api.interface';
-import { MdDialogRef } from '../../../../../node_modules/@angular/material';
-import { ToastyService } from '../../../../../node_modules/ng2-toasty';
+import { MdDialogRef } from '@angular/material';
+import { ToastyService } from 'ng2-toasty';
 
 @Component({
   selector: 'aqua-file-uploader-dialog',

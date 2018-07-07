@@ -17,9 +17,10 @@ body::-webkit-scrollbar {
     width: 8px;
     background-color: #3f4766;
 }
+
 .app-full-bleed-dialog .mat-dialog-container {
     padding: 0;
-  }
+}
 
 body::-webkit-scrollbar-thumb {
     border-radius: 10px;
@@ -326,6 +327,17 @@ pagination-controls {
 
 .mat-radio-label-content {
     font-weight: 100 !important;
+}
+
+.rows {
+    display: flex;
+    flex-direction: column;
+}
+
+.rows .spacer {
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
 }
 
 .controls-row {

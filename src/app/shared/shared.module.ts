@@ -76,6 +76,8 @@ import {
 import { ShiftTypeFilterPipe } from './pipes/shift-type-filter.pipe';
 import { EmployeesFilterComponent } from './components/employees-filter/employees-filter.component';
 import { FileUploaderDialogComponent } from './components/file-uploader-dialog/file-uploader-dialog.component';
+import { BulkTimeLogsDialogComponent } from './components/bulk-time-logs-dialog/bulk-time-logs-dialog.component';
+import { AddAttendanceLogsComponent } from './components/add-attendance-logs/add-attendance-logs.component';
 
 
 export const MaterialModules = [
@@ -114,7 +116,13 @@ export const MaterialModules = [
 ];
 
 @NgModule({
-  declarations: [TimePipe, ShiftPickerComponent, ShiftTypeFilterPipe, EmployeesFilterComponent, FileUploaderDialogComponent],
+  declarations: [TimePipe,
+    ShiftPickerComponent,
+    ShiftTypeFilterPipe,
+    EmployeesFilterComponent,
+    AddAttendanceLogsComponent,
+    FileUploaderDialogComponent,
+    BulkTimeLogsDialogComponent],
   providers: [
     EmsEmployeeService,
     EmsDesignationService,
@@ -161,9 +169,10 @@ export const MaterialModules = [
     AgmCoreModule,
     TimePipe,
     ShiftPickerComponent,
-    EmployeesFilterComponent
+    EmployeesFilterComponent,
+    AddAttendanceLogsComponent
   ],
-  entryComponents: [FileUploaderDialogComponent],
+  entryComponents: [FileUploaderDialogComponent, BulkTimeLogsDialogComponent],
 
 })
 export class SharedModule { }

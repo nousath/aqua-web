@@ -1,68 +1,44 @@
-<div class="container">
-  <div class="row header">
-
-    <div class="col-sm-9 col-xs-9 col-lg-9 col-md-9">
-      <h5>
-        <b>{{data.employee.name}}</b>({{data.employee.code}})
-      </h5>
-    </div>
-    <div class="col-sm-3 col-xs-3 col-lg-3 col-md-3">
-      <h5>
-        <b>Date: </b> {{ofDate | date}}
-      </h5>
-    </div>
-  </div>
-  <br>
-  <br>
-  <div class="table-responsive">
+<div class="table-responsive">
     <table class="table table-condensed table-hover">
-      <thead class="primary_thead">
-        <tr>
-          <th class="text-center">NextDay</th>
-          <th class="text-center">Time</th>
-          <th class="text-center">Type</th>
-        </tr>
-      </thead>
-      <tbody *ngIf="attendance">
-
-        <tr class="capitalize" *ngFor="let item of attendance.timeLogs;">
-          <td class="text-center">
-            <md-checkbox type="checkbox" *ngIf="item?.time > ofDate" [disabled]="item"></md-checkbox>
-            <md-checkbox type="checkbox" *ngIf="item?.time < ofDate" [(ngModel)]="checkedDate" [disabled]="item"></md-checkbox>
-          </td>
-          <td class="text-center" *ngIf="!item?.location?.show && item">{{item?.time | date: 'h:mm a' || '--'}}</td>
-          <td class="text-center" *ngIf="!item?.location?.show && item.type =='checkIn'">In</td>
-          <td class="text-center" *ngIf="!item?.location?.show && item.type =='checkOut'">Out</td>
-        </tr>
-        <tr *ngFor="let item of addAttendanceLogs">
-          <td class="text-center">
-            <md-checkbox type="checkbox" [(ngModel)]="item.day"></md-checkbox>
-          </td>
-          <td class="text-center">
-            <input class="form-control" type="time" [(ngModel)]="item.time" required>
-          </td>
-          <td class="text-center" *ngIf="item.type == 'checkIn'">In</td>
-          <td class="text-center" *ngIf="item.type == 'checkOut'">Out</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td class="text-center">
-
-          </td>
-          <td>
-            <a md-icon-button mdTooltip="New Row" [mdTooltipPosition]="'above'" (click)="addNewRow()" style="float: right">
-              <md-icon>add_circle_outline</md-icon>
-            </a>
-
-          </td>
-        </tr>
-      </tbody>
+        <thead class="primary_thead">
+            <tr>
+                <th class="text-center">Day</th>
+                <th class="text-center">Time</th>
+                <th class="text-center">Type</th>
+                <th class="text-center">Source</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="capitalize" *ngFor="let item of logs">
+                <ng-container *ngIf="!item?.location?.show && item">
+                    <td class="text-center">{{item?.time | date: 'dd-MM-yyyy' || '--'}}</td>
+                    <td class="text-center">{{item?.time | date: 'h:mm a' || '--'}}</td>
+                    <td class="text-center" *ngIf="item.type =='checkIn'">In</td>
+                    <td class="text-center" *ngIf="item.type =='checkOut'">Out</td>
+                    <td class="text-center" *ngIf="item.source == 'biometricDevice'">Biometric</td>
+                    <td class="text-center" *ngIf="item.source != 'biometricDevice'">{{item.source}}</td>
+                </ng-container>
+            </tr>
+            <tr *ngIf="newTimeLog">
+                <td class="text-center">
+                    <select class="form-control" [(ngModel)]="newTimeLogDate" (change)="onDateSelected($event)">
+                        <option value="{{ofDate| date: 'dd-MM-yyyy'}}">{{ofDate| date: 'dd-MM-yyyy'}}</option>
+                        <option value="{{nextDate| date: 'dd-MM-yyyy'}}">{{nextDate| date: 'dd-MM-yyyy'}}</option>
+                    </select>
+                </td>
+                <td class="text-center">
+                    <input class="form-control" type="time" [(ngModel)]="newTimeLogTime" (change)="onTimeSelected()" required>
+                </td>
+                <td class="text-center">
+                    <select class="form-control" [(ngModel)]="newTimeLog.type">
+                        <option [value]="'checkIn'">In</option>
+                        <option [value]="'checkOut'">Out</option>
+                    </select>
+                </td>
+                <td>
+                    <button md-raised-button [disabled]="!newTimeLog.type || !newTimeLog.time" (click)="saveNewLog()">Save</button>
+                </td>
+            </tr>
+        </tbody>
     </table>
-    <div class="text-right">
-      <button md-raised-button color="primary" (click)="updateLogs()">
-        Save
-      </button>
-      <button md-raised-button class="btn_grey" md-dialog-close>Cancel</button>
-    </div>
-  </div>
 </div>

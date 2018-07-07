@@ -4,7 +4,7 @@ import { LeaveBalance } from '../../../models/leave-balance';
 import { Page } from '../../../common/contracts/page';
 import { Model } from '../../../common/contracts/model';
 import { LeavesComponent } from '../leaves/leaves.component';
-import { LeaveType } from '../../../models/index';
+import { LeaveType } from '../../../models';
 import { ToastyService } from 'ng2-toasty';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Employee } from '../../../models/employee';

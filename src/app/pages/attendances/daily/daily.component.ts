@@ -18,8 +18,9 @@ import { LocalStorageService } from '../../../services/local-storage.service';
 import { AmsTagService } from '../../../services/ams/ams-tag.service';
 import { TagType, Tag } from '../../../models/tag';
 import { FileUploader } from 'ng2-file-upload';
-import { AddAttendanceLogsComponent } from '../../../shared/components/add-attendance-logs/add-attendance-logs.component';
 import { FileUploaderDialogComponent } from '../../../shared/components/file-uploader-dialog/file-uploader-dialog.component';
+import { AddAttendanceLogsComponent } from '../../../shared/components/add-attendance-logs/add-attendance-logs.component';
+import { BulkTimeLogsDialogComponent } from '../../../shared/components/bulk-time-logs-dialog/bulk-time-logs-dialog.component';
 declare var $: any;
 
 @Component({
@@ -128,8 +129,24 @@ export class DailyComponent {
   }
 
   addAttendance(item: Attendance) {
-    console.log(item.id + item.employee.name)
-    const dialog = this.dialog.open(AddAttendanceLogsComponent, { panelClass: 'app-full-bleed-dialog', width: '50%', height: '55%', data: item });
+    const dialogRef: MdDialogRef<BulkTimeLogsDialogComponent> = this.dialog.open(BulkTimeLogsDialogComponent, {
+      panelClass: 'app-full-bleed-dialog',
+      width: '50%'
+    });
+  }
+
+  showBulkTimeLogsDialog() {
+    const dialogRef: MdDialogRef<BulkTimeLogsDialogComponent> = this.dialog.open(BulkTimeLogsDialogComponent, {
+      panelClass: 'app-full-bleed-dialog',
+      width: '50%',
+      height: '50%'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.getAttendance()
+      }
+    });
   }
   ngOnInit() {
   }

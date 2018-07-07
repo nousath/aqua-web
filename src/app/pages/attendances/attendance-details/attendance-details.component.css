@@ -24,7 +24,6 @@
     color: grey;
     margin: 0;
     font-size: 76%;
-  
 }
 
 .calBox {
@@ -36,14 +35,11 @@
     text-align: center;
     min-height: 80px;
     border-color: #00a8c6;
-        
 }
 
 .example-spacer {
     flex: 1 1 auto;
 }
-
-
 
 .profileImage {
     width: 100%;
@@ -62,25 +58,20 @@
     background-image: url(../../../../assets/images/corners/absent-icon.png);
     background-position: right top;
     background-repeat: no-repeat;
-   
 }
 
-.present{
+.present {
     background-image: url(../../../../assets/images/corners/present-icon.png);
     background-position: right top;
     background-repeat: no-repeat;
     border: #21c600 !important;
- 
     /* background-color: #00a8c6 !important */
-   
-
 }
 
 .leave {
     background-image: url(../../../../assets/images/corners/leave-icon.png);
     background-position: right top;
     background-repeat: no-repeat;
-   
 }
 
 .missedSwipe {
@@ -97,10 +88,7 @@
 
 .weekoff {
     color: rgb(250, 16, 16) !important;
-    
 }
-
-
 
 .calHeader {
     background: #00a8c6;
@@ -139,17 +127,25 @@
 button.mat-menu-item {
     width: 100%;
     font-size: 87%;
-    text-align: center;
+    /* text-align: center; */
 }
+
 .resetPW {
     float: right;
 }
-.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+
+.table>tbody>tr>td,
+.table>tbody>tr>th,
+.table>tfoot>tr>td,
+.table>tfoot>tr>th,
+.table>thead>tr>td,
+.table>thead>tr>th {
     padding: 8px;
     line-height: 1.42857143;
-     vertical-align: middle !important; 
+    vertical-align: middle !important;
     border-top: 1px solid #ddd;
 }
+
 .mat-slide-toggle {
     display: inline-block;
     height: 24px;
@@ -165,6 +161,7 @@ button.mat-menu-item {
     padding-top: 9px !important;
 }
 
+
 /* .highlight,::-webkit-textfield-decoration-container{
     background-color: blue !important;
     color: #21c600 !important;
@@ -172,6 +169,7 @@ button.mat-menu-item {
     border: black !important;
 
 } */
+
 .calBoxhighlight[_ngcontent-c7][_ngcontent-c7] {
     background-color: #f1f1f1;
     width: 14%;
@@ -182,19 +180,24 @@ button.mat-menu-item {
     text-align: center !important;
     min-height: 80px !important;
     border-color: #00a8c6 !important;
-    background-color: rgba(0,0,0,.12) !important;
+    background-color: rgba(0, 0, 0, .12) !important;
     color: #21c600 !important;
     width: 107px !important;
     border: black !important;
 }
-.selectedDate{
+
+.selectedDate {
     background-color: #21c600 !important;
 }
+
+
 /* .ui-datepicker-today a.ui-state-highlight {
     border-color: #d3d3d3;
     background: #e6e6e6 url(/themeroller/images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x;;
     color: #555555;    
 } */
+
+
 /* .ui-datepicker-today.ui-datepicker-current-day a.ui-state-highlight {
     border-color: #aaaaaa;
     background: #ffffff url(images/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x;

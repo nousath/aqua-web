@@ -10,10 +10,11 @@
     width: 10%
 }
 
-.td{
+.td {
     width: 15%;
     text-align: center;
 }
+
 .tdWidth {
     width: 13%;
     text-align: center;
@@ -75,7 +76,7 @@
 button.mat-menu-item {
     width: 100%;
     font-size: 87%;
-    text-align: center;
+    /* text-align: center; */
 }
 
 .chipsBadge {

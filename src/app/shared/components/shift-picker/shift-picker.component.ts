@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ShiftType, EffectiveShift, Shift } from '../../../models/index';
+import { ShiftType, EffectiveShift, Shift } from '../../../models';
 import * as moment from 'moment';
 import { AmsEffectiveShiftService, AmsEmployeeService, AmsLeaveService } from '../../../services/ams';
 import { ToastyService } from 'ng2-toasty';
@@ -54,7 +54,7 @@ export class ShiftPickerComponent implements OnInit {
   // compOffBalance: {
   //   name: '',
   //   code: ''
-  // }; 
+  // };
   isFetchingLeaveBalances = false;
   isLeaveExists = false
   isUpdatingLeaveStatus = false;

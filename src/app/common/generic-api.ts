@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response, URLSearchParams, ResponseContentType } from '@angular/http';
-import 'rxjs/Rx';
-import { Observable } from 'rxjs/Rx';
+import 'rxjs';
+import { Observable } from 'rxjs';
 import { IApi, ServerDataModel, ServerPageInput, ServerPageModel } from './contracts/api';
 import { ILocalStore } from './contracts/local-store-interface';
 import * as _ from 'lodash';
@@ -9,7 +9,7 @@ import { ToastyService, ToastyConfig } from 'ng2-toasty';
 import { IGetParams } from './contracts/api/get-params.interface';
 import { environment } from '../../environments/environment';
 import { RemoteDataModel } from './contracts/api/remote-data.model';
-import { FileUploader, FileItem } from '../../../node_modules/ng2-file-upload';
+import { FileUploader, FileItem } from 'ng2-file-upload';
 
 export class GenericApi<TModel> implements IApi<TModel> {
 

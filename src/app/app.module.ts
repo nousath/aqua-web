@@ -17,7 +17,7 @@ import { GkuAttendanceComponent } from './pages/gku-attendance/gku-attendance.co
 import { SystemUsageComponent } from './pages/system-usage/system-usage.component';
 import { ResetPasswordDialogComponent } from './dialogs/reset-password-dialog/reset-password-dialog.component';
 import { DepartmentsComponent } from './pages/employees/departments/departments.component';
-import { EmsDepartmentService } from './services/index';
+import { EmsDepartmentService } from './services';
 import { LeaveConfirmDialogComponent } from './dialogs/leave-confirm-dialog/leave-confirm-dialog.component';
 import { LeaveReasonDialogComponent } from './dialogs/leave-reason-dialog/leave-reason-dialog.component';
 

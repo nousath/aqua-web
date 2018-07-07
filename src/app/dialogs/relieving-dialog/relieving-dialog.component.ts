@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MdDialogRef } from '@angular/material';
 import { NgForm } from '@angular/forms';
 import { ToastyService } from 'ng2-toasty';
-import { EmsEmployee } from '../../models/index';
+import { EmsEmployee } from '../../models';
 
 @Component({
   selector: 'aqua-relieving-dialog',

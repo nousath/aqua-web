@@ -9,23 +9,28 @@
         <div class="input-group">
             <span class="input-group-addon" id="basic-addon1">Date</span>
             <input id="dateSelector" type="text" class="form-control input-sm calendar no-spin">
-
-            <!--<input class="form-control input-sm calendar no-spin" type="date" [disabled]="dailyAttendnace?.isLoading  || isDownloading" [ngModel]="date  | date:'yyyy-MM-dd'" (ngModelChange)="date = $event;getAttendance($event)" aria-describedby="basic-addon1">-->
         </div>
         <button md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'">
             <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
         </button>
-        <button [matMenuTriggerFor]="appMenu" md-icon-button>
-            <md-icon>cloud_download</md-icon>
-        </button>
-        <md-menu #appMenu="mdMenu">
-            <button md-menu-item (click)="downloadlink('daily-attendance')">Daily Attendance</button>
-            <button md-menu-item (click)="downloadlink('daily-extra-hours-after-shift-end')">Daily Extra Hours (after shift)</button>
-            <button md-menu-item (click)="downloadlink('daily-extra-hours-after-shift-hours')">Daily Extra Hours (net)</button>
+
+        <button [matMenuTriggerFor]="moreMenu" md-icon-button> <md-icon>more_vert</md-icon></button>
+        <md-menu #moreMenu="mdMenu">
+            <button md-menu-item mdTooltip="Bulk Time Logs" [mdTooltipPosition]="'above'" (click)="showBulkTimeLogsDialog()">
+                <md-icon>add_circle_outline</md-icon>  Add Time Logs
+            </button>
+            <button md-menu-item [matMenuTriggerFor]="downloadMenu">
+                <md-icon>cloud_download</md-icon> Download
+            </button>
+            <md-menu #downloadMenu="mdMenu">
+                <button md-menu-item (click)="downloadlink('daily-attendance')">Daily Attendance</button>
+                <button md-menu-item (click)="downloadlink('daily-extra-hours-after-shift-end')">Daily Extra Hours (after shift)</button>
+                <button md-menu-item (click)="downloadlink('daily-extra-hours-after-shift-hours')">Daily Extra Hours (net)</button>
+            </md-menu>
+            <button md-menu-item mdTooltip="Excel Upload" [mdTooltipPosition]="'above'" (click)="import()">
+                <md-icon>cloud_upload</md-icon> Upload
+            </button>
         </md-menu>
-        <button md-icon-button mdTooltip="Excel Upload" [mdTooltipPosition]="'above'" (click)="import()">
-            <md-icon>cloud_upload</md-icon>
-        </button>
     </div>
 </div>
 
@@ -61,7 +66,6 @@
                         <th class="tdWidth">Status</th>
                         <th class="text-center tdWidth">Check In</th>
                         <th class="text-center tdWidth">Check Out</th>
-                        <th class="text-center tdWidth">Edit</th>
                         <th class="tdWidth">Team</th>
                     </tr>
                 </thead>
@@ -87,9 +91,6 @@
                         <!-- <td class="tdWidth">{{item?.department || '--'}}</td> -->
                         <td class=" tdWidth">{{item.checkIn | date:'shortTime'}}</td>
                         <td class=" tdWidth">{{item.checkOut | date:'shortTime'}}</td>
-                        <td class="tdWidth">
-                            <a (click)="addAttendance(item)">Logs</a>
-                        </td>
                         <td class="tdWidth">
                             <a [routerLink]="['teams',item.employee.id]" *ngIf="item.employee.hasTeam">
                                 <img src="assets/images/team.png" width="30px;">

@@ -11,7 +11,7 @@ import { Employee, Abilities } from '../../../models/employee';
 import { Subscription } from 'rxjs/Rx';
 import { AmsLeaveService, AmsAttendanceService, AmsEmployeeService } from '../../../services/ams';
 import { Page } from '../../../common/contracts/page';
-import { LeaveBalance, Attendance, Leave, User } from '../../../models/';
+import { LeaveBalance, Attendance, Leave, User } from '../../../models';
 import * as _ from 'lodash';
 import { DailyAttendance } from '../../../models/daily-attendance';
 import { LeaveActionDialogComponent } from '../../../dialogs/leave-action-dialog/leave-action-dialog.component';
@@ -21,7 +21,7 @@ import * as moment from 'moment';
 import { Location } from '@angular/common';
 import { AmsShiftService } from '../../../services/ams/ams-shift.service';
 import { LocalStorageService } from '../../../services/local-storage.service';
-import { EmsEmployeeService } from '../../../services/index';
+import { EmsEmployeeService } from '../../../services';
 import { ResetPasswordDialogComponent } from '../../../dialogs/reset-password-dialog/reset-password-dialog.component';
 declare var $: any;
 
