@@ -13,8 +13,7 @@
         </h5>
     </div>
 </div>
-<md-spinner class="custom_spinner" *ngIf="employee?.isProcessing || logs?.isLoading || attendances?.isLoading || timeLog?.isProcessing"
-    mode="indeterminate"></md-spinner>
+<md-spinner class="custom_spinner" *ngIf="employee?.isProcessing || logs?.isLoading || attendances?.isLoading || timeLog?.isProcessing" mode="indeterminate"></md-spinner>
 <br>
 <div class="row">
     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
@@ -42,8 +41,7 @@
                         </tr>
                         <tr class="capitalize">
                             <td> Shift Time: </td>
-                            <td> {{(attendance?.shift?.shiftType || employee?.properties?.shiftType)?.startTime | date:'shortTime'}}
-                                - {{(attendance?.shift?.shiftType || employee?.properties?.shiftType)?.endTime | date:'shortTime'}}</td>
+                            <td> {{(attendance?.shift?.shiftType || employee?.properties?.shiftType)?.startTime | date:'shortTime'}} - {{(attendance?.shift?.shiftType || employee?.properties?.shiftType)?.endTime | date:'shortTime'}}</td>
                         </tr>
                         <tr class="capitalize">
                             <td> CheckIn : </td>
@@ -66,52 +64,25 @@
                         <table class="table table-condensed table-hover">
                             <thead class="primary_thead">
                                 <tr>
-                                    <th class="text-center">NextDay</th>
-                                    <th class="text-center">Time</th>
-                                    <th class="text-center">Type</th>
+                                    <th width="20%" class="text-center">Day</th>
+                                    <th width="20%" class="text-center">Time</th>
+                                    <th width="10%" class="text-center">Type</th>
+                                    <th width="25%" class="text-center">Source</th>
+                                    <th width="25%" class="text-center">IP Address</th>
                                 </tr>
                             </thead>
                             <tbody *ngIf="attendance">
 
                                 <tr class="capitalize" *ngFor="let item of attendance.timeLogs;">
-                                    <td class="text-center">
-                                        <md-checkbox type="checkbox" *ngIf="item?.time > ofDate" [disabled]="item"></md-checkbox>
-                                        <md-checkbox type="checkbox" *ngIf="item?.time < ofDate" [(ngModel)]="checkedDate" [disabled]="item"></md-checkbox>
-                                    </td>
-                                    <!-- <td class="text-center" *ngIf="!item?.location?.show && item">{{item?.time | date: 'dd MM yyyy' || '--'}}</td> -->
+                                    <td class="text-center" *ngIf="!item?.location?.show && item">{{item?.time | date: 'dd-MM-yyyy' || '--'}}</td>
                                     <td class="text-center" *ngIf="!item?.location?.show && item">{{item?.time | date: 'h:mm a' || '--'}}</td>
                                     <td class="text-center" *ngIf="!item?.location?.show && item.type =='checkIn'">In</td>
                                     <td class="text-center" *ngIf="!item?.location?.show && item.type =='checkOut'">Out</td>
-                                </tr>
-                                <tr *ngFor="let item of addAttendanceLogs">
-                                    <td class="text-center">
-                                        <md-checkbox type="checkbox" [(ngModel)]="item.day"></md-checkbox>
-                                    </td>
-                                    <td class="text-center">
-                                        <input class="form-control" type="time" [(ngModel)]="item.time" required>
-                                    </td>
-                                    <td class="text-center" *ngIf="item.type == 'checkIn'">In</td>
-                                    <td class="text-center" *ngIf="item.type == 'checkOut'">Out</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td class="text-center">
-
-                                    </td>
-                                    <td>
-                                        <a md-icon-button mdTooltip="New Row" [mdTooltipPosition]="'above'" (click)="addNewRow()" style="float: right">
-                                            <md-icon>add_circle_outline</md-icon>
-                                        </a>
-
-                                    </td>
+                                    <td class="text-center" *ngIf="!item?.location?.show">{{item.source}}</td>
+                                    <td class="text-center" *ngIf="!item?.location?.show">{{item.ipAddress}}</td>
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="text-center">
-                            <button md-raised-button color="primary" (click)="updateLogs()">
-                                Save
-                            </button>
-                        </div>
                     </div>
                 </div>
             </md-card>
