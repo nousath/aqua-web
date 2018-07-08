@@ -37,7 +37,7 @@ export class ApplyLeaveTypeComponent implements OnInit {
 
   @Output() onChange: EventEmitter<Leave> = new EventEmitter();
 
-  leave = new Leave();
+  leave: Leave;
 
   duration: string;
 
@@ -100,7 +100,6 @@ export class ApplyLeaveTypeComponent implements OnInit {
 
     this.leave = new Leave();
     this.leave.type = this.type;
-    this.leave.employee = this.employee;
 
     this.leave.start = {
       first: true,
@@ -140,8 +139,6 @@ export class ApplyLeaveTypeComponent implements OnInit {
         this.enable.durations.twoThird = true;
         this.enable.durations.half = true;
       }
-
-
     }
   }
 
@@ -279,6 +276,7 @@ export class ApplyLeaveTypeComponent implements OnInit {
     }
 
     if (this.canCreate) {
+      this.leave.employee = this.employee;
       this.onChange.emit(this.leave);
     } else {
       this.onChange.emit(null);
