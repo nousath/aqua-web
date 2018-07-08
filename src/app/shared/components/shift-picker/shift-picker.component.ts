@@ -52,6 +52,8 @@ export class ShiftPickerComponent implements OnInit {
 
   isWeeklyOff = false;
   isDayOff = false;
+  isOff = false;
+
   isPast = true;
   isToday = false;
   isDynamic = false;
@@ -153,18 +155,24 @@ export class ShiftPickerComponent implements OnInit {
   }
 
   computeWeeklyOff() {
-    this.isWeeklyOff = false
-    if (this.attendance) {
+    this.isOff = false;
+    this.isWeeklyOff = false;
+    this.isDayOff = false;
+    if (this.isPast && this.attendance) {
       if (this.attendance.status === 'weekOff' || this.attendance.shift.status === 'weeklyOff') {
-        this.isWeeklyOff = true
+        this.isDayOff = true;
       }
     } else if (!this.isPast) {
-      if (this.employee.weeklyOff && this.employee.weeklyOff.isConfigured) {
+      if (this.attendance && (this.attendance.status === 'weekOff' || this.attendance.shift.status === 'weeklyOff')) {
+        this.isDayOff = true;
+      } else if (this.employee.weeklyOff && this.employee.weeklyOff.isConfigured) {
         this.isWeeklyOff = this.employee.weeklyOff[this.day];
       } else if (this.dayShiftType[this.day] === 'off') {
         this.isWeeklyOff = true;
       }
     }
+
+    this.isOff = this.isWeeklyOff || this.isDayOff;
   }
 
   stopPropagation(event) {
@@ -191,17 +199,25 @@ export class ShiftPickerComponent implements OnInit {
   }
 
   setDayOff() {
-    if (this.attendance && this.attendance.status !== 'absent') {
-      return;
-    }
+    this.isProcessing = true;
+    if (this.attendance && this.attendance.status === 'weekOff') {
+      this.amsAttendanceService.attendance.simplePost({
+        id: this.attendance.id,
+        removeWeekOff: true
+      }, 'regenerate').then(item => {
+        this.attendance.status = item.status;
+        this.compute()
+        this.updated.next();
+        this.isProcessing = false;
+      }).catch(this.errorHandler)
 
-    this.isDayOff = true;
+      return
+    }
 
     const dayEvent = new DayEvent()
     dayEvent.employee = { id: this.employee.id };
     dayEvent.ofDate = this.date.toISOString();
     dayEvent.status = 'weekOff';
-    this.isProcessing = true;
 
     if (this.attendance) {
       this.amsAttendanceService.attendance.update(this.attendance.id, dayEvent).then((item) => {
@@ -228,9 +244,9 @@ export class ShiftPickerComponent implements OnInit {
   }
 
   setWeeklyOff() {
+    this.isProcessing = true;
     const employee = this.effectiveShift.employee;
-    this.isWeeklyOff = !this.isWeeklyOff;
-    employee.weeklyOff[this.day] = this.isWeeklyOff
+    employee.weeklyOff[this.day] = !this.isWeeklyOff;
 
     if (this.isWeeklyOff) {
       employee.weeklyOff.isConfigured = true;
@@ -243,11 +259,7 @@ export class ShiftPickerComponent implements OnInit {
         this.compute()
         this.updated.next();
         this.isProcessing = false;
-      }).catch(err => {
-        this.isProcessing = false;
-        this.isWeeklyOff = !this.isWeeklyOff;
-        this.toastyService.error({ title: 'Error', msg: err })
-      });
+      }).catch(this.errorHandler);
   }
 
   getMenuItems() {
