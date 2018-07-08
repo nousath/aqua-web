@@ -20,8 +20,7 @@
     <div *ngIf="!isUpload" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 " style="float: left;">
         <div *ngIf="!isUpload">
 
-            <button md-icon-button class="dwnldBtn" [disabled]="isDownloading || isLoading" (click)="download(dates[0])" mdTooltip="Download Excel"
-                [mdTooltipPosition]="'above'">
+            <button md-icon-button class="dwnldBtn" [disabled]="isDownloading || isLoading" (click)="download(dates[0])" mdTooltip="Download Excel" [mdTooltipPosition]="'above'">
                 <md-icon>cloud_download</md-icon>
             </button>
             <a md-icon-button [disabled]="isLoading || isDownloading" (click)="excel()" mdTooltip="Upload Excel" [mdTooltipPosition]="'above'">
@@ -112,7 +111,7 @@
                         <div *ngIf="!item.employee.isDynamicShift" class="shift previous" [style.border-color]="shiftColour(item?.previousShift?.shiftType)">{{item?.previousShift?.shiftType?.name || '--'}}</div>
                     </td>
                     <td class="tdStyle" *ngFor="let date of dates">
-                        <aqua-shift-picker [shiftTypes]="shiftTypes.items" [effectiveShift]="item" [date]="date"></aqua-shift-picker>
+                        <aqua-shift-picker [shiftTypes]="shiftTypes.items" [effectiveShift]="item" [date]="date" (attendanceUpdated)="employeeUpdated(item)" (shiftUpdated)="employeeUpdated(item)" (leaveUpdated)="employeeUpdated(item)"></aqua-shift-picker>
                     </td>
                 </tr>
             </tbody>

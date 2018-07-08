@@ -28,28 +28,67 @@
     white-space: nowrap;
 }
 
-.display-text .off {
+.display-text .badge {
     border: 1px solid #888;
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 5px 15px;
+}
+
+.display-text .compressed {
+    line-height: 15px;
+}
+
+.display-text .compressed .badge {
+    font-size: xx-small;
+    padding: 2px 15px;
+}
+
+.badge.disabled {
     background-color: #bbb;
     color: #ffffff;
-    border-radius: 10px;
-    padding: 5px 15px;
 }
+
+.badge.info {
+    background-color: #5c97e4;
+    color: #ffffff;
+}
+
+.badge.info.first {
+    background: linear-gradient(to right, #5c97e4 0%, #5c97e4 50%, #888 50%, #888 50%);
+}
+
+.badge.info.second {
+    background: linear-gradient(to right, #888 0%, #888 50%, #5c97e4 50%, #5c97e4 50%);
+}
+
+.badge.info.first.second {
+    background: #5c97e4;
+}
+
+.name.alert {
+    color: red;
+}
+
+.name.info {
+    color: #5c97e4;
+}
+
 .display-text .approvedFull {
     border: 1px solid #888;
-    background-color: lightskyblue;
-    color: #ffffff;
     border-radius: 10px;
     padding: 5px 15px;
 }
+
 .display-text .approvedFirst {
-    background: linear-gradient(to right,lightskyblue 0%, lightskyblue 50%, #3f4766 50%, #3f4766 50%);
+    background: linear-gradient(to right, lightskyblue 0%, lightskyblue 50%, #3f4766 50%, #3f4766 50%);
     border: 1px solid #888;
     background-color: lightskyblue;
     color: #ffffff;
     border-radius: 10px;
     padding: 5px 15px;
 }
+
 .display-text .submittedFull {
     border: 1px solid #888;
     background-color: rgb(255, 255, 188);
@@ -57,15 +96,6 @@
     color: black;
     border-radius: 10px;
     padding: 5px 15px;
-}
-
-.compressed {
-    line-height: 15px;
-}
-
-.compressed .off {
-    font-size: xx-small;
-    padding: 2px 15px;
 }
 
 .shift.continue {
@@ -108,3 +138,11 @@
 /* .shift.off {
     border-radius: 10px;
 } */
+
+.all-good {
+    color: lightskyblue;
+}
+
+.needs-attention {
+    color: darkorange;
+}

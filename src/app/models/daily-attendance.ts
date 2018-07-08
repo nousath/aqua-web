@@ -15,6 +15,18 @@ export class DailyAttendance {
   attendance: Attendance = new Attendance();
 }
 
+export enum AttendanceStates {
+  absent,
+  missSwipe,
+  checkedIn,
+  'checked-in-again',
+  present,
+  onLeave,
+  halfday,
+  weekOff,
+  holiday
+}
+
 export class Attendance {
   id: string;
   ofDate: Date;

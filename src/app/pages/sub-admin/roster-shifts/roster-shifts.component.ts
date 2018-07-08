@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common'
 import { AmsEmployeeService } from '../../../services/ams/ams-employee.service';
 import { Page } from '../../../common/contracts/page';
-import { Model } from '../../../common/contracts/model';
 import { ToastyService } from 'ng2-toasty';
 import { ServerPageInput } from '../../../common/contracts/api/page-input';
 import * as moment from 'moment';
@@ -10,8 +10,8 @@ import { EffectiveShift } from '../../../models/effective-shift';
 import { AmsEffectiveShiftService } from '../../../services/ams/ams-effective-shift.service';
 import { AmsShiftService } from '../../../services/ams/ams-shift.service';
 import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
-import * as _ from 'lodash';
 import { LocalStorageService } from '../../../services/local-storage.service';
+import { ActivatedRoute, Router } from '@angular/router';
 declare var $: any;
 
 
@@ -33,7 +33,11 @@ export class RosterShiftsComponent implements OnInit {
   isLoading = true;
   isUpload = false;
   isFilter: boolean;
-  constructor(private amsEmployeeService: AmsEmployeeService,
+  constructor(
+    public activatedRoute: ActivatedRoute,
+    private location: Location,
+    public router: Router,
+    private amsEmployeeService: AmsEmployeeService,
     private amsShiftService: AmsShiftService,
     private amsEffectiveShiftService: AmsEffectiveShiftService,
     private toastyService: ToastyService,
@@ -53,14 +57,8 @@ export class RosterShiftsComponent implements OnInit {
       }]
     });
 
-    this.uploader.onAfterAddingAll = (fileItems: FileItem) => {
-
-    };
-
-    this.uploader.onErrorItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
-      console.log('onErrorItem', response, headers);
-    };
-
+    this.uploader.onAfterAddingAll = (fileItems: FileItem) => { };
+    this.uploader.onErrorItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => { };
     this.uploader.onCompleteItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
       this.isDownloading = true;
       const res: any = JSON.parse(response);
@@ -77,33 +75,36 @@ export class RosterShiftsComponent implements OnInit {
       api: amsShiftService.shiftTypes
     });
 
+    this.date = moment(this.activatedRoute.queryParams['value']['fromDate']).startOf('week').toDate()
+
     this.effectiveShifts = new Page({
       api: amsEffectiveShiftService.effectiveShifts,
       filters: [{
         field: 'fromDate',
-        value: null
+        value: this.date.toISOString()
       }, {
         field: 'name',
-        value: null
+        value: this.activatedRoute.queryParams['value']['name']
       }, {
         field: 'code',
-        value: null
+        value: this.activatedRoute.queryParams['value']['code']
       }, {
         field: 'designation',
-        value: null
+        value: this.activatedRoute.queryParams['value']['designation']
       }, {
         field: 'shiftType',
-        value: null
+        value: this.activatedRoute.queryParams['value']['shiftType']
       }, {
         field: 'byShiftEnd',
-        value: false
+        value: this.activatedRoute.queryParams['value']['byShiftEnd']
       }, {
         field: 'byShiftLength',
-        value: false
+        value: this.activatedRoute.queryParams['value']['byShiftLength']
       }, {
         field: 'tagIds',
         value: ''
-      }]
+      }],
+      location: location
     });
 
     this.shiftTypes.fetch().catch((err) => {
@@ -111,7 +112,6 @@ export class RosterShiftsComponent implements OnInit {
     });
   }
   applyFilters($event) {
-
     this.effectiveShifts.filters.properties['shiftType']['value'] = $event.shiftType ? $event.shiftType.id : null;
     this.effectiveShifts.filters.properties['name']['value'] = $event.employeeName;
     this.effectiveShifts.filters.properties['code']['value'] = $event.employeeCode;
@@ -134,13 +134,17 @@ export class RosterShiftsComponent implements OnInit {
     const reportName = `rosterExcel_${moment().format('DD_MMM_YY')}_DailyReport.xlsx`;
     this.amsEffectiveShiftService.downloadRosterExcel.exportReport(serverPageInput, null, reportName)
       .then(
-      (data) => {
-        this.isDownloading = false
-      }).catch(err => {
-        this.toastyService.error({ title: 'Error', msg: err });
-        this.isDownloading = false
-      });
+        (data) => {
+          this.isDownloading = false
+        }).catch(err => {
+          this.toastyService.error({ title: 'Error', msg: err });
+          this.isDownloading = false
+        });
   };
+
+  employeeUpdated(effectiveShift: EffectiveShift) {
+
+  }
 
   excel() {
     this.isUpload = !this.isUpload;
@@ -168,7 +172,6 @@ export class RosterShiftsComponent implements OnInit {
       startOfWeek = startOfWeek.clone().add(1, 'd');
     }
   }
-
 
   getEffectiveShift(date: Date) {
     this.isLoading = true;
@@ -226,27 +229,15 @@ export class RosterShiftsComponent implements OnInit {
       .catch(err => { this.toastyService.error({ title: 'Error', msg: err }) });
   }
 
-  shiftColour = function (shiftType) {
-    let str = 'random';
-
-    if (shiftType && shiftType.id) {
-      str = shiftType.id;
-    }
-
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      hash = str.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    let colour = '#';
-    for (let i = 0; i < 3; i++) {
-      const value = (hash >> (i * 8)) & 0xFF;
-      colour += ('00' + value.toString(16)).substr(-2);
-    }
-    return colour;
+  shiftColour(shiftType) {
+    return this.amsShiftService.shiftColour(shiftType)
   }
 
   ngOnInit() {
-
+    const week = this.activatedRoute.snapshot.params['week']
+    if (week) {
+      this.effectiveShifts.filters.properties['fromDate']['value'] = moment(week).startOf('week').toISOString();
+    }
   }
 
   ngAfterViewInit() {

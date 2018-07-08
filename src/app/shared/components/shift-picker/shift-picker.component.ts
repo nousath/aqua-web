@@ -1,16 +1,19 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ShiftType, EffectiveShift, Shift } from '../../../models';
 import * as moment from 'moment';
-import { AmsEffectiveShiftService, AmsEmployeeService, AmsLeaveService } from '../../../services/ams';
+import { AmsEffectiveShiftService, AmsAttendanceService, AmsEmployeeService, AmsLeaveService, AmsShiftService } from '../../../services/ams';
 import { ToastyService } from 'ng2-toasty';
 import { ServerPageInput } from '../../../common/contracts/api/page-input';
 import { LeaveBalance } from '../../../models/leave-balance';
-import { Model } from '../../../common/contracts/model';
 import { Leave } from '../../../models/leave';
 import { Employee } from '../../../models/employee';
 import { MdDialog } from '@angular/material';
 import { LeaveReasonDialogComponent } from '../../../dialogs/leave-reason-dialog/leave-reason-dialog.component';
-
+import { Attendance } from '../../../models/daily-attendance';
+import { DayEvent } from '../../../models/day-event';
+import { LeaveSummary } from '../../../services/ams/ams-leave.service';
+import { AttendanceSummary } from '../../../services/ams/ams-attendance.service';
+import { DatesService } from '../../services/dates.service';
 
 @Component({
   selector: 'aqua-shift-picker',
@@ -18,6 +21,9 @@ import { LeaveReasonDialogComponent } from '../../../dialogs/leave-reason-dialog
   styleUrls: ['./shift-picker.component.css']
 })
 export class ShiftPickerComponent implements OnInit {
+
+  @Output()
+  updated: EventEmitter<any> = new EventEmitter();
 
   @Input()
   shiftTypes: ShiftType[];
@@ -28,80 +34,105 @@ export class ShiftPickerComponent implements OnInit {
   @Input()
   date: Date;
 
+  employee: Employee;
+  attendance: Attendance;
+  daySummary: AttendanceSummary;
+
+  leave: Leave;
+  leaveSummary: LeaveSummary;
+
   day: string;
 
-  isDisabled = true;
 
   shiftSearch: string;
 
   startingShift: ShiftType;
 
   isProcessing = false;
+
   isWeeklyOff = false;
-  thisWeekOff = false;
-  isDynamic: boolean;
-  leave: Model<Leave>
-  employee: Employee;
-  attendances: any;
-  leaves: any;
+  isDayOff = false;
+  isPast = true;
+  isToday = false;
+  isDynamic = false;
+  isOnDuty = false;
+
   selectedShift: Shift;
   selectedShiftType: ShiftType;
   effectiveShiftType: ShiftType;
+  dayShiftType: ShiftType;
+
   leaveBalances: LeaveBalance[] = [];
-  OnDutyBalance: LeaveBalance
-  isLeave: boolean = false;
-  compOffBalance: LeaveBalance
-  // compOffBalance: {
-  //   name: '',
-  //   code: ''
-  // };
-  isFetchingLeaveBalances = false;
-  isLeaveExists = false
-  isUpdatingLeaveStatus = false;
-  isOnDuty = false;
-  currentDate: ''
-  onSelectedDate = [{
-    type: '',
-    date: '',
-    status: '',
-    units: ''
-  }]
-  reason: ''
+  onDutyBalance: LeaveBalance;
+  compOffBalance: LeaveBalance;
+
+  // currentDate: ''
+  // onSelectedDate = [{
+  //   type: '',
+  //   date: '',
+  //   status: '',
+  //   units: ''
+  // }]
+
 
   days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
 
   constructor(
+    private shiftService: AmsShiftService,
     private amsEmployeeService: AmsEmployeeService,
     private amsEffectiveShiftService: AmsEffectiveShiftService,
     private toastyService: ToastyService,
     private amsLeaveService: AmsLeaveService,
+    private amsAttendanceService: AmsAttendanceService,
+    private dates: DatesService,
     public dialog: MdDialog
   ) {
-    this.leave = new Model({
-      api: amsLeaveService.leaves,
-      properties: new Leave()
-    });
   }
 
   ngOnInit() {
+    this.compute();
+  }
 
+  compute() {
     this.isDynamic = this.effectiveShift.employee.isDynamicShift;
-    const pickerDate = new Date(this.date);
+    this.employee = this.effectiveShift.employee;
 
-    this.isDisabled = pickerDate < new Date();
+    this.isPast = moment(this.date).isBefore(new Date());
+    this.isToday = moment(this.date).isSame(new Date(), 'd');
     this.day = this.days[this.date.getDay()]
 
-    pickerDate.setHours(0, 0, 0, 0);
     if (this.effectiveShift.previousShift) {
       this.startingShift = this.effectiveShift.previousShift.shiftType
     }
 
-    if (this.effectiveShift.employee.weeklyOff && this.effectiveShift.employee.weeklyOff.isConfigured) {
-      this.isWeeklyOff = this.effectiveShift.employee.weeklyOff[this.day]
-    }
+    this.computeEffectiveShift()
 
-    this.setEffectiveShift()
-    // this.getLeaveBalance();
+    this.computeDayShift()
+    this.leaveSummary = this.amsLeaveService.getDaySummary(this.effectiveShift.leaves, this.date)
+    this.leave = this.leaveSummary.leave;
+    this.attendance = this.effectiveShift.attendances.find(item => this.dates.date(item.ofDate).isSame(this.date));
+    this.daySummary = this.amsAttendanceService.getSummary(this.attendance, this.leaveSummary)
+
+    this.computeWeeklyOff();
+  }
+
+  computeEffectiveShift() {
+    this.effectiveShiftType = this.startingShift;
+    let lastDate: Date;
+    this.effectiveShift.shifts.forEach(item => {
+      const mDate = moment(item.date);
+      if (mDate.isBefore(this.date, 'd') && (!lastDate || mDate.isAfter(lastDate))) {
+        lastDate = mDate.toDate();
+        this.effectiveShiftType = item.shiftType
+      }
+    });
+  }
+
+  computeDayShift() {
+    this.dayShiftType = this.effectiveShiftType
+
+    const pickerDate = new Date(this.date);
+    pickerDate.setHours(0, 0, 0, 0);
 
     this.effectiveShift.shifts.forEach(item => {
 
@@ -115,105 +146,85 @@ export class ShiftPickerComponent implements OnInit {
         if (type.id === this.selectedShift.shiftType.id) {
           this.selectedShift.shiftType = type;
           this.selectedShiftType = type;
+          this.dayShiftType = type;
         }
       })
     });
-
-    this.getStatus();
-
   }
 
-  getStatus() {
-    this.employee = this.effectiveShift.employee
-    this.attendances = this.effectiveShift.attendances
-    this.attendances.forEach(item => {
-      if (moment(item.ofDate).toISOString() === moment(this.date).toISOString()) {
-        this.onSelectedDate.push({
-          type: item.status,
-          date: item.ofDate,
-          status: null,
-          units: null
-        })
+  computeWeeklyOff() {
+    this.isWeeklyOff = false
+    if (this.attendance) {
+      if (this.attendance.status === 'weekOff' || this.attendance.shift.status === 'weeklyOff') {
+        this.isWeeklyOff = true
       }
-
-    })
-
-    this.leaves = this.effectiveShift.leaves
-    this.leaves.forEach(onLeave => {
-      if (onLeave.date === moment(this.date).toISOString()) {
-        this.onSelectedDate.slice(2)
-        if (onLeave.status === 'submitted' || 'approved') {
-          if (onLeave.days === 1) {
-            this.onSelectedDate = [];
-            this.onSelectedDate.push({
-              type: onLeave.leaveType.code,
-              date: onLeave.date,
-              status: onLeave.status,
-              units: 'full'
-            })
-          } else if (onLeave.days < 1) {
-            this.onSelectedDate = [];
-            this.onSelectedDate.push({
-              type: onLeave.leaveType.code,
-              date: onLeave.date,
-              status: onLeave.status,
-              units: 'first'
-            })
-          }
-        }
+    } else if (!this.isPast) {
+      if (this.employee.weeklyOff && this.employee.weeklyOff.isConfigured) {
+        this.isWeeklyOff = this.employee.weeklyOff[this.day];
+      } else if (this.dayShiftType[this.day] === 'off') {
+        this.isWeeklyOff = true;
       }
-    })
-    // console.log(this.employee.name)
-    // console.log(this.date)
-    // console.log(this.onSelectedDate)
-    // console.log('Next')
-
+    }
   }
 
   stopPropagation(event) {
     event.stopPropagation();
   }
 
-  shiftColour = function () {
-    let str = 'random';
-
-    if (this.selectedShiftType && this.selectedShiftType.id) {
-      str = this.selectedShiftType.id;
-    } else if (this.effectiveShiftType && this.effectiveShiftType.id) {
-      str = this.effectiveShiftType.id;
-    }
-
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      hash = str.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    let colour = '#';
-    for (let i = 0; i < 3; i++) {
-      const value = (hash >> (i * 8)) & 0xFF;
-      colour += ('00' + value.toString(16)).substr(-2);
-    }
-    return colour;
+  shiftColour() {
+    return this.shiftService.shiftColour(this.selectedShiftType || this.effectiveShiftType);
   }
 
   reset() {
     if (this.selectedShift && this.selectedShift.shiftType) {
       this.isProcessing = true;
       this.amsEffectiveShiftService.effectiveShifts
-        .remove(this.selectedShift.id)
-        .then(() => {
+        .remove(this.selectedShift.id).then(() => {
+          const index = this.effectiveShift.shifts.findIndex(item => item.id === this.selectedShift.id)
+          this.effectiveShift.shifts.splice(index, 1)
           this.selectedShiftType = null;
+          this.compute()
+          this.updated.next();
           this.isProcessing = false;
-        }).catch(err => {
-          this.isProcessing = false;
-          this.toastyService.error({ title: 'Error', msg: err })
-        })
+        }).catch(this.errorHandler)
     }
   }
-  setThisWeekOff() {
-    const attendance = this.effectiveShift.attendances;
-    this.thisWeekOff = !this.thisWeekOff
-    attendance.ofDate = this.date;
-    attendance.status = 'off'
+
+  setDayOff() {
+    if (this.attendance && this.attendance.status !== 'absent') {
+      return;
+    }
+
+    this.isDayOff = true;
+
+    const dayEvent = new DayEvent()
+    dayEvent.employee = { id: this.employee.id };
+    dayEvent.ofDate = this.date.toISOString();
+    dayEvent.status = 'weekOff';
+    this.isProcessing = true;
+
+    if (this.attendance) {
+      this.amsAttendanceService.attendance.update(this.attendance.id, dayEvent).then((item) => {
+        this.attendance.status = item.status;
+        this.compute()
+        this.updated.next();
+        this.isProcessing = false;
+      }).catch(this.errorHandler)
+    } else {
+      this.amsAttendanceService.attendance.create(dayEvent).then((item) => {
+        const attendance = new Attendance();
+        attendance.id = item.id;
+        attendance.ofDate = moment(item.ofDate).toDate();
+        attendance.shift = item.shift;
+        attendance.employee = this.employee;
+        attendance.status = item.status;
+        this.effectiveShift.attendances = this.effectiveShift.attendances || []
+        this.effectiveShift.attendances.push(attendance)
+        this.compute()
+        this.updated.next();
+        this.isProcessing = false;
+      }).catch(this.errorHandler);
+    }
   }
 
   setWeeklyOff() {
@@ -229,6 +240,8 @@ export class ShiftPickerComponent implements OnInit {
       .update(employee.id, employee)
       .then(() => {
         this.selectedShiftType = null;
+        this.compute()
+        this.updated.next();
         this.isProcessing = false;
       }).catch(err => {
         this.isProcessing = false;
@@ -237,82 +250,52 @@ export class ShiftPickerComponent implements OnInit {
       });
   }
 
-  getOnDuty() {
-    // this.OnDutyBalance = []
+  getMenuItems() {
+    if (this.leave) {
+      return;
+    }
+
     const input = new ServerPageInput();
     input.serverPaging = false;
     input.query = {
       id: this.effectiveShift.employee.id,
       employeeId: this.effectiveShift.employee.id
     };
-    console.log('onduty', this.leaves)
-    if (this.leaves.length) {
-      console.log('in onduty', this.leaves)
-      this.leaves.forEach(item => {
-        // console.log(item.includes(status = 'approved'));
-        if (item.status.toLowerCase() === 'approved' && item.date === this.date.toISOString()) {
-          this.isLeave = true
-        }
-      })
-    }
-    console.log(this.isLeave)
-    this.amsLeaveService.leaveBalances.search(input)
-      .then(page => {
-        page.items.forEach(item => {
-          if ((item.leaveType.unlimited == false) && item.leaveType.code.toLowerCase() == 'co' && (this.isLeave == false)) {
+
+    this.onDutyBalance = null;
+    this.compOffBalance = null;
+    this.leaveBalances = [];
+
+    this.isProcessing = true;
+    this.amsLeaveService.leaveBalances.search(input).then(page => {
+      this.leaveBalances = [];
+      page.items.forEach(item => {
+        const code = item.leaveType.code.toLowerCase();
+        if (item.leaveType.unlimited === true &&
+          (code === 'dl' || code === 'od')) {
+          this.onDutyBalance = item
+        } else if (item.days >= 1) {
+          if (code === 'co') {
             this.compOffBalance = item
-            console.log(this.compOffBalance)
+          } else {
+            this.leaveBalances.push(item)
           }
-
-        })
-      })
-    this.amsLeaveService.leaveBalances.search(input)
-      .then(page => {
-        page.items.forEach(item => {
-          if ((item.leaveType.unlimited == true) && item.leaveType.code.toLowerCase() == 'dl' && this.isLeave == false) {
-            this.OnDutyBalance = item
-            console.log('test', this.OnDutyBalance)
-          }
-        })
-      })
-      .catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+        }
+      });
+      this.isProcessing = false;
+    }).catch(this.errorHandler);
   }
 
-
-  setEffectiveShift() {
-    this.effectiveShiftType = this.startingShift;
-
-    let lastDate: Date;
-
-    this.effectiveShift.shifts.forEach(item => {
-      const mDate = moment(item.date);
-      if (mDate.isBefore(this.date, 'd') && (!lastDate || mDate.isAfter(lastDate))) {
-        lastDate = mDate.toDate();
-        this.effectiveShiftType = item.shiftType
-      }
-    });
-  }
 
   selectShift(newShiftType: ShiftType) {
     if (this.effectiveShiftType && newShiftType && this.effectiveShiftType.id === newShiftType.id) {
       this.selectedShiftType = null;
 
       if (this.selectedShift && this.selectedShift.shiftType && this.selectedShift.shiftType.id !== newShiftType.id) {
-
-        this.isProcessing = true;
-        this.amsEffectiveShiftService.effectiveShifts
-          .remove(this.selectedShift.id)
-          .then(() => {
-            this.isProcessing = false;
-          }).catch(err => {
-            this.isProcessing = false;
-            this.toastyService.error({ title: 'Error', msg: err })
-          })
+        this.reset()
       }
       return;
     }
-
-
 
     const model: any = {
       date: this.date,
@@ -321,63 +304,58 @@ export class ShiftPickerComponent implements OnInit {
     this.isProcessing = true;
     this.amsEffectiveShiftService.effectiveShifts
       .update(this.effectiveShift.employee.id, model)
-      .then(() => {
+      .then((response: any) => {
+        this.compute();
         this.selectedShiftType = newShiftType;
+        model.id = response.id
+        this.selectedShift = model
+        this.updated.next();
         this.isProcessing = false;
-      }).catch(err => {
-        this.isProcessing = false;
-        this.toastyService.error({ title: 'Error', msg: err })
-      })
+      }).catch(this.errorHandler)
   }
 
-  applyLeave(item) {
-    const dialogRef = this.dialog.open(LeaveReasonDialogComponent, { width: '40%', data: item })
-    dialogRef.afterClosed().subscribe((leave: any) => {
-      item.reason = leave.reason
-      console.log(item)
-      this.selectedLeave(item)
-    })
-  }
-  selectedLeave(item) {
-    console.log(item.leaveType.id)
-    this.leave.properties.date = this.date
-    this.leave.properties.toDate = this.date;
-    this.leave.properties.days = 1;
-    this.leave.properties.reason = item.reason;
-    this.leave.properties.status = 'approved';
-    this.leave.properties.type = item.leaveType.code;
-    this.leave.properties.employee = this.employee;
-    this.leave.save()
-    this.getStatus()
-    this.setEffectiveShift()
-    console.log(this.leave.properties)
+  setOnDuty() {
+    this.setOnLeave(this.onDutyBalance);
   }
 
-  getLeaveBalance() {
-    console.log(this.effectiveShift)
-    if (this.isLeave == false){
-      this.leaveBalances = []
-      const input = new ServerPageInput();
-      input.serverPaging = false;
-      input.query = {
-        id: this.effectiveShift.employee.id,
-        employeeId: this.effectiveShift.employee.id
-      };
-      this.isFetchingLeaveBalances = true;
-      this.amsLeaveService.leaveBalances.search(input)
-        .then(page => {
-          page.items.forEach(item => {
-            if (item.days >= 1) {
-              this.leaveBalances.push(item)
-            }
-          })
-          this.isFetchingLeaveBalances = false;
-        })
-        .catch(err => this.toastyService.error({ title: 'Error', msg: err }));
-    }
-    else {
-      this.isLeaveExists = !this.isLeaveExists
-    }
+  setCompOff() {
+    this.applyLeave(this.compOffBalance);
   }
 
+  applyLeave(leaveBalance: LeaveBalance) {
+    const dialogRef = this.dialog.open(LeaveReasonDialogComponent, { width: '40%', data: leaveBalance })
+
+    dialogRef.afterClosed().subscribe((response: any) => {
+      this.setOnLeave(leaveBalance, response.reason)
+    });
+  }
+  setOnLeave(leaveBalance: LeaveBalance, reason?: string) {
+    const leave = new Leave()
+    leave.date = this.date;
+    leave.toDate = this.date;
+    leave.days = 1;
+    leave.reason = reason;
+    leave.status = 'approved';
+    leave.type = leaveBalance.leaveType;
+    leave.employee = this.employee;
+
+    this.isProcessing = true;
+
+    this.amsLeaveService.leaves.create(leave).then(item => {
+      this.leave = item;
+      this.effectiveShift.leaves = this.effectiveShift.leaves || [];
+      this.effectiveShift.leaves.push(this.leave);
+      this.compute()
+      this.updated.next();
+      this.isProcessing = false;
+
+    }).catch(this.errorHandler);
+  }
+
+  errorHandler = (err) => {
+    this.isProcessing = false;
+    this.toastyService.error({ title: 'Error', msg: err })
+  }
 }
+
+

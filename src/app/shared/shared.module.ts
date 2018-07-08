@@ -78,6 +78,7 @@ import { EmployeesFilterComponent } from './components/employees-filter/employee
 import { FileUploaderDialogComponent } from './components/file-uploader-dialog/file-uploader-dialog.component';
 import { BulkTimeLogsDialogComponent } from './components/bulk-time-logs-dialog/bulk-time-logs-dialog.component';
 import { AddAttendanceLogsComponent } from './components/add-attendance-logs/add-attendance-logs.component';
+import { DatesService } from './services/dates.service';
 
 
 export const MaterialModules = [
@@ -143,7 +144,8 @@ export const MaterialModules = [
     AmsTagService,
     AmsSystemUsageService,
     AmsEffectiveShiftService,
-    AmsReportRequestService
+    AmsReportRequestService,
+    DatesService
   ],
   imports: [
     HttpModule,
