@@ -107,6 +107,9 @@ export class ApplyLeaveComponent {
   }
 
   reset() {
+    this.leaves = new Map();
+    this.reason = '';
+
     if (this.employeeSelector) {
       this.employee = null;
       this.leaveBalances = null;

@@ -113,7 +113,7 @@ export class ApplyLeaveTypeComponent implements OnInit {
     if (this.limit !== 0) {
       this.enable.start.date = true;
 
-      if (this.limit > 1) {
+      if (this.limit > 1 || this.limit === -1) {
         this.enable.durations.multi = true;
         this.enable.durations.single = true;
         this.duration = 'single';
