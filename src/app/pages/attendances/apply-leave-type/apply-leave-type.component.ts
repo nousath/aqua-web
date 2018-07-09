@@ -1,15 +1,11 @@
-import { Component, OnInit, Input, ViewChild, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Leave } from '../../../models/leave';
 import { LeaveBalance } from '../../../models/leave-balance';
-import { Page } from '../../../common/contracts/page';
-import { Model } from '../../../common/contracts/model';
-import { LeavesComponent } from '../leaves/leaves.component';
 import { LeaveType } from '../../../models';
 import { ToastyService } from 'ng2-toasty';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Employee } from '../../../models/employee';
 import * as moment from 'moment';
-import { leave } from '@angular/core/src/profile/wtf_impl';
+import { DatesService } from '../../../shared/services';
 
 @Component({
   selector: 'aqua-apply-leave-type',
@@ -69,6 +65,7 @@ export class ApplyLeaveTypeComponent implements OnInit {
 
   constructor(
     private toastyService: ToastyService,
+    private dates: DatesService
   ) { }
 
   ngOnInit(): void {
@@ -230,7 +227,7 @@ export class ApplyLeaveTypeComponent implements OnInit {
         this.leave.end.second = this.leave.end.second;
 
         if (this.canCreate) {
-          this.leave.days = (this.leave.toDate.valueOf() - this.leave.date.valueOf()) / (24 * 60 * 60 * 1000);
+          this.leave.days = this.dates.date(this.leave.toDate).diff(this.leave.date);
 
           if (!this.leave.start.first) {
             this.leave.days = this.leave.days - 0.5;
