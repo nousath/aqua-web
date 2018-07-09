@@ -183,7 +183,7 @@ export class ShiftPickerComponent implements OnInit {
     return this.shiftService.shiftColour(this.selectedShiftType || this.effectiveShiftType);
   }
 
-  reset() {
+  resetShift() {
     if (this.selectedShift && this.selectedShift.shiftType) {
       this.isProcessing = true;
       this.amsEffectiveShiftService.effectiveShifts
@@ -304,7 +304,7 @@ export class ShiftPickerComponent implements OnInit {
       this.selectedShiftType = null;
 
       if (this.selectedShift && this.selectedShift.shiftType && this.selectedShift.shiftType.id !== newShiftType.id) {
-        this.reset()
+        this.resetShift()
       }
       return;
     }
@@ -361,6 +361,23 @@ export class ShiftPickerComponent implements OnInit {
       this.updated.next();
       this.isProcessing = false;
 
+    }).catch(this.errorHandler);
+  }
+
+  resetLeave() {
+    if (!this.leave) {
+      return;
+    }
+
+    this.isProcessing = true;
+    this.leave.status = 'rejected';
+    this.amsLeaveService.leaves.update(this.leave.id, this.leave, null, `${this.leave.id}/action`).then(data => {
+      this.effectiveShift.leaves = this.effectiveShift.leaves || [];
+      const index = this.effectiveShift.leaves.findIndex(item => item.id === this.leave.id)
+      this.effectiveShift.leaves.splice(index, 1);
+      this.compute()
+      this.updated.next();
+      this.isProcessing = false;
     }).catch(this.errorHandler);
   }
 

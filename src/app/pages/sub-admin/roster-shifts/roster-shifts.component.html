@@ -79,18 +79,17 @@
                     <th rowspan="2">Name/Code</th>
                     <th rowspan="2">Auto</th>
                     <th class="tdWidth" rowspan="2">Previous</th>
-                    <th class="text-center tdWidth" *ngFor="let date of dates">
-                        <!-- <span>{{date | date:'EEE'}}</span> -->
-                        <span *ngIf="date < isDateToday" style="color: gray">{{date | date:'EEE'}}</span>
-                        <span *ngIf="(date | date:'dd/MM/yyyy') === (isDateToday | date:'dd/MM/yyyy')" style="color: blue">{{date | date:'EEE'}}</span>
-                        <span *ngIf="date > isDateToday" style="color: green">{{date | date:'EEE'}}</span>
+                    <th class="text-center tdWidth week" *ngFor="let date of dates">
+                        <span [class.past]="date < isDateToday" [class.future]="date > isDateToday" [class.today]="(date | date:'dd/MM/yyyy') === (isDateToday | date:'dd/MM/yyyy')">{{date | date:'EEE'}}</span>
                     </th>
                 </tr>
                 <tr>
-                    <th class="text-center tdWidth" *ngFor="let date of dates">
-                        <span *ngIf="date < isDateToday" style="color: gray">{{date | date:'dd/MM'}}</span>
-                        <span *ngIf="(date | date:'dd/MM/yyyy') === (isDateToday | date:'dd/MM/yyyy')" style="color: blue">{{date | date:'dd/MM'}}</span>
-                        <span *ngIf="date > isDateToday" style="color: green">{{date | date:'dd/MM'}}</span>
+                    <th class="text-center tdWidth week" *ngFor="let date of dates ;let idx = index">
+                        <span [class.past]="date < isDateToday" [class.future]="date > isDateToday" [class.today]="(date | date:'dd/MM/yyyy') === (isDateToday | date:'dd/MM/yyyy')">
+                            <a *ngIf="idx === 0" (click)="previousWeek()">&laquo;</a>
+                          {{date | date:'dd/MM'}} 
+                          <a  *ngIf="idx === 6" (click)="nextWeek()">&raquo;</a>
+                        </span>
                     </th>
                 </tr>
             </thead>

@@ -67,7 +67,18 @@
 }
 
 .display-text .name.info {
-    color: #5c97e4;
+    color: #666;
+}
+
+.display-text .sub-text {
+    position: relative;
+    top: -7px;
+    font-size: xx-small;
+    background: #eee;
+    border-radius: 50%;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 3px;
 }
 
 .shift.continue {

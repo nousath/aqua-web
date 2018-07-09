@@ -90,3 +90,15 @@
     -moz-top-left-radius: 5px !important;
     border-top-left-radius: 5px !important; */
 }
+
+.week .past {
+    color: gray;
+}
+
+.week .today {
+    color: blue;
+}
+
+.week .future {
+    color: green
+}
