@@ -3,22 +3,22 @@
     <button [mdMenuTriggerFor]="dayMenu" class="display-text" [disabled]="isProcessing" (click)="getMenuItems()">
         <ng-container *ngIf="!isPast">
             <div *ngIf="isDynamic" [class.compressed]="isOff && leave">
-                <span *ngIf="!isOff && !leave" class="name">&raquo;</span>
+                <span *ngIf="!isOff && !leave" class="name" mdTooltip="Same as previous day">&raquo;</span>
                 <span *ngIf="leave" class="badge info"  [class.first]="leaveSummary.first" [class.second]="leaveSummary.second">{{leaveSummary.code}}<span *ngIf="leaveSummary.status === 'submitted'" class="asterisk">*</span></span>
-                <span *ngIf="isOff" class="badge off">Off</span>
+                <span *ngIf="isOff" class="badge" mdTooltip="Off Day">Off</span>
             </div>
             <div *ngIf="!isDynamic" [class.compressed]="(isOff && leave) || (isOff && selectedShiftType) || (leave && selectedShiftType)">
-                <span *ngIf="!isOff && !leave && !selectedShiftType" class="name">&raquo;</span>
+                <span *ngIf="!isOff && !leave && !selectedShiftType" class="name" mdTooltip="Same as previous day">&raquo;</span>
                 <span *ngIf="selectedShiftType" class="name"> {{selectedShiftType.name}} </span>
                 <span *ngIf="leave" class="badge info"  [class.first]="leaveSummary.first" [class.second]="leaveSummary.second">{{leaveSummary.code}}<span *ngIf="leaveSummary.status === 'submitted'" class="asterisk">*</span></span>
-                <span *ngIf="isOff" class="badge off">Off</span>
+                <span *ngIf="isOff" class="badge" mdTooltip="Off Day">Off</span>
             </div>
         </ng-container>
         <ng-container *ngIf="isPast" [ngSwitch]="daySummary.status">
-            <span *ngSwitchCase="'present'" class="name">&#10003;</span>
-            <span *ngSwitchCase="'missSwipe'" class="name warn">M</span>
-            <span *ngSwitchCase="'absent'" class="name warn">A</span>
-            <span *ngSwitchCase="'weekOff'" class="badge off">Off</span>
+            <span *ngSwitchCase="'present'" class="name" mdTooltip="Present">&#10003;</span>
+            <span *ngSwitchCase="'missSwipe'" class="name warn" mdTooltip="Missed Swipe">M</span>
+            <span *ngSwitchCase="'absent'" class="name warn" mdTooltip="Missed Swipe">A</span>
+            <span *ngSwitchCase="'weekOff'" class="badge" mdTooltip="Off Day">Off</span>
             <div *ngSwitchCase="'onLeave'" class="badge info" [class.first]="leaveSummary.first" [class.second]="leaveSummary.second" >{{leaveSummary.code}}<span *ngIf="leaveSummary.status === 'submitted'" class="asterisk">*</span></div>
         </ng-container>
     </button>

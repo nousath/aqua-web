@@ -26,10 +26,11 @@
 
 .display-text .name {
     white-space: nowrap;
+    color: #aaa
 }
 
 .display-text .badge {
-    border: 1px solid #888;
+    border: 1px solid #aaa;
     color: #ffffff;
     border-radius: 10px;
     padding: 5px 15px;
@@ -44,58 +45,29 @@
     padding: 2px 15px;
 }
 
-.badge.disabled {
-    background-color: #bbb;
-    color: #ffffff;
-}
-
 .badge.info {
     background-color: #5c97e4;
     color: #ffffff;
 }
 
 .badge.info.first {
-    background: linear-gradient(to right, #5c97e4 0%, #5c97e4 50%, #888 50%, #888 50%);
+    background: linear-gradient(to right, #5c97e4 0%, #5c97e4 50%, #aaa 50%, #aaa 50%);
 }
 
 .badge.info.second {
-    background: linear-gradient(to right, #888 0%, #888 50%, #5c97e4 50%, #5c97e4 50%);
+    background: linear-gradient(to right, #aaa 0%, #aaa 50%, #5c97e4 50%, #5c97e4 50%);
 }
 
 .badge.info.first.second {
     background: #5c97e4;
 }
 
-.name.alert {
+.display-text .name.warn {
     color: red;
 }
 
-.name.info {
+.display-text .name.info {
     color: #5c97e4;
-}
-
-.display-text .approvedFull {
-    border: 1px solid #888;
-    border-radius: 10px;
-    padding: 5px 15px;
-}
-
-.display-text .approvedFirst {
-    background: linear-gradient(to right, lightskyblue 0%, lightskyblue 50%, #3f4766 50%, #3f4766 50%);
-    border: 1px solid #888;
-    background-color: lightskyblue;
-    color: #ffffff;
-    border-radius: 10px;
-    padding: 5px 15px;
-}
-
-.display-text .submittedFull {
-    border: 1px solid #888;
-    background-color: rgb(255, 255, 188);
-    text-decoration-color: Black;
-    color: black;
-    border-radius: 10px;
-    padding: 5px 15px;
 }
 
 .shift.continue {

@@ -240,8 +240,6 @@ export class ApplyLeaveTypeComponent implements OnInit {
             this.leave.days = this.leave.days - 0.5;
           }
         }
-
-
         break;
 
       case 'single':
@@ -250,7 +248,7 @@ export class ApplyLeaveTypeComponent implements OnInit {
         break;
 
       case 'twoThird':
-        this.canCreate = !!this.leave.date && ((!this.leave.start.first && this.leave.start.second) || (!this.leave.start.first && this.leave.start.second))
+        this.canCreate = !!this.leave.date && ((!this.leave.start.first && this.leave.start.second) || (this.leave.start.first && !this.leave.start.second))
         this.leave.days = 2 / 3;
 
         this.leave.start.first = this.leave.start.first;
@@ -259,7 +257,7 @@ export class ApplyLeaveTypeComponent implements OnInit {
         break;
 
       case 'half':
-        this.canCreate = !!this.leave.date && ((!this.leave.start.first && this.leave.start.second) || (!this.leave.start.first && this.leave.start.second))
+        this.canCreate = !!this.leave.date && ((!this.leave.start.first && this.leave.start.second) || (this.leave.start.first && !this.leave.start.second))
         this.leave.days = 1 / 2;
         this.leave.start.first = this.leave.start.first;
         this.leave.start.second = this.leave.start.second;
@@ -267,7 +265,7 @@ export class ApplyLeaveTypeComponent implements OnInit {
         break;
 
       case 'oneThird':
-        this.canCreate = !!this.leave.date && ((!this.leave.start.first && this.leave.start.second) || (!this.leave.start.first && this.leave.start.second))
+        this.canCreate = !!this.leave.date && ((!this.leave.start.first && this.leave.start.second) || (this.leave.start.first && !this.leave.start.second))
         this.leave.days = 1 / 3;
         this.leave.start.first = this.leave.start.first;
         this.leave.start.second = this.leave.start.second;
