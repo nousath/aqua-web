@@ -91,41 +91,19 @@
                     </tr>
                 </tbody>
             </table>
-            <table class="table table-condensed" *ngIf="leaveBalances && leaveBalances.length">
-                <thead class="primary_thead">
-                    <tr>
-                        <th colspan="4" class="text-center">Select Leave</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td colspan="3">
-                            <div *ngFor="let item of leaveBalances;let idx = index">
-                                <aqua-apply-leave-type [balance]="item" [employee]="employee" (onChange)="onLeaveCreate($event, idx)"></aqua-apply-leave-type>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label>Reason:
-                                    <span class="asterisk">*</span>
-                                </label>
-                        </td>
-                        <td colspan="3">
-                            <textarea type="text" [(ngModel)]="reason" [maxlength]="validatorService.textLength" class="form-control" name="reason" required></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="4" class="footerBtn">
-                            <button md-raised-button color="primary" [disabled]="isProcessing" (click)="applyLeave()">
-                                    <span>Add</span>
-                                    <i [class.fa-spinner]="isProcessing" [class.fa-spin]="isProcessing" [class.fa-save]="!isProcessing" class="fa fa-fw"></i>
-                                </button>
-                            <button md-raised-button [disabled]="isProcessing" (click)="reset()">Reset</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div *ngIf="leaveBalances && leaveBalances.length" class="rows">
+                <label>Select Leave</label>
+                <aqua-apply-leave-type *ngFor="let item of leaveBalances;let idx = index" [balance]="item" [employee]="employee" (onChange)="onLeaveCreate($event, idx)"></aqua-apply-leave-type>
+                <div>
+                    <label>Reason: <span class="asterisk">*</span></label>
+                    <textarea type="text" [(ngModel)]="reason" [maxlength]="validatorService.textLength" class="form-control" name="reason" required></textarea>
+                </div>
+                <div class="controls-row footer">
+                    <span class="spacer"></span>
+                    <button md-button [disabled]="isProcessing" (click)="reset()">Reset</button>
+                    <button md-raised-button color="primary" [disabled]="isProcessing" (click)="applyLeave()">Apply</button>
+                </div>
+            </div>
         </div>
     </md-card>
 </div>

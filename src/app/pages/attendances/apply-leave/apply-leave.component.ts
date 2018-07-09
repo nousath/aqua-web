@@ -68,18 +68,23 @@ export class ApplyLeaveComponent {
     });
   }
 
-
+  errorHandler = (err) => {
+    this.isProcessing = false;
+    this.toastyService.error({ title: 'Error', msg: err })
+  }
 
   getLeaveBalance(employeeId: string) {
+    this.isProcessing = true;
     const input = new ServerPageInput();
     input.serverPaging = false;
     input.query = {
       id: employeeId,
       employeeId: employeeId
     };
-    this.amsLeaveService.leaveBalances.search(input)
-      .then(page => this.leaveBalances = page.items)
-      .catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+    this.amsLeaveService.leaveBalances.search(input).then(page => {
+      this.leaveBalances = page.items;
+      this.isProcessing = false;
+    }).catch(this.errorHandler);
   }
 
   onSelectEmp(employee: Employee) {
@@ -133,12 +138,14 @@ export class ApplyLeaveComponent {
 
     this.angulartics2.eventTrack.next({ action: 'applyLeaveClick', properties: { category: 'allLeave', label: 'myLabel' } });
 
-    this.amsLeaveService.leaves.bulkCreate(items)
-      .then(() => this.reset())
-      .catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+    this.amsLeaveService.leaves.bulkCreate(items).then(() => {
+        this.isProcessing = false;
+        this.toastyService.info({ title: 'Processed', msg: `${items.length} leave(s) applied` })
+        this.reset()
+      }).catch(this.errorHandler);
   }
 
-    backClicked() {
-      this._location.back();
+  backClicked() {
+    this._location.back();
   }
 }

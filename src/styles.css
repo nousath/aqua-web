@@ -329,6 +329,77 @@ pagination-controls {
     font-weight: 100 !important;
 }
 
+.flex-row {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+.flex-row .col {
+    flex-basis: 100%;
+}
+
+.flex-row .left {
+    order: 1;
+    flex-basis: 100%;
+}
+
+.flex-row .middle {
+    order: 3;
+    flex-basis: 100%;
+}
+
+.flex-row .right {
+    order: 2;
+    flex-basis: 100%;
+}
+
+
+/* @media (max-width: 400px) {
+.flex-grid {
+display: block;
+}
+} */
+
+@media screen and (min-width:600px) {
+    .flex-row {
+        flex-wrap: wrap;
+    }
+    .flex-row .left {
+        flex-basis: 33%;
+        /* flex-basis: 200px; */
+        padding: 5px;
+        order: 1;
+    }
+    .flex-row .middle {
+        flex-basis: 33%;
+        padding: 5px;
+        order: 2;
+    }
+    .flex-row .right {
+        flex: 1;
+        padding: 5px;
+        order: 3;
+    }
+    .flex-row .col {
+        flex: 1;
+        padding: 5px;
+    }
+}
+
+.cols {
+    display: flex;
+    flex-direction: row;
+}
+
+.cols .spacer {
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+}
+
 .rows {
     display: flex;
     flex-direction: column;
@@ -369,4 +440,8 @@ pagination-controls {
 .mini-control .mat-button-toggle-label-content {
     line-height: 25px;
     font-size: smaller;
+}
+
+.footer {
+    margin-top: 10px;
 }

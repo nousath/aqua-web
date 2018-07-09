@@ -6,6 +6,32 @@
     margin-top: 15px;
 }
 
-.leave-details.ready {
+
+/* .leave-details.ready {
     background-color: #ddffdd;
+} */
+
+.error {
+    background: #F3D7D8
+}
+
+.leave-creator {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 5px 0px;
+    padding: 5px 15px;
+}
+
+.leave-creator.has-error {
+    border: 1px solid red;
+}
+
+.leave-creator.selected {
+    border: 1px solid green;
+}
+
+.leave-creator .leave-type,
+.leave-creator .till-date,
+.leave-creator .from-date {
+    min-width: 30%
 }

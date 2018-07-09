@@ -37,6 +37,8 @@ export class ApplyLeaveTypeComponent implements OnInit {
 
   duration: string;
 
+  error: string;
+
   enable = {
     start: {
       date: false,
@@ -115,11 +117,14 @@ export class ApplyLeaveTypeComponent implements OnInit {
         this.enable.durations.multi = true;
         this.enable.durations.single = true;
         this.duration = 'single';
+        this.enableControls('duration');
       } else if (this.limit === 1) {
         this.enable.durations.single = true;
         this.duration = 'single';
+        this.enableControls('duration');
       } else if (this.limit < 1) {
         this.duration = 'half';
+        this.enableControls('duration');
       }
 
       if (this.type.unitsPerDay === 2) {
@@ -139,17 +144,21 @@ export class ApplyLeaveTypeComponent implements OnInit {
     }
   }
 
-  enableControls() {
+  enableControls(controlId?: string) {
     switch (this.duration) {
-
       case 'multi':
         this.enable.start.first = true;
         this.enable.end.second = true;
 
         this.enable.end.first = false;
         this.enable.start.second = false;
-        this.leave.start.second = true;
-        this.leave.end.first = true;
+
+        if (controlId === 'duration') {
+          this.leave.start.first = true;
+          this.leave.start.second = true;
+          this.leave.end.first = true;
+          this.leave.end.second = true;
+        }
 
         this.enable.end.date = !!this.leave.date
 
@@ -162,6 +171,11 @@ export class ApplyLeaveTypeComponent implements OnInit {
         this.enable.end.second = false;
         this.enable.end.date = false;
 
+        if (controlId === 'duration') {
+          this.leave.start.first = true;
+          this.leave.start.second = true;
+        }
+
         break;
 
       case 'half':
@@ -169,7 +183,18 @@ export class ApplyLeaveTypeComponent implements OnInit {
         this.enable.start.second = true;
         this.enable.end.first = false;
         this.enable.end.second = false;
-        this.enable.end.date = false
+        this.enable.end.date = false;
+
+        if (controlId === 'duration') {
+          this.leave.start.first = true;
+          this.leave.start.second = false;
+        }
+
+        if (controlId === 'start.first') {
+          this.leave.start.second = !this.leave.start.first;
+        } else if (controlId === 'start.second') {
+          this.leave.start.first = !this.leave.start.second;
+        }
 
         break;
 
@@ -180,6 +205,17 @@ export class ApplyLeaveTypeComponent implements OnInit {
         this.enable.end.second = false;
         this.enable.end.date = false
 
+        if (controlId === 'duration') {
+          this.leave.start.first = true;
+          this.leave.start.second = false;
+        }
+
+        if (controlId === 'start.first') {
+          this.leave.start.second = !this.leave.start.first;
+        } else if (controlId === 'start.second') {
+          this.leave.start.first = !this.leave.start.second;
+        }
+
         break;
 
       case 'twoThird':
@@ -187,7 +223,13 @@ export class ApplyLeaveTypeComponent implements OnInit {
         this.enable.start.second = true;
         this.enable.end.first = false;
         this.enable.end.second = false;
-        this.enable.end.date = false
+        this.enable.end.date = false;
+
+        if (controlId === 'start.first') {
+          this.leave.start.second = !this.leave.start.first;
+        } else if (controlId === 'start.second') {
+          this.leave.start.first = !this.leave.start.second;
+        }
 
         break;
     }
@@ -212,15 +254,19 @@ export class ApplyLeaveTypeComponent implements OnInit {
     this.changed();
   }
 
-  changed() {
-
-    this.enableControls();
+  changed(controlId?: string) {
+    this.error = null;
+    this.enableControls(controlId);
     this.leave.days = 0;
 
     switch (this.duration) {
 
       case 'multi':
         this.canCreate = !!this.leave.date && !!this.leave.toDate;
+        if (this.leave.toDate <= this.leave.date) {
+          this.canCreate = false;
+          this.error = 'Till Date needs to be after From Date';
+        }
         this.leave.start.first = this.leave.start.first;
         this.leave.start.second = this.leave.start.second;
         this.leave.end.first = this.leave.end.first;
@@ -270,67 +316,19 @@ export class ApplyLeaveTypeComponent implements OnInit {
         break;
     }
 
+    if (this.type.monthlyLimit && this.leave.days > this.type.monthlyLimit) {
+      this.canCreate = false;
+      this.error = `There is a capping of '${this.type.monthlyLimit}' day(s)`;
+    } else if (!this.type.unlimited && this.leave.days > this.balance.days) {
+      this.canCreate = false;
+      this.error = `You cannot apply more that '${this.balance.days}' day(s)`;
+    }
+
     if (this.canCreate) {
       this.leave.employee = this.employee;
       this.onChange.emit(this.leave);
     } else {
       this.onChange.emit(null);
     }
-
-
-
-    // if (this.startDate && this.endDate) {
-    //   const oneDay = 24 * 60 * 60 * 1000;
-    //   const startDay: Date = new Date(this.startDate);
-    //   if (this.startFirstHalf && this.startSecondHalf)
-    //     startDay.setHours(0, 0, 0, 0);
-    //   else if (this.endFirstHalf)
-    //     startDay.setHours(12, 0, 0, 0);
-    //   else if (this.endSecondHalf)
-    //     startDay.setHours(12, 0, 0, 0);
-    //   else
-    //     return this.toastyService.info({ title: 'Info', msg: 'Select Half' })
-
-    //   const endDay: Date = new Date(this.endDate);
-
-    //   if (this.endFirstHalf && this.endSecondHalf)
-    //     endDay.setHours(0, 0, 0, 0);
-    //   else if (this.endFirstHalf)
-    //     endDay.setHours(12, 0, 0, 0);
-    //   else if (this.endSecondHalf)
-    //     endDay.setHours(12, 0, 0, 0);
-    //   else
-    //     return this.toastyService.info({ title: 'Info', msg: 'Select Half' })
-
-    //   if (endDay <= startDay) {
-    //     return this.toastyService.info({ title: 'Info', msg: 'End Date should be greater then Start Date' })
-    //   }
-    //   if ((this.endFirstHalf && this.endSecondHalf) && (this.startFirstHalf && this.startSecondHalf)) {
-    //     this.days = Math.abs(((endDay.getTime() - startDay.getTime()) / (oneDay)) + 1);
-    //   } else {
-    //     this.days = Math.abs(((endDay.getTime() - startDay.getTime()) / (oneDay)) + 1);
-    //   }
-
-    //   if (this.days > this.balance.days && !this.balance.leaveType.unlimited) {
-    //     return this.toastyService.info({ title: 'Info', msg: `You don't have sufficient leave balance` })
-    //   }
-
-    //   if (this.balance.leaveType.monthlyLimit && this.days > this.balance.leaveType.monthlyLimit) {
-    //     return this.toastyService.info({ title: 'Info', msg: `You cannot apply more than ${this.balance.leaveType.monthlyLimit} in a month` })
-    //   }
-    //   const selectedLeave: any = {
-    //     id: this.balance.id,
-    //     type: this.balance.leaveType,
-    //     start: this.startDate,
-    //     end: this.endDate,
-    //     days: this.days
-    //   }
-
-    //   this.bulkLeaves = selectedLeave
-    //   console.log(this.bulkLeaves)
-
-    //   this.onChange.emit(this.leave);
-    // }
   }
-
 }
