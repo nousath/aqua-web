@@ -30,9 +30,9 @@
         <button md-menu-item [mdMenuTriggerFor]="shiftOptions" [disabled]="isDynamic || isPast" (click)="stopPropagation($event)">Shifts</button>
     </md-menu>
     <md-menu #offOptions="mdMenu" class="off" xPosition="after" [overlapTrigger]="false">
-        <button md-menu-item (click)="setWeeklyOff()">
+        <button md-menu-item [disabled]="isPast" (click)="setWeeklyOff()">
             <span>Every Week</span>
-            <md-slide-toggle [checked]="isWeeklyOff"></md-slide-toggle>
+            <md-slide-toggle [disabled]="isPast" [checked]="isWeeklyOff"></md-slide-toggle>
         </button>
         <button md-menu-item (click)="setDayOff()">
             <span>This Week</span>
