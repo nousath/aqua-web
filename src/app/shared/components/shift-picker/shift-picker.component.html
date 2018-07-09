@@ -23,10 +23,10 @@
         </ng-container>
     </button>
     <md-menu #dayMenu="mdMenu">
-        <button md-menu-item [disabled]="leave || !isProcessing || !onDutyBalance" (click)="setOnDuty()">On Duty</button>
+        <button md-menu-item [disabled]="leave || isProcessing || !onDutyBalance" (click)="setOnDuty()">On Duty</button>
         <button md-menu-item [disabled]="leave || isProcessing || !compOffBalance" (click)="setCompOff()">Comp Off</button>
         <button md-menu-item [mdMenuTriggerFor]="offOptions">Weekly Off</button>
-        <button md-menu-item [mdMenuTriggerFor]="leaveOptions" [disabled]="leave || leaveBalances.length || isProcessing">Apply Leave</button>
+        <button md-menu-item [mdMenuTriggerFor]="leaveOptions" [disabled]="leave || !leaveBalances.length || isProcessing">Apply Leave</button>
         <button md-menu-item [mdMenuTriggerFor]="shiftOptions" [disabled]="isDynamic || isPast" (click)="stopPropagation($event)">Shifts</button>
     </md-menu>
     <md-menu #offOptions="mdMenu" class="off" xPosition="after" [overlapTrigger]="false">
@@ -40,15 +40,9 @@
         </button>
     </md-menu>
     <md-menu #leaveOptions="mdMenu" class="leaves" xPosition="after" [overlapTrigger]="false">
-        <ng-container *ngIf="!isProcessing">
-            <ng-container *ngIf="leaveBalances.length">
-                <button *ngFor="let leaveBalance of leaveBalances" md-menu-item (click)="applyLeave(leaveBalance)">
-                  <span>{{leaveBalance.leaveType.name}}({{leaveBalance.days}})</span>
-              </button>
-            </ng-container>
-            <span md-menu-item *ngIf="!leaveBalances.length">No Balance</span>
-        </ng-container>
-        <span md-menu-item *ngIf="isProcessing">Fetching...</span>
+        <button *ngFor="let leaveBalance of leaveBalances" md-menu-item (click)="applyLeave(leaveBalance)">
+          <span>{{leaveBalance.leaveType.name}}({{leaveBalance.days}})</span>
+        </button>
     </md-menu>
     <md-menu #shiftOptions="mdMenu" class="shifts" xPosition="after" [overlapTrigger]="false">
         <button md-menu-item (click)="reset()">Reset</button>
