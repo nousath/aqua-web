@@ -79,6 +79,7 @@ import { FileUploaderDialogComponent } from './components/file-uploader-dialog/f
 import { BulkTimeLogsDialogComponent } from './components/bulk-time-logs-dialog/bulk-time-logs-dialog.component';
 import { AddAttendanceLogsComponent } from './components/add-attendance-logs/add-attendance-logs.component';
 import { DatesService } from './services/dates.service';
+import { GetDateDialogComponent } from './components/get-date-dialog/get-date-dialog.component';
 
 
 export const MaterialModules = [
@@ -123,7 +124,8 @@ export const MaterialModules = [
     EmployeesFilterComponent,
     AddAttendanceLogsComponent,
     FileUploaderDialogComponent,
-    BulkTimeLogsDialogComponent],
+    BulkTimeLogsDialogComponent,
+    GetDateDialogComponent],
   providers: [
     EmsEmployeeService,
     EmsDesignationService,
@@ -174,7 +176,7 @@ export const MaterialModules = [
     EmployeesFilterComponent,
     AddAttendanceLogsComponent
   ],
-  entryComponents: [FileUploaderDialogComponent, BulkTimeLogsDialogComponent],
+  entryComponents: [FileUploaderDialogComponent, BulkTimeLogsDialogComponent, GetDateDialogComponent],
 
 })
 export class SharedModule { }

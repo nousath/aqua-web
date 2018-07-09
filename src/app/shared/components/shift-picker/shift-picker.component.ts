@@ -14,6 +14,7 @@ import { DayEvent } from '../../../models/day-event';
 import { LeaveSummary } from '../../../services/ams/ams-leave.service';
 import { AttendanceSummary } from '../../../services/ams/ams-attendance.service';
 import { DatesService } from '../../services/dates.service';
+import { GetDateDialogComponent } from '../get-date-dialog/get-date-dialog.component';
 
 @Component({
   selector: 'aqua-shift-picker',
@@ -327,20 +328,41 @@ export class ShiftPickerComponent implements OnInit {
   }
 
   setOnDuty() {
-    this.setOnLeave(this.onDutyBalance);
+    this.applyLeave(this.onDutyBalance)
+    // const dialogRef = this.dialog.open(GetDateDialogComponent)
+    // const component = dialogRef.componentInstance;
+    // component.title = 'Purpose'
+
+    // dialogRef.afterClosed().subscribe((purpose: any) => {
+    //   if (!purpose) { return; }
+    //   this.setOnLeave(this.onDutyBalance, `Purpose: ${purpose} `);
+    // });
   }
 
   setCompOff() {
-    this.applyLeave(this.compOffBalance);
+    const dialogRef = this.dialog.open(GetDateDialogComponent)
+    const component = dialogRef.componentInstance;
+    component.title = 'In Lieu Of'
+
+    dialogRef.afterClosed().subscribe((response: any) => {
+      if (response === false) { return; }
+      const date = moment(response).format('DD-MM-YYYY')
+      this.setOnLeave(this.compOffBalance, `In Lieu Of: ${date} `);
+    });
   }
 
   applyLeave(leaveBalance: LeaveBalance) {
     const dialogRef = this.dialog.open(LeaveReasonDialogComponent, { width: '40%', data: leaveBalance })
 
     dialogRef.afterClosed().subscribe((response: any) => {
+      if (!response || !response.reason) {
+        return
+      }
+
       this.setOnLeave(leaveBalance, response.reason)
     });
   }
+
   setOnLeave(leaveBalance: LeaveBalance, reason?: string) {
     const leave = new Leave()
     leave.date = this.date;

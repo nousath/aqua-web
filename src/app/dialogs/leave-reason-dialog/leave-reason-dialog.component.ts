@@ -14,17 +14,16 @@ export class LeaveReasonDialogComponent implements OnInit {
   @ViewChild('LeaveReason') LeaveReason: NgForm;
   leave: Leave = new Leave();
 
+  type: string;
+
   constructor(public dialogRef: MdDialogRef<LeaveReasonDialogComponent>,
     private toastyService: ToastyService,
     @Inject(MD_DIALOG_DATA) public data: any) {
   }
 
   ngOnInit() {
-    console.log(this.data)
-
   }
   continue() {
-    console.log(this.data)
     this.dialogRef.close(this.data);
   }
 
