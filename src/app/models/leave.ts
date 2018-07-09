@@ -19,7 +19,7 @@ export class Leave {
   days: number;
   employee: Employee;
 
-  type: LeaveType;
+  leaveType: LeaveType;
   reason: string;
   comment: string;
   status: string;

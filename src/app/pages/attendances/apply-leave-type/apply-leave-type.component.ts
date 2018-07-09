@@ -99,7 +99,7 @@ export class ApplyLeaveTypeComponent implements OnInit {
     }
 
     this.leave = new Leave();
-    this.leave.type = this.type;
+    this.leave.leaveType = this.type;
 
     this.leave.start = {
       first: true,

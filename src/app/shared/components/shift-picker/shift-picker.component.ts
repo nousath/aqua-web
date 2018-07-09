@@ -348,7 +348,7 @@ export class ShiftPickerComponent implements OnInit {
     leave.days = 1;
     leave.reason = reason;
     leave.status = 'approved';
-    leave.type = leaveBalance.leaveType;
+    leave.leaveType = leaveBalance.leaveType;
     leave.employee = this.employee;
 
     this.isProcessing = true;

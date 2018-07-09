@@ -69,7 +69,7 @@ export class AmsLeaveService {
           leaveSummary.first = true
           leaveSummary.second = true
         }
-        leaveSummary.code = leave.type.code
+        leaveSummary.code = leave.leaveType.code
         leaveSummary.days = leave.days
         leaveSummary.reason = leave.reason
         leaveSummary.leave = leave
