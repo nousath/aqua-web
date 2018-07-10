@@ -57,7 +57,7 @@
     <div class="controls-row footer">
         <span class="spacer"></span>
         <button md-button (click)="type=''">Cancel</button>
-        <button md-raised-button color="primary" [disabled]="!reportRequest.reportParams.from" (click)="onSubmit()">Submit</button>
+        <button md-raised-button color="primary" (click)="onSubmit()">Submit</button>
     </div>
     <md-spinner class="custom_spinner" *ngIf="isLoading" mode="indeterminate"></md-spinner>
 </div>
