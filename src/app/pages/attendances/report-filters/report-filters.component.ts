@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { AmsReportRequestService } from '../../../services/ams/ams-report-request.service';
 import { ReportRequest } from '../../../models/report-request';
 import { Observable } from 'rxjs/Observable';
@@ -15,7 +15,7 @@ import { Tags } from '../../../shared/components/employees-filter/employees-filt
   templateUrl: './report-filters.component.html',
   styleUrls: ['./report-filters.component.css']
 })
-export class ReportFiltersComponent implements OnInit {
+export class ReportFiltersComponent implements OnInit, OnChanges {
   reportRequest: ReportRequest = new ReportRequest();
   tagTypes: Page<TagType>;
   tags: Tags = new Tags();
@@ -23,19 +23,34 @@ export class ReportFiltersComponent implements OnInit {
   employee: Employee;
   supervisor: Employee;
 
+  @Input()
+  type: string;
 
-  @Input() type: string;
+  @Input()
+  provider: string;
+
+  @Output()
+  submitted: EventEmitter<ReportRequest> = new EventEmitter();
+
   @Input()
   reportTypes: [{
     type: string,
+    provider: string,
     name: string
   }];
+
   isLoading = false;
+
+  show = {
+    monthPicker: true,
+    datePicker: true,
+    employeeFilters: true
+  };
 
   constructor(private amsReportRequest: AmsReportRequestService,
     private autoCompleteService: AutoCompleteService,
     private toastyService: ToastyService,
-    private tagService: AmsTagService) {
+    tagService: AmsTagService) {
     this.tagTypes = new Page({
       api: tagService.tagTypes
     });
@@ -43,20 +58,50 @@ export class ReportFiltersComponent implements OnInit {
     this.tagTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
-  ngOnInit() { }
-
+  ngOnInit() {}
   ngOnChanges() {
     if (this.type) {
       this.reportRequest.type = this.type;
     }
+
+    if (this.provider) {
+      this.reportRequest.provider = this.provider;
+    }
+
     if (this.reportTypes) {
       const reportType = this.reportTypes.find(item => item.type === this.type);
       if (reportType) {
         this.reportRequest.reportParams.reportName = reportType.name;
       }
     }
-  }
 
+    switch (this.type) {
+      case 'monthly-extra-hours-after-shift-end':
+      case 'monthly-extra-hours-after-shift-hours':
+      case 'monthly-early-check-out':
+      case 'monthly-late-check-in':
+      case 'monthly-attendance':
+      case 'attendance-details':
+      case 'form-25':
+        this.show.monthPicker = true;
+        this.show.datePicker = false;
+        this.show.employeeFilters = true;
+        break;
+      case 'daily-extra-hours-after-shift-end':
+      case 'daily-extra-hours-after-shift-hours':
+      case 'daily-attendance':
+        this.show.monthPicker = false;
+        this.show.datePicker = true;
+        this.show.employeeFilters = true;
+        break;
+
+      case 'employees-details':
+        this.show.monthPicker = false;
+        this.show.datePicker = false;
+        this.show.employeeFilters = true;
+        break;
+    }
+  }
 
   onSelectEmp(emp: Employee) {
     this.reportRequest.reportParams.name = emp.name;
@@ -90,7 +135,8 @@ export class ReportFiltersComponent implements OnInit {
       .create(this.reportRequest)
       .then(response => {
         this.isLoading = false;
-        this.tags.reset()
+        this.tags.reset();
+        this.submitted.next();
       })
       .catch(err => {
         this.isLoading = false;

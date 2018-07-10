@@ -1,14 +1,23 @@
-.filterSize{
+.filterSize {
     width: 30% !important;
 }
 
-.marginLeft{
+.marginLeft {
     margin-left: 25% !important;
 }
 
-.required{
+.required {
     color: red;
 }
-.paddingClass{
+
+.paddingClass {
     padding-top: 2%;
+}
+
+.rows div {
+    padding-top: 5px;
+}
+
+.rows .footer {
+    padding-bottom: 5px;
 }

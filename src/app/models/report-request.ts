@@ -3,6 +3,7 @@ import { Employee, ReportParams } from '.';
 export class ReportRequest {
     id: string;
     type: string;
+    provider: string;
     requestedAt: string;
     startedAt: string;
     completedAt: string;

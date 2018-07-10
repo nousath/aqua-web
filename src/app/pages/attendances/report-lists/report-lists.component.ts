@@ -14,16 +14,16 @@ export class ReportListsComponent implements OnInit {
   @Input() reportRequests: Page<ReportRequest>
 
   @Output()
-  authorClick: EventEmitter<String> = new EventEmitter<String>();
+  refresh: EventEmitter<String> = new EventEmitter<String>();
 
   constructor(private amsReportRequestService: AmsReportRequestService) {
 
-   }
+  }
 
   ngOnInit() {
   }
-  onClick(){
-    this.authorClick.emit()
+  onClick() {
+    this.refresh.emit()
   }
 
   download(url, reportType) {
