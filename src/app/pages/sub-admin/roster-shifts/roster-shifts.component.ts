@@ -121,7 +121,7 @@ export class RosterShiftsComponent implements OnInit {
 
   reset() {
     this.effectiveShifts.filters.reset();
-    $('#dateSelector').datepicker('setDate', new Date());
+    $('#weekSelector').datepicker('setDate', new Date());
     this.effectiveShifts.filters.properties['ofDate']['value'] = new Date();
     this.getAttendance();
   }
@@ -146,22 +146,27 @@ export class RosterShiftsComponent implements OnInit {
 
   }
 
+  resetShifts() {
+    this.amsEffectiveShiftService.effectiveShifts.simplePost({}, 'reset').then(() => {
+      this.toastyService.info({ title: 'Status', msg: 'Submitted' })
+    })
+  }
+
   excel() {
     this.isUpload = !this.isUpload;
     this.uploader.clearQueue();
   }
-  // AfterViewInit() {
-  //   $('#dateSelector').datepicker({
-  //     format: 'dd/mm/yyyy',
-  //     minViewMode: 0,
-  //     maxViewMode: 2,
-  //     autoclose: true
-  //   }).on('changeDate', (e) => {
-  //     this.getEffectiveShift(e.date);
-  //     this.getWeek(e.date);
-  //   })
-  //   $('#dateSelector').datepicker('setDate', new Date(new Date().setHours(0, 0, 0, 0)));
-  // }
+  createWeekPicker() {
+    $('#weekSelector').datepicker({
+      format: 'dd/mm/yyyy',
+      minViewMode: 0,
+      maxViewMode: 2,
+      autoclose: true
+    }).on('changeDate', (e) => {
+      this.getEffectiveShift(e.date);
+    })
+    $('#weekSelector').datepicker('setDate', moment(this.activatedRoute.queryParams['value']['fromDate']).startOf('week').toDate());
+  }
 
   getWeek(currentDate) {
     this.dates = [];
@@ -177,6 +182,7 @@ export class RosterShiftsComponent implements OnInit {
     this.isLoading = true;
     this.effectiveShifts.filters.properties['fromDate']['value'] = moment(date).startOf('week').toISOString();
     this.effectiveShifts.fetch().then(() => {
+      this.getWeek(this.date);
       this.isLoading = false;
     }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
@@ -202,12 +208,9 @@ export class RosterShiftsComponent implements OnInit {
 
   }
   getAttendance() {
-
-    // this.date = date;
-    // date = new Date(date);
     this.shiftTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
     this.getEffectiveShift(this.date);
-    this.getWeek(this.date);
+
   }
 
   nextWeek() {
@@ -241,6 +244,7 @@ export class RosterShiftsComponent implements OnInit {
   }
 
   ngAfterViewInit() {
+    this.createWeekPicker();
     this.getAttendance()
   }
 }
