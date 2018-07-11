@@ -42,7 +42,7 @@
         </button>
     </md-menu>
     <md-menu #leaveOptions="mdMenu" class="leaves" xPosition="after" [overlapTrigger]="false">
-        <button md-menu-item [disabled]="!leave" (click)="resetLeave()">Reset</button>
+        <button md-menu-item [disabled]="!leave" (click)="resetLeave()">Remove</button>
         <md-divider *ngIf="leaveBalances.length"></md-divider>
         <ng-container *ngIf="leaveBalances.length">
             <button *ngFor="let leaveBalance of leaveBalances" md-menu-item (click)="applyLeave(leaveBalance)">
@@ -51,16 +51,17 @@
         </ng-container>
     </md-menu>
     <md-menu #shiftOptions="mdMenu" class="shifts" xPosition="after" [overlapTrigger]="false">
-        <button md-menu-item (click)="resetShift()">Reset</button>
+        <button md-menu-item (click)="resetShift()">Remove</button>
         <md-divider></md-divider>
         <ng-container *ngIf="shiftTypes.length > 5">
             <div>
-                <input class="search" placeholder="Shifts" [(ngModel)]="shiftSearch" (click)="stopPropagation($event)">
+                <input class="search" placeholder="Search Shifts" [(ngModel)]="shiftSearch" (click)="stopPropagation($event)">
             </div>
-            <md-divider></md-divider>
         </ng-container>
-        <button md-menu-item *ngFor="let shiftType of shiftTypes| shiftTypeFilter: shiftSearch" (click)="selectShift(shiftType)">
-            <span>{{shiftType.name}}</span>
-        </button>
+        <div class="shifts">
+            <button md-menu-item *ngFor="let shiftType of shiftTypes| shiftTypeFilter: shiftSearch" (click)="selectShift(shiftType)">
+                <span>{{shiftType.name}}</span>
+            </button>
+        </div>
     </md-menu>
 </div>

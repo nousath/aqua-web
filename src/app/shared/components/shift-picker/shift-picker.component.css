@@ -99,14 +99,16 @@
 .search,
 .search:focus {
     font-family: Roboto, "Helvetica Neue", sans-serif;
-    font-size: 15px;
+    font-size: medium;
     font-weight: 400;
-    border: none;
+    border: 1px solid #aaa;
     background: none;
     outline: none;
     resize: none;
-    width: 100%;
+    width: 95%;
     padding-left: 15px;
+    border-radius: 5px;
+    margin: 5px;
 }
 
 .search::placeholder,
