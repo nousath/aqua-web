@@ -1,95 +1,40 @@
 <div class="row page_header">
-    <div *ngIf="!isUpload" class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
         <h5>
-            <b>Employee List</b>
+            <b>Employees</b>
         </h5>
     </div>
-    <div *ngIf="!isUpload" class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-        <div class="filterStatus">
-            <div class="btn-group" role="group" aria-label="...">
-                <button type="button" class="btn btn-default">Status:</button>
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-default dropdown-toggle capitalize" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{statusFilter}}
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a (click)="fetchEmp('activate')">Activated</a>
-                        </li>
-                        <!-- <li>
-                            <a (click)="fetchEmp('verified')">Verified</a>
-                        </li>
-                        <li>
-                            <a (click)="fetchEmp('inComplete')">In Complete</a>
-                        </li>
-                        <li>
-                            <a (click)="fetchEmp('pending')">Pending</a>
-                        </li> -->
-                        <li>
-                            <a (click)="fetchEmp('deactivate')">Deactivated</a>
-                        </li>
-                        <li>
-                            <a (click)="fetchEmp('archive')">Archived</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="filtrEmpName">
-            <form>
-                <div class="input-group">
-                    <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="employees?.isLoading || employee?.isProcessing" [(ngModel)]="employees.filters.properties['name']['value']" name="Name" placeholder="Search by employee name/code">
-                    <span class="input-group-btn">
-                        <button [disabled]="employees?.isLoading || employee?.isProcessing" class="btn btn-default" type="submit" (click)="fetchEmp()">Search</button>
-                        <!--<button  class="btn btn-default" type="submit" (click)="fetchEmp()">New</button>-->
-                    </span>
-                </div>
-            </form>
-
-        </div>
-        <a class="newEmp" md-icon-button [routerLink]="['new']" mdTooltip="New Employee" [mdTooltipPosition]="'above'">
-            <md-icon>add_circle_outline</md-icon>
-        </a>
-        <a class="exl" md-icon-button (click)="import()" mdTooltip="Excel Upload" [mdTooltipPosition]="'above'" angulartics2On="click" angularticsEvent="excelUploadClick" angularticsCategory="employee " [angularticsProperties]="{label: 'Fall Campaign'}">
-            <md-icon>cloud_upload</md-icon>
-        </a>
-        <button class="exlD" (click)="downloadlink()" [disabled]="dailyAttendnace?.isLoading || isDownloading || employee?.isProcessing" md-icon-button>
-            <md-icon>cloud_download</md-icon>
-        </button>
-
-
-
-    </div>
-    <div *ngIf="isUpload" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2"></div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 upload">
-            <span style="float: left">
-                <b>Select type</b>
-            </span>&nbsp;&nbsp;
-            <select [disabled]="dailyAttendnace?.isLoading  || isDownloading" placeholder="Status" name="Status" style="width: 50%; height:30px'">
-                <option value="employee-update">Employee Add/Update</option>
-                <option value="biometric-update">Biometric Add/Update</option>
+    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 controls-row">
+        <span class="spacer"></span>
+        <div class="input-group">
+            <span class="input-group-addon">Status:</span>
+            <select class="form-control" [(ngModel)]="statusFilter" (change)="fetchEmp(statusFilter)">
+                <option [value]="'activate'">Activated</option>
+                <option [value]="'inComplete'">In Complete</option>
+                <option [value]="'deactivate'">Deactivated</option>
+                <option [value]="'archive'">Archived</option>
             </select>
         </div>
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 upload">
-            <span style="float: left">
-                <b>Excel Upload</b>
-            </span>&nbsp;&nbsp;
-            <input class="file" id="uploader" type="file" ng2FileSelect [uploader]="uploader" angulartics2On="click" angularticsEvent="chooseFileClick" angularticsCategory="employee" [angularticsProperties]="{label: 'Fall Campaign'}" />
-            <div *ngFor="let item of uploader.queue" class="queue">
-                <button md-icon-button class="uploadBtn" (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
-                    <md-icon>cloud_upload</md-icon>
+        <div class="input-group">
+            <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="employees?.isLoading || employee?.isProcessing" [(ngModel)]="employees.filters.properties['name']['value']" name="Name" placeholder="name/code">
+            <span class="input-group-btn">
+                <button [disabled]="employees?.isLoading || employee?.isProcessing" class="btn btn-default" type="submit" (click)="fetchEmp()">
+                  <i class="fa fa-search"></i>
                 </button>
-                <button md-icon-button class="uploadBtn" (click)="excel()" [disabled]="item.isReady || item.isUploading  || uploader.isUploading">
-                    <md-icon>highlight_off</md-icon>
-                </button>
-            </div>
-            <button *ngIf="uploader?.queue?.length == 0" class="uploadBtn" (click)="excel()" md-icon-button>
-                <md-icon>highlight_off</md-icon>
-            </button>
+            </span>
         </div>
-
+        <button [matMenuTriggerFor]="moreMenu" md-icon-button> <md-icon>more_vert</md-icon></button>
+        <md-menu #moreMenu="mdMenu">
+            <button md-menu-item [routerLink]="['new']" mdTooltip="New Employee" [mdTooltipPosition]="'above'">
+                <md-icon>add_circle_outline</md-icon> New Employee
+            </button>
+            <button md-menu-item (click)="downloadlink()">
+                <md-icon>cloud_download</md-icon> Export
+            </button>
+            <button md-menu-item (click)="import()" mdTooltip="Upload">
+                <md-icon>cloud_upload</md-icon> Import
+            </button>
+        </md-menu>
     </div>
 </div>
 <md-spinner class="custom_spinner" *ngIf="employees?.isLoading || uploader.isUploading || employee?.isProcessing" mode="indeterminate"></md-spinner>
@@ -104,10 +49,10 @@
             <table class="table table-condensed table-hover">
                 <thead class="primary_thead">
                     <tr>
-                        <th>Name</th>
+                        <th colspan="2">Name</th>
                         <th class="tdWidth">Code</th>
-                        <th class="tdWidth">Status</th>
                         <th class="tdWidth">Designation</th>
+                        <th class="tdWidth">Biometric Id</th>
                         <th class="tdWidth  text-center">Action</th>
                     </tr>
                 </thead>
@@ -119,12 +64,21 @@
 
                         <td>
                             <img *ngIf="item?.picUrl" class="img-circle profile_pic" alt="img" [src]="item?.picUrl">
-                            <img *ngIf="!item?.picUrl" class="img-circle profile_pic" alt="img" src="assets/images/blank.png"> &nbsp;
-                            <a [routerLink]="[item.id]">{{item?.name || '--'}}</a>
+                            <img *ngIf="!item?.picUrl" class="img-circle profile_pic" alt="img" src="assets/images/blank.png">
                         </td>
-                        <td class="tdWidth">{{item?.displayCode || item?.code || '--'}}</td>
-                        <td class="tdWidth">{{item?.status || '--'}}</td>
-                        <td class="tdWidth">{{item?.designation || '--'}}</td>
+                        <td>
+                            <a [routerLink]="[item.id]">{{item?.name || '--'}}</a>
+                            <br>
+
+                        </td>
+                        <td><span>{{item?.displayCode || item?.code || '--'}}</span></td>
+                        <td class="tdWidth">
+                            <span *ngIf="item?.designation"></span>{{item?.designation?.name || (item?.designation || '--' )}}
+                            <br>
+                            <span *ngIf="item?.department"></span>{{item?.department?.name || item?.department}}
+                        </td>
+                        <td><span>{{item?.code || '--'}}</span></td>
+
                         <td class="tdWidth text-center">
                             <a md-icon-button class="button_align cursor" mdTooltip="Edit details" [mdTooltipPosition]="'above'" [routerLink]="[item.id]">
                                 <md-icon>edit</md-icon>

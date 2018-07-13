@@ -9,7 +9,10 @@
     <span class="hradrbtns">
         <button *ngIf="!isNew" md-raised-button [disabled]="isProcessing"
         (click)="resetPassword()">Reset Password</button>
-        <button md-raised-button [disabled]="isProcessing" color="primary" (click)="save()">Save</button>
+        <button md-raised-button [disabled]="isProcessing || !employee.name || !employee.displayCode" color="primary" (click)="save()">
+            <span *ngIf="isNew">Create</span>
+    <span *ngIf="!isNew">Update</span>
+    </button>
     </span>
 
 </div>
@@ -324,7 +327,7 @@
 
         </md-card>
         <br>
-        <md-card>
+        <md-card *ngIf="!isNew">
 
             <div class="dialog_Header text-center">
                 <h5>
@@ -350,5 +353,15 @@
                 </tr>
             </table>
         </md-card>
+
+        <div class="controls-row footer">
+            <span class="spacer"></span>
+            <button md-button (click)="backClicked()" *ngIf="isNew">
+              Cancel
+            </button>
+            <button md-raised-button [disabled]="isProcessing || !employee.name || !employee.displayCode" color="primary" (click)="save()">
+                <span *ngIf="isNew">Create</span><span *ngIf="!isNew">Update</span>
+              </button>
+        </div>
     </div>
 </div>
