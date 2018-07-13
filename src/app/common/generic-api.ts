@@ -48,7 +48,7 @@ export class GenericApi<TModel> implements IApi<TModel> {
     // console.log('error', error)
     if (error.status === 0) {
 
-      return Promise.reject('There is no internet connection')
+      return Promise.reject('Connection Issue')
     };
     if (error.status) {
       if (error.status === 401) {
