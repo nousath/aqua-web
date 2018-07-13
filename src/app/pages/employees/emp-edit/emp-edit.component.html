@@ -126,9 +126,8 @@
                     <td>
                         <select *ngIf="!isNew" name="status" class="form-control" [(ngModel)]="employee.status" [required]="!isNew">
                                 <option [ngValue]="null">Select an option</option>
-                                <option value="activate">Active</option>
-                                <option value="inComplete">In Complete</option>
-                                <option value="deactivate">In Active</option>
+                                <option value="activate">Activate</option>
+                                <option value="deactivate">Deactivate</option>
                                 <option value="archive">Archive</option>
                             </select>
                     </td>
