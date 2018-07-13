@@ -1,9 +1,8 @@
 export class Department {
-  id = '';
   name = '';
   code = '';
-  divisionId = 1;
+  id: number = null;
   isEdit = false;
-  incharge = '';
+  divisionId: number;
 }
 

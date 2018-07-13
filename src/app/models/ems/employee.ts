@@ -1,7 +1,6 @@
 import { Organization } from '../organization';
 import { Device } from '../device';
 import { ShiftType } from '../shift-type';
-import { Designation } from '../designation';
 
 export class EmsEmployee {
   id = '';
@@ -11,10 +10,10 @@ export class EmsEmployee {
   aadhaar = '';
   pan = '';
 
-  // designation: Designation = new Designation();
-  designation = '';
-  department = '';
-  incharge = ''
+  // designation = new Designation();
+  designationId: any;
+  // department = new Department();
+  departmentId: number;
   status = '';
   gender: 'male' | 'female' | 'others' | null = null;
   fatherName = '';

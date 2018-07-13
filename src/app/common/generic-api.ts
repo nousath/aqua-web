@@ -63,9 +63,12 @@ export class GenericApi<TModel> implements IApi<TModel> {
     return Promise.reject(error.message || error);
   }
 
-  private getQueryParams(input: ServerPageInput): URLSearchParams {
+  private getQueryParams(input?: ServerPageInput): URLSearchParams {
 
     const params: URLSearchParams = new URLSearchParams();
+    if (!input) {
+      return params
+    }
     _.each(input, (value, key, obj) => {
       if (key === 'query') {
         _.each(value, (keyVal, keyKey) => {
@@ -131,9 +134,9 @@ export class GenericApi<TModel> implements IApi<TModel> {
 
 
 
-  search(input: ServerPageInput): Promise<ServerPageModel<TModel>> {
-    const parms: URLSearchParams = this.getQueryParams(input);
-    return this.http.get(`${this.rootUrl}/${this.key}`, { headers: this.getHeaders(), search: parms })
+  search(input?: ServerPageInput): Promise<ServerPageModel<TModel>> {
+    const params: URLSearchParams = this.getQueryParams(input);
+    return this.http.get(`${this.rootUrl}/${this.key}`, { headers: this.getHeaders(), search: params })
       .toPromise()
       .then((response) => {
         const dataModel = response.json() as ServerPageModel<TModel>;

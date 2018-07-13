@@ -6,7 +6,7 @@ import { RemoteDataModel } from './remote-data.model';
 export interface IApi<TModel> extends IUploader {
   get(id: number | string): Promise<TModel>;
   simpleGet(input?: IGetParams): Promise<any>;
-  search(input: ServerPageInput): Promise<ServerPageModel<TModel>>;
+  search(input?: ServerPageInput): Promise<ServerPageModel<TModel>>;
   create(model: TModel, path?: string): Promise<TModel>;
   update(id: number | string, model: TModel, input?: ServerPageInput, path?: string): Promise<TModel>;
   remove(id: number | string): Promise<void>;

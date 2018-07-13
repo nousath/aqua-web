@@ -1,15 +1,15 @@
 <br>
 <div class="row text-center">
-    <a md-raised-button class="reply" color="primary" (click)="backClicked()">
-        <md-icon>reply</md-icon> Employees
+    <a md-raised-button class="reply" (click)="backClicked()">
+        <md-icon>reply</md-icon>
     </a>
     <h5>
-        <b> {{employee?.properties?.id ? 'Employee Details' : 'New Employee' }}</b>
+        <b> {{employee?.id ? 'Employee Details' : 'New Employee' }}</b>
     </h5>
     <span class="hradrbtns">
-        <button md-raised-button [disabled]="employee?.isProcessing || designations?.isLoading" color="primary" (click)="save(empForm)">Save</button>
-        <button *ngIf="employee?.properties?.id" md-raised-button [disabled]="employee?.isProcessing || designations?.isLoading"
-            color="primary" (click)="resetPassword()">Reset Password</button>
+        <button *ngIf="!isNew" md-raised-button [disabled]="isProcessing"
+        (click)="resetPassword()">Reset Password</button>
+        <button md-raised-button [disabled]="isProcessing" color="primary" (click)="save()">Save</button>
     </span>
 
 </div>
@@ -19,21 +19,17 @@
         <md-card>
             <div class="row nameFormat">
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    <h4>{{employee?.properties?.name}}</h4>
-                    <h5>{{employee?.properties?.code}}</h5>
-                    <h5>{{employee?.properties?.designation}}</h5>
+                    <h4>{{employee?.name}}</h4>
+                    <h5>{{employee?.code}}</h5>
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                     <div class="row profileImage cursor">
-                        <img *ngIf="employee?.properties?.picUrl" class="EmpProile" [src]="employee?.properties?.picUrl" onerror="this.src = 'assets/images/blank.png'"
-                            width="100%">
-                        <img *ngIf="!employee?.properties?.picUrl" class="EmpProile" alt="img" src="assets/images/blank.png" width="100%">
-                        <button *ngIf="employee?.properties?.id" (click)="isChangeImage = !isChangeImage" class="btn chimg" mdTooltip="Change Profile Picture"
-                            [mdTooltipPosition]="'above'">
+                        <img *ngIf="employee?.picUrl" class="avatar" [src]="employee?.picUrl" onerror="this.src = 'assets/images/blank.png'" width="100%">
+                        <img *ngIf="!employee?.picUrl" class="avatar" alt="img" src="assets/images/blank.png" width="100%">
+                        <button *ngIf="employee?.id" (click)="isChangeImage = !isChangeImage" class="btn chimg" mdTooltip="Change Profile Picture" [mdTooltipPosition]="'above'">
                             Change Profile Photo
                         </button>
                     </div>
-
                 </div>
                 <br>
                 <div *ngIf="isChangeImage" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center fileBox">
@@ -56,7 +52,7 @@
                 <br>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <br> User Type:&nbsp;
-                    <select class="form-control userType" [(ngModel)]="employee.properties.userType">
+                    <select class="form-control userType" [(ngModel)]="employee.userType">
                         <option value="superadmin">Super Admin</option>
                         <option value="admin">Admin</option>
                         <option value="normal">Normal</option>
@@ -65,58 +61,54 @@
             </div>
         </md-card>
         <br>
-        <md-card>
-            <aqua-finger-print [code]="employee.properties.code"></aqua-finger-print>
+        <md-card *ngIf="!isNew">
+            <aqua-finger-print [code]="employee.code"></aqua-finger-print>
         </md-card>
-
-
     </div>
     <br>
 
-    <md-spinner class="custom_spinner" *ngIf="employee?.isProcessing || uploader.isUploading || designations?.isLoading" mode="indeterminate">
+    <md-spinner class="custom_spinner" *ngIf="isProcessing" mode="indeterminate">
     </md-spinner>
     <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-        <form #empForm="ngForm">
-            <md-card>
-                <div class="dialog_Header text-center">
-                    <h5>
-                        <b>Personal</b>
-                    </h5>
-                </div>
-                <br>
-                <table class="table">
-                    <tr>
-                        <th>Name:
-                            <span class="asterisk">*</span>
-                        </th>
-                        <td>
-                            <input name="empName" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.name"
-                                required>
-                        </td>
-                        <th>Gender:</th>
-                        <td>
-                            <select name="gender" class="form-control" [(ngModel)]="employee.properties.gender">
+        <md-card>
+            <div class="dialog_Header text-center">
+                <h5>
+                    <b>Personal</b>
+                </h5>
+            </div>
+            <br>
+            <table class="table">
+                <tr>
+                    <th>Name:
+                        <span class="asterisk">*</span>
+                    </th>
+                    <td>
+                        <input name="empName" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.name" required>
+                    </td>
+                    <th>Gender:</th>
+                    <td>
+                        <select name="gender" class="form-control" [(ngModel)]="employee.gender">
                                 <option [ngValue]="null">Select an option</option>
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>
                                 <option value="others">Others</option>
                             </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>DOB:</th>
-                        <td>
-                            <input name="dob" id="dateSelector" type="text" class="form-control input-sm calendar no-spin">
-                        </td>
-                        <th>Father/Husband Name:</th>
-                        <td>
-                            <input name="fname" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.fatherName">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Blood Group:</th>
-                        <td>
-                            <select name="bgroup" class="form-control" [(ngModel)]="employee.properties.bloodGroup">
+                    </td>
+                </tr>
+                <tr>
+                    <th>DOB:</th>
+                    <td>
+                        <input name="dob" id="dateSelector" type="text" class="form-control input-sm calendar no-spin">
+                    </td>
+                    <th>Father/Husband:</th>
+                    <td>
+                        <input name="fname" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.fatherName">
+                    </td>
+                </tr>
+                <tr>
+                    <th>Blood Group:</th>
+                    <td>
+                        <select name="bgroup" class="form-control" [(ngModel)]="employee.bloodGroup">
                                 <option [ngValue]="null">Select an option</option>
                                 <option value="A+">A+</option>
                                 <option value="B+">B+</option>
@@ -127,258 +119,237 @@
                                 <option value="O-">O-</option>
                                 <option value="AB-">AB-</option>
                             </select>
-                        </td>
-                        <th>{{isNew ? '':'Status:'}}
-                            <span *ngIf="!isNew" class="asterisk">*</span>
-                        </th>
-                        <td>
-                            <select *ngIf="!isNew" name="status" class="form-control" [(ngModel)]="employee.properties.status" [required]="!isNew">
+                    </td>
+                    <th>{{isNew ? '':'Status:'}}
+                        <span *ngIf="!isNew" class="asterisk">*</span>
+                    </th>
+                    <td>
+                        <select *ngIf="!isNew" name="status" class="form-control" [(ngModel)]="employee.status" [required]="!isNew">
                                 <option [ngValue]="null">Select an option</option>
                                 <option value="activate">Active</option>
                                 <option value="inComplete">In Complete</option>
                                 <option value="deactivate">In Active</option>
+                                <option value="archive">Archive</option>
                             </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Phone:</th>
-                        <td>
-                            <input name="phone" type="text" class="form-control" [maxlength]="validatorService.phoneNumberLength" [minLength]="validatorService.phoneNumberLength"
-                                [pattern]="validatorService.onlyNumber" [(ngModel)]="employee.properties.phone">
-                        </td>
-                        <th>Email:</th>
-                        <td>
-                            <input name="email" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.email">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Aadhaar No:
-                        </th>
-                        <td>
-                            <input name="aadhaar" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.aadhaar">
-                        </td>
-                        <th>Pan No:</th>
-                        <td>
-                            <input name="pan" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.pan">
-                        </td>
-                    </tr>
-                </table>
-            </md-card>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Phone:</th>
+                    <td>
+                        <input name="phone" type="text" class="form-control" [maxlength]="validatorService.phoneNumberLength" [minLength]="validatorService.phoneNumberLength" [pattern]="validatorService.onlyNumber" [(ngModel)]="employee.phone">
+                    </td>
+                    <th>Email:</th>
+                    <td>
+                        <input name="email" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.email">
+                    </td>
+                </tr>
+                <tr>
+                    <th>Aadhaar No:
+                    </th>
+                    <td>
+                        <input name="aadhaar" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.aadhaar">
+                    </td>
+                    <th>PAN No:</th>
+                    <td>
+                        <input name="pan" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.pan">
+                    </td>
+                </tr>
+            </table>
+        </md-card>
+        <br>
+        <md-card>
+            <div class="dialog_Header text-center">
+                <h5>
+                    <b>Employment</b>
+                </h5>
+            </div>
             <br>
-            <md-card>
-                <div class="dialog_Header text-center">
-                    <h5>
-                        <b>Employment</b>
-                    </h5>
-                </div>
-                <br>
-                <table class="table">
-                    <tr>
-                        <th>Code:
-                            <span class="asterisk">*</span>
-                        </th>
-                        <td>
-                            <input *ngIf="!employee.properties.code" name="empCode" type="text" class="form-control" [maxlength]="validatorService.textLength"
-                                [(ngModel)]="employee.properties.code" required>
-                            <input *ngIf="employee.properties.code" name="biometric" type="text" class="form-control" [maxlength]="validatorService.textLength"
-                                [(ngModel)]="employee.properties.displayCode">
-                            <!-- <span *ngIf="employee.properties.code && employee.properties.displayCode && employee.properties.displayCode !== employee.properties.code"
-                                class="text-center sub-text">({{employee.properties.code}})</span> -->
-                        </td>
-                        <th>Supervisor:
-                        </th>
-                        <td>
-                            <input ngui-auto-complete [min-chars]="1" placeholder="Employee search" [(ngModel)]="employee.properties.supervisor" [source]="empSource.bind(this)"
-                                [value-formatter]="empFormatter" [list-formatter]="empListFormatter" class="form-control search"
-                                name="Supervisor" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Unique Code:</th>
-                        <td>
-                            <input *ngIf="employee.properties.code && employee.properties.displayCode && employee.properties.displayCode !== employee.properties.code"
-                                name="empCode" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.code"
-                                disabled="employee.properties.code" required>
-                            <input *ngIf="employee.properties.code && employee.properties.displayCode && employee.properties.displayCode === employee.properties.code"
-                                name="empCode" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.code"
-                                disabled="employee.properties.code" required>
-                            <!-- <span *ngIf="employee.properties.code && employee.properties.displayCode && employee.properties.displayCode !== employee.properties.code"
-                                class="text-center sub-text">({{employee.properties.code}})</span>
-                            <span *ngIf="employee.properties.code && employee.properties.displayCode && employee.properties.displayCode === employee.properties.code"
-                                class="text-center sub-text">({{employee.properties.code}})</span> -->
-                        </td>
-                        <th>Designation:</th>
-                        <td>
-                            <select name="designation" class="form-control" [(ngModel)]="employee.properties.designation">
+            <table class="table">
+                <tr>
+                    <th>Code:
+                        <span class="asterisk">*</span>
+                    </th>
+                    <td>
+                        <input type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.displayCode">
+                    </td>
+                    <th>Supervisor:
+                    </th>
+                    <td>
+                        <input ngui-auto-complete [min-chars]="1" placeholder="Employee search" [(ngModel)]="employee.supervisor" [source]="empSource.bind(this)" [value-formatter]="empFormatter" [list-formatter]="empListFormatter" class="form-control search" name="Supervisor"
+                        />
+                    </td>
+                </tr>
+                <tr>
+                    <th>Biometric Id:</th>
+                    <td>
+                        <input type="number" class="form-control" [(ngModel)]="employee.code" required>
+                    </td>
+                    <th>Designation:</th>
+                    <td>
+                        <select class="form-control" [(ngModel)]="designationId">
                                 <option [ngValue]="null">Select an option</option>
-                                <option *ngFor="let item of designations.items" [value]="item.name">{{item.name}}</option>
+                                <option *ngFor="let item of designations" [value]="item.id">{{item.name}}</option>
                             </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Employee Type:</th>
-                        <td>
-                            <select name="employmentType" class="form-control" [(ngModel)]="employee.properties.employmentType">
+                    </td>
+                </tr>
+                <tr>
+                    <th>Type:</th>
+                    <td>
+                        <select class="form-control" [(ngModel)]="employee.employmentType">
                                 <option disabled value=" " selected>Select an option</option>
                                 <option value="permanent">Permanent</option>
                                 <option value="contract">Contract</option>
                             </select>
-                        </td>
-                        <th>Department:</th>
-                        <td>
-                            <select name="department" class="form-control" [(ngModel)]="employee.properties.department">
-                                <option [ngValue]="null">Select an option</option>
-                                <option *ngFor="let item of departments.items" [value]="item.name">{{item.name}}</option>
+                    </td>
+                    <th>Department:</th>
+                    <td>
+                        <select class="form-control" [(ngModel)]="departmentId">
+                                <option *ngFor="let item of departments" [value]="item.id">{{item.name}}</option>
                             </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Date Of Joining:</th>
-                        <td>
-                            <input name="doj" id="joiningDate" type="text" class="form-control input-sm calendar no-spin">
-                        </td>
-                        <th>Departmental Incharge</th>
-                        <td>
-                            <input name="incharge" type="text" class="form-control" [(ngModel)]="employee.properties.incharge" disabled>
-                        </td>
-                    </tr>
-                </table>
-            </md-card>
-            <br *ngIf="employee.properties.employmentType == 'contract'">
-            <md-card [class.show]="employee.properties.employmentType == 'contract'" [class.hide]="employee.properties.employmentType != 'contract'">
-                <div class="dialog_Header text-center">
-                    <h5>
-                        <b>Contractor Details</b>
-                    </h5>
-                </div>
-                <br>
-                <table class="table">
-                    <tr>
-                        <th>Contractor</th>
-                        <td>
-                            <input ngui-auto-complete [min-chars]="1" placeholder="Contractor search" [(ngModel)]="employee.properties.contractor" [source]="empSource.bind(this)"
-                                [value-formatter]="contractorFormatter" [list-formatter]="empListFormatter" class="form-control search"
-                                name="Contractor" />
-                        </td>
-                        <th>Date of Membership:</th>
-                        <td>
-                            <input name="dom" id="membershipDate" type="text" class="form-control input-sm calendar no-spin">
-                        </td>
-                    </tr>
-                </table>
-            </md-card>
+                        <!-- <span class="text-center sub-text" *ngIf="employee.department">Incharge: TODO</span> -->
+                    </td>
+                </tr>
+                <tr>
+                    <th>Date Of Joining:</th>
+                    <td>
+                        <input id="joiningDate" type="text" class="form-control input-sm calendar no-spin">
+                    </td>
+                    <th></th>
+                    <td>
+                    </td>
+                </tr>
+            </table>
+        </md-card>
+        <br *ngIf="employee.employmentType == 'contract'">
+        <md-card [class.show]="employee.employmentType == 'contract'" [class.hide]="employee.employmentType != 'contract'">
+            <div class="dialog_Header text-center">
+                <h5>
+                    <b>Contractor Details</b>
+                </h5>
+            </div>
             <br>
-            <md-card>
-                <div class="dialog_Header text-center">
-                    <h5>
-                        <b>Address</b>
-                    </h5>
-                </div>
-                <br>
-                <table class="table">
-                    <tr>
-                        <th>Line 1:</th>
-                        <td>
-                            <input name="address1" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.address1">
-                        </td>
-                        <th>Line 2:</th>
-                        <td>
-                            <input name="address2" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.address2">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>City:</th>
-                        <td>
-                            <input name="city" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.city">
-                        </td>
-                        <th>District:</th>
-                        <td>
-                            <input name="district" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.district">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>State:</th>
-                        <td>
-                            <input name="state" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.state">
-                        </td>
-                        <th>Pin Code:</th>
-                        <td>
-                            <input name="pincode" #pincode="ngModel" type="text" class="form-control" [maxlength]="validatorService.pinCodeLength" [minlength]="validatorService.pinCodeLength"
-                                [pattern]="validatorService.onlyNumber" [(ngModel)]="employee.properties.pincode">
-                            <span class="asterisk" *ngIf="pincode.invalid">Enter 6 digit valid pin code</span>
-                        </td>
-                    </tr>
-                </table>
-
-            </md-card>
+            <table class="table">
+                <tr>
+                    <th>Contractor</th>
+                    <td>
+                        <input ngui-auto-complete [min-chars]="1" placeholder="Contractor search" [(ngModel)]="employee.contractor" [source]="empSource.bind(this)" [value-formatter]="empFormatter" [list-formatter]="empListFormatter" class="form-control search" name="Contractor"
+                        />
+                    </td>
+                    <th>Date of Membership:</th>
+                    <td>
+                        <input id="membershipDate" type="text" class="form-control input-sm calendar no-spin">
+                    </td>
+                </tr>
+            </table>
+        </md-card>
+        <br>
+        <md-card>
+            <div class="dialog_Header text-center">
+                <h5>
+                    <b>Address</b>
+                </h5>
+            </div>
             <br>
-            <md-card>
-                <div class="dialog_Header text-center">
-                    <h5>
-                        <b>Bank Details</b>
-                    </h5>
-                </div>
-                <br>
-                <table class="table">
-                    <tr>
-                        <th>Account No.</th>
-                        <td>
-                            <input name="accountNo" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.accountNo">
-                        </td>
-                        <th>IFSC Code:</th>
-                        <td>
-                            <input name="ifsc" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.ifsc">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Bank:</th>
-                        <td>
-                            <input name="bank" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.bank">
-                        </td>
-                        <th>Branch:</th>
-                        <td>
-                            <input name="branch" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.branch">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Account Holder Name:</th>
-                        <td>
-                            <input name="accountHolder" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.properties.accountHolder">
-                        </td>
+            <table class="table">
+                <tr>
+                    <th>Line 1:</th>
+                    <td>
+                        <input name="address1" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.address1">
+                    </td>
+                    <th>Line 2:</th>
+                    <td>
+                        <input name="address2" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.address2">
+                    </td>
+                </tr>
+                <tr>
+                    <th>City:</th>
+                    <td>
+                        <input name="city" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.city">
+                    </td>
+                    <th>District:</th>
+                    <td>
+                        <input name="district" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.district">
+                    </td>
+                </tr>
+                <tr>
+                    <th>State:</th>
+                    <td>
+                        <input name="state" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.state">
+                    </td>
+                    <th>Pin Code:</th>
+                    <td>
+                        <input name="pincode" #pincode="ngModel" type="text" class="form-control" [maxlength]="validatorService.pinCodeLength" [minlength]="validatorService.pinCodeLength" [pattern]="validatorService.onlyNumber" [(ngModel)]="employee.pincode">
+                        <span class="asterisk" *ngIf="pincode.invalid">Enter 6 digit valid pin code</span>
+                    </td>
+                </tr>
+            </table>
 
-                    </tr>
-                </table>
-
-            </md-card>
+        </md-card>
+        <br>
+        <md-card>
+            <div class="dialog_Header text-center">
+                <h5>
+                    <b>Bank Details</b>
+                </h5>
+            </div>
             <br>
-            <md-card>
+            <table class="table">
+                <tr>
+                    <th>Account No.</th>
+                    <td>
+                        <input name="accountNo" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.accountNo">
+                    </td>
+                    <th>IFSC Code:</th>
+                    <td>
+                        <input name="ifsc" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.ifsc">
+                    </td>
+                </tr>
+                <tr>
+                    <th>Bank:</th>
+                    <td>
+                        <input name="bank" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.bank">
+                    </td>
+                    <th>Branch:</th>
+                    <td>
+                        <input name="branch" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.branch">
+                    </td>
+                </tr>
+                <tr>
+                    <th>Account Holder Name:</th>
+                    <td>
+                        <input name="accountHolder" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.accountHolder">
+                    </td>
 
-                <div class="dialog_Header text-center">
-                    <h5>
-                        <b>Relieving</b>
-                    </h5>
-                </div>
-                <br>
-                <table class="table">
-                    <tr>
-                        <th>Date</th>
-                        <td>
-                            <input name="dol" id="terminateDate" type="text" class="form-control input-sm calendar no-spin">
-                        </td>
-                        <th>Reason</th>
-                        <td>
-                            <select name="reason" class="form-control" [(ngModel)]="employee.properties.reason">
+                </tr>
+            </table>
+
+        </md-card>
+        <br>
+        <md-card>
+
+            <div class="dialog_Header text-center">
+                <h5>
+                    <b>Relieving</b>
+                </h5>
+            </div>
+            <br>
+            <table class="table">
+                <tr>
+                    <th>Date</th>
+                    <td>
+                        <input id="terminateDate" type="text" class="form-control input-sm calendar no-spin">
+                    </td>
+                    <th>Reason</th>
+                    <td>
+                        <select class="form-control" [(ngModel)]="employee.reason">
                                 <option disabled value="null">Select an option</option>
                                 <option value="resign">Resign</option>
                                 <option value="terminate">Terminate</option>
                                 <option value="death">Death</option>
                             </select>
-                        </td>
-                    </tr>
-                </table>
-            </md-card>
-
-
-        </form>
+                    </td>
+                </tr>
+            </table>
+        </md-card>
     </div>
 </div>

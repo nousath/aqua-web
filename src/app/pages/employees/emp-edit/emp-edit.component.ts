@@ -2,14 +2,12 @@ import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { EmsEmployeeService, EmsDesignationService, EmsDepartmentService } from '../../../services/ems';
 import { ToastyService } from 'ng2-toasty';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Model } from '../../../common/contracts/model';
 import { Employee, Designation } from '../../../models';
-import { Subscription, Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Rx';
 import { EmsEmployee, Supervisor } from '../../../models/ems/employee';
 import { ValidatorService } from '../../../services/validator.service';
 import { AutoCompleteService } from '../../../services/auto-complete.service';
 import { NgForm } from '@angular/forms';
-import { Page } from '../../../common/contracts/page';
 import { MdDialog } from '@angular/material';
 import { Location } from '@angular/common';
 import { ResetPasswordDialogComponent } from '../../../dialogs/reset-password-dialog/reset-password-dialog.component';
@@ -17,7 +15,6 @@ import { FileUploader, ParsedResponseHeaders, FileItem, FileLikeObject } from 'n
 import * as _ from 'lodash';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { environment } from '../../../../environments/environment.qa';
-import { LeaveActionDialogComponent } from '../../../dialogs/leave-action-dialog/leave-action-dialog.component';
 import { Department } from '../../../models/department';
 declare var $: any;
 
@@ -29,11 +26,16 @@ declare var $: any;
 })
 export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  employee: Model<EmsEmployee>;
-  designations: Page<Designation>;
-  departments: Page<Department>;
+  employee: EmsEmployee;
 
-  subscription: Subscription;
+  designations: Designation[];
+  departments: Department[];
+
+  departmentId: number;
+  designationId: number;
+
+  isProcessing = false;
+
   uploader: FileUploader;
   isChangeImage = false;
   isUpload = false;
@@ -54,6 +56,201 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     private router: Router,
     public _location: Location) {
 
+    this.initUploader()
+
+    this.employee = new EmsEmployee()
+    this.isProcessing = true;
+    emsDesignationService.designations.search().then(designations => {
+      this.designations = designations.items;
+    });
+    emsDepartmentService.departments.search().then(departments => {
+      this.departments = departments.items;
+    });
+
+    activatedRoute.params.subscribe(params => {
+      const empId = params['id'];
+      this.fetchEmployee(empId)
+    });
+  }
+
+  fetchEmployee(id) {
+    this.store.setItem('Ems-employeeID', id)
+    if (!id) {
+      return this.toastyService.error({ title: 'Error', msg: 'Please select an employee' });
+    }
+    this.isNew = id === 'new'
+    if (this.isNew) {
+      this.employee = new EmsEmployee()
+      this.isProcessing = false
+
+    } else {
+      this.emsEmployeeService.employees.get(id).then(employee => {
+        this.employee = employee;
+        this.initEmployee(this.employee)
+        this.isProcessing = false
+      }).catch(this.errorHandler);
+    }
+  }
+
+  initEmployee(employee: EmsEmployee) {
+    this.uploader.setOptions({ url: `/ems/api/employees/image/${employee.id}` });
+    this.departmentId = employee.departmentId;
+    this.designationId = employee.designationId
+
+    if (employee.dob) { $('#dateSelector').datepicker('setDate', new Date(employee.dob)); }
+    if (employee.dol) { $('#terminateDate').datepicker('setDate', new Date(employee.dol)); }
+    if (employee.dom) { $('#membershipDate').datepicker('setDate', new Date(employee.dom)); }
+    if (employee.doj) { $('#joiningDate').datepicker('setDate', new Date(employee.doj)); }
+
+
+    if (!employee.displayCode) {
+      employee.displayCode = employee.code
+    }
+    // this.employee.supervisor = this.employee.supervisor ? this.employee.supervisor : new Supervisor();
+    // this.employee.designation = this.employee.designation ? this.employee.designation : new Designation();
+    // this.employee.designation = this.employee.designation ? this.employee.designation.toLowerCase() : null;
+
+    // if (this.employee.supervisor) {
+    //   emsEmployeeService.employees.get(this.employee.supervisor.id).then(supervisor => {
+    //     this.employee.supervisor.designation = supervisor.designation;
+    //   })
+    // }
+    // this.employee.supervisor = this.employee.supervisor ? this.employee.supervisor : new Supervisor();
+  }
+
+  beforeSave() {
+    const employee = this.employee;
+    if (this.isNew) {
+      employee.status = 'activate';
+    }
+
+    if (employee.picUrl) {
+      employee.picUrl = employee.picUrl.indexOf('?time=') === -1 ?
+        this.employee.picUrl :
+        this.employee.picUrl.slice(0, employee.picUrl.indexOf('?time='));
+    }
+
+    if (this.designationId) { employee.designationId = typeof this.designationId === 'string' ? parseInt(this.designationId) : this.designationId; }
+    if (this.departmentId) { employee.departmentId = typeof this.departmentId === 'string' ? parseInt(this.departmentId) : this.departmentId; }
+  }
+
+  save() {
+    if (!this.employee.displayCode) {
+      return this.toastyService.error({ title: 'Code', msg: 'Code is required' })
+    }
+
+    if (this.employee.email && !this.validatorService.validateEmail(this.employee.email)) {
+      return this.toastyService.error({ title: 'Invalid Email', msg: 'Please fill valid email' })
+    }
+
+    this.isProcessing = true;
+
+    this.beforeSave();
+
+    const promise = this.isNew ?
+      this.emsEmployeeService.employees.create(this.employee) :
+      this.emsEmployeeService.employees.update(this.employee.id, this.employee);
+
+    promise.then(data => {
+      this.isProcessing = false
+      this.toastyService.success({ title: 'Success', msg: `${this.employee.name} ${this.isNew ? 'added' : 'updated'} successfully` });
+      this.initEmployee(this.employee)
+      if (this.isNew) {
+        this.isNew = false;
+        this.router.navigate(['../', this.employee.id], { relativeTo: this.activatedRoute });
+      }
+    }).catch(this.errorHandler);
+  }
+
+  excel() {
+    this.isUpload = !this.isUpload;
+    this.uploader.clearQueue();
+  }
+
+  resetPassword() {
+    const dialog = this.dialog.open(ResetPasswordDialogComponent, { width: '40%' });
+    dialog.afterClosed().subscribe((password: string) => {
+      this.isProcessing = true;
+
+      if (password) {
+        const emp: any = {
+          password: password
+        };
+        this.emsEmployeeService.employees.update(this.employee.id, emp).then(data => {
+          this.isProcessing = false;
+          this.toastyService.success({ title: 'Success', msg: 'Password updated successfully' });
+        }).catch(this.errorHandler)
+      }
+    });
+  }
+  // terminateEmp(form: NgForm) {
+  //   if (form.invalid) {
+  //     return this.toastyService.info({ title: 'Info', msg: 'Please fill all mandatory fields' })
+  //   }
+  //   console.log(this.employee.id);
+  //   console.log(this.employee.name);
+
+
+  // }
+
+
+  empSource(keyword: string): Observable<EmsEmployee[]> {
+    return this.autoCompleteService.searchByKey<EmsEmployee>('name', keyword, 'ems', 'employees');
+  }
+
+  empFormatter(data: Employee): string {
+    return data.name;
+  }
+
+  empListFormatter(data: Employee): string {
+    return `${data.name} (${data.code})`;
+  }
+
+  ngOnInit() {
+  }
+
+  ngAfterViewInit() {
+    const pickerOptions = {
+      format: 'dd/mm/yyyy',
+      minViewMode: 0,
+      maxViewMode: 2,
+      autoclose: true
+    }
+    $('#dateSelector').datepicker(pickerOptions).on('changeDate', (e) => {
+      this.employee.dob = new Date(e.date).toISOString();
+    });
+    $('#terminateDate').datepicker(pickerOptions).on('changeDate', (d) => {
+      this.employee.dol = new Date(d.date).toISOString();
+    });
+    $('#joiningDate').datepicker(pickerOptions).on('changeDate', (d) => {
+      this.employee.doj = new Date(d.date).toISOString();
+    });
+    $('#membershipDate').datepicker(pickerOptions).on('changeDate', (d) => {
+      this.employee.dom = new Date(d.date).toISOString();
+    });
+  }
+
+  downloadlink() {
+    this.router.navigate(['pages/attendances/reports'], {
+      queryParams: {
+        type: 'employees-details'
+      }
+    })
+  }
+
+  ngOnDestroy() {
+  }
+
+  backClicked() {
+    this._location.back();
+  }
+
+  errorHandler = (err) => {
+    this.isProcessing = false;
+    this.toastyService.error({ title: 'Error', msg: err });
+  }
+
+  initUploader = () => {
     const access_Token: string = this.store.getItem('external-token');
     const orgCode = this.store.getItem('orgCode');
     this.uploader = new FileUploader({
@@ -85,189 +282,13 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     this.uploader.onCompleteItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
 
       const res: any = JSON.parse(response);
-      if (!res.isSuccess)
-        return toastyService.error({ title: 'Error', msg: 'Image upload failed' })
-      this.employee.properties.picUrl = `${res.message.picUrl}?time=${new Date().toString().replace(/ /g, '')}`;
+      if (!res.isSuccess) {
+        return this.toastyService.error({ title: 'Error', msg: 'Image upload failed' })
+      }
+      this.employee.picUrl = `${res.message.picUrl}?time=${new Date().toString().replace(/ /g, '')}`;
       this.isChangeImage = false;
 
     };
-
-    this.designations = new Page({
-      api: emsDesignationService.designations,
-      filters: [{
-        field: 'level',
-        value: 1
-      }]
-    });
-
-    this.departments = new Page({
-      api: emsDepartmentService.departments,
-    });
-
-    this.designations.fetch().then(() => {
-      _.each(this.designations.items, (item: Designation) => {
-        if (item.name)
-          item.name = item.name.toLowerCase();
-      })
-    }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
-
-    this.departments.fetch().then(() => {}).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
-
-    this.employee = new Model({
-      api: emsEmployeeService.employees,
-      properties: new EmsEmployee()
-    });
-
-    this.subscription = activatedRoute.params.subscribe(
-      params => {
-        const empId = params['id'];
-        if (!empId)
-          return this.toastyService.error({ title: 'Error', msg: 'Please select an employee' });
-        empId === 'new' ?
-          (this.isNew = true) :
-          this.employee.fetch(empId).then(
-            data => {
-              if (!this.employee.properties.displayCode) {
-                this.employee.properties.displayCode = this.employee.properties.code
-              }
-              this.uploader.setOptions({ url: `/ems/api/employees/image/${empId}` });
-              if (this.employee.properties.dob) { $('#dateSelector').datepicker('setDate', new Date(this.employee.properties.dob)); }
-              if (this.employee.properties.dol) { $('#terminateDate').datepicker('setDate', new Date(this.employee.properties.dol)); }
-              if (this.employee.properties.doj) { $('#joiningDate').datepicker('setDate', new Date(this.employee.properties.doj)); }
-              if (this.employee.properties.dom) { $('#membershipDate').datepicker('setDate', new Date(this.employee.properties.dom)); }
-              this.employee.properties.supervisor = this.employee.properties.supervisor ? this.employee.properties.supervisor : new Supervisor();
-              // this.employee.properties.designation = this.employee.properties.designation ? this.employee.properties.designation : new Designation();
-              this.employee.properties.designation = this.employee.properties.designation ? this.employee.properties.designation.toLowerCase() : null;
-
-              if (this.employee.properties.supervisor) {
-                emsEmployeeService.employees.get(this.employee.properties.supervisor.id).then(supervisor => {
-                  this.employee.properties.supervisor.designation = supervisor.designation;
-                })
-              }
-            }
-          ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
-      }
-    );
-
-    this.store.setItem('Ems-employeeID', this.employee.properties.id)
-
-  }
-
-
-  save(form: NgForm) {
-    if (form.invalid) {
-      return this.toastyService.info({ title: 'Info', msg: 'Please fill all mandatory fields' })
-    }
-
-    if (this.employee.properties.email && !this.validatorService.validateEmail(this.employee.properties.email))
-      return this.toastyService.info({ title: 'Info', msg: 'Please fill valid email' })
-
-    const designation: any = this.employee.properties.designation ? _.find(this.designations.items, (item: Designation) => {
-      return item.name.toLowerCase() === this.employee.properties.designation.toLowerCase()
-    }) : null;
-    this.employee.properties.designation = designation ? designation : null;
-
-
-    const department: any = this.employee.properties.department ? _.find(this.departments.items, (item: Department) => {
-      return item.name.toLowerCase() === this.employee.properties.department.toLowerCase()
-    }) : null;
-    this.employee.properties.department = department ? department : null;
-
-    if (this.isNew)
-      this.employee.properties.status = 'activate';
-    if (this.employee.properties.dol)
-
-      if (this.employee.properties.picUrl)
-        this.employee.properties.picUrl = this.employee.properties.picUrl.indexOf('?time=') === -1 ?
-          this.employee.properties.picUrl :
-          this.employee.properties.picUrl.slice(0, this.employee.properties.picUrl.indexOf('?time='));
-
-    this.employee.save().then(
-      data => {
-        if (this.isNew) {
-          this.isNew = false;
-          this.toastyService.success({ title: 'Success', msg: `${this.employee.properties.name} added successfully` });
-          this.employee.properties.designation = this.employee.properties.designation ? this.employee.properties.designation : null;
-          this.employee.properties.department = this.employee.properties.department ? this.employee.properties.department : null;
-          this.employee.properties.supervisor = this.employee.properties.supervisor ? this.employee.properties.supervisor : new Supervisor();
-          this.router.navigate(['../', this.employee.properties.id], { relativeTo: this.activatedRoute });
-        } else {
-          this.toastyService.success({ title: 'Success', msg: `${this.employee.properties.name} updated successfully` });
-
-        }
-      }
-    ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
-  }
-
-  excel() {
-    this.isUpload = !this.isUpload;
-    this.uploader.clearQueue();
-  }
-  resetPassword() {
-    const dialog = this.dialog.open(ResetPasswordDialogComponent, { width: '40%' });
-    dialog.afterClosed().subscribe(
-      (password: string) => {
-        if (password) {
-          this.employee.isProcessing = true;
-          const emp: any = {
-            password: password
-          };
-          this.emsEmployeeService.employees.update(this.employee.properties.id, emp)
-            .then(data => {
-              this.employee.isProcessing = false;
-              this.toastyService.success({ title: 'Success', msg: 'Password updated successfully' });
-            })
-            .catch(err => { this.employee.isProcessing = false; this.toastyService.error({ title: 'Error', msg: err }) });
-        }
-      }
-    );
-  }
-  // terminateEmp(form: NgForm) {
-  //   if (form.invalid) {
-  //     return this.toastyService.info({ title: 'Info', msg: 'Please fill all mandatory fields' })
-  //   }
-  //   console.log(this.employee.properties.id);
-  //   console.log(this.employee.properties.name);
-
-
-  // }
-
-
-  empSource(keyword: string): Observable<EmsEmployee[]> {
-    return this.autoCompleteService.searchByKey<EmsEmployee>('name', keyword, 'ems', 'employees');
-  }
-
-  empFormatter(data: Employee): string {
-    return data.name;
-  }
-
-  contractorFormatter(data: Employee): string {
-    return data.name;
-  }
-
-  empListFormatter(data: Employee): string {
-    return `${data.name} (${data.code})`;
-  }
-
-  ngOnInit() {
-  }
-
-  uploadImg() {
-    if (this.uploader.queue[0]) {
-      this.getBase64(this.uploader.queue[0], (file: any) => {
-        this.uploader.clearQueue();
-        this.uploader.addToQueue([file]);
-        this.uploader.queue[0].upload();
-      })
-    }
-  }
-
-  getBase64(image: FileItem, cb) {
-    const reader = new FileReader();
-    reader.onloadend = (e) => {
-      this.getImgFromBase64(image, reader.result, cb);
-    }
-    return reader.readAsDataURL(image._file);
   }
 
   getImgFromBase64(image: FileItem, base64: string, cb) {
@@ -303,58 +324,20 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
 
-  ngAfterViewInit() {
-    if (this.employee.properties.dob) { $('#dateSelector').datepicker('setDate', new Date(this.employee.properties.dob)); }
-    $('#dateSelector').datepicker({
-      format: 'dd/mm/yyyy',
-      minViewMode: 0,
-      maxViewMode: 2,
-      autoclose: true
-    }).on('changeDate', (e) => {
-      this.employee.properties.dob = new Date(e.date).toISOString();
-    });
-    if (this.employee.properties.dol) { $('#terminateDate').datepicker('setDate', new Date(this.employee.properties.dol)); }
-    $('#terminateDate').datepicker({
-      format: 'dd/mm/yyyy',
-      minViewMode: 0,
-      maxViewMode: 2,
-      autoclose: true
-    }).on('changeDate', (d) => {
-      this.employee.properties.dol = new Date(d.date).toISOString();
-    });
-    if (this.employee.properties.doj) { $('#joiningDate').datepicker('setDate', new Date(this.employee.properties.doj)); }
-    $('#joiningDate').datepicker({
-      format: 'dd/mm/yyyy',
-      minViewMode: 0,
-      maxViewMode: 2,
-      autoclose: true
-    }).on('changeDate', (d) => {
-      this.employee.properties.doj = new Date(d.date).toISOString();
-    });
-    if (this.employee.properties.dom) { $('#membershipDate').datepicker('setDate', new Date(this.employee.properties.dom)); }
-    $('#membershipDate').datepicker({
-      format: 'dd/mm/yyyy',
-      minViewMode: 0,
-      maxViewMode: 2,
-      autoclose: true
-    }).on('changeDate', (d) => {
-      this.employee.properties.dom = new Date(d.date).toISOString();
-    });
-
-
+  getBase64(image: FileItem, cb) {
+    const reader = new FileReader();
+    reader.onloadend = (e) => {
+      this.getImgFromBase64(image, reader.result as any, cb);
+    }
+    return reader.readAsDataURL(image._file);
   }
-  downloadlink() {
-    this.router.navigate(['pages/attendances/reports'], {
-      queryParams: {
-        type: 'employees-details'
-      }
+
+  uploadImg() {
+    if (!this.uploader.queue[0]) { return; }
+    this.getBase64(this.uploader.queue[0], (file: any) => {
+      this.uploader.clearQueue();
+      this.uploader.addToQueue([file]);
+      this.uploader.queue[0].upload();
     })
   }
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
-
-  backClicked() {
-    this._location.back();
-}
 }
