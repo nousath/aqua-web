@@ -18,7 +18,7 @@
             <span *ngIf="selectedShiftType" class="name info" mdTooltip="New shift starts from this day"> {{selectedShiftType.name}}</span>
             <br *ngIf="selectedShiftType">
             <span *ngSwitchCase="'present'"  class="name" [class.sub-text]="selectedShiftType" mdTooltip="Present (In: {{daySummary.attendance.checkIn| date: 'HH:MM'}}, Out: {{daySummary.attendance.checkOut| date: 'HH:MM'}})">&#10003;</span>
-            <span *ngSwitchCase="'missSwipe'" class="name warn" [class.sub-text]="selectedShiftType" mdTooltip="Missed Swipe">M</span>
+            <span *ngSwitchCase="'missSwipe'" class="name warn" [class.sub-text]="selectedShiftType" mdTooltip="Missed Swipe (In: {{daySummary.attendance.checkIn| date: 'HH:MM'}}, Out: {{daySummary.attendance.checkOut| date: 'HH:MM'}})">M</span>
             <span *ngSwitchCase="'absent'" class="name warn" [class.sub-text]="selectedShiftType" mdTooltip="Absent">A</span>
             <span *ngSwitchCase="'weekOff'" class="badge" mdTooltip="Off Day">Off</span>
             <div *ngSwitchCase="'onLeave'" class="badge info" [class.first]="leaveSummary.first" [class.second]="leaveSummary.second" mdTooltip="Reason: {{leaveSummary.reason}}" >{{leaveSummary.code}}<span *ngIf="leaveSummary.status === 'submitted'" class="asterisk">*</span></div>
