@@ -45,7 +45,7 @@ export class AttendanceLogsComponent implements OnInit {
   nextDayOut = false;
   paramsId: string;
   paramsDate: Date;
-  checkedDate: boolean = true;
+  checkedDate = true;
   addAttendanceLogs = [{
     day: false,
     time: '',

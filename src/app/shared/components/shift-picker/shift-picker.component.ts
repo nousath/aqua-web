@@ -44,9 +44,8 @@ export class ShiftPickerComponent implements OnInit {
 
   day: string;
 
-
   shiftSearch: string;
-
+  userType: string;
   startingShift: ShiftType;
 
   isProcessing = false;
@@ -90,6 +89,7 @@ export class ShiftPickerComponent implements OnInit {
     private dates: DatesService,
     public dialog: MdDialog
   ) {
+    this.userType = localStorage.getItem('userType')
   }
 
   ngOnInit() {
@@ -408,5 +408,3 @@ export class ShiftPickerComponent implements OnInit {
     this.toastyService.error({ title: 'Error', msg: err })
   }
 }
-
-

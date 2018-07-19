@@ -445,3 +445,11 @@ display: block;
 .footer {
     margin-top: 10px;
 }
+
+.mat-select-underline {
+    display: none !important;
+}
+
+.mat-select-trigger {
+    top: -5px;
+}

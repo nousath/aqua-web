@@ -11,17 +11,34 @@ export interface SelectedTag {
   tagId: string;
   tagTypeId: string;
 }
-
 export class Tags {
   selected: SelectedTag[] = [];
   select(tag: SelectedTag) {
-    const t: SelectedTag = this.selected.find((i: SelectedTag) => {
-      return i.tagTypeId === tag.tagTypeId;
-    });
-    if (t && tag.tagId === 'select an option')
-      return this.selected.splice(this.selected.indexOf(t), 1);
-    if (!t)
+    // select(tag: any) {
+    // const t: SelectedTag = this.selected.find((i: SelectedTag) => {
+    //   return i.tagTypeId === tag.tagTypeId;
+    // });
+    // if (t && tag.tagId === 'select an option')
+    //   return this.selected.splice(this.selected.indexOf(t), 1);
+    // if (!t)
+
+
+    let index = -1
+    if (this.selected.length) {
+      this.selected.forEach(item => {
+        index++
+        if (item.tagTypeId === tag.tagTypeId) {
+          this.selected.splice(index, 1)
+          this.selected.push(tag);
+        }
+        else {
+          this.selected.push(tag);
+        }
+      })
+    }
+    else {
       this.selected.push(tag);
+    }
   }
   reset() {
     this.selected = [];
@@ -62,6 +79,7 @@ export class EmployeesFilterComponent implements OnInit {
 
   tags: Tags = new Tags();
 
+  selectedValue: boolean
   constructor(
     public validatorService: ValidatorService,
     amsShiftService: AmsShiftService,
@@ -86,24 +104,35 @@ export class EmployeesFilterComponent implements OnInit {
 
   reset() {
 
-    this.tags.reset();
     const tagElements: any[] = document.getElementsByName('tags') as any;
     if (tagElements) {
       tagElements.forEach(item => item.value = '');
     }
-
+    this.tags.selected = []
     this.selectedShiftType = null;
     this.selectedAttendanceStatus = null;
     this.selectedEmployeeName = null;
     this.selectedEmployeeCode = null;
-
+    this.selectedValue = undefined;
     this.onReset.emit();
   }
 
   apply() {
     const tagIds: string[] = [];
     this.tags.selected.forEach((tag: SelectedTag) => {
-      tagIds.push(tag.tagId)
+      if (tagIds.length) {
+        const index = tagIds.indexOf(tag.tagId)
+        if (index >= 0) {
+          tagIds.splice(index, 1)
+          tagIds.push(tag.tagId)
+        }
+        else {
+          tagIds.push(tag.tagId)
+        }
+      }
+      else {
+        tagIds.push(tag.tagId)
+      }
     })
 
     const values = {
@@ -114,7 +143,6 @@ export class EmployeesFilterComponent implements OnInit {
       employeeCode: this.selectedEmployeeCode
     }
 
-    console.log(values)
 
     this.onChange.emit(values);
   }
