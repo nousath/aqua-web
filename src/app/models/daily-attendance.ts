@@ -45,3 +45,7 @@ export class Attendance {
   timeLogs: TimeLogs[];
   shift: Shift;
 }
+
+export class ExtendShift {
+  checkOutExtend: string;
+}
