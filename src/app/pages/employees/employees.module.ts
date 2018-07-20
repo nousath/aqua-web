@@ -11,6 +11,8 @@ import { SharedModule } from '../../shared/shared.module';
 import { DepartmentsComponent } from './departments/departments.component';
 import { FingerPrintComponent } from './finger-print/finger-print.component';
 import { RelievingDialogComponent } from '../../dialogs/relieving-dialog/relieving-dialog.component';
+import { EmpShiftComponent } from './emp-shift/emp-shift.component';
+import { EmpLeavesComponent } from './emp-leaves/emp-leaves.component';
 
 @NgModule({
   imports: [
@@ -26,7 +28,9 @@ import { RelievingDialogComponent } from '../../dialogs/relieving-dialog/relievi
     FingerPrintComponent,
     DepartmentsComponent,
     FingerPrintComponent,
-    RelievingDialogComponent
+    RelievingDialogComponent,
+    EmpLeavesComponent,
+    EmpShiftComponent
     // ResetPasswordDialogComponent
   ],
   entryComponents: [

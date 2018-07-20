@@ -7,12 +7,11 @@
         <b> {{employee?.id ? 'Employee Details' : 'New Employee' }}</b>
     </h5>
     <span class="hradrbtns">
-        <button *ngIf="!isNew" md-raised-button [disabled]="isProcessing"
-        (click)="resetPassword()">Reset Password</button>
+        <button *ngIf="!isNew" md-raised-button [disabled]="isProcessing" (click)="resetPassword()">Reset Password</button>
         <button md-raised-button [disabled]="isProcessing || !employee.name || !employee.displayCode" color="primary" (click)="save()">
             <span *ngIf="isNew">Create</span>
-    <span *ngIf="!isNew">Update</span>
-    </button>
+            <span *ngIf="!isNew">Update</span>
+        </button>
     </span>
 
 </div>
@@ -29,7 +28,8 @@
                     <div class="row profileImage cursor">
                         <img *ngIf="employee?.picUrl" class="avatar" [src]="employee?.picUrl" onerror="this.src = 'assets/images/blank.png'" width="100%">
                         <img *ngIf="!employee?.picUrl" class="avatar" alt="img" src="assets/images/blank.png" width="100%">
-                        <button *ngIf="employee?.id" (click)="isChangeImage = !isChangeImage" class="btn chimg" mdTooltip="Change Profile Picture" [mdTooltipPosition]="'above'">
+                        <button *ngIf="employee?.id" (click)="isChangeImage = !isChangeImage" class="btn chimg" mdTooltip="Change Profile Picture"
+                            [mdTooltipPosition]="'above'">
                             Change Profile Photo
                         </button>
                     </div>
@@ -67,6 +67,15 @@
         <md-card *ngIf="!isNew">
             <aqua-finger-print [code]="employee.code"></aqua-finger-print>
         </md-card>
+        <br>
+        <div *ngIf="!isNew">
+            <aqua-emp-leaves [code]="employee.code"></aqua-emp-leaves>
+        </div>
+        <br>
+        <div *ngIf="!isNew">
+            <aqua-emp-shift [code]="employee.code"></aqua-emp-shift>
+        </div>
+
     </div>
     <br>
 
@@ -86,16 +95,17 @@
                         <span class="asterisk">*</span>
                     </th>
                     <td>
-                        <input name="empName" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.name" required>
+                        <input name="empName" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.name"
+                            required>
                     </td>
                     <th>Gender:</th>
                     <td>
                         <select name="gender" class="form-control" [(ngModel)]="employee.gender">
-                                <option [ngValue]="null">Select an option</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="others">Others</option>
-                            </select>
+                            <option [ngValue]="null">Select an option</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="others">Others</option>
+                        </select>
                     </td>
                 </tr>
                 <tr>
@@ -112,33 +122,34 @@
                     <th>Blood Group:</th>
                     <td>
                         <select name="bgroup" class="form-control" [(ngModel)]="employee.bloodGroup">
-                                <option [ngValue]="null">Select an option</option>
-                                <option value="A+">A+</option>
-                                <option value="B+">B+</option>
-                                <option value="O+">O+</option>
-                                <option value="AB+">AB+</option>
-                                <option value="A-">A-</option>
-                                <option value="B-">B-</option>
-                                <option value="O-">O-</option>
-                                <option value="AB-">AB-</option>
-                            </select>
+                            <option [ngValue]="null">Select an option</option>
+                            <option value="A+">A+</option>
+                            <option value="B+">B+</option>
+                            <option value="O+">O+</option>
+                            <option value="AB+">AB+</option>
+                            <option value="A-">A-</option>
+                            <option value="B-">B-</option>
+                            <option value="O-">O-</option>
+                            <option value="AB-">AB-</option>
+                        </select>
                     </td>
                     <th>{{isNew ? '':'Status:'}}
                         <span *ngIf="!isNew" class="asterisk">*</span>
                     </th>
                     <td>
                         <select *ngIf="!isNew" name="status" class="form-control" [(ngModel)]="employee.status" [required]="!isNew">
-                                <option [ngValue]="null">Select an option</option>
-                                <option value="activate">Activate</option>
-                                <option value="deactivate">Deactivate</option>
-                                <option value="archive">Archive</option>
-                            </select>
+                            <option [ngValue]="null">Select an option</option>
+                            <option value="activate">Activate</option>
+                            <option value="deactivate">Deactivate</option>
+                            <option value="archive">Archive</option>
+                        </select>
                     </td>
                 </tr>
                 <tr>
                     <th>Phone:</th>
                     <td>
-                        <input name="phone" type="text" class="form-control" [maxlength]="validatorService.phoneNumberLength" [minLength]="validatorService.phoneNumberLength" [pattern]="validatorService.onlyNumber" [(ngModel)]="employee.phone">
+                        <input name="phone" type="text" class="form-control" [maxlength]="validatorService.phoneNumberLength" [minLength]="validatorService.phoneNumberLength"
+                            [pattern]="validatorService.onlyNumber" [(ngModel)]="employee.phone">
                     </td>
                     <th>Email:</th>
                     <td>
@@ -177,8 +188,9 @@
                     <th>Supervisor:
                     </th>
                     <td>
-                        <input ngui-auto-complete [min-chars]="1" placeholder="Employee search" [(ngModel)]="employee.supervisor" [source]="empSource.bind(this)" [value-formatter]="empFormatter" [list-formatter]="empListFormatter" class="form-control search" name="Supervisor"
-                        />
+                        <input ngui-auto-complete [min-chars]="1" placeholder="Employee search" [(ngModel)]="employee.supervisor" [source]="empSource.bind(this)"
+                            [value-formatter]="empFormatter" [list-formatter]="empListFormatter" class="form-control search"
+                            name="Supervisor" />
                     </td>
                 </tr>
                 <tr>
@@ -189,25 +201,25 @@
                     <th>Designation:</th>
                     <td>
                         <select class="form-control" [(ngModel)]="designationId">
-                                <option [ngValue]="null">Select an option</option>
-                                <option *ngFor="let item of designations" [value]="item.id">{{item.name}}</option>
-                            </select>
+                            <option [ngValue]="null">Select an option</option>
+                            <option *ngFor="let item of designations" [value]="item.id">{{item.name}}</option>
+                        </select>
                     </td>
                 </tr>
                 <tr>
                     <th>Type:</th>
                     <td>
                         <select class="form-control" [(ngModel)]="employee.employmentType">
-                                <option disabled value=" " selected>Select an option</option>
-                                <option value="permanent">Permanent</option>
-                                <option value="contract">Contract</option>
-                            </select>
+                            <option disabled value=" " selected>Select an option</option>
+                            <option value="permanent">Permanent</option>
+                            <option value="contract">Contract</option>
+                        </select>
                     </td>
                     <th>Department:</th>
                     <td>
                         <select class="form-control" [(ngModel)]="departmentId">
-                                <option *ngFor="let item of departments" [value]="item.id">{{item.name}}</option>
-                            </select>
+                            <option *ngFor="let item of departments" [value]="item.id">{{item.name}}</option>
+                        </select>
                         <!-- <span class="text-center sub-text" *ngIf="employee.department">Incharge: TODO</span> -->
                     </td>
                 </tr>
@@ -234,8 +246,9 @@
                 <tr>
                     <th>Contractor</th>
                     <td>
-                        <input ngui-auto-complete [min-chars]="1" placeholder="Contractor search" [(ngModel)]="employee.contractor" [source]="empSource.bind(this)" [value-formatter]="empFormatter" [list-formatter]="empListFormatter" class="form-control search" name="Contractor"
-                        />
+                        <input ngui-auto-complete [min-chars]="1" placeholder="Contractor search" [(ngModel)]="employee.contractor" [source]="empSource.bind(this)"
+                            [value-formatter]="empFormatter" [list-formatter]="empListFormatter" class="form-control search"
+                            name="Contractor" />
                     </td>
                     <th>Date of Membership:</th>
                     <td>
@@ -280,7 +293,8 @@
                     </td>
                     <th>Pin Code:</th>
                     <td>
-                        <input name="pincode" #pincode="ngModel" type="text" class="form-control" [maxlength]="validatorService.pinCodeLength" [minlength]="validatorService.pinCodeLength" [pattern]="validatorService.onlyNumber" [(ngModel)]="employee.pincode">
+                        <input name="pincode" #pincode="ngModel" type="text" class="form-control" [maxlength]="validatorService.pinCodeLength" [minlength]="validatorService.pinCodeLength"
+                            [pattern]="validatorService.onlyNumber" [(ngModel)]="employee.pincode">
                         <span class="asterisk" *ngIf="pincode.invalid">Enter 6 digit valid pin code</span>
                     </td>
                 </tr>
@@ -344,11 +358,11 @@
                     <th>Reason</th>
                     <td>
                         <select class="form-control" [(ngModel)]="employee.reason">
-                                <option disabled value="null">Select an option</option>
-                                <option value="resign">Resign</option>
-                                <option value="terminate">Terminate</option>
-                                <option value="death">Death</option>
-                            </select>
+                            <option disabled value="null">Select an option</option>
+                            <option value="resign">Resign</option>
+                            <option value="terminate">Terminate</option>
+                            <option value="death">Death</option>
+                        </select>
                     </td>
                 </tr>
             </table>
@@ -357,11 +371,12 @@
         <div class="controls-row footer">
             <span class="spacer"></span>
             <button md-button (click)="backClicked()" *ngIf="isNew">
-              Cancel
+                Cancel
             </button>
             <button md-raised-button [disabled]="isProcessing || !employee.name || !employee.displayCode" color="primary" (click)="save()">
-                <span *ngIf="isNew">Create</span><span *ngIf="!isNew">Update</span>
-              </button>
+                <span *ngIf="isNew">Create</span>
+                <span *ngIf="!isNew">Update</span>
+            </button>
         </div>
     </div>
 </div>

@@ -1,0 +1,18 @@
+.number {
+    width: 67px;
+    height:35px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.type{
+    text-align: center;
+    vertical-align: middle !important;
+}
+.balance{
+    text-justify: distribute;
+    vertical-align: middle !important;
+}
+.btnClmWidth{
+    float: right
+}
