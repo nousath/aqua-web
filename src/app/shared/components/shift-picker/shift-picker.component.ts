@@ -346,6 +346,21 @@ export class ShiftPickerComponent implements OnInit {
   }
 
   extendLeaves() {
+    const attendance = this.effectiveShift.attendances
+    console.log(attendance)
+    let attendanceId: string
+    attendance.forEach(item => {
+      let incomingDate = item.ofDate
+      let currentDate = this.date
+      console.log(moment(incomingDate).toISOString())
+      console.log(moment(currentDate).toISOString())
+
+      if (moment(incomingDate).toISOString() === moment(currentDate).toISOString()) {
+        attendanceId = item.id
+      }
+      console.log('id' + attendanceId)
+    })
+
     const dialogRef = this.dialog.open(GetDateDialogComponent)
     const component = dialogRef.componentInstance;
     component.title = 'Please Enter Time'
@@ -356,8 +371,10 @@ export class ShiftPickerComponent implements OnInit {
       extend.checkOutExtend = response
       // const date = moment(response).toISOString()
       // this.extendShift.checkOutExtend = response
-      // this.amsAttendanceService.extendShift.update(this.attendance.id, extend)
-      // this.amsAttendanceService.extendShift = new GenericApi<any>(`attendances/${this.attendance.id}/extendShift`, extend, this.http, 'ams'),
+      // this.amsAttendanceService.extendShift.update(attendanceId, extend)
+      this.amsAttendanceService.extendShift = new GenericApi<any>(`attendances/${attendanceId}/extendShift`, this.http, 'ams'),
+        // this.amsAttendanceService.extendShift.update(attendanceId,extend)
+        this.amsAttendanceService.extendShift.simpleUpdate(extend)
       console.log(response)
     });
 

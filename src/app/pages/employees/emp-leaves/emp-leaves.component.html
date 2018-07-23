@@ -1,20 +1,20 @@
 <md-card>
-  <!-- <div class="dialog_Header text-center">
+  <div class="dialog_Header text-center">
     <h5>
       <b>Leave Balance</b>
     </h5>
-       
+
   </div>
-  <br> -->
+  <br>
   <table class="table">
     <tr>
-      <th class="type">Type</th>
+      <th>Type</th>
       <th class="type">Balance</th>
       <!-- <th></th> -->
     </tr>
     <tr *ngFor="let item of leaveBalances">
       <td class="balance">{{item?.leaveType?.name}}</td>
-      <td class="balance">
+      <td class="text-center">
         <input *ngIf="!item.leaveType.unlimited" type="text" maxlength="4" [name]="item.days" [readOnly]="leaveBalances.isLoading || isUpdatingLeave || !isEdit"
           class="number form-control input-xs" [(ngModel)]="item.days">
         <span *ngIf="item.leaveType.unlimited">Unlimited</span>

@@ -4,6 +4,7 @@ import { AmsEmployeeService, AmsLeaveService } from '../../../services/index';
 import { LeaveBalance } from '../../../models/index';
 import { Page } from '../../../common/contracts/page';
 import { ServerPageInput } from '../../../common/contracts/api/index';
+import { ToastyService } from 'ng2-toasty';
 
 @Component({
   selector: 'aqua-emp-leaves',
@@ -19,7 +20,7 @@ export class EmpLeavesComponent implements OnInit {
   constructor(
     private amsEmployeeService: AmsEmployeeService,
     private amsLeaveService: AmsLeaveService,
-
+    private toastyService: ToastyService
   ) {
     // this.leaveBalances = new Page({
     //   api: amsLeaveService.leaveBalances,
@@ -28,14 +29,12 @@ export class EmpLeavesComponent implements OnInit {
     //   //   value: null
     //   // }]
     // });
-    console.log(this.leaveBalances)
   }
 
   ngOnInit() {
   }
   ngOnChanges() {
     if (this.code) {
-      console.log(this.code)
       this.getAmsDetails();
     }
   }
@@ -45,7 +44,6 @@ export class EmpLeavesComponent implements OnInit {
       .get(this.code)
       .then(amsEmployee => {
         this.employee = amsEmployee;
-        console.log(this.employee)
         this.getLeaveBalance(this.employee.id)
 
       });
@@ -64,25 +62,24 @@ export class EmpLeavesComponent implements OnInit {
     };
     this.amsLeaveService.leaveBalances.search(input).then(page => {
       this.leaveBalances = page.items;
-      console.log(this.leaveBalances)
     })
   }
 
   updateLeaveBalance(leaves: LeaveBalance) {
-    this.amsLeaveService.leaveBalances.update(this.employee.id, leaves)
-    console.log(leaves)
-    console.log(this.leaveBalances)
+    this.amsLeaveService.leaveBalances.update(this.employee.id, leaves).then(
+      data => {
+        this.getLeaveBalance(this.employee.id)
+      }
+    ).catch(err => {
+      this.toastyService.error({ title: 'Error', msg: err });
+    });
   }
 
   toggleLaveBalnce(isEdit: boolean) {
     if (isEdit) {
       isEdit = true;
-      // this.store.setObject(`leeaveBalance_${leave.id}`, leave);
     } else {
       isEdit = false;
-      // const l: OrgLeaveBalance = this.store.getObject(`leeaveBalance_${leave.id}`) as OrgLeaveBalance;
-      // leave.leaveBalances = l.leaveBalances;
-      // this.store.removeItem(`leeaveBalance_${leave.id}`);
     }
   }
 
