@@ -364,6 +364,29 @@ export class GenericApi<TModel> implements IApi<TModel> {
       .catch(this.handleError);
   }
 
+  simpleUpdate(model: TModel, input?: ServerPageInput, path?: string): Promise<TModel> {
+    let parms: URLSearchParams;
+    if (input) {
+      parms = this.getQueryParams(input);
+    }
+    const url = path ? `${this.rootUrl}/${this.key}/${path}` : `${this.rootUrl}/${this.key}`;
+    return this.http.put(url, model, { headers: this.getHeaders(), search: parms })
+      .toPromise()
+      .then((response) => {
+        const dataModel = response.json() as ServerDataModel<TModel>;
+
+        if (!dataModel.isSuccess) {
+          if (response.status === 200) {
+            return this.handleError(dataModel.message || dataModel.error || dataModel.code || 'failed');
+          } else {
+            return this.handleError(response.status);
+          }
+        }
+        return dataModel.data;
+      })
+      .catch(this.handleError);
+  }
+
   remove(id: number | string): Promise<void> {
     return this.http.delete(`${this.rootUrl}/${this.key}/${id}`, { headers: this.getHeaders() })
       .toPromise()

@@ -9,12 +9,14 @@ import { Leave } from '../../../models/leave';
 import { Employee } from '../../../models/employee';
 import { MdDialog } from '@angular/material';
 import { LeaveReasonDialogComponent } from '../../../dialogs/leave-reason-dialog/leave-reason-dialog.component';
-import { Attendance } from '../../../models/daily-attendance';
+import { Attendance, ExtendShift } from '../../../models/daily-attendance';
 import { DayEvent } from '../../../models/day-event';
 import { LeaveSummary } from '../../../services/ams/ams-leave.service';
 import { AttendanceSummary } from '../../../services/ams/ams-attendance.service';
 import { DatesService } from '../../services/dates.service';
 import { GetDateDialogComponent } from '../get-date-dialog/get-date-dialog.component';
+import { GenericApi } from '../../../common/generic-api';
+import { Http } from '@angular/http';
 
 @Component({
   selector: 'aqua-shift-picker',
@@ -22,6 +24,7 @@ import { GetDateDialogComponent } from '../get-date-dialog/get-date-dialog.compo
   styleUrls: ['./shift-picker.component.css']
 })
 export class ShiftPickerComponent implements OnInit {
+  [x: string]: any;
 
   @Output()
   updated: EventEmitter<any> = new EventEmitter();
@@ -38,6 +41,7 @@ export class ShiftPickerComponent implements OnInit {
   employee: Employee;
   attendance: Attendance;
   daySummary: AttendanceSummary;
+  extendShift: ExtendShift;
 
   leave: Leave;
   leaveSummary: LeaveSummary;
@@ -87,7 +91,9 @@ export class ShiftPickerComponent implements OnInit {
     private amsLeaveService: AmsLeaveService,
     private amsAttendanceService: AmsAttendanceService,
     private dates: DatesService,
-    public dialog: MdDialog
+    public dialog: MdDialog,
+    private http: Http,
+
   ) {
     this.userType = localStorage.getItem('userType')
   }
@@ -339,6 +345,40 @@ export class ShiftPickerComponent implements OnInit {
     // });
   }
 
+  extendLeaves() {
+    const attendance = this.effectiveShift.attendances
+    console.log(attendance)
+    let attendanceId: string
+    attendance.forEach(item => {
+      let incomingDate = item.ofDate
+      let currentDate = this.date
+      console.log(moment(incomingDate).toISOString())
+      console.log(moment(currentDate).toISOString())
+
+      if (moment(incomingDate).toISOString() === moment(currentDate).toISOString()) {
+        attendanceId = item.id
+      }
+      console.log('id' + attendanceId)
+    })
+
+    const dialogRef = this.dialog.open(GetDateDialogComponent)
+    const component = dialogRef.componentInstance;
+    component.title = 'Please Enter Time'
+
+    dialogRef.afterClosed().subscribe((response: any) => {
+      if (response === false) { return; }
+      const extend = new ExtendShift();
+      extend.checkOutExtend = response
+      // const date = moment(response).toISOString()
+      // this.extendShift.checkOutExtend = response
+      // this.amsAttendanceService.extendShift.update(attendanceId, extend)
+      this.amsAttendanceService.extendShift = new GenericApi<any>(`attendances/${attendanceId}/extendShift`, this.http, 'ams'),
+        // this.amsAttendanceService.extendShift.update(attendanceId,extend)
+        this.amsAttendanceService.extendShift.simpleUpdate(extend)
+      console.log(response)
+    });
+
+  }
   setCompOff() {
     const dialogRef = this.dialog.open(GetDateDialogComponent)
     const component = dialogRef.componentInstance;

@@ -40,6 +40,8 @@
                     <option value="missSwipe">Missed Swipe</option>
                     <option value="halfday">Half Day</option>
                     <option value="onLeave">On Leave</option>
+                    <option value="lateComing">Late Coming</option>
+                    <option value="earlyGoing">Early Going</option>
                 </select>
             </div>
         </div>
@@ -49,7 +51,8 @@
                     <label>{{item?.name | titlecase}}</label>
                 </div>
                 <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                    <md-select class="tags" [(ngModel)]="selectedValue" #tag (change)="tags.select({tagTypeId:item.id,tagId:tag.value})" name="tags" multiple color="white" [ngModelOptions]="{standalone: true}">
+                    <md-select class="tags" [(ngModel)]="selectedValue" #tag (change)="tags.select({tagTypeId:item.id,tagId:tag.value})" name="tags"
+                        multiple color="white" [ngModelOptions]="{standalone: true}">
                         <md-option *ngFor="let tag of item?.tags" [value]="tag.id">{{tag?.name | titlecase}}</md-option>
                     </md-select>
                 </div>
@@ -61,7 +64,8 @@
                     <label>{{item?.name | titlecase}}</label>
                 </div>
                 <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                    <md-select class="tags" [(ngModel)]="selectedValue" #tag (change)="tags.select({tagTypeId:item.id,tagId:tag.value})" name="tags" multiple color="white">
+                    <md-select class="tags" [(ngModel)]="selectedValue" #tag (change)="tags.select({tagTypeId:item.id,tagId:tag.value})" name="tags"
+                        multiple color="white">
                         <md-option *ngFor="let tag of item?.tags" [value]="tag.id">{{tag?.name | titlecase}}</md-option>
                     </md-select>
                 </div>
