@@ -38,6 +38,9 @@ export class ShiftPickerComponent implements OnInit {
   @Input()
   date: Date;
 
+  @Input()
+  view: boolean;
+
   employee: Employee;
   attendance: Attendance;
   daySummary: AttendanceSummary;
@@ -99,7 +102,11 @@ export class ShiftPickerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.compute();
+    // this.compute();
+  }
+  ngOnChanges(){
+    if(this.effectiveShift)
+    this.compute()
   }
 
   compute() {
@@ -108,7 +115,10 @@ export class ShiftPickerComponent implements OnInit {
 
     this.isPast = moment(this.date).isBefore(new Date());
     this.isToday = moment(this.date).isSame(new Date(), 'd');
-    this.day = this.days[this.date.getDay()]
+    this.day = moment(this.date).day().toString()
+
+    console.log(this.employee)
+    console.log(this.view)
 
     if (this.effectiveShift.previousShift) {
       this.startingShift = this.effectiveShift.previousShift.shiftType
@@ -187,6 +197,7 @@ export class ShiftPickerComponent implements OnInit {
   }
 
   shiftColour() {
+    if(!this.view)
     return this.shiftService.shiftColour(this.selectedShiftType || this.effectiveShiftType);
   }
 
@@ -367,14 +378,9 @@ export class ShiftPickerComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((response: any) => {
       if (response === false) { return; }
-      const extend = new ExtendShift();
-      extend.checkOutExtend = response
-      // const date = moment(response).toISOString()
-      // this.extendShift.checkOutExtend = response
-      // this.amsAttendanceService.extendShift.update(attendanceId, extend)
-      this.amsAttendanceService.extendShift = new GenericApi<any>(`attendances/${attendanceId}/extendShift`, this.http, 'ams'),
-        // this.amsAttendanceService.extendShift.update(attendanceId,extend)
-        this.amsAttendanceService.extendShift.simpleUpdate(extend)
+      this.attendance.checkOutExtend = response
+        console.log(attendanceId)
+        this.amsAttendanceService.attendance.update(`${attendanceId}/extendShift`, this.attendance as any)
       console.log(response)
     });
 
@@ -392,7 +398,7 @@ export class ShiftPickerComponent implements OnInit {
   }
 
   applyLeave(leaveBalance: LeaveBalance) {
-    const dialogRef = this.dialog.open(LeaveReasonDialogComponent, { width: '40%', data: leaveBalance })
+    const dialogRef = this.dialog.open(LeaveReasonDialogComponent, { data: leaveBalance })
 
     dialogRef.afterClosed().subscribe((response: any) => {
       if (!response || !response.reason) {

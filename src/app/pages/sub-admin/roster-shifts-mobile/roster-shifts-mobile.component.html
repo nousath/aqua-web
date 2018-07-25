@@ -1,0 +1,83 @@
+<div class="row page_header">
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <h5>
+            <b>Weekly Roaster</b>
+        </h5>
+    </div>
+    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 controls-row">
+        <span class="spacer"></span>
+        <button md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'">
+            <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
+        </button>
+        <button [matMenuTriggerFor]="moreMenu" md-icon-button>
+            <md-icon>more_vert</md-icon>
+        </button>
+        <md-menu #moreMenu="mdMenu">
+            <button md-menu-item [disabled]="isDownloading || isLoading" (click)="download(dates[0])" mdTooltip="Download Excel" [mdTooltipPosition]="'above'">
+                <md-icon>cloud_download</md-icon> Download
+            </button>
+            <button md-menu-item [disabled]="isLoading || isDownloading" (click)="excel()" mdTooltip="Excel Upload" [mdTooltipPosition]="'above'">
+                <md-icon>cloud_upload</md-icon> Upload
+            </button>
+            <button (click)="resetShifts()" md-menu-item>
+                <md-icon>build</md-icon> Reset</button>
+        </md-menu>
+    </div>
+</div>
+
+<div class="row" *ngIf="isFilter">
+    <md-card class="card">
+        <div class="row text-center headr_bar">
+            <h5>
+                <b>Filters</b>
+            </h5>
+            <div class="actionBtns">
+                <button md-icon-button mdTooltip="Close" [mdTooltipPosition]="'above'" (click)="isFilter = !isFilter">
+                    <md-icon>highlight_off</md-icon>
+                </button>
+            </div>
+        </div>
+        <aqua-employees-filter [hidden]="{attendanceStatus: true,userType: true}" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter>
+    </md-card>
+</div>
+
+<div class="row">
+  <div class="row text-center noData" *ngIf="effective?.length == 0">
+    <h5>
+      <b>no data to display !</b>
+    </h5>
+  </div>
+  <table class="table table-condensed">
+    <thead class="primary_thead">
+      <tr>
+        <th rowspan="2">Name/Code</th>
+        <th rowspan="2" class="text-center">Auto</th>
+        <!-- <th class="tdWidth" rowspan="2">Previous</th> -->
+      </tr>
+      <tr>
+        <th class="text-center tdWidth week">
+            <input id="dateSelector" type="text" class="form-control input-sm calendar no-spin">
+          
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of effective">
+        <td class="customStyle">{{item.employee.name || '--'}}
+          <br>
+          <span class="empCode">{{item.employee.code || '--'}}</span>
+        </td>
+        <td  class="text-center">
+          <md-slide-toggle [checked]="item.employee.isDynamicShift" (change)="toggleDynamicShift(item.employee)"></md-slide-toggle>
+        </td>
+        <!-- <td>
+          <div class="shift disabled"></div>
+          <div class="shift previous">{{item?.previousShift?.shiftType?.name || '--'}}</div>
+        </td> -->
+        <td class="tdStyle">
+          <aqua-shift-picker [view]="mobileView"  [shiftTypes]="types" [effectiveShift]="item" [date]="currentDate"></aqua-shift-picker>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

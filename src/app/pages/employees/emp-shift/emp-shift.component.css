@@ -4,3 +4,6 @@ th,td{
 .btn{
     float: right;
 }
+md-icon{
+    cursor: pointer;
+}

@@ -5,9 +5,26 @@
         </h5>
     </div>
     <br>
+    <div>
+        <div class="row">
+            <div>
+                <h5>Reason</h5>
+            </div>
+            <div *ngIf="data.leaveType.code == 'CO'">
+                <input type="date" class="form-control" [(ngModel)]="data.reason" [ngModelOptions]="{standalone: true}">
+            </div>
+            <div *ngIf="data.leaveType.code != 'CO'">
+                <input type="text" class="form-control" [(ngModel)]="data.reason" [ngModelOptions]="{standalone: true}">
+            </div>
+        </div>
+        <br>
+        <div class="row text-right">
+            <button md-raised-button class="btn_grey" md-dialog-close>Cancel</button>
+            <button md-raised-button color="primary" (click)="continue()">Continue</button>
+        </div>
+    </div>
 
-
-    <table style="float: left; width: 100%;">
+    <!-- <table>
         <tr>
             <th>Reason</th>
             <td *ngIf="data.leaveType.code == 'CO'">
@@ -20,13 +37,13 @@
         <tr style="padding-top: 10px;">
             <td></td>
             <td colspan="2">
-                <div class="row text-center" style="float:right;padding-right:25px;">
+                <div class="row text-center">
                     <button md-raised-button color="primary" (click)="continue()">Continue</button>
                     <button md-raised-button class="btn_grey" md-dialog-close>Cancel</button>
                 </div>
             </td>
         </tr>
-    </table>
+    </table> -->
     <br>
 </form>
 <!-- <div class="row text-center">

@@ -9,7 +9,6 @@ export interface IApi<TModel> extends IUploader {
   search(input?: ServerPageInput): Promise<ServerPageModel<TModel>>;
   create(model: TModel, path?: string): Promise<TModel>;
   update(id: number | string, model: TModel, input?: ServerPageInput, path?: string): Promise<TModel>;
-  simpleUpdate(model: TModel, input?: ServerPageInput, path?: string): Promise<TModel>;
   remove(id: number | string): Promise<void>;
   simplePost(model: any, key?: string): Promise<any>;
   exportReport(input: ServerPageInput, path?: string, reportName?: string): Promise<void>;
