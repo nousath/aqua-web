@@ -5,7 +5,7 @@
     </h5>
   </div>
   <br>
-  <div [class.hide]="show" [class.show]="!show">
+  <div>
     <div>
       <h5 class="text-center" s>
         <b>Current Shifts</b>
@@ -58,40 +58,4 @@
       </tr>
     </table>
   </div>
-
-  <!-- <table class="table" [class.hide]="!show" [class.show]="show">
-    <tr>
-      <th class="text-center">
-        <b>Date</b>
-      </th>
-      <th class="text-center">Status</th>
-    </tr>
-    <tr *ngFor="let date of dates">
-      <td class="text-center">
-        {{date | date:'MMM d, EEE'}}
-        <br>
-      </td>
-      <td>
-        <aqua-shift-picker [shiftTypes]="shiftTypes.items" [effectiveShift]="effective" [date]="date" (attendanceUpdated)="employeeUpdated(item)"
-          (shiftUpdated)="employeeUpdated(item)" (leaveUpdated)="employeeUpdated(item)"></aqua-shift-picker>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <button md-raised-button color="primary" (click)="nextWeek()" style="float:right">
-          Next >>
-        </button>
-        <button md-raised-button color="primary" (click)="previousWeek()" style="float:left">
-          << Previous </button>
-      </td>
-    </tr>
-  </table> -->
 </md-card>
-<!-- <div class="btn">
-  <button md-raised-button color="primary" *ngIf="!show" (click)="show=!show">
-    Show Roster
-  </button>
-  <button md-raised-button color="primary" *ngIf="show" (click)="show=!show">
-    Hide Roster
-  </button>
-</div> -->

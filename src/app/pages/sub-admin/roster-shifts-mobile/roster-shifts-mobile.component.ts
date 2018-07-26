@@ -3,6 +3,7 @@ import { EffectiveShift } from '../../../models/index';
 import { ShiftType } from '../../../models/shift-type';
 import * as moment from 'moment';
 import { ToastyService } from 'ng2-toasty';
+import { AmsEffectiveShiftService } from '../../../services/index';
 declare var $: any;
 
 
@@ -19,22 +20,24 @@ export class RosterShiftsMobileComponent implements OnInit {
   @Input()
   shiftTypes: ShiftType[];
 
-  date : Date;
-  currentDate : Date;
+  date: Date;
+  currentDate: Date;
 
-  effective : EffectiveShift[];
+  effective: EffectiveShift[];
   types: ShiftType[];
   mobileView: boolean = true;
+  isFilter: boolean = false
 
   constructor(
     private toastyService: ToastyService,
+    private amsEffectiveShiftService: AmsEffectiveShiftService,
 
-  ) { 
- 
+  ) {
+
   }
 
-  ngOnChanges(){
-    if(this.effectiveShift.length && this.shiftTypes.length){
+  ngOnChanges() {
+    if (this.effectiveShift.length && this.shiftTypes.length) {
       this.getDate()
     }
   }
@@ -48,19 +51,25 @@ export class RosterShiftsMobileComponent implements OnInit {
       maxDate: new Date()
     }).on('changeDate', (e) => {
       this.date = e.date
-    this.getDetails(this.effectiveShift,this.shiftTypes)
-      
+      this.getDetails(this.effectiveShift, this.shiftTypes)
+
     });
     $('#dateSelector').datepicker('setDate', new Date());
   }
 
-  getDetails(effectiveShift: EffectiveShift[], shiftTypes: ShiftType[]){
+
+  resetShifts() {
+    this.amsEffectiveShiftService.effectiveShifts.simplePost({}, 'reset').then(() => {
+      this.toastyService.info({ title: 'Status', msg: 'Submitted' })
+    })
+  }
+  getDetails(effectiveShift: EffectiveShift[], shiftTypes: ShiftType[]) {
     console.log(effectiveShift)
     this.effective = effectiveShift
     this.types = shiftTypes
-    this.currentDate =this.date
+    this.currentDate = this.date
     console.log(this.effective)
-      console.log(this.types)
+    console.log(this.types)
   }
 
   ngOnInit() {

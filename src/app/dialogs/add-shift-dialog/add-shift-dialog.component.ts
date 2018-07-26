@@ -17,16 +17,16 @@ export class AddShiftDialogComponent implements OnInit {
   shiftTypes: Page<ShiftType>;
   date = new Date()
   updated: boolean
+  fromDate: any
+  shift: string
 
   constructor(public dialogRef: MdDialogRef<AddShiftDialogComponent>,
     private amsEffectiveShiftService: AmsEffectiveShiftService,
-    @Inject(MD_DIALOG_DATA) private data: { shifts: any, empId: string },
+    @Inject(MD_DIALOG_DATA) public data: { shifts: any, empId: string },
     private toastyService: ToastyService,
-  ) {
-    console.log(this.data)
-   }
+  ) { }
 
-   changeShift(fromDate: Date, shiftId: string) {
+  changeShift(fromDate: Date, shiftId: string) {
     let selectedShift: ShiftType
     this.data.shifts.items.forEach(item => {
       if (item.id === shiftId) {

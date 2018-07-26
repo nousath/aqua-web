@@ -15,7 +15,8 @@ import { ToastyService } from 'ng2-toasty';
 })
 export class FingerPrintComponent implements OnInit {
   @Input() code: string;
-  employee: Employee = new Employee();
+  @Input() employee: Employee
+
   devices: Page<Device>;
   device: Model<Device>;
   updatedEmployee: IApi<Employee>;
@@ -43,7 +44,7 @@ export class FingerPrintComponent implements OnInit {
   ngOnInit() { }
 
   ngOnChanges() {
-    if (this.code) {
+    if (this.employee) {
       this.getAmsDetails();
     }
   }
@@ -55,23 +56,19 @@ export class FingerPrintComponent implements OnInit {
   }
 
   getAmsDetails() {
-    this.isLoading = true;
-    this.amsEmployeeService.employees
-      .get(this.code)
-      .then(amsEmployee => {
-        this.isLoading = false;
-        this.employee = amsEmployee;
-        if (this.employee.fingerPrints && this.employee.fingerPrints.length) {
-          this.isFingerPrintExists = true;
-          this.fingerPrint = this.getWipFingerPrint(this.employee);
-        }
-        this.devices.filters.properties['category'].value = 'biometric';
-        this.devices.fetch();
-      })
-      .catch(err => {
-        this.isLoading = false;
-        console.error(err);
-      });
+    // this.isLoading = true;
+    // this.amsEmployeeService.employees
+    //   .get(this.code)
+    //   .then(amsEmployee => {
+    //     this.isLoading = false;
+    //     this.employee = amsEmployee;
+    if (this.employee.fingerPrints && this.employee.fingerPrints.length) {
+      this.isFingerPrintExists = true;
+      this.fingerPrint = this.getWipFingerPrint(this.employee);
+    }
+    this.devices.filters.properties['category'].value = 'biometric';
+    this.devices.fetch();
+
   }
 
   isExists(device) {

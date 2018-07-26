@@ -12,8 +12,8 @@ import { ToastyService } from 'ng2-toasty';
   styleUrls: ['./emp-leaves.component.css']
 })
 export class EmpLeavesComponent implements OnInit {
-  @Input() code: string;
-  employee: Employee = new Employee();
+  @Input()
+  employee: Employee
   leaveBalances: LeaveBalance[];
   isEdit: boolean = false
 
@@ -22,32 +22,19 @@ export class EmpLeavesComponent implements OnInit {
     private amsLeaveService: AmsLeaveService,
     private toastyService: ToastyService
   ) {
-    // this.leaveBalances = new Page({
-    //   api: amsLeaveService.leaveBalances,
-    //   // filters: [{
-    //   //   field: 'id',
-    //   //   value: null
-    //   // }]
-    // });
   }
 
   ngOnInit() {
   }
   ngOnChanges() {
-    if (this.code) {
-      this.getAmsDetails();
+    if (this.employee) {
+      // this.getAmsDetails();
+      this.getLeaveBalance(this.employee.id)
+
     }
   }
 
-  getAmsDetails() {
-    this.amsEmployeeService.employees
-      .get(this.code)
-      .then(amsEmployee => {
-        this.employee = amsEmployee;
-        this.getLeaveBalance(this.employee.id)
 
-      });
-  }
 
   reset() {
     this.isEdit = false,

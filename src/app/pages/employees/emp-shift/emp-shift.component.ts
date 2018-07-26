@@ -20,7 +20,8 @@ import { AddShiftDialogComponent } from '../../../dialogs/add-shift-dialog/add-s
 })
 export class EmpShiftComponent implements OnInit {
 
-  @Input() code: string;
+  @Input() employee: Employee
+
   effectiveShifts: Page<EffectiveShift>;
   effective: EffectiveShift
   dates: any = [];
@@ -33,7 +34,7 @@ export class EmpShiftComponent implements OnInit {
   // addShift: boolean = false
 
 
-  employee: Employee = new Employee();
+  // employee: Employee = new Employee();
   constructor(
     public activatedRoute: ActivatedRoute,
     private amsEmployeeService: AmsEmployeeService,
@@ -58,26 +59,18 @@ export class EmpShiftComponent implements OnInit {
     this.shiftTypes.fetch().catch((err) => {
       this.toastyService.error({ title: 'Error', msg: err })
     });
-    console.log(this.shiftTypes)
   }
 
   ngOnInit() {
   }
 
   ngOnChanges() {
-    if (this.code) {
-      this.getEmployeeDetails();
+    if (this.employee) {
+      this.getAttendance()
+
     }
   }
 
-  getEmployeeDetails() {
-    this.amsEmployeeService.employees
-      .get(this.code)
-      .then(amsEmployee => {
-        this.employee = amsEmployee;
-        const date = new Date()
-      });
-  }
 
   applyFilters($event) {
     this.effectiveShifts.filters.properties['shiftType']['value'] = $event.shiftType ? $event.shiftType.id : null;
@@ -115,7 +108,7 @@ export class EmpShiftComponent implements OnInit {
       this.getWeek(date);
       // this.isLoading = false;
       this.effectiveShifts.items.forEach(item => {
-        if (item.employee.code === this.code) {
+        if (item.employee.code) {
           this.effective = item;
           // this.currentShift.date = this.effective.previousShift.date
           this.currentShift = this.effective.previousShift.shiftType.name
@@ -133,12 +126,12 @@ export class EmpShiftComponent implements OnInit {
 
   }
 
-  
-  addShift(){
-    const dialog = this.dialog.open(AddShiftDialogComponent,{data: { shifts : this.shiftTypes, empId: this.employee.id}})
+
+  addShift() {
+    const dialog = this.dialog.open(AddShiftDialogComponent, { data: { shifts: this.shiftTypes, empId: this.employee.id } })
     dialog.afterClosed().subscribe((updated: boolean) => {
-      if(updated === true)
-      this.getEffectiveShift(this.date)
+      if (updated === true)
+        this.getEffectiveShift(this.date)
     })
   }
 
@@ -147,9 +140,7 @@ export class EmpShiftComponent implements OnInit {
       .remove(shift.id)
     this.getEffectiveShift(this.date);
 
-    console.log(shift)
   }
   ngAfterViewInit() {
-    this.getAttendance()
   }
 }

@@ -11,14 +11,14 @@
   <tr>
     <th>Shift</th>
     <td>
-      <select class="form-control" [(ngModel)]="Shift">
+      <select class="form-control" [(ngModel)]="shift">
         <option *ngFor="let item of data.shifts.items" [value]="item.id">{{item.name}}</option>
       </select>
     </td>
   </tr>
   <tr>
     <td colspan="2" class="text-right">
-      <button md-raised-button color="primary" (click)="changeShift(fromDate,Shift)">Save</button>
+      <button md-raised-button color="primary" (click)="changeShift(fromDate,shift)">Save</button>
       <button md-raised-button md-dialog-close>Cancel</button>
     </td>
   </tr>
