@@ -56,12 +56,6 @@ export class FingerPrintComponent implements OnInit {
   }
 
   getAmsDetails() {
-    // this.isLoading = true;
-    // this.amsEmployeeService.employees
-    //   .get(this.code)
-    //   .then(amsEmployee => {
-    //     this.isLoading = false;
-    //     this.employee = amsEmployee;
     if (this.employee.fingerPrints && this.employee.fingerPrints.length) {
       this.isFingerPrintExists = true;
       this.fingerPrint = this.getWipFingerPrint(this.employee);
