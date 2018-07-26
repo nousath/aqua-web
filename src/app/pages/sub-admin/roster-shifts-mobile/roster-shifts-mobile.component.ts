@@ -25,7 +25,7 @@ export class RosterShiftsMobileComponent implements OnInit {
 
   effective: EffectiveShift[];
   types: ShiftType[];
-  mobileView: boolean = true;
+  mobileView: string = 'full';
   isFilter: boolean = false
 
   constructor(

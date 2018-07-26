@@ -99,13 +99,13 @@
     }
 }
 
-@media only screen and (max-width:676px) {
+/* @media only screen and (max-width:676px) {
     .bodyPart {
         margin-top: 13%;
     }
-}
+} */
 
-@media only screen and (max-width:520px) {
+@media only screen and (max-width:600px) {
     .loginForm {
         display: none;
     }
@@ -113,11 +113,11 @@
         display: flex !important;
     }
     .bodyPart {
-        margin-top: 24%;
+        margin-top: 5%;
     }
 }
 
-@media only screen and (max-width:520px) {
+/* @media only screen and (max-width:520px) {
     .bodyPart {
         margin-top: 25%;
     }
@@ -148,7 +148,7 @@
     .bodyPart {
         margin-top: 40%;
     }
-}
+} */
 
 .menu {
     background-color: #757575;

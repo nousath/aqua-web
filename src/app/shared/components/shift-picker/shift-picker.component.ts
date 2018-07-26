@@ -39,7 +39,7 @@ export class ShiftPickerComponent implements OnInit {
   date: Date;
 
   @Input()
-  view: boolean;
+  view: string = 'mini';
 
   employee: Employee;
   attendance: Attendance;
@@ -197,7 +197,6 @@ export class ShiftPickerComponent implements OnInit {
   }
 
   shiftColour() {
-    if(!this.view)
     return this.shiftService.shiftColour(this.selectedShiftType || this.effectiveShiftType);
   }
 

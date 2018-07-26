@@ -132,8 +132,6 @@
         </md-card>
     </div>
 </div>
-<div class="mobileView" >
-    <md-card>
-    <aqua-roster-shifts-mobile  *ngIf="effectiveShifts?.items?.length > 0" [shiftTypes]="shiftTypes.items" [effectiveShift]="effectiveShifts.items"></aqua-roster-shifts-mobile>
-    </md-card>
+<div class="mobileView">
+    <aqua-roster-shifts-mobile *ngIf="effectiveShifts?.items?.length > 0" [shiftTypes]="shiftTypes.items" [effectiveShift]="effectiveShifts.items"></aqua-roster-shifts-mobile>
 </div>
