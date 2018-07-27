@@ -1,14 +1,14 @@
 <form class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4  form-group">
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 filters">
+        <div class="form-group row">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
                 <label for="email">Name</label>
             </div>
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                 <input [maxlength]="validatorService.textLength" type="text" class="form-control" [(ngModel)]="selectedEmployeeName" name="Name">
             </div>
         </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4  form-group">
+        <div class="form-group row">
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 <label for="pwd">Code</label>
             </div>
@@ -16,9 +16,9 @@
                 <input [maxlength]="validatorService.textLength" type="text" class="form-control" [(ngModel)]="selectedEmployeeCode" name="Code">
             </div>
         </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-group">
+        <div class="form-group row">
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                <label>Shift</label>
+                <label for="pwd">Shift</label>
             </div>
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                 <select class="form-control" [(ngModel)]="selectedShiftType" placeholder="Shift" name="shift">
@@ -28,7 +28,7 @@
                 </select>
             </div>
         </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-group" *ngIf="!hidden.attendanceStatus">
+        <div class="form-group row" *ngIf="!hidden.attendanceStatus">
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 formSets">
                 <label class="setStatus">Status</label>
             </div>
@@ -46,7 +46,7 @@
             </div>
         </div>
         <div *ngIf="!hidden.attendanceStatus">
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-group" *ngFor="let item of tagTypes?.items">
+            <div class="form-group row" *ngFor="let item of tagTypes?.items">
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     <label>{{item?.name | titlecase}}</label>
                 </div>
@@ -59,7 +59,7 @@
             </div>
         </div>
         <div *ngIf="hidden.attendanceStatus">
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-group" *ngFor="let item of tagTypes?.items">
+            <div class="form-group row" *ngFor="let item of tagTypes?.items">
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     <label>{{item?.name | titlecase}}</label>
                 </div>

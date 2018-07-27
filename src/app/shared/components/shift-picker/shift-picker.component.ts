@@ -104,9 +104,9 @@ export class ShiftPickerComponent implements OnInit {
   ngOnInit() {
     // this.compute();
   }
-  ngOnChanges(){
-    if(this.effectiveShift)
-    this.compute()
+  ngOnChanges() {
+    if (this.effectiveShift)
+      this.compute()
   }
 
   compute() {
@@ -116,9 +116,6 @@ export class ShiftPickerComponent implements OnInit {
     this.isPast = moment(this.date).isBefore(new Date());
     this.isToday = moment(this.date).isSame(new Date(), 'd');
     this.day = moment(this.date).day().toString()
-
-    console.log(this.employee)
-    console.log(this.view)
 
     if (this.effectiveShift.previousShift) {
       this.startingShift = this.effectiveShift.previousShift.shiftType
@@ -357,18 +354,14 @@ export class ShiftPickerComponent implements OnInit {
 
   extendLeaves() {
     const attendance = this.effectiveShift.attendances
-    console.log(attendance)
     let attendanceId: string
     attendance.forEach(item => {
       let incomingDate = item.ofDate
       let currentDate = this.date
-      console.log(moment(incomingDate).toISOString())
-      console.log(moment(currentDate).toISOString())
 
       if (moment(incomingDate).toISOString() === moment(currentDate).toISOString()) {
         attendanceId = item.id
       }
-      console.log('id' + attendanceId)
     })
 
     const dialogRef = this.dialog.open(GetDateDialogComponent)
@@ -378,9 +371,7 @@ export class ShiftPickerComponent implements OnInit {
     dialogRef.afterClosed().subscribe((response: any) => {
       if (response === false) { return; }
       this.attendance.checkOutExtend = response
-        console.log(attendanceId)
-        this.amsAttendanceService.attendance.update(`${attendanceId}/extendShift`, this.attendance as any)
-      console.log(response)
+      this.amsAttendanceService.attendance.update(`${attendanceId}/extendShift`, this.attendance as any)
     });
 
   }

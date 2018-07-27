@@ -1,34 +1,4 @@
-<div class="row page_header">
-    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <h5>
-            <b>Weekly Roaster</b>
-        </h5>
-    </div>
-    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 controls-row">
-        <span class="spacer"></span>
-        <button md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'">
-            <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
-        </button>
-    </div>
-
-    <div class="row" *ngIf="isFilter">
-        <md-card class="card">
-            <div class="row text-center headr_bar">
-                <h5>
-                    <b>Filters</b>
-                </h5>
-                <div class="actionBtns">
-                    <button md-icon-button mdTooltip="Close" [mdTooltipPosition]="'above'" (click)="isFilter = !isFilter">
-                        <md-icon>highlight_off</md-icon>
-                    </button>
-                </div>
-            </div>
-            <aqua-employees-filter [hidden]="{attendanceStatus: true,userType: true}" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter>
-        </md-card>
-    </div>
-
-</div>
-<div class="row">
+<!-- <div class="row"> -->
     <md-card class="card">
         <div class="row text-center noData" *ngIf="effective?.length == 0">
             <h5>
@@ -64,4 +34,4 @@
             </tbody>
         </table>
     </md-card>
-</div>
+<!-- </div> -->
