@@ -1,0 +1,35 @@
+<table class="table table-condensed table-bordered table-hover">
+    <thead class="primary_thead">
+
+        <tr>
+            <th class="tdWidth text-center">Name</th>
+            <th class="tdWidth">Shift/Status</th>
+            <th class="text-center tdWidth">Logs</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of currentAttendances" class="capitalize">
+            <td>
+                <span>{{item.employee.name || '--'}}</span>
+                <br>
+                <span class="sub-text">{{item.employee.code || '--'}}</span>
+            </td>
+            <td class="tdWidth">
+                <span>{{item.shift.shiftType.name}}/</span>
+                <br>
+                <ng-template #elsePart>
+                    <span>{{item?.status?.toLowerCase() == 'checkedin' ? 'Present' : item?.status}}</span>
+                </ng-template>
+                <span *ngIf="item.status == 'absent' && (item.shift.status === 'weekOff' || item.shift.status === 'holiday'); else elsePart">{{item.shift.status | titlecase}}</span>
+            </td>
+            <td>
+                <span *ngIf="item.checkIn">
+                    <b>In:</b>&nbsp;&nbsp;&nbsp;{{item.checkIn | date:'shortTime'}}</span>
+                <br>
+                <span *ngIf="item.checkOut">
+                    <b>Out</b>&nbsp;{{item.checkOut | date:'shortTime'}}</span>
+            </td>
+        </tr>
+
+    </tbody>
+</table>

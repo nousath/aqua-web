@@ -16,6 +16,7 @@ import * as _ from 'lodash';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { environment } from '../../../../environments/environment.qa';
 import { Department } from '../../../models/department';
+import { AmsEmployeeService } from '../../../services/index';
 declare var $: any;
 
 
@@ -27,6 +28,7 @@ declare var $: any;
 export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
 
   employee: EmsEmployee;
+  amsEmployee: Employee;
 
   designations: Designation[];
   departments: Department[];
@@ -54,7 +56,9 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     private store: LocalStorageService,
     private dialog: MdDialog,
     private router: Router,
-    public _location: Location) {
+    public _location: Location,
+    private amsEmployeeService: AmsEmployeeService,
+  ) {
 
     this.initUploader()
 
@@ -70,7 +74,20 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     activatedRoute.params.subscribe(params => {
       const empId = params['id'];
       this.fetchEmployee(empId)
+
     });
+  }
+  ngOnChanges() {
+
+  }
+
+  getAmsDetails(code) {
+    console.log(this.employee.code)
+    this.amsEmployeeService.employees
+      .get(code)
+      .then(amsEmployee => {
+        this.amsEmployee = amsEmployee;
+      });
   }
 
   fetchEmployee(id) {
@@ -88,6 +105,8 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
         this.employee = employee;
         this.initEmployee(this.employee)
         this.isProcessing = false
+        this.getAmsDetails(this.employee.code);
+
       }).catch(this.errorHandler);
     }
   }
@@ -183,16 +202,6 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
   }
-  // terminateEmp(form: NgForm) {
-  //   if (form.invalid) {
-  //     return this.toastyService.info({ title: 'Info', msg: 'Please fill all mandatory fields' })
-  //   }
-  //   console.log(this.employee.id);
-  //   console.log(this.employee.name);
-
-
-  // }
-
 
   empSource(keyword: string): Observable<EmsEmployee[]> {
     return this.autoCompleteService.searchByKey<EmsEmployee>('name', keyword, 'ems', 'employees');

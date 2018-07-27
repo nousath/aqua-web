@@ -1,0 +1,23 @@
+<table class="table table-condensed table-hover">
+  <thead class="primary_thead">
+    <tr>
+      <th>Name</th>
+      <th class="tdWidth">Present Days</th>
+      <th class="tdWidth">Absent Days</th>
+      <th class="tdWidth">Leave Balance</th>
+      <!-- <th></th> -->
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of monthlyAttendance" class="capitalize">
+      <td>
+        <span>{{item?.name || '--'}}</span>
+        <br>
+        <span>{{item?.code || '--'}}</span>
+      </td>
+      <td class="tdWidth">{{item?.presentDays || '--'}}</td>
+      <td class="tdWidth">{{item?.absentDays || '--'}}</td>
+      <td class="tdWidth">{{item?.totalLeaveBalance | number:'1.0-2'}}</td>
+    </tr>
+  </tbody>
+</table>

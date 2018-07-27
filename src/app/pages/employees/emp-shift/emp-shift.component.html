@@ -5,25 +5,29 @@
     </h5>
   </div>
   <br>
-  <div [class.hide]="show" [class.show]="!show">
+  <div>
     <div>
       <h5 class="text-center" s>
         <b>Current Shifts</b>
       </h5>
     </div>
-    <table class="table">
-      <tr>
-        <th class="text-center">
-          From Date
-        </th>
-        <th class="text-center">
-          Shift
-        </th>
-      </tr>
-      <tr>
-        <td class="text-center">{{currentShiftDate | date:'MMM d, EEE'}}</td>
-        <td class="text-center">{{currentShift}}</td>
-      </tr>
+    <table class="table table-condensed table-bordered">
+      <thead class="bordered-thead">
+        <tr>
+          <th class="text-center">
+            From Date
+          </th>
+          <th class="text-center">
+            Shift
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="text-center">{{currentShiftDate | date:'MMM d, EEE'}}</td>
+          <td class="text-center">{{currentShift}}</td>
+        </tr>
+      </tbody>
     </table>
     <br>
     <div>
@@ -31,12 +35,15 @@
         <b>Upcoming Shifts</b>
       </h5>
     </div>
-    <table class="table">
+    <table class="table table-condensed table-bordered">
       <tr>
         <th class="text-center">
           <b>From Date</b>
         </th>
         <th class="text-center">Shift</th>
+        <th>
+          <md-icon (click)="addShift()">add_circle_outline</md-icon>
+        </th>
       </tr>
       <tr *ngFor="let item of upcomingShift">
         <td class="text-center">
@@ -45,43 +52,10 @@
         <td class="text-center">
           {{item.shiftType.name}}
         </td>
+        <td>
+          <md-icon (click)="removeShift(item)">remove_circle_outline</md-icon>
+        </td>
       </tr>
     </table>
   </div>
-
-  <table class="table" [class.hide]="!show" [class.show]="show">
-    <tr>
-      <th class="text-center">
-        <b>Date</b>
-      </th>
-      <th class="text-center">Status</th>
-    </tr>
-    <tr *ngFor="let date of dates">
-      <td class="text-center">
-        {{date | date:'MMM d, EEE'}}
-        <br>
-      </td>
-      <td>
-        <aqua-shift-picker [shiftTypes]="shiftTypes.items" [effectiveShift]="effective" [date]="date" (attendanceUpdated)="employeeUpdated(item)"
-          (shiftUpdated)="employeeUpdated(item)" (leaveUpdated)="employeeUpdated(item)"></aqua-shift-picker>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <button md-raised-button color="primary" (click)="nextWeek()" style="float:right">
-          Next >>
-        </button>
-        <button md-raised-button color="primary" (click)="previousWeek()" style="float:left">
-          << Previous </button>
-      </td>
-    </tr>
-  </table>
 </md-card>
-<div class="btn">
-  <button md-raised-button color="primary" *ngIf="!show" (click)="show=!show">
-    Show Roster
-  </button>
-  <button md-raised-button color="primary" *ngIf="show" (click)="show=!show">
-    Hide Roster
-  </button>
-</div>

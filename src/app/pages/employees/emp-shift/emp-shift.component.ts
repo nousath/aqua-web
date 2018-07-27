@@ -8,6 +8,9 @@ import { ToastyService } from 'ng2-toasty';
 import { ActivatedRoute } from '@angular/router';
 import { ShiftType } from '../../../models/shift-type';
 import { forEach } from '@angular/router/src/utils/collection';
+import { Shift } from '../../../models/index';
+import { MdDialog } from '@angular/material';
+import { AddShiftDialogComponent } from '../../../dialogs/add-shift-dialog/add-shift-dialog.component';
 
 
 @Component({
@@ -17,27 +20,28 @@ import { forEach } from '@angular/router/src/utils/collection';
 })
 export class EmpShiftComponent implements OnInit {
 
-  @Input() code: string;
+  @Input() employee: Employee
+
   effectiveShifts: Page<EffectiveShift>;
   effective: EffectiveShift
   dates: any = [];
   date = new Date()
   shiftTypes: Page<ShiftType>;
+  shift: ShiftType;
   currentShift: any;
   currentShiftDate: any;
   upcomingShift: any = [];
-  show: boolean = false
+  // addShift: boolean = false
 
-  employee: Employee = new Employee();
+
+  // employee: Employee = new Employee();
   constructor(
     public activatedRoute: ActivatedRoute,
     private amsEmployeeService: AmsEmployeeService,
     private toastyService: ToastyService,
     private amsEffectiveShiftService: AmsEffectiveShiftService,
     private amsShiftService: AmsShiftService,
-
-
-  ) {
+    public dialog: MdDialog) {
     this.effectiveShifts = new Page({
       api: amsEffectiveShiftService.effectiveShifts,
       filters: [{
@@ -61,23 +65,12 @@ export class EmpShiftComponent implements OnInit {
   }
 
   ngOnChanges() {
-    if (this.code) {
-      this.getAmsDetails();
+    if (this.employee) {
+      this.getAttendance()
+
     }
   }
 
-  getAmsDetails() {
-    this.amsEmployeeService.employees
-      .get(this.code)
-      .then(amsEmployee => {
-        this.employee = amsEmployee;
-        // this.getLeaveBalance(this.employee.id)
-        const date = new Date()
-        // this.getEffectiveShift(date);
-
-      });
-
-  }
 
   applyFilters($event) {
     this.effectiveShifts.filters.properties['shiftType']['value'] = $event.shiftType ? $event.shiftType.id : null;
@@ -115,14 +108,12 @@ export class EmpShiftComponent implements OnInit {
       this.getWeek(date);
       // this.isLoading = false;
       this.effectiveShifts.items.forEach(item => {
-        if (item.employee.code === this.code) {
+        if (item.employee.code) {
           this.effective = item;
           // this.currentShift.date = this.effective.previousShift.date
           this.currentShift = this.effective.previousShift.shiftType.name
           this.currentShiftDate = this.effective.previousShift.date
           this.upcomingShift = this.effective.shifts
-          console.log(this.currentShift);
-          console.log(this.upcomingShift);
         }
       })
     })
@@ -134,7 +125,22 @@ export class EmpShiftComponent implements OnInit {
     this.getEffectiveShift(this.date);
 
   }
+
+
+  addShift() {
+    const dialog = this.dialog.open(AddShiftDialogComponent, { data: { shifts: this.shiftTypes, empId: this.employee.id } })
+    dialog.afterClosed().subscribe((updated: boolean) => {
+      if (updated === true)
+        this.getEffectiveShift(this.date)
+    })
+  }
+
+  removeShift(shift: Shift) {
+    this.amsEffectiveShiftService.effectiveShifts
+      .remove(shift.id)
+    this.getEffectiveShift(this.date);
+
+  }
   ngAfterViewInit() {
-    this.getAttendance()
   }
 }

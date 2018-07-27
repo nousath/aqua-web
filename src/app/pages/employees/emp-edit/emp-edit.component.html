@@ -16,6 +16,8 @@
 
 </div>
 <br>
+<br>
+<br>
 <div class="row capitalize">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 profieCrd">
         <md-card>
@@ -65,19 +67,18 @@
         </md-card>
         <br>
         <md-card *ngIf="!isNew">
-            <aqua-finger-print [code]="employee.code"></aqua-finger-print>
+            <aqua-finger-print [employee]="amsEmployee"></aqua-finger-print>
         </md-card>
         <br>
         <div *ngIf="!isNew">
-            <aqua-emp-leaves [code]="employee.code"></aqua-emp-leaves>
+            <aqua-emp-leaves [employee]="amsEmployee"></aqua-emp-leaves>
         </div>
         <br>
         <div *ngIf="!isNew">
-            <aqua-emp-shift [code]="employee.code"></aqua-emp-shift>
+            <aqua-emp-shift [employee]="amsEmployee"></aqua-emp-shift>
         </div>
 
     </div>
-    <br>
 
     <md-spinner class="custom_spinner" *ngIf="isProcessing" mode="indeterminate">
     </md-spinner>

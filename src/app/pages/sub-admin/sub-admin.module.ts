@@ -7,24 +7,25 @@ import { SubAdminComponent } from './sub-admin.component';
 import { RosterShiftsComponent } from './roster-shifts/roster-shifts.component';
 import { SubAdminRoutingModule } from './sub-admin-routing.module';
 import { DailyShiftRosterComponent } from './daily-shift-roster/daily-shift-roster.component';
-// import { ShiftPickerComponent } from '../../shared/components/shift-picker/shift-picker.component';
+import { RosterShiftsMobileComponent } from './roster-shifts-mobile/roster-shifts-mobile.component';
 
 @NgModule({
   imports: [
     SharedModule,
     SubAdminRoutingModule,
+   
   ],
   declarations: [
     SubAdminComponent,
     RosterShiftsComponent,
     DailyShiftRosterComponent,
-    // ShiftPickerComponent
+    RosterShiftsMobileComponent,
   ],
   exports: [
     SubAdminComponent,
     RosterShiftsComponent,
-    DailyShiftRosterComponent
-    // ShiftPickerComponent
+    DailyShiftRosterComponent,
+    RosterShiftsMobileComponent,
   ]
 })
 export class SubAdminModule { }
