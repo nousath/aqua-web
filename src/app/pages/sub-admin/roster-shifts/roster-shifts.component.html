@@ -15,10 +15,10 @@
       </button>
         <button [matMenuTriggerFor]="moreMenu" md-icon-button> <md-icon>more_vert</md-icon></button>
         <md-menu #moreMenu="mdMenu">
-            <button md-menu-item [disabled]="isDownloading || isLoading" (click)="download(dates[0])" mdTooltip="Download Excel" [mdTooltipPosition]="'above'">
+            <button md-menu-item [disabled]="isDownloading || isLoading" (click)="export()" mdTooltip="Download Excel" [mdTooltipPosition]="'above'">
                 <md-icon>cloud_download</md-icon> Download
             </button>
-            <button md-menu-item [disabled]="isLoading || isDownloading" (click)="excel()" mdTooltip="Excel Upload" [mdTooltipPosition]="'above'">
+            <button md-menu-item [disabled]="isLoading || isDownloading" (click)="import()" mdTooltip="Excel Upload" [mdTooltipPosition]="'above'">
                 <md-icon>cloud_upload</md-icon> Upload
             </button>
             <button (click)="resetShifts()" md-menu-item> <md-icon>build</md-icon> Reset</button>
