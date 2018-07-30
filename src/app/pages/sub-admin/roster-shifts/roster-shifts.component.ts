@@ -34,6 +34,7 @@ export class RosterShiftsComponent implements OnInit {
   isLoading = true;
   isUpload = false;
   isFilter: boolean;
+
   constructor(
     public activatedRoute: ActivatedRoute,
     private location: Location,
@@ -159,7 +160,9 @@ export class RosterShiftsComponent implements OnInit {
     this.effectiveShifts.fetch().then(() => {
       this.getWeek(this.date);
       this.isLoading = false;
+      console.log(this.effectiveShifts.items.length)
     }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+   
   }
 
   toggleDynamicShift(employee) {

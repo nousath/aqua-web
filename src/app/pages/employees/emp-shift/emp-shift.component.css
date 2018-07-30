@@ -1,0 +1,9 @@
+th,td{
+    width:50%;
+}
+.btn{
+    float: right;
+}
+md-icon{
+    cursor: pointer;
+}

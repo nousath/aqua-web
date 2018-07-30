@@ -71,6 +71,9 @@
 .alignText {
     margin-left: -23px;
 }
+.mini{
+    display: none;
+}
 
 @media only screen and (max-width:539px) {
     .toolBarRow {
@@ -88,6 +91,16 @@
         height: 20px;
     }
 }
+
+@media only screen and (max-width:600px) {
+    .full{
+        display: none;
+    }
+    .mini{
+        display: block;
+    }
+}
+
 
 button.mat-menu-item {
     width: 100%;

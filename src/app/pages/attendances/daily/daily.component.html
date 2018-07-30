@@ -14,10 +14,12 @@
             <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
         </button>
 
-        <button [matMenuTriggerFor]="moreMenu" md-icon-button> <md-icon>more_vert</md-icon></button>
+        <button [matMenuTriggerFor]="moreMenu" md-icon-button>
+            <md-icon>more_vert</md-icon>
+        </button>
         <md-menu #moreMenu="mdMenu">
             <button md-menu-item mdTooltip="Bulk Time Logs" [mdTooltipPosition]="'above'" (click)="showBulkTimeLogsDialog()">
-                <md-icon>add_circle_outline</md-icon>  Add Time Logs
+                <md-icon>add_circle_outline</md-icon> Add Time Logs
             </button>
             <button md-menu-item [matMenuTriggerFor]="downloadMenu">
                 <md-icon>cloud_download</md-icon> Download
@@ -55,7 +57,7 @@
 
 <div class="row">
     <md-card class="card">
-        <div class="table-responsive">
+        <div class="table-responsive full">
             <table class="table table-condensed table-bordered table-hover">
                 <thead class="primary_thead">
 
@@ -101,10 +103,13 @@
                 </tbody>
             </table>
         </div>
+        <div class="mini">
+            <aqua-daily-mobile-view [attendance]="attendances"></aqua-daily-mobile-view>
+        </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="custom_pagination">
                 <pagination-controls id="foo" (pageChange)="dailyAttendnace.pageNo = $event;getAttendance();"></pagination-controls>
-                <label>Total Records: {{dailyAttendnace.totalRecords}}</label>
+                <label class="full">Total Records: {{dailyAttendnace.totalRecords}}</label>
                 <div class="pageSize">
                     <label>Page Size:</label>
                     <select name="pageSize" [(ngModel)]="dailyAttendnace.pageSize" (change)="dailyAttendnace.pageNo = 1;getAttendance();">

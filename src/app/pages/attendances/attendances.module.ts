@@ -21,13 +21,15 @@ import { LeaveTypeComponent } from './leave-type/leave-type.component';
 import { TeamsComponent } from './teams/teams.component';
 import { ApplyLeaveTypeComponent } from './apply-leave-type/apply-leave-type.component';
 import { RouterModule } from '@angular/router';
+import { DailyMobileViewComponent } from './daily-mobile-view/daily-mobile-view.component';
+import { MonthlyMobileViewComponent } from './monthly-mobile-view/monthly-mobile-view.component';
 // import { AddAttendanceLogsComponent } from '../../shared/components/add-attendance-logs/add-attendance-logs.component';
 
 @NgModule({
   imports: [
     RouterModule,
     SharedModule,
-    AttendanceRoutingModule
+    AttendanceRoutingModule,
   ],
   declarations: [
     AttendancesComponent,
@@ -47,12 +49,14 @@ import { RouterModule } from '@angular/router';
     LeaveTypeComponent,
     TeamsComponent,
     ApplyLeaveTypeComponent,
+    DailyMobileViewComponent,
+    MonthlyMobileViewComponent,
 
   ],
   entryComponents: [
     DayEventDialogComponent,
     LeaveActionDialogComponent,
-
+    DailyMobileViewComponent
 
   ],
 

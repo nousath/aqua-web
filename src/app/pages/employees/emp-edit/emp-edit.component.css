@@ -58,3 +58,18 @@ td{
 .upload{
     padding-top: 10px;
 }
+.fields {
+    width: 50%;
+    float: left;
+}
+.fieldsGap{
+    display: none;
+}
+@media only screen and (max-width: 600px) {
+    .fields {
+        width: 100%;
+    }
+    .fieldsGap{
+        display: block;
+    }
+}

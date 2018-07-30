@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { MdDialogRef } from '@angular/material';
 import * as moment from 'moment';
 import { AnimationStyleMetadata } from '../../../../../node_modules/@angular/animations';
+import { Data } from '@agm/core/services/google-maps-types';
 
 @Component({
   selector: 'aqua-get-date-dialog',
@@ -22,7 +23,11 @@ export class GetDateDialogComponent implements OnInit {
   @Input()
   date: string;
 
+  time: string;
+  current: Date;
+
   constructor(public dialogRef: MdDialogRef<GetDateDialogComponent>) {
+
   }
 
   ngOnInit() {
@@ -30,6 +35,15 @@ export class GetDateDialogComponent implements OnInit {
 
   updated($event) {
     this.date = $event.currentTarget.value
+  }
+
+  timeUpdated($event) {
+    console.log($event)
+    const today = new Date();
+    this.time = $event.currentTarget.value
+    const checkTimes: string[] = this.time.split(':');
+    this.current = moment(today).hours(parseInt(checkTimes[0])).minutes(parseInt(checkTimes[1])).toDate()
+    this.date = this.current.toISOString()
   }
 
   continue() {

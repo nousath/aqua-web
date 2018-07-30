@@ -102,3 +102,16 @@
 .week .future {
     color: green
 }
+.mobileView{
+    display: none;
+}
+@media only screen and (max-width: 600px) {
+    .WebView{
+        display: none
+    }
+    .mobileView{
+        display: block;
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
+}
