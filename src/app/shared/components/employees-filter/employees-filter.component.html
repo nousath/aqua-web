@@ -33,41 +33,56 @@
                 <label class="setStatus">Status</label>
             </div>
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                <select class="form-control boxStatus" [(ngModel)]="selectedAttendanceStatus" placeholder="Status" name="Status">
-                    <option value="">All</option>
-                    <option value="present">Present</option>
-                    <option value="absent">Absent</option>
-                    <option value="missSwipe">Missed Swipe</option>
-                    <option value="halfday">Half Day</option>
-                    <option value="onLeave">On Leave</option>
-                    <option value="lateComing">Late Coming</option>
-                    <option value="earlyGoing">Early Going</option>
-                </select>
+                <angular2-multiselect [data]="statusList" class="form-control tags" [(ngModel)]="selectedStatus" [settings]="dropdownSettings"
+                    (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+                    (onDeSelectAll)="onDeSelectAll($event)" [ngModelOptions]="{standalone: true}"></angular2-multiselect>
             </div>
         </div>
         <div *ngIf="!hidden.attendanceStatus">
-            <div class="form-group row" *ngFor="let item of tagTypes?.items">
+            <div class="form-group row">
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                    <label>{{item?.name | titlecase}}</label>
+                    <label>Designation</label>
                 </div>
                 <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                    <md-select class="tags" [(ngModel)]="selectedValue" #tag (change)="tags.select({tagTypeId:item.id,tagId:tag.value})" name="tags"
-                        multiple color="white" [ngModelOptions]="{standalone: true}">
-                        <md-option *ngFor="let tag of item?.tags" [value]="tag.id">{{tag?.name | titlecase}}</md-option>
-                    </md-select>
+                    <angular2-multiselect [data]="designationList" class="form-control tags" [(ngModel)]="selectedDesignation" [settings]="dropdownSettings"
+                        (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+                        (onDeSelectAll)="onDeSelectAll($event)" [ngModelOptions]="{standalone: true}"></angular2-multiselect>
                 </div>
             </div>
         </div>
-        <div *ngIf="hidden.attendanceStatus">
-            <div class="form-group row" *ngFor="let item of tagTypes?.items">
+        <div *ngIf="!hidden.attendanceStatus">
+            <div class="form-group row">
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                    <label>{{item?.name | titlecase}}</label>
+                    <label>Department</label>
                 </div>
                 <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                    <md-select class="tags" [(ngModel)]="selectedValue" #tag (change)="tags.select({tagTypeId:item.id,tagId:tag.value})" name="tags"
-                        multiple color="white">
-                        <md-option *ngFor="let tag of item?.tags" [value]="tag.id">{{tag?.name | titlecase}}</md-option>
-                    </md-select>
+                    <angular2-multiselect [data]="departmentList" class="form-control tags" [(ngModel)]="selectedDepartment" [settings]="dropdownSettings"
+                        (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+                        (onDeSelectAll)="onDeSelectAll($event)" [ngModelOptions]="{standalone: true}"></angular2-multiselect>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="!hidden.attendanceStatus">
+            <div class="form-group row">
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <label>UserType</label>
+                </div>
+                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                    <angular2-multiselect [data]="userTypeList" class="form-control tags" [(ngModel)]="selectedUsertype" [settings]="dropdownSettings"
+                        (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+                        (onDeSelectAll)="onDeSelectAll($event)" [ngModelOptions]="{standalone: true}"></angular2-multiselect>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="!hidden.attendanceStatus">
+            <div class="form-group row">
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <label>Contractor</label>
+                </div>
+                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                    <angular2-multiselect [data]="contractorList" class="form-control tags" [(ngModel)]="selectedContractor" [settings]="dropdownSettings"
+                        (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+                        (onDeSelectAll)="onDeSelectAll($event)" [ngModelOptions]="{standalone: true}"></angular2-multiselect>
                 </div>
             </div>
         </div>

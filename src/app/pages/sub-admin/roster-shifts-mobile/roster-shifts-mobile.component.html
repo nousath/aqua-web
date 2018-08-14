@@ -1,4 +1,3 @@
-<!-- <div class="row"> -->
     <md-card class="card">
         <div class="row text-center noData" *ngIf="effective?.length == 0">
             <h5>
@@ -6,18 +5,6 @@
             </h5>
         </div>
         <table class="table">
-            <thead class="primary_thead">
-                <tr>
-                    <th rowspan="2">Name/Code</th>
-                    <th rowspan="2" class="text-center auto">Auto</th>
-                </tr>
-                <tr>
-                    <th class="text-center date week">
-                        <input id="dateSelector" type="text" class="form-control input-sm calendar no-spin">
-
-                    </th>
-                </tr>
-            </thead>
             <tbody class="primary_tbody">
                 <tr *ngFor="let item of effective">
                     <td class="customStyle">{{item.employee.name || '--'}}
@@ -34,4 +21,3 @@
             </tbody>
         </table>
     </md-card>
-<!-- </div> -->

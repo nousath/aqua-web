@@ -31,3 +31,7 @@
     padding-left: 15%;
    }
 }
+.tags {
+    box-shadow: 0px;
+    height: 34px !important;
+}
