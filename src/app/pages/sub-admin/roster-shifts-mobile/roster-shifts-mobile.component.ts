@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { EffectiveShift } from '../../../models/index';
 import { ShiftType } from '../../../models/shift-type';
 import * as moment from 'moment';
@@ -20,7 +20,12 @@ export class RosterShiftsMobileComponent implements OnInit {
   @Input()
   shiftTypes: ShiftType[];
 
+  @Output()
+  dateChanged = new EventEmitter<Date>();
+
+  @Input()
   date: Date;
+
   currentDate: Date;
 
   effective: EffectiveShift[];
@@ -38,7 +43,8 @@ export class RosterShiftsMobileComponent implements OnInit {
 
   ngOnChanges() {
     if (this.effectiveShift.length && this.shiftTypes.length) {
-      this.getDate()
+      this.getDetails(this.effectiveShift, this.shiftTypes)
+      // this.getDate()
     }
   }
 
@@ -52,9 +58,10 @@ export class RosterShiftsMobileComponent implements OnInit {
     }).on('changeDate', (e) => {
       this.date = e.date
       this.getDetails(this.effectiveShift, this.shiftTypes)
+      // this.dateChanged.emit(e.date)
 
     });
-    $('#dateSelector').datepicker('setDate', new Date());
+    $('#dateSelector').datepicker('setDate', this.date);
   }
 
 
@@ -65,6 +72,7 @@ export class RosterShiftsMobileComponent implements OnInit {
   }
   getDetails(effectiveShift: EffectiveShift[], shiftTypes: ShiftType[]) {
     console.log(effectiveShift)
+    console.log(this.date)
     this.effective = effectiveShift
     this.types = shiftTypes
     this.currentDate = this.date

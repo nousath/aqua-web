@@ -29,6 +29,7 @@ export class RosterShiftsComponent implements OnInit {
   change: any;
   date = new Date();
   isDateToday = moment().startOf('day').toDate();
+  selectedDate = new Date();
 
   isDownloading = false;
   isLoading = true;
@@ -139,9 +140,28 @@ export class RosterShiftsComponent implements OnInit {
       maxViewMode: 2,
       autoclose: true
     }).on('changeDate', (e) => {
-      this.getEffectiveShift(e.date);
+      e.date = moment(e.date).startOf('week')
+      this.date = e.date;
+      this.getAttendance();
+      // this.getEffectiveShift(e.date);
     })
     $('#weekSelector').datepicker('setDate', moment(this.activatedRoute.queryParams['value']['fromDate']).startOf('week').toDate());
+  }
+
+  createDaySelector(){
+
+    $('#daySelector').datepicker({
+      format: 'dd/mm/yyyy',
+      minViewMode: 0,
+      maxViewMode: 2,
+      autoclose: true
+    }).on('changeDate', (ch) => {
+      this.selectedDate = ch.date
+      this.date = ch.date;
+      this.getAttendance();
+    })
+    $('#daySelector').datepicker('setDate',this.selectedDate);
+  
   }
 
   getWeek(currentDate) {
@@ -214,6 +234,11 @@ export class RosterShiftsComponent implements OnInit {
     return this.amsShiftService.shiftColour(shiftType)
   }
 
+  getData($event){
+    this.date = $event;
+    this.getEffectiveShift(this.date);
+  }
+
   ngOnInit() {
     const week = this.activatedRoute.snapshot.params['week']
     if (week) {
@@ -223,6 +248,7 @@ export class RosterShiftsComponent implements OnInit {
 
   ngAfterViewInit() {
     this.createWeekPicker();
+    this.createDaySelector()
     this.getAttendance()
   }
 }

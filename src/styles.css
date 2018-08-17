@@ -453,3 +453,19 @@ display: block;
 .mat-select-trigger {
     top: -5px;
 }
+
+.selected-list .c-btn {
+    width: 100%;
+    box-shadow: none !important;
+    cursor: pointer;
+    display: flex;
+    position: relative;
+    height: 34px;
+    border-radius: 4px !important;
+}
+
+.selected-list .c-btn .c-list .c-token{
+    background-color: white;
+    color: black;
+    padding: 0px;
+}

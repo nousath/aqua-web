@@ -1,7 +1,7 @@
 <div>
     <div class="row page_header">
         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-            <h5 class="WebView">
+            <h5 class="webView">
                 <b>Weekly Roaster</b>
             </h5>
             <h5 class="mobileView">
@@ -10,19 +10,21 @@
         </div>
         <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 controls-row">
             <span class="spacer"></span>
-            <div class="input-group WebView">
+            <div class="input-group webView">
                 <span class="input-group-addon" id="basic-addon1">Week</span>
                 <input id="weekSelector" type="text" class="form-control input-sm calendar no-spin">
             </div>
             <button md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'">
                 <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
             </button>
-        <button [matMenuTriggerFor]="moreMenu" md-icon-button> <md-icon>more_vert</md-icon></button>
-        <md-menu #moreMenu="mdMenu">
-            <button md-menu-item [disabled]="isDownloading || isLoading" (click)="export()" mdTooltip="Download Excel" [mdTooltipPosition]="'above'">
+            <button [matMenuTriggerFor]="moreMenu" md-icon-button>
+                <md-icon>more_vert</md-icon>
+            </button>
+            <md-menu #moreMenu="mdMenu">
+                <button md-menu-item [disabled]="isDownloading || isLoading" (click)="export()" mdTooltip="Download Excel" [mdTooltipPosition]="'above'">
                     <md-icon>cloud_download</md-icon> Download
                 </button>
-            <button md-menu-item [disabled]="isLoading || isDownloading" (click)="import()" mdTooltip="Excel Upload" [mdTooltipPosition]="'above'">
+                <button md-menu-item [disabled]="isLoading || isDownloading" (click)="import()" mdTooltip="Excel Upload" [mdTooltipPosition]="'above'">
                     <md-icon>cloud_upload</md-icon> Upload
                 </button>
                 <button (click)="resetShifts()" md-menu-item>
@@ -66,7 +68,22 @@
 
     <md-spinner class="custom_spinner" *ngIf="isDownloading || isLoading" mode="indeterminate"></md-spinner>
     <div class="row">
-        <div class="WebView">
+        <md-card class="card">
+            <table class="table table-condensed">
+                <thead class="primary_thead mobileView">
+                    <tr>
+                        <th class="mvWidth">Name/Code</th>
+                        <th class="mvWidth">Auto</th>
+                        <th class="mvWidth">
+                            <input id="daySelector" type="text" class="form-control input-sm calendar no-spin">
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+        </md-card>
+    </div>
+    <div class="row">
+        <div>
             <md-card class="card">
                 <div class="row text-center noData" *ngIf="effectiveShifts?.items?.length == 0">
                     <h5>
@@ -74,7 +91,7 @@
                     </h5>
                 </div>
                 <table class="table table-condensed" *ngIf="effectiveShifts?.items?.length > 0">
-                    <thead class="primary_thead">
+                    <thead class="primary_thead webView">
                         <tr>
                             <th rowspan="2">Name/Code</th>
                             <th rowspan="2">Auto</th>
@@ -93,7 +110,7 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="webView">
                         <tr *ngFor="let item of effectiveShifts.items | paginate: { id: 'foo',
                     itemsPerPage: effectiveShifts.pageSize,
                     currentPage: effectiveShifts.pageNo,
@@ -120,7 +137,8 @@
             </md-card>
         </div>
         <div class="mobileView">
-            <aqua-roster-shifts-mobile *ngIf="effectiveShifts?.items?.length > 0" [shiftTypes]="shiftTypes.items" [effectiveShift]="effectiveShifts.items"></aqua-roster-shifts-mobile>
+            <aqua-roster-shifts-mobile *ngIf="effectiveShifts?.items?.length > 0" [shiftTypes]="shiftTypes.items" [effectiveShift]="effectiveShifts.items"
+                (dateChanged)="getData($event)" [date]="selectedDate"></aqua-roster-shifts-mobile>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="custom_pagination">
