@@ -1,232 +1,63 @@
-<div class="hidden-xs row">
-    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2"></div>
-    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-        <md-toolbar class="loginHeader" color="primary">
-            <!-- <img class="logo" src="assets/images/splash_logo.png"> -->
-            <!-- <button md-button *ngIf="isShowEmployeeTab" [routerLink]="['/pages/employees']" routerLinkActive="activeTab"><b>EMPLOYEE</b></button>
+<div class="container">
+    <!-- <div class="menuHeader"> -->
+    <md-sidenav-container class="nav-container" *ngIf="!shouldRun">
+        <md-sidenav #sidenav>
+            <div style="width:100%">
+                <aqua-navigation-bar [userType]="userType" [sectionEmployee]="sections.employee" [isShowEmployeeTab]="isShowEmployeeTab"
+                    (isSelected)="closeNav($event)"></aqua-navigation-bar>
+            </div>
+
+        </md-sidenav>
+
+        <div class="row">
+            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2"></div>
+            <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+
+                <md-toolbar class="loginHeader" color="primary">
+                    <span class="menuBtn" md-button (click)="sidenav.open()">
+                        <md-icon>menu</md-icon>
+                    </span>
+                    <div class="logoHeader">
+                        <img src="assets/images/splash_logo2.png" height="50px">
+                    </div>
+                    <!-- <img class="logo" src="assets/images/splash_logo.png"> -->
+                    <!-- <button md-button *ngIf="isShowEmployeeTab" [routerLink]="['/pages/employees']" routerLinkActive="activeTab"><b>EMPLOYEE</b></button>
             <button md-button [routerLink]="['/pages/attendances']" routerLinkActive="activeTab"><b>ATTENDANCE</b></button>
             <button md-button [routerLink]="['/pages/settings']" routerLinkActive="activeTab"><b>SETTINGS</b></button> -->
-            <span class="example-spacer"></span>
-            <div *ngIf="employeeSearch" class="searchbar">
-                <input ngui-auto-complete [min-chars]="1" *ngIf="userType == 'superadmin'" placeholder="Employee search" [(ngModel)]="selectedEmp"
-                    (valueChanged)="onSelectEmp($event)" [source]="empSource.bind(this)" [value-formatter]="empFormatter" [list-formatter]="empListFormatter"
-                    class="form-control searchbarinput search" name="roleId" />
+                    <span class="example-spacer"></span>
+                    <div *ngIf="employeeSearch" class="searchbar">
+                        <input ngui-auto-complete [min-chars]="1" *ngIf="userType == 'superadmin'" placeholder="Employee search" [(ngModel)]="selectedEmp"
+                            (valueChanged)="onSelectEmp($event)" [source]="empSource.bind(this)" [value-formatter]="empFormatter"
+                            [list-formatter]="empListFormatter" class="form-control searchbarinput search" name="roleId" />
+                    </div>
+                    <button md-icon-button (click)="syncEmployees()" *ngIf="userType == 'superadmin'" [disabled]="isSyncing" mdTooltip="Sync Employees"
+                        class="marginLetf" [mdTooltipPosition]="'below'">
+                        <i class="fa fa-refresh  fa-lg" [ngClass]="{'fa-spin':isSyncing}" aria-hidden="true"></i>
+                    </button>
+                    <button md-button (click)="logout()" class="capitalize" mdTooltip="Logout" class="marginLetf" [mdTooltipPosition]="'below'">{{currentUser?.name}}
+                        <md-icon class="example-icon">exit_to_app</md-icon>
+                    </button>
+
+                </md-toolbar>
             </div>
-            <button md-icon-button (click)="syncEmployees()" *ngIf="userType == 'superadmin'" [disabled]="isSyncing" mdTooltip="Sync Employees"
-                class="marginLetf" [mdTooltipPosition]="'below'">
-                <i class="fa fa-refresh  fa-lg" [ngClass]="{'fa-spin':isSyncing}" aria-hidden="true"></i>
-            </button>
-            <button md-button (click)="logout()" class="capitalize" mdTooltip="Logout" class="marginLetf" [mdTooltipPosition]="'below'">{{currentUser?.name}}
-                <md-icon class="example-icon">exit_to_app</md-icon>
-            </button>
-
-        </md-toolbar>
-    </div>
-</div>
-<!-- <p><button md-button (click)="sidenav.open()">Open</button></p> -->
-
-<div class="bodyPart row">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 rowBody">
-        <div class="hidden-xs col-sm-2 col-md-2 col-lg-2">
-            <!-- <md-sidenav class="col-xs" #sidenav (keydown.escape)="close('escape')" disableClose> -->
-            <md-nav-list *ngIf="userType === 'superadmin'" dense class="fixedSideNav">
-                <div class="logo_container text-center">
-                    <img class="logo" src="assets/images/splash_logo.png">
-                    <br>
-                </div>
-                <p *ngIf="isShowEmployeeTab" class="subListHeader" (click)="sections.select('employee')">Master
-                    <i *ngIf="!sections.employee" class="material-icons leftIcon">keyboard_arrow_right</i>
-                    <i *ngIf="sections.employee" class="material-icons leftIcon">keyboard_arrow_down</i>
-                </p>
-                <div *ngIf="sections.employee">
-                    <a *ngIf="isShowEmployeeTab" md-list-item [routerLink]="['/pages/employees/list']" routerLinkActive="activeTab" #rla1="routerLinkActive">
-                        <h5>Employee</h5>
-                    </a>
-                    <a *ngIf="isShowEmployeeTab" md-list-item [routerLink]="['/pages/employees/designations']" routerLinkActive="activeTab" #rla2="routerLinkActive">
-                        <h5>Designations</h5>
-                    </a>
-                    <a *ngIf="isShowEmployeeTab" md-list-item [routerLink]="['/pages/employees/departments']" routerLinkActive="activeTab" #rla15="routerLinkActive">
-                        <h5>Departments </h5>
-                    </a>
-                    <a md-list-item [routerLink]="['/pages/attendances/leave-balances']" routerLinkActive="activeTab" #rla6="routerLinkActive">
-                        <h5 angulartics2On="click" angularticsEvent="leaveBalanceClick" angularticsCategory="leaveBalance">Leave Balances</h5>
-                    </a>
-                    <a md-list-item [routerLink]="['/pages/attendances/manage-leaves']" routerLinkActive="activeTab" #rla7="routerLinkActive">
-                        <h5>Leave Rules</h5>
-                    </a>
-                    <a md-list-item [routerLink]="['/pages/settings/shifts']" routerLinkActive="activeTab" #rla8="routerLinkActive">
-                        <h5>Shifts</h5>
-                    </a>
-                    <a md-list-item [routerLink]="['/pages/subAdmin/shifts']" routerLinkActive="activeTab" #rla9="routerLinkActive">
-                        <h5>Roster Shift</h5>
-                    </a>
-                    <a md-list-item [routerLink]="['/pages/settings/holidays']" routerLinkActive="activeTab" #rla10="routerLinkActive">
-                        <h5>Holidays</h5>
-                    </a>
-                </div>
-                <p class="subListHeader" (click)="sections.select('attendance')">Attendance
-                    <i *ngIf="!sections.attendance" class="material-icons leftIcon">keyboard_arrow_right</i>
-                    <i *ngIf="sections.attendance" class="material-icons leftIcon">keyboard_arrow_down</i>
-                </p>
-                <!-- <i class="material-icons">keyboard_arrow_down</i> -->
-                <div *ngIf="sections.attendance">
-                    <a md-list-item [routerLink]="['/pages/attendances/daily']" routerLinkActive="activeTab" #rla3="routerLinkActive">
-                        <h5>Daily Attendance</h5>
-                    </a>
-                    <a md-list-item [routerLink]="['/pages/attendances/monthly']" routerLinkActive="activeTab" #rla4="routerLinkActive">
-                        <h5>Monthly Attendance</h5>
-                    </a>
-                    <a md-list-item [routerLink]="['/pages/attendances/reports']" routerLinkActive="activeTab" #rla4="routerLinkActive">
-                        <h5>Reports</h5>
-                    </a>
-                    <a md-list-item [routerLink]="['/pages/attendances/leaves']" routerLinkActive="activeTab" #rla5="routerLinkActive">
-                        <h5>Leaves(all)</h5>
-                    </a>
-                    <!-- <a md-list-item [routerLink]="['/pages/attendances/report']" routerLinkActive="activeTab" #rla8="routerLinkActive">
-                        <h5>Reports</h5>
-                    </a> -->
-                </div>
-                <p class="subListHeader" (click)="sections.select('settings')">Settings
-                    <i *ngIf="!sections.settings" class="material-icons leftIcon">keyboard_arrow_right</i>
-                    <i *ngIf="sections.settings" class="material-icons leftIcon">keyboard_arrow_down</i>
-                </p>
-                <div *ngIf="sections.settings">
-                    <!-- <a md-list-item [routerLink]="['/pages/settings/roster']" routerLinkActive="activeTab" #rla15="routerLinkActive">
-                    </a> -->
-                    <a md-list-item [routerLink]="['/pages/settings/alerts']" routerLinkActive="activeTab" #rla11="routerLinkActive">
-                        <h5>Alerts</h5>
-                    </a>
-                    <a md-list-item [routerLink]="['/pages/settings/devices']" routerLinkActive="activeTab" #rla12="routerLinkActive">
-                        <h5>Devices</h5>
-                    </a>
-                    <a md-list-item [routerLink]="['/pages/settings/deviceLogs']" routerLinkActive="activeTab" #rla13="routerLinkActive">
-                        <h5 angulartics2On="click" angularticsEvent="devicesLogsClick" angularticsCategory="devicesLogs">Devices Logs</h5>
-                    </a>
-                    <a md-list-item routerLink="/pages/settings/channelTypes" routerLinkActive="activeTab" #rla14="routerLinkActive">
-                        <h5>Communication Apps</h5>
-                    </a>
-                    <a md-list-item routerLink="/pages/settings/reportFormat" routerLinkActive="activeTab" #rla14="routerLinkActive">
-                        <h5>Report Format</h5>
-                    </a>
-                </div>
-            </md-nav-list>
-            <!-- </md-sidenav> -->
-            
-            <md-sidenav class="col-xs" #sidenav (keydown.escape)="close('escape')" disableClose>
-                <md-nav-list *ngIf="userType === 'superadmin'" dense class="fixedSideNav">
-                    <div class="logo_container text-center">
-                        <img class="logo" src="assets/images/splash_logo.png">
-                        <br>
-                    </div>
-                    <p *ngIf="isShowEmployeeTab" class="subListHeader" (click)="sections.select('employee')">Master
-                        <i *ngIf="!sections.employee" class="material-icons leftIcon">keyboard_arrow_right</i>
-                        <i *ngIf="sections.employee" class="material-icons leftIcon">keyboard_arrow_down</i>
-                    </p>
-                    <div *ngIf="sections.employee">
-                        <a *ngIf="isShowEmployeeTab" md-list-item [routerLink]="['/pages/employees/list']" routerLinkActive="activeTab" #rla1="routerLinkActive">
-                            <h5>Employee</h5>
-                        </a>
-                        <a *ngIf="isShowEmployeeTab" md-list-item [routerLink]="['/pages/employees/designations']" routerLinkActive="activeTab" #rla2="routerLinkActive">
-                            <h5>Designations</h5>
-                        </a>
-                        <a *ngIf="isShowEmployeeTab" md-list-item [routerLink]="['/pages/employees/departments']" routerLinkActive="activeTab" #rla15="routerLinkActive">
-                            <h5>Departments </h5>
-                        </a>
-                        <a md-list-item [routerLink]="['/pages/attendances/leave-balances']" routerLinkActive="activeTab" #rla6="routerLinkActive">
-                            <h5 angulartics2On="click" angularticsEvent="leaveBalanceClick" angularticsCategory="leaveBalance">Leave Balances</h5>
-                        </a>
-                        <a md-list-item [routerLink]="['/pages/attendances/manage-leaves']" routerLinkActive="activeTab" #rla7="routerLinkActive">
-                            <h5>Leave Rules</h5>
-                        </a>
-                        <a md-list-item [routerLink]="['/pages/settings/shifts']" routerLinkActive="activeTab" #rla8="routerLinkActive">
-                            <h5>Shifts</h5>
-                        </a>
-                        <a md-list-item [routerLink]="['/pages/subAdmin/shifts']" routerLinkActive="activeTab" #rla9="routerLinkActive">
-                            <h5>Roster Shift</h5>
-                        </a>
-                        <a md-list-item [routerLink]="['/pages/settings/holidays']" routerLinkActive="activeTab" #rla10="routerLinkActive">
-                            <h5>Holidays</h5>
-                        </a>
-                    </div>
-                    <p class="subListHeader" (click)="sections.select('attendance')">Attendance
-                        <i *ngIf="!sections.attendance" class="material-icons leftIcon">keyboard_arrow_right</i>
-                        <i *ngIf="sections.attendance" class="material-icons leftIcon">keyboard_arrow_down</i>
-                    </p>
-                    <!-- <i class="material-icons">keyboard_arrow_down</i> -->
-                    <div *ngIf="sections.attendance">
-                        <a md-list-item [routerLink]="['/pages/attendances/daily']" routerLinkActive="activeTab" #rla3="routerLinkActive">
-                            <h5>Daily Attendance</h5>
-                        </a>
-                        <a md-list-item [routerLink]="['/pages/attendances/monthly']" routerLinkActive="activeTab" #rla4="routerLinkActive">
-                            <h5>Monthly Attendance</h5>
-                        </a>
-                        <a md-list-item [routerLink]="['/pages/attendances/reports']" routerLinkActive="activeTab" #rla4="routerLinkActive">
-                            <h5>Reports</h5>
-                        </a>
-                        <a md-list-item [routerLink]="['/pages/attendances/leaves']" routerLinkActive="activeTab" #rla5="routerLinkActive">
-                            <h5>Leaves(all)</h5>
-                        </a>
-                        <!-- <a md-list-item [routerLink]="['/pages/attendances/report']" routerLinkActive="activeTab" #rla8="routerLinkActive">
-                            <h5>Reports</h5>
-                        </a> -->
-                    </div>
-                    <p class="subListHeader" (click)="sections.select('settings')">Settings
-                        <i *ngIf="!sections.settings" class="material-icons leftIcon">keyboard_arrow_right</i>
-                        <i *ngIf="sections.settings" class="material-icons leftIcon">keyboard_arrow_down</i>
-                    </p>
-                    <div *ngIf="sections.settings">
-                        <!-- <a md-list-item [routerLink]="['/pages/settings/roster']" routerLinkActive="activeTab" #rla15="routerLinkActive">
-                        </a> -->
-                        <a md-list-item [routerLink]="['/pages/settings/alerts']" routerLinkActive="activeTab" #rla11="routerLinkActive">
-                            <h5>Alerts</h5>
-                        </a>
-                        <a md-list-item [routerLink]="['/pages/settings/devices']" routerLinkActive="activeTab" #rla12="routerLinkActive">
-                            <h5>Devices</h5>
-                        </a>
-                        <a md-list-item [routerLink]="['/pages/settings/deviceLogs']" routerLinkActive="activeTab" #rla13="routerLinkActive">
-                            <h5 angulartics2On="click" angularticsEvent="devicesLogsClick" angularticsCategory="devicesLogs">Devices Logs</h5>
-                        </a>
-                        <a md-list-item routerLink="/pages/settings/channelTypes" routerLinkActive="activeTab" #rla14="routerLinkActive">
-                            <h5>Communication Apps</h5>
-                        </a>
-                        <a md-list-item routerLink="/pages/settings/reportFormat" routerLinkActive="activeTab" #rla14="routerLinkActive">
-                            <h5>Report Format</h5>
-                        </a>
-                    </div>
-                </md-nav-list>
-                </md-sidenav>
-            <md-nav-list *ngIf="userType === 'admin'" dense class="fixedSideNav">
-                <div class="logo_container text-center">
-                    <img class="logo" src="assets/images/splash_logo.png">
-                    <br>
-                </div>
-                <a md-list-item [routerLink]="['/pages/attendances/daily',userId]" routerLinkActive="activeTab" #rla9="routerLinkActive">
-                    <h5>My Attendance</h5>
-                </a>
-                <a md-list-item [routerLink]="['/pages/attendances/teams',userId]" routerLinkActive="activeTab" #rla3="routerLinkActive">
-                    <h5>Team Attendance</h5>
-                </a>
-                <a md-list-item [routerLink]="['/pages/attendances/leaves']" routerLinkActive="activeTab" #rla3="routerLinkActive">
-                    <h5>All Leave</h5>
-                </a>
-                <a md-list-item [routerLink]="['/pages/subAdmin/shifts']" routerLinkActive="activeTab" #rla9="routerLinkActive">
-                    <h5>Roster Shift</h5>
-                </a>
-            </md-nav-list>
-            <md-nav-list *ngIf="userType == 'normal'" dense class="fixedSideNav">
-                <div class="logo_container text-center">
-                    <img class="logo" src="assets/images/splash_logo.png">
-                    <br>
-                </div>
-                <a md-list-item [routerLink]="['/pages/attendances/daily',userId]" routerLinkActive="activeTab" #rla3="routerLinkActive">
-                    <h5>My Attendance</h5>
-                </a>
-
-            </md-nav-list>
         </div>
-        <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10 section hiddenHorScroll">
-        <p class=" hidden-sm hidden-md hidden-lg"><button md-button (click)="sidenav.open()">Open</button></p>
-            <router-outlet></router-outlet>
+        <!-- <p><button md-button (click)="sidenav.open()">Open</button></p> -->
+
+        <div class="bodyPart row">
+            <!-- 
+        <md-sidenav #sidenav (keydown.escape)="close('escape')" disableClose>
+            <aqua-navigation-bar [userType]="userType" [sectionEmployee]="sections.employee"></aqua-navigation-bar>
+        </md-sidenav> -->
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 rowBody">
+                <div class="hidden-xs col-sm-2 col-md-2 col-lg-2">
+                    <aqua-navigation-bar [userType]="userType" [sectionEmployee]="sections.employee"></aqua-navigation-bar>
+                </div>
+                <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10 section hiddenHorScroll">
+                    <router-outlet></router-outlet>
+                </div>
+            </div>
         </div>
-    </div>
+
+    </md-sidenav-container>
+    <!-- </div> -->
 </div>

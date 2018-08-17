@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Employee } from '../models/employee';
 import { AutoCompleteService } from '../services/auto-complete.service';
@@ -6,6 +6,8 @@ import { Observable, Subscription } from 'rxjs/Rx';
 import { AmsEmployeeService } from '../services/ams/ams-employee.service';
 import { ToastyService } from 'ng2-toasty';
 import { LocalStorageService } from '../services/local-storage.service';
+import { MdSidenav } from '@angular/material';
+import { FormControl } from '@angular/forms';
 
 class Sections {
   employee = false;
@@ -35,6 +37,9 @@ export class PagesComponent implements OnInit, OnDestroy {
   userType = '';
   employeeSearch = true;
 
+  shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some(h => h.test(window.location.host));
+  @ViewChild('sidenav') sidenav: MdSidenav;
+
   constructor(private store: LocalStorageService,
     private autoCompleteService: AutoCompleteService,
     private amsEmployeeService: AmsEmployeeService,
@@ -50,7 +55,7 @@ export class PagesComponent implements OnInit, OnDestroy {
     this.subscription = router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe((event: NavigationEnd) => {
-       this.checkSection(event.url);
+        this.checkSection(event.url);
         window.scroll(0, 0);
       });
   }
@@ -68,7 +73,7 @@ export class PagesComponent implements OnInit, OnDestroy {
       this.employeeSearch = true;
       this.sections.settings = true;
     }
-}
+  }
 
   onSelectEmp(emp: Employee) {
     if (emp.id) {
@@ -106,6 +111,11 @@ export class PagesComponent implements OnInit, OnDestroy {
       }
     ).catch(err => { this.isSyncing = false; this.toastyService.error({ title: 'Error', msg: err }) })
 
+  }
+  closeNav($event) {
+    console.log($event)
+    if ($event === true)
+      this.sidenav.close();
   }
 
   logout() {

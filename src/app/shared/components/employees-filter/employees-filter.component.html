@@ -5,7 +5,7 @@
                 <label for="email">Name</label>
             </div>
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                <input [maxlength]="validatorService.textLength" type="text" class="form-control" [(ngModel)]="selectedEmployeeName" name="Name">
+                <input [maxlength]="validatorService.textLength" type="text" class="form-control tags" [(ngModel)]="selectedEmployeeName" name="Name">
             </div>
         </div>
         <div class="form-group row">
@@ -13,7 +13,7 @@
                 <label for="pwd">Code</label>
             </div>
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                <input [maxlength]="validatorService.textLength" type="text" class="form-control" [(ngModel)]="selectedEmployeeCode" name="Code">
+                <input [maxlength]="validatorService.textLength" type="text" class="form-control tags" [(ngModel)]="selectedEmployeeCode" name="Code">
             </div>
         </div>
         <div class="form-group row">
@@ -21,7 +21,7 @@
                 <label for="pwd">Shift</label>
             </div>
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                <select class="form-control" [(ngModel)]="selectedShiftType" placeholder="Shift" name="shift">
+                <select class="form-control tags" [(ngModel)]="selectedShiftType" placeholder="Shift" name="shift">
                     <option *ngFor="let item of shiftTypes.items" [value]="item">
                         {{item?.name}}
                     </option>
@@ -38,7 +38,7 @@
                     (onDeSelectAll)="onDeSelectAll($event)" [ngModelOptions]="{standalone: true}"></angular2-multiselect>
             </div>
         </div>
-        <div *ngIf="!hidden.attendanceStatus">
+        <div >
             <div class="form-group row">
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     <label>Designation</label>
@@ -50,7 +50,7 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="!hidden.attendanceStatus">
+        <div >
             <div class="form-group row">
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     <label>Department</label>
@@ -62,7 +62,7 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="!hidden.attendanceStatus">
+        <div >
             <div class="form-group row">
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     <label>UserType</label>
@@ -74,7 +74,7 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="!hidden.attendanceStatus">
+        <div >
             <div class="form-group row">
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     <label>Contractor</label>

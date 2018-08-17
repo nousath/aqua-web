@@ -1,3 +1,10 @@
+label {
+    width: 55px;
+}
+input {
+    width: 200px;
+}
+
 .tags {
     display: block;
     width: 100%;

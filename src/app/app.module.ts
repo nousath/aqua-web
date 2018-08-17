@@ -21,6 +21,7 @@ import { EmsDepartmentService } from './services';
 import { LeaveConfirmDialogComponent } from './dialogs/leave-confirm-dialog/leave-confirm-dialog.component';
 import { LeaveReasonDialogComponent } from './dialogs/leave-reason-dialog/leave-reason-dialog.component';
 import { AddShiftDialogComponent } from './dialogs/add-shift-dialog/add-shift-dialog.component';
+import { NavigationBarComponent } from './shared/components/navigation-bar/navigation-bar.component';
 
 
 @NgModule({
@@ -33,9 +34,11 @@ import { AddShiftDialogComponent } from './dialogs/add-shift-dialog/add-shift-di
     GkuAttendanceComponent,
     SystemUsageComponent,
     ResetPasswordDialogComponent,
+    NavigationBarComponent,
     LeaveConfirmDialogComponent,
     LeaveReasonDialogComponent,
     AddShiftDialogComponent,
+
   ],
   imports: [
     BrowserModule,

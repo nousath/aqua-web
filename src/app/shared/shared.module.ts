@@ -116,7 +116,7 @@ export const MaterialModules = [
   MdTooltipModule,
   MdNativeDateModule,
   StyleModule,
-  AngularMultiSelectModule 
+  AngularMultiSelectModule
 ];
 
 @NgModule({
