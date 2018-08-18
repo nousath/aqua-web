@@ -38,6 +38,7 @@ export class DailyComponent {
   isFilter = false;
   isUpload = false;
   uploader: FileUploader;
+  selectedDate: String;
   // data: Attendance;
 
 
@@ -164,13 +165,29 @@ export class DailyComponent {
       }
 
       this.dailyAttendnace.filters.properties['ofDate']['value'] = moment(e.date).toISOString()
+      this.selectedDate = moment(e.date).startOf('day').toISOString()
 
       setTimeout(() => this.getAttendance(), 1)
     });
     $('#dateSelector').datepicker('setDate', new Date());
+    
   }
   downloadlink(type: string) {
     this.router.navigate(['pages/attendances/reports'], { queryParams: { type: type } });
+  }
+  updateDayEvent(empId: string) {
+    // if (item.ofDate < new Date().toISOString()) {
+      this.router.navigate([`/pages/attendances/daily/${empId}/attendance-logs/${this.selectedDate}`])
+    // }
+  }
+  regenerate() {
+    const model = {
+      period: 'day',
+      date: this.dailyAttendnace.filters.properties['ofDate']['value'] || moment().toISOString()
+    }
+    this.amsAttendanceService.attendance.simplePost(model, 'regenerate').then(() => {
+      this.toastyService.info({ title: 'Status', msg: 'Submitted' })
+    })
   }
   import() {
     const dialogRef: MdDialogRef<FileUploaderDialogComponent> = this.dialog.open(FileUploaderDialogComponent);

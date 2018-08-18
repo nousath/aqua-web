@@ -311,3 +311,17 @@ input:-ms-input-placeholder {
     text-align: center;
     font-weight: 700;
 }
+
+@media only screen and (max-width:600px) {
+    .loginContainer .card {
+        width: 100%;
+        min-height: 501px;
+        overflow-y: auto;
+        margin-top: 15%;
+    }
+    .loginContainer {
+        width: 100%;
+        margin: 0 auto;
+        margin-top: 2%;
+    }
+}
