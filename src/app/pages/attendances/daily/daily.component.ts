@@ -132,7 +132,8 @@ export class DailyComponent {
   addAttendance(item: Attendance) {
     const dialogRef: MdDialogRef<BulkTimeLogsDialogComponent> = this.dialog.open(BulkTimeLogsDialogComponent, {
       panelClass: 'app-full-bleed-dialog',
-      width: '50%'
+      width: '50%',
+      data:{}
     });
   }
 
@@ -140,7 +141,9 @@ export class DailyComponent {
     const dialogRef: MdDialogRef<BulkTimeLogsDialogComponent> = this.dialog.open(BulkTimeLogsDialogComponent, {
       panelClass: 'app-full-bleed-dialog',
       width: '50%',
-      height: '50%'
+      height: '50%',
+      data:{}
+      
     });
 
     dialogRef.afterClosed().subscribe(result => {

@@ -19,6 +19,8 @@ import 'rxjs';
 import { Http } from '@angular/http';
 import { Location } from '@angular/common';
 import { AddAttendanceLogsComponent } from '../../../shared/components/add-attendance-logs/add-attendance-logs.component';
+import { MdDialogRef, MdDialog } from '@angular/material';
+import { BulkTimeLogsDialogComponent } from '../../../shared/components/bulk-time-logs-dialog/bulk-time-logs-dialog.component';
 
 
 @Component({
@@ -61,7 +63,7 @@ export class AttendanceLogsComponent implements OnInit {
     private http: Http,
     private amsEmployeeService: AmsEmployeeService,
     public _location: Location,
-  ) {
+    public dialog: MdDialog) {
     this.employee = new Model({
       api: amsEmployeeService.employeesForAdmin,
       properties: new Employee()
@@ -245,6 +247,17 @@ export class AttendanceLogsComponent implements OnInit {
 
   toggleLocation(loc: TimeLogsLocation) {
     loc.show = !loc.show;
+  }
+
+  addLogs() {
+    const dialogRef: MdDialogRef<BulkTimeLogsDialogComponent> = this.dialog.open(BulkTimeLogsDialogComponent, {
+      panelClass: 'app-full-bleed-dialog',
+      width: '50%',
+      height: '50%',
+      data: {
+        empCode: this.employee.properties.code
+      }
+    });
   }
 
   ngOnInit() {

@@ -17,7 +17,7 @@
                 <tbody style="max-height: 200px; overflow-y: scroll;">
                     <tr *ngFor="let item of logs" [class.invalid]="item.isInValid">
                         <td>
-                            <input class="form-control" type="text" [(ngModel)]="item.code" (change)="validate(item)">
+                            <input class="form-control" type="text" [(ngModel)]="item.code" (change)="validate(item)" [disabled]="data.empCode">
                         </td>
                         <td>
                             <input class="form-control" type="date" [(ngModel)]="item.date" (change)="validate(item)">
@@ -39,9 +39,11 @@
                     </tr>
                     <tr>
                         <td colspan="4"></td>
-                        <td><button md-icon-button (click)="add()">
-                            <md-icon>add_circle_outline</md-icon>
-                        </button></td>
+                        <td>
+                            <button md-icon-button (click)="add()">
+                                <md-icon>add_circle_outline</md-icon>
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
