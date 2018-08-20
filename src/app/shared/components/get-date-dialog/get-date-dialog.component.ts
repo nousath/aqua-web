@@ -37,17 +37,23 @@ export class GetDateDialogComponent implements OnInit {
     this.date = $event.currentTarget.value
   }
 
-  timeUpdated($event) {
-    console.log($event)
+  timeUpdated(time: string) {
     const today = new Date();
-    this.time = $event.currentTarget.value
-    const checkTimes: string[] = this.time.split(':');
+    const checkTimes: string[] = time.split(':');
     this.current = moment(today).hours(parseInt(checkTimes[0])).minutes(parseInt(checkTimes[1])).toDate()
     this.date = this.current.toISOString()
   }
 
   continue() {
     const date = moment(this.date).toDate()
+    this.dialogRef.close(date);
+  }
+
+  extendShift() {
+    console.log(this.date)
+    this.timeUpdated(this.date.toString());
+    const date = moment(this.date).toDate()
+    console.log(date)
     this.dialogRef.close(date);
   }
 }
