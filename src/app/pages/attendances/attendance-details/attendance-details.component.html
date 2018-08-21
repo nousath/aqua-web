@@ -20,7 +20,7 @@
 
         <div class="headerBtns" *ngIf="user == 'superadmin'">
             &nbsp;&nbsp;&nbsp;
-            <button (click)="regenerate()" md-icon-button>
+            <button (click)="regenerate()" [mdTooltipPosition]="'above'" mdTooltip="Regenerate" md-icon-button>
                 <md-icon>build</md-icon>
             </button>
             <!-- <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading || isProcessingAttendance" [mdMenuTriggerFor]="appMenu" md-icon-button>

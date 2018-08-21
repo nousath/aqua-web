@@ -17,7 +17,7 @@
             <md-icon>cloud_download</md-icon>
         </button>
 
-        <button (click)="regenerate()" md-icon-button>
+        <button (click)="regenerate()" [mdTooltipPosition]="'above'" mdTooltip="Regenerate" md-icon-button>
             <md-icon>build</md-icon>
         </button>
         <!-- <button [disabled]="monthlyAttendnace?.isLoading || isDownloading || employee?.isProcessing" [mdMenuTriggerFor]="appMenu"

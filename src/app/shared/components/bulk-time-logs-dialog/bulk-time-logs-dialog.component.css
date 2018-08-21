@@ -1,3 +1,21 @@
 tr.invalid .form-control {
     border-color: red;
 }
+.container{
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+.header {
+    color: white;
+    background-color: #2d3349 !important;
+    margin-top: -24px !important;
+    margin-left: -39px !important;
+    margin-right: -39px !important;
+    /* position: fixed;
+    top: 0;
+    right: 0;
+    left: 0; */
+}
+::webkit-scrollbar { 
+    display: none !important;
+}

@@ -65,13 +65,6 @@ export class BulkTimeLogsDialogComponent implements OnInit {
         time: '',
         type: 'checkIn'
       })
-      this.logs.push({
-        position: this.logs.length,
-        code: this.data.empCode,
-        date: '',
-        time: '',
-        type: 'checkOut'
-      })
     } else {
       this.logs.push({
         position: this.logs.length,
@@ -79,13 +72,6 @@ export class BulkTimeLogsDialogComponent implements OnInit {
         date: '',
         time: '',
         type: 'checkIn'
-      })
-      this.logs.push({
-        position: this.logs.length,
-        code: '',
-        date: '',
-        time: '',
-        type: 'checkOut'
       })
     }
   }
