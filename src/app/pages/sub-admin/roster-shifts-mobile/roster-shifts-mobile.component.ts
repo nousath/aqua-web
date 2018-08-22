@@ -23,6 +23,9 @@ export class RosterShiftsMobileComponent implements OnInit {
   @Output()
   dateChanged = new EventEmitter<Date>();
 
+  @Output()
+  dynamicEmployee = new EventEmitter<Date>();
+
   @Input()
   date: Date;
 
@@ -71,15 +74,14 @@ export class RosterShiftsMobileComponent implements OnInit {
     })
   }
   getDetails(effectiveShift: EffectiveShift[], shiftTypes: ShiftType[]) {
-    console.log(effectiveShift)
-    console.log(this.date)
     this.effective = effectiveShift
     this.types = shiftTypes
     this.currentDate = this.date
-    console.log(this.effective)
-    console.log(this.types)
   }
 
+  toggleDynamicShift(employee) {
+    this.dynamicEmployee.emit(employee);
+  }
   ngOnInit() {
   }
 

@@ -138,7 +138,7 @@
         </div>
         <div class="mobileView">
             <aqua-roster-shifts-mobile *ngIf="effectiveShifts?.items?.length > 0" [shiftTypes]="shiftTypes.items" [effectiveShift]="effectiveShifts.items"
-                (dateChanged)="getData($event)" [date]="selectedDate"></aqua-roster-shifts-mobile>
+                (dateChanged)="getData($event)" (dynamicEmployee)="getEmployeeStatus($event)" [date]="selectedDate"></aqua-roster-shifts-mobile>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="custom_pagination">

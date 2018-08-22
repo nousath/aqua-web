@@ -239,6 +239,10 @@ export class RosterShiftsComponent implements OnInit {
     this.getEffectiveShift(this.date);
   }
 
+  getEmployeeStatus($event){
+    this.toggleDynamicShift($event)
+  }
+
   ngOnInit() {
     const week = this.activatedRoute.snapshot.params['week']
     if (week) {
