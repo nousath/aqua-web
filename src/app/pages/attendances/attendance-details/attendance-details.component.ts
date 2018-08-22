@@ -405,7 +405,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
 
   regenerate() {
     const model = {
-      eId: this.empId,
+      employee: this.employee,
       period: 'month',
       date: this.attendance.properties['ofDate'] || moment().toISOString()
     }

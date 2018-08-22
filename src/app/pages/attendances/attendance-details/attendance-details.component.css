@@ -12,6 +12,10 @@
     float: left;
 }
 
+.calBox h5{
+    margin-bottom: 0px !important;
+}
+
 .day {
     cursor: pointer;
 }
@@ -203,3 +207,26 @@ button.mat-menu-item {
     background: #ffffff url(images/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x;
     color: #212121;
 } */
+
+.shiftCount{
+    width: 90%;
+    height: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.fullShift {
+    float: left;
+    width: 33% !important;
+    height: 10px !important;
+    background-color: green;
+    border: #f1f1f1 1px solid;
+    padding-left: 3%;
+}
+.halfShift {
+    float: left;
+    width: 16% !important;
+    height: 10px !important;
+    background-color: green;
+    border: #f1f1f1 1px solid;
+    padding-left: 3%;
+}

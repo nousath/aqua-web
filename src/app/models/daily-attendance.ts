@@ -33,9 +33,10 @@ export class Attendance {
   status: string;
   checkIn: Date;
   checkOut: Date;
-  checkOutExtend: Date;
+  checkOutExtend: string;
   hoursWorked: number;
   minsWorked: number;
+  needsAction:string;
   units: {
     earned: Number,
     consumed: Number

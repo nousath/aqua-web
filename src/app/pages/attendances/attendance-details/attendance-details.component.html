@@ -163,7 +163,8 @@
                 <br>
                 <div class="calBox dayName" *ngFor="let item of days">{{item}}</div>
                 <div class="calBox" *ngFor="let item of emptyStartDays"></div>
-                <div class="calBox day corners shadow" *ngFor="let item of events;let i = index" (click)="updateDayEvent(item)" [ngClass]="{
+                <div class="calBox day corners shadow" [mdTooltipPosition]="'above'" mdTooltip="{{item.needsAction}}" *ngFor="let item of events;let i = index"
+                    (click)="updateDayEvent(item)" [ngClass]="{
                   'present': item?.status === 'present' || item?.status === 'checkedin',
                   'absent': item?.status === 'absent'  && item?.shift?.status === 'working',
                   'leave': item?.status === 'onleave' || item?.status === 'halfday' && item?.shift?.status === 'working',
@@ -177,6 +178,9 @@
                     <!--<p>{{i}} {{item?.ofDate | date}}</p>-->
                     <!--<p>{{item?.ofDate}}</p>-->
                     <!--<div *ngIf="item?.shift?.status == 'working'">-->
+                    <p *ngIf="item?.checkOutExtend" style="height: 10px;">
+                        <img *ngIf="!employee?.properties?.picUrl" alt="img" src="assets/images/extend.png" width="60%" height="8px">
+                    </p>
                     <p *ngIf="item?.status === 'present'
                      || item?.status === 'checkedin'
                      || item?.status === 'missswipe'
@@ -191,6 +195,25 @@
                     || item?.status === 'halfday'">
                         Out - {{item?.checkOut | date:'shortTime'}}
                     </p>
+                    <div class="shiftCount" *ngIf="item?.count >= 1.1 && item.count <=1.5">
+                        <div class="fullShift"></div>
+                        <div class="halfShift"></div>
+                        <div></div>
+                    </div>
+                    <div class="shiftCount" *ngIf="item?.count > 1.5 && item.count <=2">
+                        <div class="fullShift"></div>
+                        <div class="fullShift"></div>
+                    </div>
+                    <div class="shiftCount" *ngIf="item?.count > 2 && item.count <=2.5">
+                        <div class="fullShift"></div>
+                        <div class="fullShift"></div>
+                        <div class="halfShift"></div>
+                    </div>
+                    <div class="shiftCount" *ngIf="item?.count > 2.5 ">
+                        <div class="fullShift"></div>
+                        <div class="fullShift"></div>
+                        <div class="fullShift"></div>
+                    </div>
                     <p *ngIf="item?.status === 'onleave'
                     || item?.status === 'absent'
                     && item?.shift?.status === 'working'">

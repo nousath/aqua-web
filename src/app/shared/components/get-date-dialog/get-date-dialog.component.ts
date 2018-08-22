@@ -52,7 +52,7 @@ export class GetDateDialogComponent implements OnInit {
   extendShift() {
     console.log(this.date)
     this.timeUpdated(this.date.toString());
-    const date = moment(this.date).toDate()
+    const date = moment(this.date).toDate().toISOString();
     console.log(date)
     this.dialogRef.close(date);
   }

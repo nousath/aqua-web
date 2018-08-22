@@ -368,8 +368,8 @@ export class ShiftPickerComponent implements OnInit {
     const component = dialogRef.componentInstance;
     component.title = 'Please Enter Time'
 
-    dialogRef.afterClosed().subscribe((response: any) => {
-      if (response === false) { return; }
+    dialogRef.afterClosed().subscribe((response: string) => {
+      if (!response) { return; }
       this.attendance.checkOutExtend = response
       this.amsAttendanceService.attendance.update(`${attendanceId}/extendShift`, this.attendance as any)
     });
