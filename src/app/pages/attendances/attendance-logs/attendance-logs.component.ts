@@ -260,17 +260,17 @@ export class AttendanceLogsComponent implements OnInit {
   }
 
   canMoveNext(item: TimeLogs) {
-    let diff = moment(this.ofDate).diff(moment(item.time), 'h')
+    const diff = moment(this.ofDate).diff(moment(item.time), 'h')
     return diff <= 12;
   }
 
   canMovePrevious(item: TimeLogs) {
-    let diff = moment(this.ofDate).diff(moment(item.time), 'h')
+    const diff = moment(this.ofDate).diff(moment(item.time), 'h')
     return diff >= -12;
   }
 
   moveNext(item: TimeLogs) {
-    let date = moment(this.ofDate).add(1, 'd').toISOString()
+    const date = moment(this.ofDate).add(1, 'd').toISOString()
     this.amsTimelogsService.timeLogs.simplePost({
       from: {
         id: this.attendance.id
@@ -286,7 +286,7 @@ export class AttendanceLogsComponent implements OnInit {
   }
 
   movePrevious(item: TimeLogs) {
-    let date = moment(this.ofDate).subtract(1, 'd').toISOString()
+    const date = moment(this.ofDate).subtract(1, 'd').toISOString()
     this.amsTimelogsService.timeLogs.simplePost({
       from: {
         id: this.attendance.id
@@ -300,7 +300,7 @@ export class AttendanceLogsComponent implements OnInit {
       this.toastyService.info({ title: 'Time Log', msg: `moved to ${moment(date).format('DD-MM-YYYY')}` })
     })
   }
-  
+
   addLogs() {
     const dialogRef: MdDialogRef<BulkTimeLogsDialogComponent> = this.dialog.open(BulkTimeLogsDialogComponent, {
       panelClass: 'app-full-bleed-dialog',
