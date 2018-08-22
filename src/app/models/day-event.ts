@@ -11,4 +11,5 @@ export class DayEvent {
   shift: Shift = new Shift();
   timeLogs: TimeLogs[];
   employee: { id: string } = { id: '' };
+  checkOutExtend: string;
 }
