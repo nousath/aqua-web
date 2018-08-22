@@ -247,6 +247,58 @@ export class AttendanceLogsComponent implements OnInit {
     loc.show = !loc.show;
   }
 
+  showNextDate() {
+    this.ofDate = moment(this.ofDate).add(1, 'd').toDate();
+    this.getAttendance();
+  }
+
+  showPreviousDate() {
+    this.ofDate = moment(this.ofDate).subtract(1, 'd').toDate();
+    this.getAttendance();
+  }
+
+  canMoveNext(item: TimeLogs) {
+    let diff = moment(this.ofDate).diff(moment(item.time), 'h')
+    return diff <= 12;
+  }
+
+  canMovePrevious(item: TimeLogs) {
+    let diff = moment(this.ofDate).diff(moment(item.time), 'h')
+    return diff >= -12;
+  }
+
+  moveNext(item: TimeLogs) {
+    let date = moment(this.ofDate).add(1, 'd').toISOString()
+    this.amsTimelogsService.timeLogs.simplePost({
+      from: {
+        id: this.attendance.id
+      },
+      to: {
+        ofDate: date
+      },
+      timeLog: item
+    }, 'move').then(() => {
+      this.getAttendance();
+      this.toastyService.info({ title: 'Time Log', msg: `moved to ${moment(date).format('DD-MM-YYYY')}` })
+    })
+  }
+
+  movePrevious(item: TimeLogs) {
+    let date = moment(this.ofDate).subtract(1, 'd').toISOString()
+    this.amsTimelogsService.timeLogs.simplePost({
+      from: {
+        id: this.attendance.id
+      },
+      to: {
+        ofDate: date
+      },
+      timeLog: item
+    }, 'move').then(() => {
+      this.getAttendance();
+      this.toastyService.info({ title: 'Time Log', msg: `moved to ${moment(date).format('DD-MM-YYYY')}` })
+    })
+  }
+
   ngOnInit() {
   }
   backClicked() {
