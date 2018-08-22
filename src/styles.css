@@ -469,3 +469,21 @@ display: block;
     color: black;
     padding: 0px;
 }
+
+.selected-list .c-list .c-token {
+    list-style: none;
+    padding: 0px !important;
+    background:white !important;
+    color: black !important;
+    border-radius: 2px;
+    margin-right: 4px;
+    margin-top: -5px !important;
+    margin-bottom: -34px;
+    float: left;
+    position: relative;
+    padding-right: 0px !important;
+}
+.selected-list .c-list .c-token .c-remove svg {
+    display: none !important;
+    fill: black;
+}
