@@ -172,68 +172,73 @@
                   'weekoff': item?.status === 'weekoff' || (item?.shift?.status === 'weekoff' && (item?.status !== 'present' && item?.status !== 'checkedin' && item?.status !== 'missswipe')),
                    'holiday':item?.status === 'holiday' || (item?.shift?.status === 'holiday' && (item?.status !== 'present' && item?.status !== 'checkedin' && item?.status !== 'missswipe'))
                   }">
-                    <h5>
-                        <b>{{getDate(item?.ofDate)}}</b>
-                    </h5>
-                    <!--<p>{{i}} {{item?.ofDate | date}}</p>-->
-                    <!--<p>{{item?.ofDate}}</p>-->
-                    <!--<div *ngIf="item?.shift?.status == 'working'">-->
-                    <p *ngIf="item?.checkOutExtend" style="height: 10px;">
-                        <img *ngIf="!employee?.properties?.picUrl" alt="img" src="assets/images/extend.png" width="60%" height="8px">
-                    </p>
-                    <p *ngIf="item?.status === 'present'
-                     || item?.status === 'checkedin'
-                     || item?.status === 'missswipe'
-                     || item?.status === 'checked-in-again'
-                     || item?.status === 'halfday'">
-                        In - {{item?.checkIn | date:'shortTime'}}
-                    </p>
-                    <p *ngIf="item?.status === 'present'
-                    || item?.status === 'checkedin'
-                    || item?.status === 'missswipe'
-                    || item?.status === 'checked-in-again'
-                    || item?.status === 'halfday'">
-                        Out - {{item?.checkOut | date:'shortTime'}}
-                    </p>
-                    <div class="shiftCount" *ngIf="item?.count >= 1.1 && item.count <=1.5">
-                        <div class="fullShift"></div>
-                        <div class="halfShift"></div>
-                        <div></div>
-                    </div>
-                    <div class="shiftCount" *ngIf="item?.count > 1.5 && item.count <=2">
-                        <div class="fullShift"></div>
-                        <div class="fullShift"></div>
-                    </div>
-                    <div class="shiftCount" *ngIf="item?.count > 2 && item.count <=2.5">
-                        <div class="fullShift"></div>
-                        <div class="fullShift"></div>
-                        <div class="halfShift"></div>
-                    </div>
-                    <div class="shiftCount" *ngIf="item?.count > 2.5 ">
-                        <div class="fullShift"></div>
-                        <div class="fullShift"></div>
-                        <div class="fullShift"></div>
-                    </div>
-                    <p *ngIf="item?.status === 'onleave'
-                    || item?.status === 'absent'
-                    && item?.shift?.status === 'working'">
-                        <span class="capitalize">{{item?.status}}</span>
-                    </p>
-                    <p *ngIf="item?.status === 'absent' 
-                    &&  item?.shift?.status === 'weekoff'">
-                        <span class="capitalize">{{item?.shift?.status}}</span>
-                    </p>
+                    <div class="dayTab">
+                        <h5>
+                            <b>{{getDate(item?.ofDate)}}</b>
+                        </h5>
+                        <!--<p>{{i}} {{item?.ofDate | date}}</p>-->
+                        <!--<p>{{item?.ofDate}}</p>-->
+                        <!--<div *ngIf="item?.shift?.status == 'working'">-->
+                        <p style="height: 10px;">
+                            <img *ngIf="item?.checkOutExtend" alt="img" src="assets/images/extend.png" width="60%" height="8px">
+                        </p>
+                        <p *ngIf="item?.status === 'present'
+                        || item?.status === 'checkedin'
+                        || item?.status === 'missswipe'
+                        || item?.status === 'checked-in-again'
+                        || item?.status === 'halfday'">
+                            In - {{item?.checkIn | date:'shortTime'}}
+                        </p>
+                        <p *ngIf="item?.status === 'present'
+                        || item?.status === 'checkedin'
+                        || item?.status === 'missswipe'
+                        || item?.status === 'checked-in-again'
+                        || item?.status === 'halfday'">
+                            Out - {{item?.checkOut | date:'shortTime'}}
+                        </p>
 
-                    <p *ngIf="item?.status === 'weekoff'">
-                        <span class="capitalize">{{item?.status}}</span>
-                    </p>
-                    <p *ngIf="item?.shift?.status === 'holiday' 
-                    && (item?.status !== 'present' 
-                    && item?.status !== 'checkedin' 
-                    && item?.status !== 'missswipe')">
-                        <span class="capitalize">{{item?.shift?.holiday?.name}}</span>
-                    </p>
-                    <!--</div>-->
+                        <p *ngIf="item?.status === 'onleave'
+                        || item?.status === 'absent'
+                        && item?.shift?.status === 'working'">
+                            <span class="capitalize">{{item?.status}}</span>
+                        </p>
+                        <p *ngIf="item?.status === 'absent' 
+                        &&  item?.shift?.status === 'weekoff'">
+                            <span class="capitalize">{{item?.shift?.status}}</span>
+                        </p>
+
+                        <p *ngIf="item?.status === 'weekoff'">
+                            <span class="capitalize">{{item?.status}}</span>
+                        </p>
+                        <p *ngIf="item?.shift?.status === 'holiday' 
+                        && (item?.status !== 'present' 
+                        && item?.status !== 'checkedin' 
+                        && item?.status !== 'missswipe')">
+                            <span class="capitalize">{{item?.shift?.holiday?.name}}</span>
+                        </p>
+                        <!--</div>-->
+                    </div>
+                    <div class="countShiftTab">
+                        <div class="shiftCount" *ngIf="item?.count >= 1.1 && item.count <=1.5">
+                            <div class="fullShift"></div>
+                            <div class="halfShift"></div>
+                            <div></div>
+                        </div>
+                        <div class="shiftCount" *ngIf="item?.count > 1.5 && item.count <=2">
+                            <div class="fullShift"></div>
+                            <div class="fullShift"></div>
+                        </div>
+                        <div class="shiftCount" *ngIf="item?.count > 2 && item.count <=2.5">
+                            <div class="fullShift"></div>
+                            <div class="fullShift"></div>
+                            <div class="halfShift"></div>
+                        </div>
+                        <div class="shiftCount" *ngIf="item?.count > 2.5 ">
+                            <div class="fullShift"></div>
+                            <div class="fullShift"></div>
+                            <div class="fullShift"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </md-card>

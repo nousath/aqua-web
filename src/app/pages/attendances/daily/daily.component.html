@@ -89,7 +89,8 @@
                         <!-- <td class="tdWidth">{{item?.attendance?.hoursWorked || '--'}}</td> -->
                         <td class="tdWidth">
                             <ng-template #elsePart>
-                                <span>{{item?.status?.toLowerCase() == 'checkedin' ? 'Present' : item?.status}}</span>
+                                <span>{{item?.status?.toLowerCase() == 'checkedin' ? 'Present' : item?.status}}</span><br>
+                                <span *ngIf="item.needsAction">({{item?.needsAction}})</span>
                             </ng-template>
                             <span *ngIf="item.status == 'absent' && (item.shift.status === 'weekOff' || item.shift.status === 'holiday'); else elsePart">{{item.shift.status | titlecase}}</span>
                         </td>

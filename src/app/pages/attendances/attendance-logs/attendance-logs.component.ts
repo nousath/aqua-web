@@ -48,6 +48,8 @@ export class AttendanceLogsComponent implements OnInit {
   paramsId: string;
   paramsDate: Date;
   checkedDate = true;
+  timeLogsLength = 1;
+  index = 1
   addAttendanceLogs = [{
     day: false,
     time: '',
@@ -168,6 +170,7 @@ export class AttendanceLogsComponent implements OnInit {
         workSpan = new Date(this.attendance.checkOut).getTime() - new Date(this.attendance.checkIn).getTime();
       }
 
+      this.timeLogsLength = this.attendance.timeLogs.length;
       if (shiftSpan) {
         this.extraShiftCount = (workSpan / shiftSpan) - 1
 
@@ -308,6 +311,12 @@ export class AttendanceLogsComponent implements OnInit {
       height: '50%',
       data: {
         empCode: this.employee.properties.code
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.getAttendance()
       }
     });
   }
