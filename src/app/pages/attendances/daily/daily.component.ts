@@ -192,6 +192,16 @@ export class DailyComponent {
       this.toastyService.info({ title: 'Status', msg: 'Submitted' })
     })
   }
+
+  clearAction(item: any){
+    const id = item.id
+    const model = item
+    this.amsAttendanceService.attendance.update(null,model,null,`${id}/clearAction`).then(() => {
+      this.getAttendance();
+      this.toastyService.info({ title: 'Status', msg: 'Submitted' })
+    })
+  }
+
   import() {
     const dialogRef: MdDialogRef<FileUploaderDialogComponent> = this.dialog.open(FileUploaderDialogComponent);
     const component = dialogRef.componentInstance;
