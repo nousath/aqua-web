@@ -80,6 +80,7 @@ import { BulkTimeLogsDialogComponent } from './components/bulk-time-logs-dialog/
 import { AddAttendanceLogsComponent } from './components/add-attendance-logs/add-attendance-logs.component';
 import { DatesService } from './services/dates.service';
 import { GetDateDialogComponent } from './components/get-date-dialog/get-date-dialog.component';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 
 
 export const MaterialModules = [
@@ -114,7 +115,8 @@ export const MaterialModules = [
   MdToolbarModule,
   MdTooltipModule,
   MdNativeDateModule,
-  StyleModule
+  StyleModule,
+  AngularMultiSelectModule
 ];
 
 @NgModule({

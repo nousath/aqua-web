@@ -1,11 +1,27 @@
-<div md-dialog-title>
-    {{title}}
+<div *ngIf="title === 'In Lieu Of'">
+    <div md-dialog-title>
+        {{title}}
+    </div>
+    <div md-dialog-content class="rows">
+        <input class="form-control" type="date" [(ngModel)]="date" (change)="updated($event)">
+    </div>
+    <div md-dialog-actions class="controls-row">
+        <span class="spacer"></span>
+        <button md-button (click)="dialogRef.close(false)">{{cancelText}}</button>
+        <button md-button (click)="continue()" color="primary">{{continueText}}</button>
+    </div>
 </div>
-<div md-dialog-content class="rows">
-    <input class="form-control" type="date" [ngModel]="date" (change)="updated($event)">
-</div>
-<div md-dialog-actions class="controls-row">
-    <span class="spacer"></span>
-    <button md-button (click)="dialogRef.close(false)">{{cancelText}}</button>
-    <button md-button (click)="continue()" color="primary">{{continueText}}</button>
+<div *ngIf="title === 'Please Enter Time'">
+    <div md-dialog-title>
+        {{title}}
+    </div>
+    <div md-dialog-content class="rows">
+        <!-- <input class="form-control" type="datetime" [ngModel]="date" (change)="timeUpdated($event)">  -->
+        <input class="form-control" type="time" [(ngModel)]="date">
+    </div>
+    <div md-dialog-actions class="controls-row">
+        <span class="spacer"></span>
+        <button md-button (click)="dialogRef.close(false)">{{cancelText}}</button>
+        <button md-button (click)="extendShift()" color="primary">{{continueText}}</button>
+    </div>
 </div>

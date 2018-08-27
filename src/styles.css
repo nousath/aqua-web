@@ -445,3 +445,45 @@ display: block;
 .footer {
     margin-top: 10px;
 }
+
+.mat-select-underline {
+    display: none !important;
+}
+
+.mat-select-trigger {
+    top: -5px;
+}
+
+.selected-list .c-btn {
+    width: 100%;
+    box-shadow: none !important;
+    cursor: pointer;
+    display: flex;
+    position: relative;
+    height: 34px;
+    border-radius: 4px !important;
+}
+
+.selected-list .c-btn .c-list .c-token{
+    background-color: white;
+    color: black;
+    padding: 0px;
+}
+
+.selected-list .c-list .c-token {
+    list-style: none;
+    padding: 0px !important;
+    background:white !important;
+    color: black !important;
+    border-radius: 2px;
+    margin-right: 4px;
+    margin-top: -5px !important;
+    margin-bottom: -34px;
+    float: left;
+    position: relative;
+    padding-right: 0px !important;
+}
+.selected-list .c-list .c-token .c-remove svg {
+    display: none !important;
+    fill: black;
+}

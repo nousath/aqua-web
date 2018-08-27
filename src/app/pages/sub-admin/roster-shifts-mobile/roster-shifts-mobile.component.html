@@ -1,0 +1,23 @@
+    <md-card class="card">
+        <div class="row text-center noData" *ngIf="effective?.length == 0">
+            <h5>
+                <b>no data to display !</b>
+            </h5>
+        </div>
+        <table class="table">
+            <tbody class="primary_tbody">
+                <tr *ngFor="let item of effective">
+                    <td class="customStyle">{{item.employee.name || '--'}}
+                        <br>
+                        <span class="empCode">{{item.employee.code || '--'}}</span>
+                    </td>
+                    <td class="text-center auto">
+                        <md-slide-toggle [checked]="item.employee.isDynamicShift" (change)="toggleDynamicShift(item.employee)"></md-slide-toggle>
+                    </td>
+                    <td class="tdStyle">
+                        <aqua-shift-picker [view]="mobileView" [shiftTypes]="types" [effectiveShift]="item" [date]="currentDate"></aqua-shift-picker>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </md-card>

@@ -1,0 +1,61 @@
+<md-card>
+  <div class="dialog_Header text-center">
+    <h5>
+      <b>Shifts</b>
+    </h5>
+  </div>
+  <br>
+  <div>
+    <div>
+      <h5 class="text-center" s>
+        <b>Current Shifts</b>
+      </h5>
+    </div>
+    <table class="table table-condensed table-bordered">
+      <thead class="bordered-thead">
+        <tr>
+          <th class="text-center">
+            From Date
+          </th>
+          <th class="text-center">
+            Shift
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="text-center">{{currentShiftDate | date:'MMM d, EEE'}}</td>
+          <td class="text-center">{{currentShift}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+    <div>
+      <h5 class="text-center">
+        <b>Upcoming Shifts</b>
+      </h5>
+    </div>
+    <table class="table table-condensed table-bordered">
+      <tr>
+        <th class="text-center">
+          <b>From Date</b>
+        </th>
+        <th class="text-center">Shift</th>
+        <th>
+          <md-icon (click)="addShift()">add_circle_outline</md-icon>
+        </th>
+      </tr>
+      <tr *ngFor="let item of upcomingShift">
+        <td class="text-center">
+          {{item.date | date:'MMM d, EEE'}}
+        </td>
+        <td class="text-center">
+          {{item.shiftType.name}}
+        </td>
+        <td>
+          <md-icon (click)="removeShift(item)">remove_circle_outline</md-icon>
+        </td>
+      </tr>
+    </table>
+  </div>
+</md-card>

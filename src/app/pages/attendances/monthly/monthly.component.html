@@ -11,11 +11,15 @@
             <input id="monthSelector" type="text" class="form-control input-sm calendar no-spin">
         </div>
         <button [disabled]="monthlyAttendnace?.isLoading" md-icon-button mdTooltip="Filters" [mdTooltipPosition]="'above'" (click)="isFilter = !isFilter">
-                <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
-            </button>
-        <button (click)="downloadlink()" md-icon-button> <md-icon>cloud_download</md-icon> </button>
+            <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
+        </button>
+        <button (click)="downloadlink()" md-icon-button>
+            <md-icon>cloud_download</md-icon>
+        </button>
 
-        <button (click)="regenerate()" md-icon-button> <md-icon>build</md-icon> </button>
+        <button (click)="regenerate()" [mdTooltipPosition]="'above'" mdTooltip="Regenerate" md-icon-button>
+            <md-icon>build</md-icon>
+        </button>
         <!-- <button [disabled]="monthlyAttendnace?.isLoading || isDownloading || employee?.isProcessing" [mdMenuTriggerFor]="appMenu"
                 md-icon-button>
                 <md-icon>cloud_download</md-icon>
@@ -61,7 +65,7 @@
 
 <div class="row">
     <md-card class="card">
-        <div class="table-responsive">
+        <div class="table-responsive full">
             <table class="table table-condensed table-hover">
                 <thead class="primary_thead">
                     <tr>
@@ -93,10 +97,13 @@
                 </tbody>
             </table>
         </div>
+        <div class="mini">
+            <aqua-monthly-mobile-view [monthlyAttendance]="monthlyAttendnace.items"></aqua-monthly-mobile-view>
+        </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="custom_pagination">
                 <pagination-controls id="foo" (pageChange)="monthlyAttendnace.pageNo = $event;getAttendance();"></pagination-controls>
-                <label>Total Records: {{monthlyAttendnace.totalRecords}}</label>
+                <label class="full">Total Records: {{monthlyAttendnace.totalRecords}}</label>
                 <div class="pageSize">
                     <label>Page Size:</label>
                     <select name="pageSize" [(ngModel)]="monthlyAttendnace.pageSize" (change)="monthlyAttendnace.pageNo = 1;getAttendance();">

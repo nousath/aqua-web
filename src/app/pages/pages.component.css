@@ -1,6 +1,9 @@
 .example-icon {
     padding: 0 14px;
 }
+.container {
+    overflow:scroll;
+}
 
 .logout {
     position: absolute;
@@ -19,6 +22,12 @@
     top: 0;
     z-index: 3;
     box-shadow: 0 0 9px 0px black;
+}
+.logoHeader{
+    display: none;
+}
+.menuBtn{
+    display: none;
 }
 
 .bodyPart {
@@ -57,6 +66,7 @@
 .searchbar {
     width: 67%;
     margin-right: 9%;
+    display: block;
 }
 
 .searchbarinput {
@@ -99,13 +109,13 @@
     }
 }
 
-@media only screen and (max-width:676px) {
+/* @media only screen and (max-width:676px) {
     .bodyPart {
         margin-top: 13%;
     }
-}
+} */
 
-@media only screen and (max-width:520px) {
+@media only screen and (max-width:600px) {
     .loginForm {
         display: none;
     }
@@ -113,10 +123,31 @@
         display: flex !important;
     }
     .bodyPart {
-        margin-top: 24%;
+        margin-top: 16%;
     }
+    .loginHeader {
+        width: 100%
+    }
+    .searchbar   {
+        display: none;
+    }
+    .logoHeader{
+        display: block;
+    }
+    .menuBtn{
+        width: 40px;
+        float: left;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 10px;
+        display: block;
+    }
+    .menuHeader{
+        display: block;
+    }
+    
 }
-
+/* 
 @media only screen and (max-width:520px) {
     .bodyPart {
         margin-top: 25%;
@@ -148,7 +179,7 @@
     .bodyPart {
         margin-top: 40%;
     }
-}
+} */
 
 .menu {
     background-color: #757575;
@@ -181,6 +212,15 @@ h5 {
     cursor: pointer;
 }
 
-.leftIcon {
-    float: right;
-}
+.nav-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  md-sidenav {
+    width: 200px;
+  }
+  

@@ -1,27 +1,37 @@
 <md-spinner class="custom_spinner" *ngIf="isProcessing" mode="indeterminate"></md-spinner>
-<div class="shift" [class.hasValue]="selectedShiftType && !isDynamic" [class.continue]="!selectedShiftType || isDynamic" [style.border-color]="shiftColour()">
-    <button [mdMenuTriggerFor]="dayMenu" class="display-text" [disabled]="isProcessing" (click)="getMenuItems()">
+<div class="shift" [class.hasValue]="selectedShiftType && !isDynamic" [class.continue]="!selectedShiftType || isDynamic"
+    [style.border-color]="shiftColour()">
+    <button [mdMenuTriggerFor]="dayMenu" class="display-text" [disabled]="isProcessing" (click)="getMenuItems()" [class.fullView]="view">
         <ng-container *ngIf="!isPast">
             <div *ngIf="isDynamic" [class.compressed]="isOff && leave">
-                <span *ngIf="!isOff && !leave" class="name" mdTooltip="Shift is same as previous day">&raquo;</span>
-                <span *ngIf="leave" class="badge info"  [class.first]="leaveSummary.first" [class.second]="leaveSummary.second">{{leaveSummary.code}}<span *ngIf="leaveSummary.status === 'submitted'" class="asterisk">*</span></span>
+                <span *ngIf="!isOff && !leave && view === 'mini'" class="name" mdTooltip="Shift is same as previous day">&raquo;</span>
+                <span *ngIf="!isOff && !leave && view === 'full'" class="name" mdTooltip="Shift is same as previous day">{{effectiveShift.previousShift.shiftType.name}}</span>
+                <span *ngIf="leave" class="badge info" [class.first]="leaveSummary.first" [class.second]="leaveSummary.second">{{leaveSummary.code}}
+                    <span *ngIf="leaveSummary.status === 'submitted'" class="asterisk">*</span>
+                </span>
                 <span *ngIf="isOff" class="badge" mdTooltip="Off Day">Off</span>
             </div>
             <div *ngIf="!isDynamic" [class.compressed]="(isOff && leave) || (isOff && selectedShiftType) || (leave && selectedShiftType)">
-                <span *ngIf="!isOff && !leave && !selectedShiftType" class="name" mdTooltip="Shift is same as previous day">&raquo;</span>
+                <span *ngIf="!isOff && !leave && !selectedShiftType && view === 'mini'" class="name" mdTooltip="Shift is same as previous day">&raquo;</span>
+                <span *ngIf="!isOff && !leave && !selectedShiftType && view === 'full'" class="name" mdTooltip="Shift is same as previous day">{{effectiveShift.previousShift.shiftType.name}}</span>
                 <span *ngIf="selectedShiftType" class="name info" mdTooltip="New shift starts from this day"> {{selectedShiftType.name}} </span>
-                <span *ngIf="leave" class="badge info"  [class.first]="leaveSummary.first" [class.second]="leaveSummary.second" mdTooltip="Reason: {{leaveSummary.reason}}">{{leaveSummary.code}}<span *ngIf="leaveSummary.status === 'submitted'" class="asterisk">*</span></span>
+                <span *ngIf="leave" class="badge info" [class.first]="leaveSummary.first" [class.second]="leaveSummary.second" mdTooltip="Reason: {{leaveSummary.reason}}">{{leaveSummary.code}}
+                    <span *ngIf="leaveSummary.status === 'submitted'" class="asterisk">*</span>
+                </span>
                 <span *ngIf="isOff" class="badge" mdTooltip="Off Day">Off</span>
             </div>
         </ng-container>
-        <ng-container *ngIf="isPast" [ngSwitch]="daySummary.status">        
+        <ng-container *ngIf="isPast" [ngSwitch]="daySummary.status">
             <span *ngIf="selectedShiftType" class="name info" mdTooltip="New shift starts from this day"> {{selectedShiftType.name}}</span>
             <br *ngIf="selectedShiftType">
-            <span *ngSwitchCase="'present'"  class="name" [class.sub-text]="selectedShiftType" mdTooltip="Present (In: {{daySummary.attendance.checkIn| date: 'HH:MM'}}, Out: {{daySummary.attendance.checkOut| date: 'HH:MM'}})">&#10003;</span>
+            <span *ngSwitchCase="'present'" class="name" [class.sub-text]="selectedShiftType" mdTooltip="Present (In: {{daySummary.attendance.checkIn| date: 'HH:MM'}}, Out: {{daySummary.attendance.checkOut| date: 'HH:MM'}})">&#10003;</span>
             <span *ngSwitchCase="'missSwipe'" class="name warn" [class.sub-text]="selectedShiftType" mdTooltip="Missed Swipe (In: {{daySummary.attendance.checkIn| date: 'HH:MM'}}, Out: {{daySummary.attendance.checkOut| date: 'HH:MM'}})">M</span>
             <span *ngSwitchCase="'absent'" class="name warn" [class.sub-text]="selectedShiftType" mdTooltip="Absent">A</span>
             <span *ngSwitchCase="'weekOff'" class="badge" mdTooltip="Off Day">Off</span>
-            <div *ngSwitchCase="'onLeave'" class="badge info" [class.first]="leaveSummary.first" [class.second]="leaveSummary.second" mdTooltip="Reason: {{leaveSummary.reason}}" >{{leaveSummary.code}}<span *ngIf="leaveSummary.status === 'submitted'" class="asterisk">*</span></div>
+            <div *ngSwitchCase="'onLeave'" class="badge info" [class.first]="leaveSummary.first" [class.second]="leaveSummary.second"
+                mdTooltip="Reason: {{leaveSummary.reason}}">{{leaveSummary.code}}
+                <span *ngIf="leaveSummary.status === 'submitted'" class="asterisk">*</span>
+            </div>
         </ng-container>
     </button>
     <md-menu #dayMenu="mdMenu">
@@ -30,13 +40,18 @@
         <button md-menu-item [mdMenuTriggerFor]="offOptions">Weekly Off</button>
         <button md-menu-item [mdMenuTriggerFor]="leaveOptions" [disabled]="isProcessing">Apply Leave</button>
         <button md-menu-item [mdMenuTriggerFor]="shiftOptions" [disabled]="isDynamic || isPast" (click)="stopPropagation($event)">Shifts</button>
+        <button md-menu-item (click)="stopPropagation($event)" [disabled]="isDynamic || isPast" (click)="extendLeaves()">Extend Shift</button>
     </md-menu>
     <md-menu #offOptions="mdMenu" class="off" xPosition="after" [overlapTrigger]="false">
         <button md-menu-item [disabled]="isPast" (click)="setWeeklyOff()">
             <span>Every Week</span>
             <md-slide-toggle [disabled]="isPast" [checked]="isWeeklyOff"></md-slide-toggle>
         </button>
-        <button md-menu-item [disabled]="leave" (click)="setDayOff()">
+        <button md-menu-item [disabled]="leave" (click)="setDayOff()" *ngIf="userType === 'superadmin' && isPast">
+            <span>This Week</span>
+            <md-slide-toggle [checked]="isDayOff"></md-slide-toggle>
+        </button>
+        <button md-menu-item [disabled]="leave" (click)="setDayOff()" *ngIf="!isPast">
             <span>This Week</span>
             <md-slide-toggle [checked]="isDayOff"></md-slide-toggle>
         </button>
@@ -46,7 +61,7 @@
         <md-divider *ngIf="leaveBalances.length"></md-divider>
         <ng-container *ngIf="leaveBalances.length">
             <button *ngFor="let leaveBalance of leaveBalances" md-menu-item (click)="applyLeave(leaveBalance)">
-              <span>{{leaveBalance.leaveType.name}}({{leaveBalance.days}})</span>
+                <span>{{leaveBalance.leaveType.name}}({{leaveBalance.days}})</span>
             </button>
         </ng-container>
     </md-menu>

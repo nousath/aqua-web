@@ -12,6 +12,8 @@ import { AmsShiftService } from '../../../services/ams/ams-shift.service';
 import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MdDialogRef, MdDialog } from '@angular/material';
+import { FileUploaderDialogComponent } from '../../../shared/components/file-uploader-dialog/file-uploader-dialog.component';
 declare var $: any;
 
 
@@ -27,49 +29,23 @@ export class RosterShiftsComponent implements OnInit {
   change: any;
   date = new Date();
   isDateToday = moment().startOf('day').toDate();
+  selectedDate = new Date();
 
   isDownloading = false;
-  uploader: FileUploader;
   isLoading = true;
   isUpload = false;
   isFilter: boolean;
+
   constructor(
     public activatedRoute: ActivatedRoute,
     private location: Location,
     public router: Router,
+    public dialog: MdDialog,
     private amsEmployeeService: AmsEmployeeService,
     private amsShiftService: AmsShiftService,
     private amsEffectiveShiftService: AmsEffectiveShiftService,
     private toastyService: ToastyService,
-    private store: LocalStorageService) {
-
-    const access_Token: string = this.store.getItem('ams_token');
-    const orgCode = this.store.getItem('orgCode');
-    this.uploader = new FileUploader({
-      url: '/ams/api/effectiveShifts/shiftUpdate/xl',
-      itemAlias: 'record',
-      headers: [{
-        name: 'x-access-token',
-        value: access_Token
-      }, {
-        name: 'org-code',
-        value: orgCode
-      }]
-    });
-
-    this.uploader.onAfterAddingAll = (fileItems: FileItem) => { };
-    this.uploader.onErrorItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => { };
-    this.uploader.onCompleteItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
-      this.isDownloading = true;
-      const res: any = JSON.parse(response);
-      if (!res.isSuccess) {
-        this.isDownloading = false;
-        return toastyService.error({ title: 'Error', msg: 'excel upload failed' })
-      }
-      this.isDownloading = false;
-      this.isUpload = false;
-      this.getEffectiveShift(new Date())
-    };
+  ) {
 
     this.shiftTypes = new Page({
       api: amsShiftService.shiftTypes
@@ -126,22 +102,6 @@ export class RosterShiftsComponent implements OnInit {
     this.getAttendance();
   }
 
-
-  download(date: Date) {
-    this.isDownloading = true;
-    const serverPageInput: ServerPageInput = new ServerPageInput();
-    serverPageInput.query['ofDate'] = date.toISOString();
-    const reportName = `rosterExcel_${moment().format('DD_MMM_YY')}_DailyReport.xlsx`;
-    this.amsEffectiveShiftService.downloadRosterExcel.exportReport(serverPageInput, null, reportName)
-      .then(
-        (data) => {
-          this.isDownloading = false
-        }).catch(err => {
-          this.toastyService.error({ title: 'Error', msg: err });
-          this.isDownloading = false
-        });
-  };
-
   employeeUpdated(effectiveShift: EffectiveShift) {
 
   }
@@ -152,10 +112,27 @@ export class RosterShiftsComponent implements OnInit {
     })
   }
 
-  excel() {
-    this.isUpload = !this.isUpload;
-    this.uploader.clearQueue();
+  import() {
+
+    const dialogRef: MdDialogRef<FileUploaderDialogComponent> = this.dialog.open(FileUploaderDialogComponent);
+    const component = dialogRef.componentInstance;
+    component.uploader = this.amsEffectiveShiftService.effectiveShifts;
+    component.samples = [{
+      name: 'CSV',
+      mapper: 'default',
+      url: 'assets/formats/weekly-roaster.csv'
+    }, {
+      name: 'EXCEL',
+      mapper: 'default',
+      url: 'assets/formats/weekly-roaster.xlsx'
+    }];
+    component.name = 'Weekly Roaster';
+    dialogRef.afterClosed().subscribe();
   }
+
+  export() {
+    this.router.navigate(['pages/attendances/reports'], { queryParams: { type: 'weekly-roaster' } });
+  };
   createWeekPicker() {
     $('#weekSelector').datepicker({
       format: 'dd/mm/yyyy',
@@ -163,9 +140,28 @@ export class RosterShiftsComponent implements OnInit {
       maxViewMode: 2,
       autoclose: true
     }).on('changeDate', (e) => {
-      this.getEffectiveShift(e.date);
+      e.date = moment(e.date).startOf('week')
+      this.date = e.date;
+      this.getAttendance();
+      // this.getEffectiveShift(e.date);
     })
     $('#weekSelector').datepicker('setDate', moment(this.activatedRoute.queryParams['value']['fromDate']).startOf('week').toDate());
+  }
+
+  createDaySelector(){
+
+    $('#daySelector').datepicker({
+      format: 'dd/mm/yyyy',
+      minViewMode: 0,
+      maxViewMode: 2,
+      autoclose: true
+    }).on('changeDate', (ch) => {
+      this.selectedDate = ch.date
+      this.date = ch.date;
+      this.getAttendance();
+    })
+    $('#daySelector').datepicker('setDate',this.selectedDate);
+  
   }
 
   getWeek(currentDate) {
@@ -184,7 +180,9 @@ export class RosterShiftsComponent implements OnInit {
     this.effectiveShifts.fetch().then(() => {
       this.getWeek(this.date);
       this.isLoading = false;
+      console.log(this.effectiveShifts.items.length)
     }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+   
   }
 
   toggleDynamicShift(employee) {
@@ -236,6 +234,15 @@ export class RosterShiftsComponent implements OnInit {
     return this.amsShiftService.shiftColour(shiftType)
   }
 
+  getData($event){
+    this.date = $event;
+    this.getEffectiveShift(this.date);
+  }
+
+  getEmployeeStatus($event){
+    this.toggleDynamicShift($event)
+  }
+
   ngOnInit() {
     const week = this.activatedRoute.snapshot.params['week']
     if (week) {
@@ -245,6 +252,7 @@ export class RosterShiftsComponent implements OnInit {
 
   ngAfterViewInit() {
     this.createWeekPicker();
+    this.createDaySelector()
     this.getAttendance()
   }
 }

@@ -1,57 +1,68 @@
-<div md-dialog-title>
-    <h1>New Time Log</h1>
+<br>
+<div class="row text-center header">
+    <h5>
+        <b>New Time Log</b>
+    </h5>
 </div>
-<div class="rows">
-    <div md-dialog-content>
-        <div class="table-responsive">
-            <table class="table table-condensed table-hover">
-                <thead class="primary_thead">
-                    <tr>
-                        <th width="30%" class="text-center">Employee(code)</th>
-                        <th width="20%" class="text-center">Day</th>
-                        <th width="20%" class="text-center">Time</th>
-                        <th width="20%" class="text-center">Type</th>
-                        <th width="10%" class="text-center"></th>
-                    </tr>
-                </thead>
-                <tbody style="max-height: 200px; overflow-y: scroll;">
-                    <tr *ngFor="let item of logs" [class.invalid]="item.isInValid">
-                        <td>
-                            <input class="form-control" type="text" [(ngModel)]="item.code" (change)="validate(item)">
-                        </td>
-                        <td>
-                            <input class="form-control" type="date" [(ngModel)]="item.date" (change)="validate(item)">
-                        </td>
-                        <td>
-                            <input class="form-control" type="time" [(ngModel)]="item.time" (change)="validate(item)">
-                        </td>
-                        <td>
-                            <select class="form-control" [(ngModel)]="item.type" (change)="validate(item)">
-                                <option [value]="'checkIn'">In</option>
-                                <option [value]="'checkOut'">Out</option>
-                            </select>
-                        </td>
-                        <td>
-                            <button md-icon-button (click)="remove(item)">
-                                <md-icon>remove_circle_outline</md-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="4"></td>
-                        <td><button md-icon-button (click)="add()">
-                            <md-icon>add_circle_outline</md-icon>
-                        </button></td>
-                    </tr>
-                </tbody>
-            </table>
+<br>
+<div class="container">
+
+    <div>
+        <div md-dialog-content>
+            <div class="table-responsive">
+                <table class="table table-condensed table-hover">
+                    <thead class="primary_thead">
+                        <tr>
+                            <th width="30%" class="text-center">Employee(code)</th>
+                            <th width="20%" class="text-center">Day</th>
+                            <th width="20%" class="text-center">Time</th>
+                            <th width="20%" class="text-center">Type</th>
+                            <th width="10%" class="text-center"></th>
+                        </tr>
+                    </thead>
+                    <tbody style="max-height: 200px; overflow-y: scroll;">
+                        <tr *ngFor="let item of logs" [class.invalid]="item.isInValid">
+                            <td>
+                                <input class="form-control" type="text" [(ngModel)]="item.code" (change)="validate(item)" [disabled]="data.empCode">
+                            </td>
+                            <td>
+                                <input class="form-control" type="date" [(ngModel)]="item.date" (change)="validate(item)">
+                            </td>
+                            <td>
+                                <input class="form-control" type="time" [(ngModel)]="item.time" (change)="validate(item)">
+                            </td>
+                            <td>
+                                <select class="form-control" [(ngModel)]="item.type" (change)="validate(item)">
+                                    <option [value]="'checkIn'">In</option>
+                                    <option [value]="'checkOut'">Out</option>
+                                </select>
+                            </td>
+                            <td>
+                                <button md-icon-button (click)="remove(item)">
+                                    <md-icon>remove_circle_outline</md-icon>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4"></td>
+                            <td>
+                                <button md-icon-button (click)="add()">
+                                    <md-icon>add_circle_outline</md-icon>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-
-    <div class="spacer"></div>
-    <div md-dialog-actions class="controls-row">
-        <span class="spacer"></span>
-        <button md-button (click)="dialogRef.close(false)">Cancel</button>
-        <button md-button (click)="save()" color="primary" [disabled]="!logs.length">Save</button>
+    <div>
+        <div class="spacer"></div>
+        <div md-dialog-actions class="controls-row">
+            <span class="spacer"></span>
+            <button md-button (click)="dialogRef.close(false)">Cancel</button>
+            <button md-button (click)="save()" color="primary" [disabled]="!logs.length">Save</button>
+        </div>
+        <br>
     </div>
 </div>

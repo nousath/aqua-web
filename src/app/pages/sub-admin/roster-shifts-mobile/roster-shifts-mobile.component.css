@@ -1,0 +1,19 @@
+input{
+    width: 100%;
+}
+
+td,th{
+    width: 33%;
+}
+
+.auto{
+    width:60px;
+}
+.date{
+    width: 25%;
+}
+@media only screen and (max-width: 600px) {
+    md-card{
+        padding: 0px 15px;
+    }
+}

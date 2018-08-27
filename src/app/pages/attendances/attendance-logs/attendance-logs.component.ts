@@ -19,6 +19,8 @@ import 'rxjs';
 import { Http } from '@angular/http';
 import { Location } from '@angular/common';
 import { AddAttendanceLogsComponent } from '../../../shared/components/add-attendance-logs/add-attendance-logs.component';
+import { MdDialogRef, MdDialog } from '@angular/material';
+import { BulkTimeLogsDialogComponent } from '../../../shared/components/bulk-time-logs-dialog/bulk-time-logs-dialog.component';
 
 
 @Component({
@@ -45,7 +47,9 @@ export class AttendanceLogsComponent implements OnInit {
   nextDayOut = false;
   paramsId: string;
   paramsDate: Date;
-  checkedDate: boolean = true;
+  checkedDate = true;
+  timeLogsLength = 1;
+  index = 1
   addAttendanceLogs = [{
     day: false,
     time: '',
@@ -61,7 +65,7 @@ export class AttendanceLogsComponent implements OnInit {
     private http: Http,
     private amsEmployeeService: AmsEmployeeService,
     public _location: Location,
-  ) {
+    public dialog: MdDialog) {
     this.employee = new Model({
       api: amsEmployeeService.employeesForAdmin,
       properties: new Employee()
@@ -166,6 +170,7 @@ export class AttendanceLogsComponent implements OnInit {
         workSpan = new Date(this.attendance.checkOut).getTime() - new Date(this.attendance.checkIn).getTime();
       }
 
+      this.timeLogsLength = this.attendance.timeLogs.length;
       if (shiftSpan) {
         this.extraShiftCount = (workSpan / shiftSpan) - 1
 
@@ -258,17 +263,17 @@ export class AttendanceLogsComponent implements OnInit {
   }
 
   canMoveNext(item: TimeLogs) {
-    let diff = moment(this.ofDate).diff(moment(item.time), 'h')
+    const diff = moment(this.ofDate).diff(moment(item.time), 'h')
     return diff <= 12;
   }
 
   canMovePrevious(item: TimeLogs) {
-    let diff = moment(this.ofDate).diff(moment(item.time), 'h')
+    const diff = moment(this.ofDate).diff(moment(item.time), 'h')
     return diff >= -12;
   }
 
   moveNext(item: TimeLogs) {
-    let date = moment(this.ofDate).add(1, 'd').toISOString()
+    const date = moment(this.ofDate).add(1, 'd').toISOString()
     this.amsTimelogsService.timeLogs.simplePost({
       from: {
         id: this.attendance.id
@@ -284,7 +289,7 @@ export class AttendanceLogsComponent implements OnInit {
   }
 
   movePrevious(item: TimeLogs) {
-    let date = moment(this.ofDate).subtract(1, 'd').toISOString()
+    const date = moment(this.ofDate).subtract(1, 'd').toISOString()
     this.amsTimelogsService.timeLogs.simplePost({
       from: {
         id: this.attendance.id
@@ -297,6 +302,23 @@ export class AttendanceLogsComponent implements OnInit {
       this.getAttendance();
       this.toastyService.info({ title: 'Time Log', msg: `moved to ${moment(date).format('DD-MM-YYYY')}` })
     })
+  }
+
+  addLogs() {
+    const dialogRef: MdDialogRef<BulkTimeLogsDialogComponent> = this.dialog.open(BulkTimeLogsDialogComponent, {
+      panelClass: 'app-full-bleed-dialog',
+      width: '50%',
+      height: '50%',
+      data: {
+        empCode: this.employee.properties.code
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.getAttendance()
+      }
+    });
   }
 
   ngOnInit() {

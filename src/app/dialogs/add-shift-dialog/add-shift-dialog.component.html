@@ -1,0 +1,25 @@
+<table class="table">
+  <tr>
+    <th colspan="2" class="text-center">Update Shift</th>
+  </tr>
+  <tr>
+    <th>From Date</th>
+    <td>
+      <input type="date" class="form-control" [(ngModel)]="fromDate">
+    </td>
+  </tr>
+  <tr>
+    <th>Shift</th>
+    <td>
+      <select class="form-control" [(ngModel)]="shift">
+        <option *ngFor="let item of data.shifts.items" [value]="item.id">{{item.name}}</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="text-right">
+      <button md-raised-button color="primary" (click)="changeShift(fromDate,shift)">Save</button>
+      <button md-raised-button md-dialog-close>Cancel</button>
+    </td>
+  </tr>
+</table>

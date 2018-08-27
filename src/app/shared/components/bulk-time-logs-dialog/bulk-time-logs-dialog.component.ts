@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { MdDialogRef } from '@angular/material';
+import { Component, OnInit, Input, Inject } from '@angular/core';
+import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { Employee, DayEvent, Attendance, TimeLogs } from '../../../models';
 import { AmsAttendanceService, AmsTimelogsService } from '../../../services';
 import * as moment from 'moment';
@@ -27,12 +27,14 @@ export class BulkTimeLogsDialogComponent implements OnInit {
   constructor(
     private amsTimelogsService: AmsTimelogsService,
     public dialogRef: MdDialogRef<BulkTimeLogsDialogComponent>,
-    private toastyService: ToastyService
+    private toastyService: ToastyService,
+    @Inject(MD_DIALOG_DATA) public data: any
   ) { }
 
   ngOnInit() {
     this.isLoading = true;
     this.add()
+    console.log(this.data)
   }
 
   validate(item: any) {
@@ -54,20 +56,24 @@ export class BulkTimeLogsDialogComponent implements OnInit {
   }
 
   add() {
-    this.logs.push({
-      position: this.logs.length,
-      code: '',
-      date: '',
-      time: '',
-      type: 'checkIn'
-    })
-    this.logs.push({
-      position: this.logs.length,
-      code: '',
-      date: '',
-      time: '',
-      type: 'checkOut'
-    })
+
+    if (this.data) {
+      this.logs.push({
+        position: this.logs.length,
+        code: this.data.empCode,
+        date: '',
+        time: '',
+        type: 'checkIn'
+      })
+    } else {
+      this.logs.push({
+        position: this.logs.length,
+        code: '',
+        date: '',
+        time: '',
+        type: 'checkIn'
+      })
+    }
   }
 
   save() {

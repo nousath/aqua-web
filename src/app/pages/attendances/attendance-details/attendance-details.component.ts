@@ -55,7 +55,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
   emptyStartDays: any[] = [];
   emptyEndDays: any[] = [];
   date: any;
-  today= new Date(moment().startOf('day').toDate()).toISOString();
+  today = new Date(moment().startOf('day').toDate()).toISOString();
 
   constructor(private amsEmployeeService: AmsEmployeeService,
     private emsEmployeeService: EmsEmployeeService,
@@ -399,7 +399,18 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
       }
     );
   }
-    backClicked() {
-      this._location.back();
+  backClicked() {
+    this._location.back();
+  }
+
+  regenerate() {
+    const model = {
+      employee: this.employee,
+      period: 'month',
+      date: this.attendance.properties['ofDate'] || moment().toISOString()
+    }
+    this.amsAttendanceService.attendance.simplePost(model, 'regenerate').then(() => {
+      this.toastyService.info({ title: 'Status', msg: 'Submitted' })
+    })
   }
 }

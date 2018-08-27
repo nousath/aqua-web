@@ -14,10 +14,12 @@
             <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
         </button>
 
-        <button [matMenuTriggerFor]="moreMenu" md-icon-button> <md-icon>more_vert</md-icon></button>
+        <button [matMenuTriggerFor]="moreMenu" md-icon-button>
+            <md-icon>more_vert</md-icon>
+        </button>
         <md-menu #moreMenu="mdMenu">
             <button md-menu-item mdTooltip="Bulk Time Logs" [mdTooltipPosition]="'above'" (click)="showBulkTimeLogsDialog()">
-                <md-icon>add_circle_outline</md-icon>  Add Time Logs
+                <md-icon>add_circle_outline</md-icon> Add Time Logs
             </button>
             <button md-menu-item [matMenuTriggerFor]="downloadMenu">
                 <md-icon>cloud_download</md-icon> Download
@@ -31,6 +33,9 @@
                 <md-icon>cloud_upload</md-icon> Upload
             </button>
         </md-menu>
+        <button (click)="regenerate()" [mdTooltipPosition]="'above'" mdTooltip="Regenerate" md-icon-button>
+            <md-icon>build</md-icon>
+        </button>
     </div>
 </div>
 
@@ -55,7 +60,7 @@
 
 <div class="row">
     <md-card class="card">
-        <div class="table-responsive">
+        <div class="table-responsive full">
             <table class="table table-condensed table-bordered table-hover">
                 <thead class="primary_thead">
 
@@ -67,6 +72,7 @@
                         <th class="text-center tdWidth">Check In</th>
                         <th class="text-center tdWidth">Check Out</th>
                         <th class="tdWidth">Team</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,7 +81,7 @@
                                                       currentPage: dailyAttendnace.pageNo,
                                                       totalItems: dailyAttendnace.totalRecords };" class="capitalize">
                         <td>
-                            <a [routerLink]="[item.employee.id]">{{item.employee.name || '--'}}</a>
+                            <a (click)="updateDayEvent(item.employee.id)">{{item.employee.name || '--'}}</a>
                             <br>
                             <span class="sub-text">{{item.employee.code || '--'}}</span>
                         </td>
@@ -85,6 +91,8 @@
                         <td class="tdWidth">
                             <ng-template #elsePart>
                                 <span>{{item?.status?.toLowerCase() == 'checkedin' ? 'Present' : item?.status}}</span>
+                                <br>
+                                <span class="sub-text" *ngIf="item.needsAction && !(item.status == 'absent' || item.shift.status === 'weekOff' || item.shift.status === 'holiday')">({{item?.needsAction}})</span>
                             </ng-template>
                             <span *ngIf="item.status == 'absent' && (item.shift.status === 'weekOff' || item.shift.status === 'holiday'); else elsePart">{{item.shift.status | titlecase}}</span>
                         </td>
@@ -96,15 +104,28 @@
                                 <img src="assets/images/team.png" width="30px;">
                             </a>
                         </td>
+                        <td style="width:5%">
+                            <button [matMenuTriggerFor]="moreMenu" md-icon-button  *ngIf="item.needsAction && !(item.status == 'absent' || item.shift.status === 'weekOff' || item.shift.status === 'holiday')">
+                                <md-icon>more_vert</md-icon>
+                            </button>
+                            <md-menu #moreMenu="mdMenu">
+                                <button md-menu-item mdTooltip="Clear Action" [mdTooltipPosition]="'above'" (click)="clearAction(item)">
+                                    Clear action &nbsp;&nbsp;<md-icon>clear</md-icon> 
+                                </button>
+                            </md-menu>
+                        </td>
                     </tr>
 
                 </tbody>
             </table>
         </div>
+        <div class="mini">
+            <aqua-daily-mobile-view [attendance]="attendances"></aqua-daily-mobile-view>
+        </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="custom_pagination">
                 <pagination-controls id="foo" (pageChange)="dailyAttendnace.pageNo = $event;getAttendance();"></pagination-controls>
-                <label>Total Records: {{dailyAttendnace.totalRecords}}</label>
+                <label class="full">Total Records: {{dailyAttendnace.totalRecords}}</label>
                 <div class="pageSize">
                     <label>Page Size:</label>
                     <select name="pageSize" [(ngModel)]="dailyAttendnace.pageSize" (change)="dailyAttendnace.pageNo = 1;getAttendance();">
