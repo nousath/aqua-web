@@ -1,5 +1,4 @@
 <div class="container">
-    <!-- <div class="menuHeader"> -->
     <md-sidenav-container class="nav-container" *ngIf="!shouldRun">
         <md-sidenav #sidenav>
             <div style="width:100%">
@@ -20,10 +19,6 @@
                     <div class="logoHeader">
                         <img src="assets/images/splash_logo2.png" height="50px">
                     </div>
-                    <!-- <img class="logo" src="assets/images/splash_logo.png"> -->
-                    <!-- <button md-button *ngIf="isShowEmployeeTab" [routerLink]="['/pages/employees']" routerLinkActive="activeTab"><b>EMPLOYEE</b></button>
-            <button md-button [routerLink]="['/pages/attendances']" routerLinkActive="activeTab"><b>ATTENDANCE</b></button>
-            <button md-button [routerLink]="['/pages/settings']" routerLinkActive="activeTab"><b>SETTINGS</b></button> -->
                     <span class="example-spacer"></span>
                     <div *ngIf="employeeSearch" class="searchbar">
                         <input ngui-auto-complete [min-chars]="1" *ngIf="userType == 'superadmin'" placeholder="Employee search" [(ngModel)]="selectedEmp"
@@ -41,13 +36,7 @@
                 </md-toolbar>
             </div>
         </div>
-        <!-- <p><button md-button (click)="sidenav.open()">Open</button></p> -->
-
         <div class="bodyPart row">
-            <!-- 
-        <md-sidenav #sidenav (keydown.escape)="close('escape')" disableClose>
-            <aqua-navigation-bar [userType]="userType" [sectionEmployee]="sections.employee"></aqua-navigation-bar>
-        </md-sidenav> -->
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 rowBody">
                 <div class="hidden-xs col-sm-2 col-md-2 col-lg-2">
                     <aqua-navigation-bar [userType]="userType" [sectionEmployee]="sections.employee"></aqua-navigation-bar>
@@ -59,5 +48,4 @@
         </div>
 
     </md-sidenav-container>
-    <!-- </div> -->
 </div>
