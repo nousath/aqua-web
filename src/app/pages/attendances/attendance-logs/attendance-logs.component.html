@@ -96,7 +96,7 @@
                                     <td class="text-center" *ngIf="!item?.location?.show">{{item.source}}</td>
                                     <td class="text-center" *ngIf="!item?.location?.show">{{item.ipAddress}}</td>
                                     <td class="text-center" *ngIf="!item?.location?.show">
-                                        <span [matMenuTriggerFor]="moreMenu" md-icon-button style="cursor: pointer" *ngIf="i == 0 || i == timeLogsLength - 1">
+                                        <span [matMenuTriggerFor]="moreMenu" md-icon-button style="cursor: pointer" *ngIf="(i == 0 || i == timeLogsLength - 1) && (userType === 'superadmin' || userType === 'admin')">
                                             <md-icon>more_vert</md-icon>
                                         </span>
                                         <md-menu #moreMenu="mdMenu">
@@ -109,7 +109,7 @@
                                         </md-menu>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr *ngIf="userType === 'superadmin' || userType === 'admin'">
                                     <td colspan="6">
                                         <a md-raised-button color="primary" (click)="addLogs()" style="float: right">
                                             Add Logs
