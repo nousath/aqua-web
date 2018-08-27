@@ -140,10 +140,25 @@ export class EmployeeListComponent implements OnInit {
     const dialogRef: MdDialogRef<FileUploaderDialogComponent> = this.dialog.open(FileUploaderDialogComponent);
     const component = dialogRef.componentInstance;
     component.uploader = this.emsEmployeeService.employees
-    component.samples = [{
-      name: 'CSV',
+    component.samples = [
+    {
+      name: 'Add Employee',
       mapper: 'default',
-      url: 'assets/formats/Employee.csv'
+      url: 'assets/formats/add-new-employee.csv'
+    }, {
+      name: 'Update Employee',
+      mapper: 'default',
+      url: 'assets/formats/update-employee.csv'
+    },
+    {
+      name: 'Update Biometric',
+      mapper: 'default',
+      url: 'assets/formats/update-empCode-biometricId.csv'
+    },
+    {
+      name: 'Update Status',
+      mapper: 'default',
+      url: 'assets/formats/update-employee-status.csv'
     }];
   }
   ngOnInit() {
