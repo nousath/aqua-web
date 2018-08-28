@@ -83,20 +83,24 @@ export class EmployeesFilterComponent implements OnInit {
 
   departmentList = [];
   designationList = [];
+  statusList = [];
+  actionList = [];
+  userTypeList = [];
+  contractorList = [];
+  shiftTypesList = [];
+
   designations = [];
   departments = [];
   usertypes = [];
   contractors
- 
-  userTypeList = [];
-  contractorList = [];
+
   selectedDesignation = [];
   selectedDepartment = [];
   selectedUsertype = [];
   selectedContractor = [];
   selectedStatus = [];
-  statusList = [];
-  status = [];
+  selectedAction = [];
+  selectedShift = [];
   dropdownSettings = {};
   selectedValue: boolean;
 
@@ -123,23 +127,30 @@ export class EmployeesFilterComponent implements OnInit {
     this.shiftTypes.fetch().then();
     this.hidden = this.hidden || {};
     this.statusList = [{
-      id:1 , itemName: 'All'
-    },{
-      id:2 , itemName: 'Present'
-    },{
-      id:3 , itemName: 'Absent'
-    },{
-      id:4 , itemName: 'MissedSwipe'
-    },{
-      id:5 , itemName: 'HalfDay'
-    },{
-      id:6 , itemName: 'OnLeave'
-    },{
-      id:7 , itemName: 'LateComing'
-    },{
-      id:8 , itemName: 'EarlyGoing'
-    },
-  ]
+      id: 1, itemName: 'All'
+    }, {
+      id: 2, itemName: 'Present'
+    }, {
+      id: 3, itemName: 'Absent'
+    }, {
+      id: 4, itemName: 'MissedSwipe'
+    }, {
+      id: 5, itemName: 'HalfDay'
+    }, {
+      id: 6, itemName: 'OnLeave'
+    }, {
+      id: 7, itemName: 'LateComing'
+    }, {
+      id: 8, itemName: 'EarlyGoing'
+    }]
+
+    this.actionList = [{
+      id: 1, itemName: 'Missed Check Out'
+    }, {
+      id: 2, itemName: 'Missed Check In'
+    }, {
+      id: 3, itemName: 'Attendance Short'
+    }]
   }
 
   getTags(tags: any) {
@@ -160,41 +171,45 @@ export class EmployeesFilterComponent implements OnInit {
       }
     });
 
-    this.designations.forEach(item =>{
-    let  obj = {
+    this.designations.forEach(item => {
+      let obj = {
         id: item.id,
         itemName: item.name,
       };
       this.designationList.push(obj);
     })
-    console.log(this.designationList);
 
-    this.departments.forEach(item =>{
-    let  obj = {
+    this.departments.forEach(item => {
+      let obj = {
         id: item.id,
         itemName: item.name,
       };
       this.departmentList.push(obj);
     })
-    console.log(this.departmentList);
 
-    this.contractors.forEach(item =>{
-    let  obj = {
+    this.contractors.forEach(item => {
+      let obj = {
         id: item.id,
         itemName: item.name,
       };
       this.contractorList.push(obj);
     })
-    console.log(this.contractorList);
 
-    this.usertypes.forEach(item =>{
-    let  obj = {
+    this.usertypes.forEach(item => {
+      let obj = {
         id: item.id,
         itemName: item.name,
       };
       this.userTypeList.push(obj);
     })
-    console.log(this.userTypeList);
+    console.log(this.shiftTypes);
+    this.shiftTypes.items.forEach(item => {
+      let obj = {
+        id: item.id,
+        itemName: item.name
+      }
+      this.shiftTypesList.push(obj)
+    })
 
     this.dropdownSettings = {
       singleSelection: false,
@@ -206,8 +221,8 @@ export class EmployeesFilterComponent implements OnInit {
       enableSearchFilter: true,
       classes: "myclass",
       displayAllSelectedText: true,
-      maxHeight:200,
-      badgeShowLimit:1
+      maxHeight: 200,
+      badgeShowLimit: 1
     };
 
   }
@@ -235,6 +250,9 @@ export class EmployeesFilterComponent implements OnInit {
     this.selectedUsertype = [];
     this.selectedContractor = [];
     this.selectedStatus = [];
+    this.selectedShift = [];
+    this.tags.selected = [];
+    this.selectedAction = [];
     this.tags.selected = []
     this.selectedShiftType = null;
     this.selectedAttendanceStatus = null;
@@ -246,29 +264,42 @@ export class EmployeesFilterComponent implements OnInit {
 
   apply() {
     const tagIds: string[] = [];
-    this.selectedDesignation.forEach(item=>{
+    this.selectedDesignation.forEach(item => {
       tagIds.push(item.id);
     })
-    this.selectedDepartment.forEach(item=>{
+    this.selectedDepartment.forEach(item => {
       tagIds.push(item.id);
     })
-    this.selectedUsertype.forEach(item=>{
+    this.selectedUsertype.forEach(item => {
       tagIds.push(item.id);
     })
-    this.selectedContractor.forEach(item=>{
+    this.selectedContractor.forEach(item => {
       tagIds.push(item.id);
     })
     console.log(tagIds)
 
     const status: string[] = [];
-    this.selectedStatus.forEach(item =>{
+    this.selectedStatus.forEach(item => {
       status.push(item.itemName);
     })
 
+    const action: string[] = [];
+    this.selectedAction.forEach(item => {
+      action.push(item.itemName);
+    })
+    console.log(action)
+
+    const shifts: string[] = [];
+    this.selectedShift.forEach(item => {
+      shifts.push(item.id)
+    })
+    console.log(shifts)
+
     const values = {
       tagIds: tagIds,
-      shiftType: this.selectedShiftType,
+      shiftType: shifts,
       attendanceStatus: status,
+      needsAction: action,
       employeeName: this.selectedEmployeeName,
       employeeCode: this.selectedEmployeeCode
     }

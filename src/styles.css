@@ -49,6 +49,7 @@ body::-webkit-scrollbar-thumb {
 .hiddenHorScroll {
     height: 85vh;
     overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .card {
