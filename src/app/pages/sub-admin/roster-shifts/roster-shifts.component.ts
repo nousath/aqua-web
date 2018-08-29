@@ -88,7 +88,7 @@ export class RosterShiftsComponent implements OnInit {
     });
   }
   applyFilters($event) {
-    this.effectiveShifts.filters.properties['shiftType']['value'] = $event.shiftType ? $event.shiftType.id : null;
+    this.effectiveShifts.filters.properties['shiftType']['value'] = $event.shiftType;
     this.effectiveShifts.filters.properties['name']['value'] = $event.employeeName;
     this.effectiveShifts.filters.properties['code']['value'] = $event.employeeCode;
     this.effectiveShifts.filters.properties['tagIds']['value'] = $event.tagIds;

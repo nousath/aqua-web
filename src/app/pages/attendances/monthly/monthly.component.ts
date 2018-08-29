@@ -74,7 +74,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
 
   applyFilters($event) {
 
-    this.monthlyAttendnace.filters.properties['shiftType']['value'] = $event.shiftType ? $event.shiftType.id : null;
+    this.monthlyAttendnace.filters.properties['shiftType']['value'] = $event.shiftType;
     this.monthlyAttendnace.filters.properties['name']['value'] = $event.employeeName;
     this.monthlyAttendnace.filters.properties['code']['value'] = $event.employeeCode;
     this.monthlyAttendnace.filters.properties['tagIds']['value'] = $event.tagIds;
