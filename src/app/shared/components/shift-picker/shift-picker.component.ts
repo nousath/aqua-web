@@ -352,7 +352,7 @@ export class ShiftPickerComponent implements OnInit {
     // });
   }
 
-  extendLeaves() {
+  extendCurrentShift() {
     const attendance = this.effectiveShift.attendances
     let attendanceId: string
     attendance.forEach(item => {

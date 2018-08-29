@@ -204,6 +204,10 @@ export class TeamsComponent implements OnInit {
     });
   };
 
+  backClicked() {
+    this.location.back();
+  }
+
   ngOnInit() {
 
   }

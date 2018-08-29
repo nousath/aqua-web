@@ -39,6 +39,7 @@ export class DailyComponent {
   isUpload = false;
   uploader: FileUploader;
   selectedDate: String;
+  ofDate: Date;
   // data: Attendance;
 
 
@@ -71,6 +72,9 @@ export class DailyComponent {
         field: 'shiftTypeId',
         value: null
       }, {
+        field: 'action',
+        value: null
+      }, {
         field: 'status',
         value: null
       }, {
@@ -89,19 +93,19 @@ export class DailyComponent {
 
   applyFilters($event) {
 
-    this.dailyAttendnace.filters.properties['shiftTypeId']['value'] = $event.shiftType ? $event.shiftType.id : null;
+    this.dailyAttendnace.filters.properties['shiftTypeId']['value'] = $event.shiftType;
     this.dailyAttendnace.filters.properties['name']['value'] = $event.employeeName;
     this.dailyAttendnace.filters.properties['code']['value'] = $event.employeeCode;
     this.dailyAttendnace.filters.properties['status']['value'] = $event.attendanceStatus;
-
+    this.dailyAttendnace.filters.properties['action']['value'] = $event.needsAction;
     this.dailyAttendnace.filters.properties['tagIds']['value'] = $event.tagIds;
     this.getAttendance();
   }
 
   reset() {
     this.dailyAttendnace.filters.reset();
-    $('#dateSelector').datepicker('setDate', new Date());
-    this.dailyAttendnace.filters.properties['ofDate']['value'] = moment().toISOString();
+    $('#dateSelector').datepicker('setDate', this.ofDate);
+    this.dailyAttendnace.filters.properties['ofDate']['value'] = moment(this.ofDate).toISOString();
     this.getAttendance();
   }
 
@@ -133,7 +137,7 @@ export class DailyComponent {
     const dialogRef: MdDialogRef<BulkTimeLogsDialogComponent> = this.dialog.open(BulkTimeLogsDialogComponent, {
       panelClass: 'app-full-bleed-dialog',
       width: '50%',
-      data:{}
+      data: {}
     });
   }
 
@@ -142,8 +146,8 @@ export class DailyComponent {
       panelClass: 'app-full-bleed-dialog',
       width: '50%',
       height: '50%',
-      data:{}
-      
+      data: {}
+
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -168,19 +172,19 @@ export class DailyComponent {
       }
 
       this.dailyAttendnace.filters.properties['ofDate']['value'] = moment(e.date).toISOString()
-      this.selectedDate = moment(e.date).startOf('day').toISOString()
+      this.ofDate = moment(e.date).startOf('day').toDate()
 
       setTimeout(() => this.getAttendance(), 1)
     });
     $('#dateSelector').datepicker('setDate', new Date());
-    
+
   }
   downloadlink(type: string) {
     this.router.navigate(['pages/attendances/reports'], { queryParams: { type: type } });
   }
   updateDayEvent(empId: string) {
     // if (item.ofDate < new Date().toISOString()) {
-      this.router.navigate([`/pages/attendances/daily/${empId}/attendance-logs/${this.selectedDate}`])
+    this.router.navigate([`/pages/attendances/daily/${empId}/attendance-logs/${this.ofDate}`])
     // }
   }
   regenerate() {
@@ -193,10 +197,10 @@ export class DailyComponent {
     })
   }
 
-  clearAction(item: any){
+  clearAction(item: any) {
     const id = item.id
     const model = item
-    this.amsAttendanceService.attendance.update(null,model,null,`${id}/clearAction`).then(() => {
+    this.amsAttendanceService.attendance.update(null, model, null, `${id}/clearAction`).then(() => {
       this.getAttendance();
       this.toastyService.info({ title: 'Status', msg: 'Submitted' })
     })
