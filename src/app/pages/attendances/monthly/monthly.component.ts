@@ -97,6 +97,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
 
     this.amsAttendanceService.attendance.simplePost(model, 'regenerate').then(() => {
       this.toastyService.info({ title: 'Status', msg: 'Submitted' })
+      this.toastyService.info({ title: 'Info', msg: 'Kindly reload' })
     })
   }
 

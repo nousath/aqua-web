@@ -411,6 +411,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
     }
     this.amsAttendanceService.attendance.simplePost(model, 'regenerate').then(() => {
       this.toastyService.info({ title: 'Status', msg: 'Submitted' })
+      this.toastyService.info({ title: 'Info', msg: 'Kindly reload' })
     })
   }
 }
