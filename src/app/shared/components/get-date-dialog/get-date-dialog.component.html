@@ -1,3 +1,4 @@
+<!-- For CompOff Dialog -->
 <div *ngIf="title === 'In Lieu Of'">
     <div md-dialog-title>
         {{title}}
@@ -11,6 +12,8 @@
         <button md-button (click)="continue()" color="primary">{{continueText}}</button>
     </div>
 </div>
+
+<!-- For Extend Shift Dialog -->
 <div *ngIf="title === 'Please Enter Time'">
     <div md-dialog-title>
         {{title}}
@@ -21,7 +24,7 @@
     </div>
     <div md-dialog-actions class="controls-row">
         <span class="spacer"></span>
-        <button md-button (click)="dialogRef.close(false)">{{cancelText}}</button>
+        <button md-button (click)="dialogRef.close(true)">Reset</button>
         <button md-button (click)="extendShift()" color="primary">{{continueText}}</button>
     </div>
 </div>

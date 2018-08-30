@@ -47,7 +47,7 @@
             <span>Every Week</span>
             <md-slide-toggle [disabled]="isPast" [checked]="isWeeklyOff"></md-slide-toggle>
         </button>
-        <button md-menu-item [disabled]="leave" (click)="setDayOff()" *ngIf="userType === 'superadmin' && isPast">
+        <button md-menu-item [disabled]="leave" (click)="setDayOff()" *ngIf="(userType === 'superadmin' || userType === 'admin') && isPast">
             <span>This Week</span>
             <md-slide-toggle [checked]="isDayOff"></md-slide-toggle>
         </button>
