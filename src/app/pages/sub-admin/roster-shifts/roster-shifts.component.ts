@@ -118,13 +118,10 @@ export class RosterShiftsComponent implements OnInit {
     const component = dialogRef.componentInstance;
     component.uploader = this.amsEffectiveShiftService.effectiveShifts;
     component.samples = [{
-      name: 'CSV',
+      name: 'CSV/Excel',
       mapper: 'default',
-      url: 'assets/formats/weekly-roaster.csv'
-    }, {
-      name: 'EXCEL',
-      mapper: 'default',
-      url: 'assets/formats/weekly-roaster.xlsx'
+      url_csv: 'assets/formats/weekly-roaster.csv',
+      url_xlsx: 'assets/formats/weekly-roaster.xlsx'
     }];
     component.name = 'Weekly Roaster';
     dialogRef.afterClosed().subscribe();
@@ -160,8 +157,8 @@ export class RosterShiftsComponent implements OnInit {
       this.date = ch.date;
       this.getAttendance();
     })
-    $('#daySelector').datepicker('setDate',this.selectedDate);
-  
+    $('#daySelector').datepicker('setDate', this.selectedDate);
+
   }
 
   getWeek(currentDate) {
@@ -182,7 +179,7 @@ export class RosterShiftsComponent implements OnInit {
       this.isLoading = false;
       console.log(this.effectiveShifts.items.length)
     }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
-   
+
   }
 
   toggleDynamicShift(employee) {

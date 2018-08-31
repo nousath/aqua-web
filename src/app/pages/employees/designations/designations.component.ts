@@ -113,10 +113,10 @@ export class DesignationsComponent implements OnInit {
     const component = dialogRef.componentInstance;
     component.uploader = this.emsDesignationService.designations
     component.samples = [{
-      name: 'CSV',
+      name: 'CSV/Excel',
       mapper: 'default',
-      url_csv: 'assets/formats/Designation.csv',
-      url_xlsx: ''
+      url_csv: 'assets/formats/designation.csv',
+      url_xlsx: 'assets/formats/designation.xlsx'
     }];
   }
 

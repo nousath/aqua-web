@@ -275,9 +275,10 @@ export class LeavesComponent implements OnInit, AfterViewInit {
     const component = dialogRef.componentInstance;
     component.uploader = this.amsLeaveService.leaves;
     component.samples = [{
-      name: 'CSV',
+      name: 'CSV/Excel',
       mapper: 'default',
-      url: 'assets/formats/leaves.csv'
+      url_csv: 'assets/formats/leaves.csv',
+      url_xlsx: 'assets/formats/leaves.xlsx'
     // }, {
     //   name: 'EXCEL',
     //   mapper: 'default',
