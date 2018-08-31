@@ -71,18 +71,6 @@
                         [(ngModel)]=" department.properties.code" name="code" required>
                 </div>
             </div>
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-group">
-                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                    <label for="pwd">Incharge
-                        <span class="asterisk">*</span>
-                    </label>
-                </div>
-                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                    <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]=" departments?.isLoading   ||  department?.isProcessing  "
-                        [(ngModel)]=" department.properties.incharge" name="incharge" required>
-                </div>
-            </div>
-
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 button_align form-group text-center" style="float:right">
                 <button [disabled]=" departments?.isLoading   ||  department?.isProcessing  " type="submit" md-raised-button color="primary"
                     mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="save();">Save</button>&nbsp;&nbsp;
@@ -108,7 +96,6 @@
                     <tr>
                         <th class="tdWidth">Name</th>
                         <th>Code</th>
-                        <th>Incharge</th>
                         <td></td>
                     </tr>
                 </thead>
@@ -121,10 +108,6 @@
                         <td>
                             <input [maxlength]="validatorService.textLength" type="text" [name]="'code_'+i" [readOnly]=" departments.isLoading ||  department.isProcessing || !item?.isEdit"
                                 class="number form-control input-xs" [(ngModel)]="item.code">
-                        </td>
-                        <td>
-                            <input [maxlength]="validatorService.textLength" type="text" [name]="'hod'+i" [readOnly]=" departments.isLoading ||  department.isProcessing || !item?.isEdit"
-                                class="number form-control input-xs" [(ngModel)]="item.hod">
                         </td>
                         <td class="btnClmWidth">
                             <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="edit(item, true)">

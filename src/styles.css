@@ -48,7 +48,6 @@ body::-webkit-scrollbar-thumb {
 
 .hiddenHorScroll {
     height: 85vh;
-    overflow-y: scroll;
     overflow-x: hidden;
 }
 
@@ -488,4 +487,12 @@ display: block;
 .selected-list .c-list .c-token .c-remove svg {
     display: none !important;
     fill: black;
+}
+
+.mat-drawer-content {
+    position: relative;
+    transform: translate3d(0,0,0);
+    display: block;
+    height: 100%;
+    overflow-x: hidden;
 }
