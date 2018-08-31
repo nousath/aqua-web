@@ -352,7 +352,7 @@ export class ShiftPickerComponent implements OnInit {
     // });
   }
 
-  extendLeaves() {
+  extendCurrentShift() {
     const attendance = this.effectiveShift.attendances
     let attendanceId: string
     attendance.forEach(item => {
@@ -364,14 +364,25 @@ export class ShiftPickerComponent implements OnInit {
       }
     })
 
-    const dialogRef = this.dialog.open(GetDateDialogComponent)
+    const dialogRef = this.dialog.open(GetDateDialogComponent, {data:{shifts:this.effectiveShift.previousShift,nextShift:this.effectiveShift.shifts}})
     const component = dialogRef.componentInstance;
     component.title = 'Please Enter Time'
 
-    dialogRef.afterClosed().subscribe((response: string) => {
+    dialogRef.afterClosed().subscribe((response: any) => {
       if (!response) { return; }
-      this.attendance.checkOutExtend = response
+      else {
+      if(response == true) {
+        this.attendance.checkOutExtend = null;
+        this.amsAttendanceService.attendance.update(`${attendanceId}/extendShift`, this.attendance as any)
+        this.toastyService.info({ title: 'Info', msg: 'Shift Reset' })
+      }
+      else {
+      this.attendance.checkOutExtend = response;
       this.amsAttendanceService.attendance.update(`${attendanceId}/extendShift`, this.attendance as any)
+      this.toastyService.info({ title: 'Info', msg: 'Shift Extended' })
+      
+      }
+    }
     });
 
   }

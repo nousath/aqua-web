@@ -72,7 +72,7 @@
                         <th class="text-center tdWidth">Check In</th>
                         <th class="text-center tdWidth">Check Out</th>
                         <th class="tdWidth">Team</th>
-                        <th></th>
+                        <th class="tdWidth">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -92,7 +92,7 @@
                             <ng-template #elsePart>
                                 <span>{{item?.status?.toLowerCase() == 'checkedin' ? 'Present' : item?.status}}</span>
                                 <br>
-                                <span class="sub-text" *ngIf="item.needsAction && !(item.status == 'absent' || item.shift.status === 'weekOff' || item.shift.status === 'holiday')">({{item?.needsAction}})</span>
+                                <span class="sub-text" *ngIf="item.needsAction && !(item.shift.status === 'weekOff' || item.shift.status === 'holiday')">({{item?.needsAction}})</span>
                             </ng-template>
                             <span *ngIf="item.status == 'absent' && (item.shift.status === 'weekOff' || item.shift.status === 'holiday'); else elsePart">{{item.shift.status | titlecase}}</span>
                         </td>
@@ -104,13 +104,14 @@
                                 <img src="assets/images/team.png" width="30px;">
                             </a>
                         </td>
-                        <td style="width:5%">
-                            <button [matMenuTriggerFor]="moreMenu" md-icon-button  *ngIf="item.needsAction && !(item.status == 'absent' || item.shift.status === 'weekOff' || item.shift.status === 'holiday')">
+                        <td class="tdWidth">
+                            <button [matMenuTriggerFor]="moreMenu" md-icon-button *ngIf="item.needsAction && !(item.shift.status === 'weekOff' || item.shift.status === 'holiday')">
                                 <md-icon>more_vert</md-icon>
                             </button>
                             <md-menu #moreMenu="mdMenu">
                                 <button md-menu-item mdTooltip="Clear Action" [mdTooltipPosition]="'above'" (click)="clearAction(item)">
-                                    Clear action &nbsp;&nbsp;<md-icon>clear</md-icon> 
+                                    Clear action &nbsp;&nbsp;
+                                    <md-icon>clear</md-icon>
                                 </button>
                             </md-menu>
                         </td>
