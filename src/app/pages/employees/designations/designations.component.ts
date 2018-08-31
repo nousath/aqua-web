@@ -115,7 +115,8 @@ export class DesignationsComponent implements OnInit {
     component.samples = [{
       name: 'CSV',
       mapper: 'default',
-      url: 'assets/formats/Designation.csv'
+      url_csv: 'assets/formats/Designation.csv',
+      url_xlsx: ''
     }];
   }
 
