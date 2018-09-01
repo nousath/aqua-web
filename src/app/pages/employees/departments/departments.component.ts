@@ -119,9 +119,10 @@ export class DepartmentsComponent implements OnInit {
     const component = dialogRef.componentInstance;
     component.uploader = this.emsDepartmentService.departments
     component.samples = [{
-      name: 'CSV',
+      name: 'CSV/Excel',
       mapper: 'default',
-      url: 'assets/formats/Department.csv'
+      url_csv: 'assets/formats/department.csv',
+      url_xlsx: 'assets/formats/department.xlsx'
     }];
   }
 

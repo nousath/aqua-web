@@ -14,9 +14,9 @@
 
     </div>
     <div *ngIf="samples && samples.length">
-        <label>Samples</label>
+        <label>File Format Samples</label>
         <div class="sample" *ngFor="let sample of samples">
-            <label>{{sample.name}}</label> : <a [href]="sample.url">Download</a>
+            <label>{{sample.name}}</label> : <a [href]="sample.url_csv">csv</a>&ensp;<b>|</b>&ensp;<a [href]="sample.url_xlsx">excel</a>
         </div>
     </div>
     <div *ngIf="errorMessage" class="error">
