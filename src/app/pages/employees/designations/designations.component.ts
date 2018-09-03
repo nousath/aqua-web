@@ -89,6 +89,12 @@ export class DesignationsComponent implements OnInit {
 
   }
 
+  nameChange() {
+    this.designation.properties.code = this.designation.properties.name.split(' ').join('');
+    console.log(this.designation.properties.name)
+    console.log(this.designation.properties.code)
+  }
+
   save(designation?: Designation) {
     if (designation) {
       this.designation.properties = designation;
@@ -97,6 +103,8 @@ export class DesignationsComponent implements OnInit {
       return this.toastyService.info({ title: 'Info', msg: 'Enter  Name' });
     if (!this.designation.properties.code)
       return this.toastyService.info({ title: 'Info', msg: 'Select  Code' });
+    this.designation.properties.name = this.designation.properties.name.toLowerCase()
+    this.designation.properties.code = this.designation.properties.code.toLowerCase()
     this.designation.save().then(data => {
       if (designation) {
         designation.isEdit = false;

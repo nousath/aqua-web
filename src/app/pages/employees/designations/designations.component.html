@@ -47,7 +47,7 @@
                 </div>
                 <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
                     <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="designations?.isLoading   || designation?.isProcessing  "
-                        [(ngModel)]="designation.properties.name" name="Name" required>
+                        [(ngModel)]="designation.properties.name" (change)="nameChange()" name="Name" required>
                 </div>
             </div>
             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  form-group">
@@ -57,8 +57,8 @@
                     </label>
                 </div>
                 <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                    <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="designations?.isLoading   || designation?.isProcessing  "
-                        [(ngModel)]="designation.properties.code" name="code" required>
+                    <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled] [(ngModel)]="designation.properties.code"
+                        name="code" readonly>
                 </div>
             </div>
 
@@ -97,7 +97,7 @@
                                 class="number form-control input-xs" [(ngModel)]="item.name">
                         </td>
                         <td>
-                            <input [maxlength]="validatorService.textLength" type="text" [name]="'code_'+i" [readOnly]="designations.isLoading || designation.isProcessing || !item?.isEdit"
+                            <input [maxlength]="validatorService.textLength" type="text" [name]="'code_'+i" [disabled]="designations.isLoading || designation.isProcessing" readonly
                                 class="number form-control input-xs" [(ngModel)]="item.code">
                         </td>
                         <td class="btnClmWidth">
