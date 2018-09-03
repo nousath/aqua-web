@@ -81,6 +81,12 @@ export class DepartmentsComponent implements OnInit {
     }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
+  nameChange() {
+    this.department.properties.code = this.department.properties.name.split(' ').join('');
+    console.log(this.department.properties.name)
+    console.log(this.department.properties.code)
+  }
+
   removeConfirm(department: Department) {
     const dialog = this.dialog.open(ConfirmDialogComponent, { width: '40%' });
     dialog.componentInstance.msg = `Are you sure to want to remove department ${department.name} ?`;
@@ -89,9 +95,7 @@ export class DepartmentsComponent implements OnInit {
         this.remove(department.divisionId)
       }
     })
-
   }
-
   save(department?: Department) {
     if (department) {
       this.department.properties = department;

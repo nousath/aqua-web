@@ -57,18 +57,18 @@
                 </div>
                 <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                     <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]=" departments?.isLoading   ||  department?.isProcessing  "
-                        [(ngModel)]=" department.properties.name" name="Name" required>
+                        [(ngModel)]=" department.properties.name" name="Name" required (change) = "nameChange()">
                 </div>
             </div>
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4  form-group">
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     <label for="pwd">Code
-                        <span class="asterisk">*</span>
+                        <!-- <span class="asterisk">*</span> -->
                     </label>
                 </div>
                 <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                    <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]=" departments?.isLoading   ||  department?.isProcessing  "
-                        [(ngModel)]=" department.properties.code" name="code" required>
+                    <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]=" departments?.isLoading   ||  department?.isProcessing   "
+                        [(ngModel)]=" department.properties.code" name="code" (change)="nameChange()" readonly>
                 </div>
             </div>
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 button_align form-group text-center" style="float:right">
