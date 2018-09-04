@@ -155,8 +155,8 @@ export class EmployeeListComponent implements OnInit {
     {
       name: 'Update Biometric',
       mapper: 'default',
-      url_csv: 'assets/formats/update-empCode-biometricId.csv',
-      url_xlsx: 'assets/formats/update-empCode-biometricId.xlsx'
+      url_csv: 'assets/formats/update-employee-biometricId.csv',
+      url_xlsx: 'assets/formats/update-employee-biometricId.xlsx'
     },
     {
       name: 'Update Status',
