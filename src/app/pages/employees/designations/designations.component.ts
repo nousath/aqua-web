@@ -89,15 +89,19 @@ export class DesignationsComponent implements OnInit {
 
   }
 
+  nameChange() {
+    this.designation.properties.code = this.designation.properties.name.split(' ').join('');
+    console.log(this.designation.properties.name)
+    console.log(this.designation.properties.code)
+  }
+
   save(designation?: Designation) {
     if (designation) {
       this.designation.properties = designation;
     }
     if (!this.designation.properties.name)
       return this.toastyService.info({ title: 'Info', msg: 'Enter  Name' });
-    if (!this.designation.properties.code)
-      return this.toastyService.info({ title: 'Info', msg: 'Select  Code' });
-    this.designation.save().then(data => {
+        this.designation.save().then(data => {
       if (designation) {
         designation.isEdit = false;
         this.store.removeItem(`leeaveBalance_${designation.id}`);

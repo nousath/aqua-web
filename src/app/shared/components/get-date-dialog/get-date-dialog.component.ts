@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { MdDialogRef } from '@angular/material';
+import { Component, OnInit, Input, Inject } from '@angular/core';
+import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import * as moment from 'moment';
 import { AnimationStyleMetadata } from '../../../../../node_modules/@angular/animations';
 import { Data } from '@agm/core/services/google-maps-types';
@@ -25,10 +25,17 @@ export class GetDateDialogComponent implements OnInit {
 
   time: string;
   current: Date;
+  todayShift: string;
+  tomorrowShift: string;
 
-  constructor(public dialogRef: MdDialogRef<GetDateDialogComponent>) {
+  constructor(public dialogRef: MdDialogRef<GetDateDialogComponent>,
+    @Inject(MD_DIALOG_DATA) public data: { currentShifts: any, nextShift: any, date: string }
+  ) {}
 
+  ngOnChanges() {
+    console.log(this.data.currentShifts)
   }
+
 
   ngOnInit() {
   }
@@ -49,11 +56,4 @@ export class GetDateDialogComponent implements OnInit {
     this.dialogRef.close(date);
   }
 
-  extendShift() {
-    console.log(this.date)
-    this.timeUpdated(this.date.toString());
-    const date = moment(this.date).toDate().toISOString();
-    console.log(date)
-    this.dialogRef.close(date);
-  }
 }

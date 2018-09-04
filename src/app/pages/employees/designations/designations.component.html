@@ -39,30 +39,20 @@
         </div>
         <br>
         <form class="row">
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  form-group">
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6  form-group">
+                <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
                     <label for="email">Name
                         <span class="asterisk">*</span>
                     </label>
                 </div>
-                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
                     <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="designations?.isLoading   || designation?.isProcessing  "
                         [(ngModel)]="designation.properties.name" name="Name" required>
                 </div>
             </div>
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3  form-group">
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                    <label for="pwd">Code
-                        <span class="asterisk">*</span>
-                    </label>
-                </div>
-                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                    <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="designations?.isLoading   || designation?.isProcessing  "
-                        [(ngModel)]="designation.properties.code" name="code" required>
-                </div>
-            </div>
+            
 
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 button_align form-group text-center">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 button_align form-group text-center">
                 <button [disabled]="designations?.isLoading   || designation?.isProcessing  " type="submit" md-raised-button color="primary"
                     mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="save();">Save</button>&nbsp;&nbsp;
                 <button [disabled]="designations?.isLoading   || designation?.isProcessing  " md-raised-button class="btn_grey" mdTooltip="Reset"
@@ -97,7 +87,7 @@
                                 class="number form-control input-xs" [(ngModel)]="item.name">
                         </td>
                         <td>
-                            <input [maxlength]="validatorService.textLength" type="text" [name]="'code_'+i" [readOnly]="designations.isLoading || designation.isProcessing || !item?.isEdit"
+                            <input [maxlength]="validatorService.textLength" type="text" [name]="'code_'+i" [disabled]="designations.isLoading || designation.isProcessing" readonly
                                 class="number form-control input-xs" [(ngModel)]="item.code">
                         </td>
                         <td class="btnClmWidth">
