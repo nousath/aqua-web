@@ -91,7 +91,7 @@ export class PagesComponent implements OnInit, OnDestroy {
   }
 
   empListFormatter(data: Employee): string {
-    return `${data.name} (${data.code})`;
+    return `${data.name} (${data.displayCode})`;
   }
 
   ngOnInit() {
