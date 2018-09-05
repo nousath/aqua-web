@@ -56,6 +56,8 @@ export class ShiftPickerComponent implements OnInit {
   userType: string;
   startingShift: ShiftType;
 
+  isBeforeTOday= false
+
   isProcessing = false;
 
   isWeeklyOff = false;
@@ -116,6 +118,7 @@ export class ShiftPickerComponent implements OnInit {
 
     this.isPast = moment(this.date).isBefore(new Date());
     this.isToday = moment(this.date).isSame(new Date(), 'd');
+    this.isBeforeToday = moment(this.date).isBefore(new Date(), 'd');
     this.day = moment(this.date).day().toString()
 
     if (this.effectiveShift.previousShift) {

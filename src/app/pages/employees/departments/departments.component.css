@@ -2,6 +2,6 @@
     width: 96px !important;
     text-align: center;
 }
-input{
-    text-transform: capitalize
+.tdWidth input {
+    text-transform: capitalize;
 }
