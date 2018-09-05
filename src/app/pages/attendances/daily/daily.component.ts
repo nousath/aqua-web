@@ -213,10 +213,10 @@ export class DailyComponent {
     const component = dialogRef.componentInstance;
     component.uploader = this.amsAttendanceService.dailyAttendances
     component.samples = [{
-      name: 'CSV',
+      name: 'CSV/Excel',
       mapper: 'default',
-      url_csv: 'assets/formats/Attendance.csv',
-      url_xlsx: ''
+      url_csv: 'assets/formats/attendance.csv',
+      url_xlsx: 'assets/formats/attendance.xlsx'
     }];
   }
 
