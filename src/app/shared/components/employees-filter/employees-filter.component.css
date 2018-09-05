@@ -42,3 +42,6 @@ input {
     box-shadow: 0px;
     height: 34px !important;
 }
+.filterTag {
+    width: 33%
+}
