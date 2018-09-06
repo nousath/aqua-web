@@ -494,5 +494,5 @@ display: block;
     transform: translate3d(0,0,0);
     display: block;
     height: 100%;
-    overflow-x: hidden;
+    overflow-x: hidden !important;
 }
