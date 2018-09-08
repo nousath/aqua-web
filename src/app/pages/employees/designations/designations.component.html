@@ -76,20 +76,20 @@
                 <thead class="primary_thead">
                     <tr>
                         <th class="tdWidth">Name</th>
-                        <th>Code</th>
-                        <td></td>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of designations.items;let i = index" class="capitalize">
-                        <td class="tdWidth">
+                        <td class="col-md-6">
                             <input [maxlength]="validatorService.textLength" type="text" [name]="'name_'+i" [readOnly]="designations.isLoading || designation.isProcessing || !item?.isEdit"
                                 class="number form-control input-xs" [(ngModel)]="item.name">
                         </td>
-                        <td>
+                        <!-- <td>
                             <input [maxlength]="validatorService.textLength" type="text" [name]="'code_'+i" [disabled]="designations.isLoading || designation.isProcessing" readonly
                                 class="number form-control input-xs" [(ngModel)]="item.code">
-                        </td>
+                        
+                         </td> -->
                         <td class="btnClmWidth">
                             <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="edit(item, true)">
                                 <md-icon>edit</md-icon>

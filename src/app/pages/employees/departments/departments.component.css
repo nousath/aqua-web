@@ -1,7 +1,14 @@
 .btnClmWidth {
     width: 96px !important;
-    text-align: center;
+    text-align: left;
 }
 input{
     text-transform: capitalize
+}
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+    background-color: #eee;
+    opacity: 1;
+    width: 100%;
+    /* margin-left: 3% !important; */
+    margin-top: 3px !important
 }
