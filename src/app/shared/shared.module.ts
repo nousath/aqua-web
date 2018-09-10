@@ -180,7 +180,7 @@ export const MaterialModules = [
     EmployeesFilterComponent,
     AddAttendanceLogsComponent
   ],
-  entryComponents: [FileUploaderDialogComponent, BulkTimeLogsDialogComponent, GetDateDialogComponent ,ExtendShiftDialogComponent],
+  entryComponents: [FileUploaderDialogComponent, BulkTimeLogsDialogComponent, GetDateDialogComponent , ExtendShiftDialogComponent],
 
 })
 export class SharedModule { }

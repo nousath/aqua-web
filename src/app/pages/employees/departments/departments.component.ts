@@ -75,7 +75,7 @@ export class DepartmentsComponent implements OnInit {
   }
 
   remove(id: number) {
-    this.department.properties.divisionId = id;
+    this.department.properties.id = id;
     this.department.remove().then(data => {
       this.fetchDepartment()
     }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
@@ -92,7 +92,7 @@ export class DepartmentsComponent implements OnInit {
     dialog.componentInstance.msg = `Are you sure to want to remove department ${department.name} ?`;
     dialog.afterClosed().subscribe((value: boolean) => {
       if (value) {
-        this.remove(department.divisionId)
+        this.remove(department.id)
       }
     })
   }

@@ -10,7 +10,6 @@
             <span class="input-group-addon">Status:</span>
             <select class="form-control" [(ngModel)]="statusFilter" (change)="fetchEmp(statusFilter)">
                 <option [value]="'activate'">Activated</option>
-                <option [value]="'inComplete'">In Complete</option>
                 <option [value]="'deactivate'">Deactivated</option>
                 <option [value]="'archive'">Archived</option>
             </select>

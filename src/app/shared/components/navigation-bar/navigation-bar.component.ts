@@ -51,7 +51,7 @@ export class NavigationBarComponent implements OnInit {
   }
 
   selectedTab() {
-    let abc = true;
+    const abc = true;
     // this.isSelected = true;
     this.isSelected.emit(abc);
   }

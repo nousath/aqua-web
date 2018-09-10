@@ -40,7 +40,7 @@ export class ShiftPickerComponent implements OnInit {
   date: Date;
 
   @Input()
-  view: string = 'mini';
+  view = 'mini';
 
   employee: Employee;
   attendance: Attendance;
@@ -360,8 +360,8 @@ export class ShiftPickerComponent implements OnInit {
     const attendance = this.effectiveShift.attendances
     let attendanceId: string
     attendance.forEach(item => {
-      let incomingDate = item.ofDate
-      let currentDate = this.date
+      const incomingDate = item.ofDate
+      const currentDate = this.date
 
       if (moment(incomingDate).toISOString() === moment(currentDate).toISOString()) {
         attendanceId = item.id

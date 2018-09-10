@@ -36,7 +36,7 @@ export class Attendance {
   checkOutExtend: string;
   hoursWorked: number;
   minsWorked: number;
-  needsAction:string;
+  needsAction: string;
   units: {
     earned: Number,
     consumed: Number

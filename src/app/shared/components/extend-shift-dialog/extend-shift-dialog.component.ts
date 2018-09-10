@@ -90,14 +90,14 @@ export class ExtendShiftDialogComponent implements OnInit {
     const checkTimes: string[] = this.time.split(':');
     this.current = moment(today).hours(parseInt(checkTimes[0])).minutes(parseInt(checkTimes[1])).toDate()
 
-    if ((this.selectedDate == this.dateToday) && (moment(this.current).get('hour') <= moment(this.todayEndTime).get('hour') - 1)) {
-      this.toastyService.info({ title: 'Info', msg: 'Time should be greater than '})
+    if ((this.selectedDate === this.dateToday) && (moment(this.current).get('hour') <= moment(this.todayEndTime).get('hour') - 1)) {
+      this.toastyService.info({ title: 'Info', msg: 'Time should be greater than ' })
     }
-    if ((this.selectedDate == this.dateTomorrow) && (moment(this.current).get('hour') >= moment(this.tomorrowStartTime).get('hour'))) {
-      this.toastyService.info({ title: 'Info', msg: 'Time should be less than '})
-    }
-    else
+    if ((this.selectedDate === this.dateTomorrow) && (moment(this.current).get('hour') >= moment(this.tomorrowStartTime).get('hour'))) {
+      this.toastyService.info({ title: 'Info', msg: 'Time should be less than ' })
+    } else {
       this.dialogRef.close(this.current);
+    }
   }
 
   setDate(date) {

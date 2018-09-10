@@ -13,7 +13,7 @@ import { RosterShiftsMobileComponent } from './roster-shifts-mobile/roster-shift
   imports: [
     SharedModule,
     SubAdminRoutingModule,
-   
+
   ],
   declarations: [
     SubAdminComponent,

@@ -172,7 +172,7 @@ export class EmployeesFilterComponent implements OnInit {
     });
 
     this.designations.forEach(item => {
-      let obj = {
+      const obj = {
         id: item.id,
         itemName: item.name,
       };
@@ -180,7 +180,7 @@ export class EmployeesFilterComponent implements OnInit {
     })
 
     this.departments.forEach(item => {
-      let obj = {
+      const obj = {
         id: item.id,
         itemName: item.name,
       };
@@ -188,7 +188,7 @@ export class EmployeesFilterComponent implements OnInit {
     })
 
     this.contractors.forEach(item => {
-      let obj = {
+      const obj = {
         id: item.id,
         itemName: item.name,
       };
@@ -196,7 +196,7 @@ export class EmployeesFilterComponent implements OnInit {
     })
 
     this.usertypes.forEach(item => {
-      let obj = {
+      const obj = {
         id: item.id,
         itemName: item.name,
       };
@@ -204,7 +204,7 @@ export class EmployeesFilterComponent implements OnInit {
     })
     console.log(this.shiftTypes);
     this.shiftTypes.items.forEach(item => {
-      let obj = {
+      const obj = {
         id: item.id,
         itemName: item.name
       }
@@ -219,7 +219,7 @@ export class EmployeesFilterComponent implements OnInit {
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       enableSearchFilter: true,
-      classes: "myclass",
+      classes: 'myclass',
       displayAllSelectedText: true,
       maxHeight: 200,
       badgeShowLimit: 1

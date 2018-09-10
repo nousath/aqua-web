@@ -1,5 +1,5 @@
 <div class="row page_header">
-    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+    <div class="col-xs-3 col-sm-3 col-md-3 col-md-3">
         <h5>
             <b>Departments</b>
         </h5>
@@ -85,20 +85,19 @@
                 <thead class="primary_thead">
                     <tr>
                         <th class="tdWidth">Name</th>
-                        <th>Code</th>
-                        <td></td>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of  departments.items;let i = index" class="capitalize">
-                        <td class="tdWidth">
+                        <td class="col-md-6">
                             <input [maxlength]="validatorService.textLength" type="text" [name]="'name_'+i" [readOnly]=" departments.isLoading ||  department.isProcessing || !item?.isEdit"
                                 class="number form-control input-xs" [(ngModel)]="item.name">
                         </td>
-                        <td>
-                            <input [maxlength]="validatorService.textLength" type="text" [name]="'code_'+i" [readOnly]=" departments.isLoading ||  department.isProcessing || !item?.isEdit"
-                                class="number form-control input-xs" [(ngModel)]="item.code">
-                        </td>
+                        <!-- <td> -->
+                            <!-- <input [maxlength]="validatorService.textLength" type="text" [name]="'code_'+i" [readOnly]=" departments.isLoading ||  department.isProcessing || !item?.isEdit"
+                                class="number form-control input-xs" [(ngModel)]="item.code"> -->
+                        <!-- </td> -->
                         <td class="btnClmWidth">
                             <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="edit(item, true)">
                                 <md-icon>edit</md-icon>
