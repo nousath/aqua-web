@@ -22,3 +22,6 @@
 .tdWidth input {
     text-transform: capitalize;
 }
+input {
+    text-transform: capitalize
+}
