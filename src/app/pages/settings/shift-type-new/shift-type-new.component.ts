@@ -7,6 +7,8 @@ import { ShiftType } from '../../../models';
 import { ValidatorService } from '../../../services/validator.service';
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs/Rx';
+import { Department } from '../../../models/department';
+import { EmsDepartmentService } from '../../../services/ems';
 
 @Component({
   selector: 'aqua-shift-type-new',
@@ -18,13 +20,19 @@ export class ShiftTypeNewComponent implements OnInit {
   shifType: Model<ShiftType>;
   subscription: Subscription;
   shiftId: string;
-
+  departments: Department[];
+  departmentId: number;
 
   constructor(private amsShiftService: AmsShiftService,
     private toastyService: ToastyService,
     public validatorService: ValidatorService,
     private activatedRoute: ActivatedRoute,
+    private emsDepartmentService: EmsDepartmentService,
     private router: Router) {
+      
+      emsDepartmentService.departments.search().then(departments => {
+        this.departments = departments.items;
+      });
 
     this.shifType = new Model({
       api: amsShiftService.shiftTypes,
