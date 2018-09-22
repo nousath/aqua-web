@@ -18,6 +18,7 @@ export class Employee {
   email = '';
   password = '';
   phone = '';
+  displayCode = '';
   organization: Organization = new Organization();
   device: Device = new Device();
   shiftType: ShiftType = new ShiftType();

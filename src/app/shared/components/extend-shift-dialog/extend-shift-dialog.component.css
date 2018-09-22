@@ -1,0 +1,29 @@
+.todayShift{
+        width: 40%;
+        float: left;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    }
+    .todayShift label{
+        color: blue
+    }
+    .tomorrowShift label{
+        color: blue
+    }
+    
+    .tomorrowShift{
+        width: 40%;
+        float: right;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        
+    }
+    
+    md-chip{
+        width: 48%;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center
+    }

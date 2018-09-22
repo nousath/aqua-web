@@ -75,10 +75,16 @@ export class DepartmentsComponent implements OnInit {
   }
 
   remove(id: number) {
-    this.department.properties.divisionId = id;
+    this.department.properties.id = id;
     this.department.remove().then(data => {
       this.fetchDepartment()
     }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+  }
+
+  nameChange() {
+    this.department.properties.code = this.department.properties.name.split(' ').join('');
+    console.log(this.department.properties.name)
+    console.log(this.department.properties.code)
   }
 
   removeConfirm(department: Department) {
@@ -86,12 +92,10 @@ export class DepartmentsComponent implements OnInit {
     dialog.componentInstance.msg = `Are you sure to want to remove department ${department.name} ?`;
     dialog.afterClosed().subscribe((value: boolean) => {
       if (value) {
-        this.remove(department.divisionId)
+        this.remove(department.id)
       }
     })
-
   }
-
   save(department?: Department) {
     if (department) {
       this.department.properties = department;
@@ -119,9 +123,10 @@ export class DepartmentsComponent implements OnInit {
     const component = dialogRef.componentInstance;
     component.uploader = this.emsDepartmentService.departments
     component.samples = [{
-      name: 'CSV',
+      name: 'CSV/Excel',
       mapper: 'default',
-      url: 'assets/formats/Department.csv'
+      url_csv: 'assets/formats/department.csv',
+      url_xlsx: 'assets/formats/department.xlsx'
     }];
   }
 

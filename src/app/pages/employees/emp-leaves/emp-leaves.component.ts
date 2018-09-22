@@ -15,7 +15,7 @@ export class EmpLeavesComponent implements OnInit {
   @Input()
   employee: Employee
   leaveBalances: LeaveBalance[];
-  isEdit: boolean = false
+  isEdit = false
 
   constructor(
     private amsEmployeeService: AmsEmployeeService,

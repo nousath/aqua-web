@@ -108,9 +108,10 @@ export class HolidaysComponent implements OnInit {
     const component = dialogRef.componentInstance;
     component.uploader = this.amsHolidayService.holidays,
       component.samples = [{
-        name: 'CSV',
-        mapper: 'default',
-        url: 'assets/formats/Holiday.csv'
+        name: 'CSV/Excel',
+        mapper : 'default',
+        url_csv : 'assets/formats/holiday.csv',
+        url_xlsx : 'assets/formats/holiday.xlsx'
       }];
   }
   ngOnInit() {

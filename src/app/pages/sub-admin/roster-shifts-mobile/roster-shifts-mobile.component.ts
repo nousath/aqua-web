@@ -33,8 +33,8 @@ export class RosterShiftsMobileComponent implements OnInit {
 
   effective: EffectiveShift[];
   types: ShiftType[];
-  mobileView: string = 'full';
-  isFilter: boolean = false
+  mobileView = 'full';
+  isFilter = false
 
   constructor(
     private toastyService: ToastyService,

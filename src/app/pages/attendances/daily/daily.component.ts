@@ -195,7 +195,7 @@ export class DailyComponent {
     this.amsAttendanceService.attendance.simplePost(model, 'regenerate').then(() => {
       this.toastyService.info({ title: 'Status', msg: 'Submitted' })
       this.toastyService.info({ title: 'Info', msg: 'Kindly reload' })
-      
+
     })
   }
 
@@ -213,9 +213,10 @@ export class DailyComponent {
     const component = dialogRef.componentInstance;
     component.uploader = this.amsAttendanceService.dailyAttendances
     component.samples = [{
-      name: 'CSV',
+      name: 'CSV/Excel',
       mapper: 'default',
-      url: 'assets/formats/Attendance.csv'
+      url_csv: 'assets/formats/attendance.csv',
+      url_xlsx: 'assets/formats/attendance.xlsx'
     }];
   }
 

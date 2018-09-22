@@ -5,6 +5,10 @@ export class ShiftType {
   code = '';
   startTime = '';
   endTime = '';
+  graceIn = '';
+  graceOut = '';
+  department = '';
+  breakTime = '';
 
   monday: 'off' | 'full' | 'half' | 'alternate' | null = null;
   tuesday: 'off' | 'full' | 'half' | 'alternate' | null = null;

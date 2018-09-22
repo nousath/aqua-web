@@ -1,0 +1,41 @@
+<div *ngIf="title === 'Please Enter Time'">
+  <div md-dialog-title>
+    {{title}}
+  </div>
+  <div md-dialog-content class="rows" style="width: auto">
+    <md-chip-list style="margin-left: auto; margin-right: auto">
+      <md-chip (click)="setDate(dateToday)" (selected)="selectedDate === dateToday">{{dateToday | date}}</md-chip>
+      <md-chip (click)="setDate(dateTomorrow)" (selected)="selectedDate === dateTomorrow">{{dateTomorrow | date}}</md-chip>
+    </md-chip-list>
+    <br>
+
+    <label>Date</label> &nbsp;&nbsp;&nbsp;&nbsp; {{selectedDate | date}}
+    <br>
+    <label>Time</label>
+    <input class="form-control" type="time" [(ngModel)]="time">
+  </div>
+  <br>
+  <div class="row">
+    <h5 class="text-center" style="color: blue">
+      <b>Shifts</b>
+    </h5>
+    <div class="todayShift" style="float: left">
+      <label>Today</label>
+      <br>
+      <span>{{todayStartTime | date :'h:mm:a'}} to {{todayEndTime | date :'h:mm:a'}}</span>
+    </div>
+    <div class="tomorrowShift" style="float: right">
+      <label>Tomorrow</label>
+      <br>
+      <span>{{tomorrowStartTime | date :'h:mm:a'}} to {{tomorrowEndTime | date :'h:mm:a'}}</span>
+
+    </div>
+
+
+  </div>
+  <div md-dialog-actions class="controls-row">
+    <span class="spacer"></span>
+    <button md-button (click)="dialogRef.close('reset')">Reset</button>
+    <button md-button (click)="continue()" color="primary">{{continueText}}</button>
+  </div>
+</div>

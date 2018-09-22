@@ -81,6 +81,7 @@ import { AddAttendanceLogsComponent } from './components/add-attendance-logs/add
 import { DatesService } from './services/dates.service';
 import { GetDateDialogComponent } from './components/get-date-dialog/get-date-dialog.component';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
+import { ExtendShiftDialogComponent } from './components/extend-shift-dialog/extend-shift-dialog.component';
 
 
 export const MaterialModules = [
@@ -127,7 +128,8 @@ export const MaterialModules = [
     AddAttendanceLogsComponent,
     FileUploaderDialogComponent,
     BulkTimeLogsDialogComponent,
-    GetDateDialogComponent],
+    GetDateDialogComponent,
+    ExtendShiftDialogComponent],
   providers: [
     EmsEmployeeService,
     EmsDesignationService,
@@ -178,7 +180,7 @@ export const MaterialModules = [
     EmployeesFilterComponent,
     AddAttendanceLogsComponent
   ],
-  entryComponents: [FileUploaderDialogComponent, BulkTimeLogsDialogComponent, GetDateDialogComponent],
+  entryComponents: [FileUploaderDialogComponent, BulkTimeLogsDialogComponent, GetDateDialogComponent , ExtendShiftDialogComponent],
 
 })
 export class SharedModule { }

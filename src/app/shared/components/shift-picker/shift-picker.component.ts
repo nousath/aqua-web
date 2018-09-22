@@ -17,6 +17,7 @@ import { DatesService } from '../../services/dates.service';
 import { GetDateDialogComponent } from '../get-date-dialog/get-date-dialog.component';
 import { GenericApi } from '../../../common/generic-api';
 import { Http } from '@angular/http';
+import { ExtendShiftDialogComponent } from '../extend-shift-dialog/extend-shift-dialog.component';
 
 @Component({
   selector: 'aqua-shift-picker',
@@ -39,7 +40,7 @@ export class ShiftPickerComponent implements OnInit {
   date: Date;
 
   @Input()
-  view: string = 'mini';
+  view = 'mini';
 
   employee: Employee;
   attendance: Attendance;
@@ -54,6 +55,8 @@ export class ShiftPickerComponent implements OnInit {
   shiftSearch: string;
   userType: string;
   startingShift: ShiftType;
+
+  isBeforeTOday= false
 
   isProcessing = false;
 
@@ -115,6 +118,7 @@ export class ShiftPickerComponent implements OnInit {
 
     this.isPast = moment(this.date).isBefore(new Date());
     this.isToday = moment(this.date).isSame(new Date(), 'd');
+    this.isBeforeToday = moment(this.date).isBefore(new Date(), 'd');
     this.day = moment(this.date).day().toString()
 
     if (this.effectiveShift.previousShift) {
@@ -356,33 +360,34 @@ export class ShiftPickerComponent implements OnInit {
     const attendance = this.effectiveShift.attendances
     let attendanceId: string
     attendance.forEach(item => {
-      let incomingDate = item.ofDate
-      let currentDate = this.date
+      const incomingDate = item.ofDate
+      const currentDate = this.date
 
       if (moment(incomingDate).toISOString() === moment(currentDate).toISOString()) {
         attendanceId = item.id
       }
     })
 
-    const dialogRef = this.dialog.open(GetDateDialogComponent, {data:{shifts:this.effectiveShift.previousShift,nextShift:this.effectiveShift.shifts}})
+    console.log(this.effectiveShift)
+    const dialogRef = this.dialog.open(ExtendShiftDialogComponent, { data: { currentShifts: this.effectiveShift.previousShift, nextShift: this.effectiveShift.shifts, date: this.date.toISOString() } })
     const component = dialogRef.componentInstance;
     component.title = 'Please Enter Time'
 
     dialogRef.afterClosed().subscribe((response: any) => {
       if (!response) { return; }
       else {
-      if(response == true) {
-        this.attendance.checkOutExtend = null;
-        this.amsAttendanceService.attendance.update(`${attendanceId}/extendShift`, this.attendance as any)
-        this.toastyService.info({ title: 'Info', msg: 'Shift Reset' })
+        if (response == 'reset') {
+          this.attendance.checkOutExtend = null;
+          this.amsAttendanceService.attendance.update(`${attendanceId}/extendShift`, this.attendance as any)
+          this.toastyService.info({ title: 'Info', msg: 'Shift Reset' })
+        }
+        else {
+          this.attendance.checkOutExtend = response;
+          this.amsAttendanceService.attendance.update(`${attendanceId}/extendShift`, this.attendance as any)
+          this.toastyService.info({ title: 'Info', msg: 'Shift Extended' })
+
+        }
       }
-      else {
-      this.attendance.checkOutExtend = response;
-      this.amsAttendanceService.attendance.update(`${attendanceId}/extendShift`, this.attendance as any)
-      this.toastyService.info({ title: 'Info', msg: 'Shift Extended' })
-      
-      }
-    }
     });
 
   }

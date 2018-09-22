@@ -1,6 +1,6 @@
 <form class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 filters">
-        <div class="form-group row">
+        <div class="form-group row filterTag">
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
                 <label for="email">Name</label>
             </div>
@@ -9,7 +9,7 @@
                     name="Name">
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row filterTag">
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 <label for="pwd">Code</label>
             </div>
@@ -18,7 +18,7 @@
                     name="Code">
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row filterTag">
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 <label for="pwd">Shift</label>
             </div>
@@ -28,7 +28,7 @@
                     (onDeSelectAll)="onDeSelectAll($event)" [ngModelOptions]="{standalone: true}"></angular2-multiselect>
             </div>
         </div>
-        <div class="form-group row" *ngIf="!hidden.attendanceStatus">
+        <div class="form-group row filterTag" *ngIf="!hidden.attendanceStatus">
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 formSets">
                 <label class="setStatus">Status</label>
             </div>
@@ -39,7 +39,7 @@
             </div>
         </div>
         <div>
-            <div class="form-group row">
+            <div class="form-group row filterTag">
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     <label>Designation</label>
                 </div>
@@ -51,7 +51,7 @@
             </div>
         </div>
         <div>
-            <div class="form-group row">
+            <div class="form-group row filterTag">
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     <label>Department</label>
                 </div>
@@ -63,7 +63,7 @@
             </div>
         </div>
         <div>
-            <div class="form-group row">
+            <div class="form-group row filterTag">
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     <label>UserType</label>
                 </div>
@@ -75,7 +75,7 @@
             </div>
         </div>
         <div>
-            <div class="form-group row">
+            <div class="form-group row filterTag">
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     <label>Contractor</label>
                 </div>
@@ -87,7 +87,7 @@
             </div>
         </div>
         <div>
-            <div class="form-group row" *ngIf="!hidden.attendanceAction">
+            <div class="form-group row filterTag" *ngIf="!hidden.attendanceAction">
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     <label>Action</label>
                 </div>
