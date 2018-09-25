@@ -9,3 +9,14 @@
 .rightBtn {
     float: right;
 }
+.graceWidth {
+    width: 25%
+}
+.graceLable {
+    width:50%;
+  float:left
+}
+.graceInput {
+    width:97%;
+    padding: 5px;
+}

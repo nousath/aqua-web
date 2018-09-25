@@ -5,8 +5,7 @@ export class ShiftType {
   code = '';
   startTime = '';
   endTime = '';
-  graceIn = '';
-  graceOut = '';
+  grace: Grace = new Grace();
   department = '';
   breakTime = '';
 
@@ -23,3 +22,16 @@ export class ShiftType {
 }
 
 
+class Grace {
+  checkIn: CheckIn = new CheckIn();
+  checkOut: CheckOut = new CheckOut();
+}
+ class CheckIn {
+  early: '';
+  late: '';
+ }
+
+ class CheckOut {
+  early: '';
+  late: '';
+ }
