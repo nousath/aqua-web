@@ -84,6 +84,12 @@ export class EmployeesFilterComponent implements OnInit {
   departmentList = [];
   designationList = [];
   statusList = [];
+  checkInStatusList = [];
+  checkOutStatusList = [];
+  shiftCountList = [];
+  selectedCheckInStatus = [];
+  selectedCheckOutStatus = [];
+  selectedShiftCount = [];
   actionList = [];
   userTypeList = [];
   contractorList = [];
@@ -150,6 +156,24 @@ export class EmployeesFilterComponent implements OnInit {
       id: 2, itemName: 'Missed Check In'
     }, {
       id: 3, itemName: 'Attendance Short'
+    }]
+
+    this.checkInStatusList = [{
+      id: 1, itemName: 'Early'
+    }, {
+      id: 2, itemName: 'Late'
+    }]
+
+    this.checkOutStatusList = [{
+      id: 1, itemName: 'Early'
+    }, {
+      id: 2, itemName: 'Late'
+    }]
+
+    this.shiftCountList = [{
+      id: 1, itemName: 'Short'
+    }, {
+      id: 2, itemName: 'Extra'
     }]
   }
 
@@ -253,6 +277,9 @@ export class EmployeesFilterComponent implements OnInit {
     this.selectedShift = [];
     this.tags.selected = [];
     this.selectedAction = [];
+    this.selectedCheckInStatus = [];
+    this.selectedCheckOutStatus = [];
+    this.selectedShiftCount = [];
     this.tags.selected = []
     this.selectedShiftType = null;
     this.selectedAttendanceStatus = null;
@@ -283,6 +310,19 @@ export class EmployeesFilterComponent implements OnInit {
       status.push(item.itemName);
     })
 
+    const checkInStatus: string[] = [];
+    this.selectedCheckInStatus.forEach(item => {
+      status.push(item.itemName);
+    })
+    const checkOutStatus: string[] = [];
+    this.selectedCheckOutStatus.forEach(item => {
+      status.push(item.itemName);
+    })
+    const shiftCount: string[] = [];
+    this.selectedShiftCount.forEach(item => {
+      status.push(item.itemName);
+    })
+
     const action: string[] = [];
     this.selectedAction.forEach(item => {
       action.push(item.itemName);
@@ -299,6 +339,9 @@ export class EmployeesFilterComponent implements OnInit {
       tagIds: tagIds,
       shiftType: shifts,
       attendanceStatus: status,
+      attendanceCheckInStatus: checkInStatus,
+      attendanceCheckOutStatus: checkOutStatus,
+      attendanceShiftCount: shiftCount,
       needsAction: action,
       employeeName: this.selectedEmployeeName,
       employeeCode: this.selectedEmployeeCode
