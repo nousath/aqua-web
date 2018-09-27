@@ -86,10 +86,10 @@ export class EmployeesFilterComponent implements OnInit {
   statusList = [];
   checkInStatusList = [];
   checkOutStatusList = [];
-  shiftCountList = [];
+hoursList = [];
   selectedCheckInStatus = [];
   selectedCheckOutStatus = [];
-  selectedShiftCount = [];
+  selectedHours = [];
   actionList = [];
   userTypeList = [];
   contractorList = [];
@@ -170,7 +170,7 @@ export class EmployeesFilterComponent implements OnInit {
       id: 2, itemName: 'Late'
     }]
 
-    this.shiftCountList = [{
+    this.hoursList = [{
       id: 1, itemName: 'Short'
     }, {
       id: 2, itemName: 'Extra'
@@ -279,7 +279,7 @@ export class EmployeesFilterComponent implements OnInit {
     this.selectedAction = [];
     this.selectedCheckInStatus = [];
     this.selectedCheckOutStatus = [];
-    this.selectedShiftCount = [];
+    this.selectedHours = [];
     this.tags.selected = []
     this.selectedShiftType = null;
     this.selectedAttendanceStatus = null;
@@ -312,15 +312,15 @@ export class EmployeesFilterComponent implements OnInit {
 
     const checkInStatus: string[] = [];
     this.selectedCheckInStatus.forEach(item => {
-      status.push(item.itemName);
+      checkInStatus.push(item.itemName);
     })
     const checkOutStatus: string[] = [];
     this.selectedCheckOutStatus.forEach(item => {
-      status.push(item.itemName);
+      checkOutStatus.push(item.itemName);
     })
-    const shiftCount: string[] = [];
-    this.selectedShiftCount.forEach(item => {
-      status.push(item.itemName);
+    const hours: string[] = [];
+    this.selectedHours.forEach(item => {
+      hours.push(item.itemName);
     })
 
     const action: string[] = [];
@@ -341,7 +341,7 @@ export class EmployeesFilterComponent implements OnInit {
       attendanceStatus: status,
       attendanceCheckInStatus: checkInStatus,
       attendanceCheckOutStatus: checkOutStatus,
-      attendanceShiftCount: shiftCount,
+      attendanceHours: hours,
       needsAction: action,
       employeeName: this.selectedEmployeeName,
       employeeCode: this.selectedEmployeeCode

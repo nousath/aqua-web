@@ -39,6 +39,7 @@ export class Attendance {
   needsAction: string;
   checkInStatus: string;
   checkOutStatus: string;
+  hours: string;
 
   units: {
     earned: Number,

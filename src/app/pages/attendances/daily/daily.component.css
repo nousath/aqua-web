@@ -191,16 +191,9 @@ button.mat-menu-item {
     border: #f1f1f1 1px solid;
     padding-left: 3%;
 }
-.shiftCount{
+.hours{
     width: 90%;
     height: 10px;
     margin-left: auto;
     margin-right: auto;
-}
-.shiftCount{
-    width: 90%;
-    height: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-bottom: 0%;
 }

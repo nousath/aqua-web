@@ -92,36 +92,36 @@
                             <ng-template #elsePart>
                                 <div>{{item?.status?.toLowerCase() == 'checkedin' ? 'Present' : item?.status}}</div>
                                 <div class="countShiftTab">
-                                        <div class="shiftCount" *ngIf="item?.count >= 0 && item.count <=0.5">
+                                        <div class="hours" *ngIf="item?.count >= 0 && item.count <=0.5">
                                             <div class="half"></div>
                                             <div></div>
                                             <div></div>
                                         </div>
-                                        <div class="shiftCount" *ngIf="item?.count > 0.5 && item.count <1">
+                                        <div class="hours" *ngIf="item?.count > 0.5 && item.count <1">
                                                 <div class="quarter"></div>
                                                 <div></div>
                                                 <div></div>
                                             </div>
-                                            <div class="shiftCount" *ngIf="item?.count == 1">
+                                            <div class="hours" *ngIf="item?.count == 1">
                                                 <div class="fullShift"></div>
                                                 <div></div>
                                                 <div></div>
                                             </div>
-                                    <div class="shiftCount" *ngIf="item?.count >= 1.1 && item.count <=1.5">
+                                    <div class="hours" *ngIf="item?.count >= 1.1 && item.count <=1.5">
                                         <div class="fullShift"></div>
                                         <div class="halfShift"></div>
                                         <div></div>
                                     </div>
-                                    <div class="shiftCount" *ngIf="item?.count > 1.5 && item.count <=2">
+                                    <div class="hours" *ngIf="item?.count > 1.5 && item.count <=2">
                                         <div class="fullShift"></div>
                                         <div class="fullShift"></div>
                                     </div>
-                                    <div class="shiftCount" *ngIf="item?.count > 2 && item.count <=2.5">
+                                    <div class="hours" *ngIf="item?.count > 2 && item.count <=2.5">
                                         <div class="fullShift"></div>
                                         <div class="fullShift"></div>
                                         <div class="halfShift"></div>
                                     </div>
-                                    <div class="shiftCount" *ngIf="item?.count > 2.5 ">
+                                    <div class="hours" *ngIf="item?.count > 2.5 ">
                                         <div class="fullShift"></div>
                                         <div class="fullShift"></div>
                                         <div class="fullShift"></div>
