@@ -139,24 +139,15 @@ hoursList = [];
     }, {
       id: 3, itemName: 'Absent'
     }, {
-      id: 4, itemName: 'MissedSwipe'
+      id: 4, itemName: 'HalfDay'
     }, {
-      id: 5, itemName: 'HalfDay'
+      id: 5, itemName: 'OnLeave'
     }, {
-      id: 6, itemName: 'OnLeave'
+      id: 6, itemName: 'LateComing'
     }, {
-      id: 7, itemName: 'LateComing'
-    }, {
-      id: 8, itemName: 'EarlyGoing'
+      id: 7, itemName: 'EarlyGoing'
     }]
 
-    this.actionList = [{
-      id: 1, itemName: 'Missed Check Out'
-    }, {
-      id: 2, itemName: 'Missed Check In'
-    }, {
-      id: 3, itemName: 'Attendance Short'
-    }]
 
     this.checkInStatusList = [{
       id: 1, itemName: 'Early Coming'

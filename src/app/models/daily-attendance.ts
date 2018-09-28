@@ -17,7 +17,6 @@ export class DailyAttendance {
 
 export enum AttendanceStates {
   absent,
-  missSwipe,
   checkedIn,
   'checked-in-again',
   present,

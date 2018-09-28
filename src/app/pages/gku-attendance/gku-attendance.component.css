@@ -69,13 +69,6 @@
     background-size: 18%;
 }
 
-.missedSwipe {
-    background-image: url(../../../assets/images/corners/misswipe-icon.png);
-    background-position: right top;
-    background-repeat: no-repeat;
-    background-size: 18%;
-}
-
 .holiday {
     background-image: url(../../../assets/images/corners/holiday-icon.png);
     background-position: right top;
