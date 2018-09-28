@@ -86,17 +86,29 @@ export class DailyComponent {
       }, {
         field: 'tagIds',
         value: ''
+      }, {
+        field: 'checkInStatus',
+        value: null
+      }, {
+        field: 'checkOutStatus',
+        value: null
+      }, {
+        field: 'hours',
+        value: null
       }],
     });
 
   }
 
   applyFilters($event) {
-
+    console.log($event)
     this.dailyAttendnace.filters.properties['shiftTypeId']['value'] = $event.shiftType;
     this.dailyAttendnace.filters.properties['name']['value'] = $event.employeeName;
     this.dailyAttendnace.filters.properties['code']['value'] = $event.employeeCode;
     this.dailyAttendnace.filters.properties['status']['value'] = $event.attendanceStatus;
+    this.dailyAttendnace.filters.properties['checkInStatus']['value'] = $event.attendanceCheckInStatus;
+    this.dailyAttendnace.filters.properties['checkOutStatus']['value'] = $event.attendanceCheckOutStatus;
+    this.dailyAttendnace.filters.properties['hours']['value'] = $event.attendanceHours;
     this.dailyAttendnace.filters.properties['action']['value'] = $event.needsAction;
     this.dailyAttendnace.filters.properties['tagIds']['value'] = $event.tagIds;
     this.getAttendance();
