@@ -24,23 +24,20 @@ margin: 0 auto;word-break: break-all;
             <div class="calBox day corners shadow" *ngFor="let item of events;let i = index" [ngClass]="{'present': (item?.status === 'present' || item?.status === 'checkedin'),
                                                                                    'absent':item?.status === 'absent'  && item?.shift?.status === 'working',
                                                                                    'leave':item?.status === 'onleave' || item?.status === 'halfday'  && item?.shift?.status === 'working',
-                                                                                   'missedSwipe':item?.status === 'missswipe',
-                                                                                   'weekoff':item?.shift?.status === 'weekoff' && (item?.status !== 'present' && item?.status !== 'checkedin' && item?.status !== 'missswipe'),
-                                                                                   'holiday':item?.shift?.status === 'holiday' && (item?.status !== 'present' && item?.status !== 'checkedin' && item?.status !== 'missswipe')}">
+                                                                                   'weekoff':item?.shift?.status === 'weekoff' && (item?.status !== 'present' && item?.status !== 'checkedin'),
+                                                                                   'holiday':item?.shift?.status === 'holiday' && (item?.status !== 'present' && item?.status !== 'checkedin')}">
                 <h6>{{getDate(item?.ofDate)}}</h6>
                 <!--<p>{{i}} {{item?.ofDate | date}}</p>-->
                 <!--<p>{{item?.ofDate}}</p>-->
                 <!--<div *ngIf="item?.shift?.status === 'working'">-->
                 <p *ngIf="item?.status === 'present'
              || item?.status === 'checkedin'
-             || item?.status === 'missswipe'
              || item?.status === 'checked-in-again'
              || item?.status === 'halfday'">
                     In - {{item?.checkIn | date:'shortTime'}}
                 </p>
                 <p *ngIf="item?.status === 'present'
             || item?.status === 'checkedin'
-            || item?.status === 'missswipe'
             || item?.status === 'checked-in-again'
             || item?.status === 'halfday'">
                     Out - {{item?.checkOut | date:'shortTime'}}
@@ -51,7 +48,7 @@ margin: 0 auto;word-break: break-all;
                     <span class="capitalize">{{item?.status}}</span>
                 </p>
                 <p *ngIf="item?.shift?.status === 'holiday' &&
-              (item?.status !== 'present' && item?.status !== 'checkedin' && item?.status !== 'missswipe')">
+              (item?.status !== 'present' && item?.status !== 'checkedin')">
                     <span class="capitalize">{{item?.shift?.holiday?.name}}</span>
                 </p>
                 <!--</div>-->
