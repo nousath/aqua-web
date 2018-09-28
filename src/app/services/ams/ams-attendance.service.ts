@@ -129,12 +129,6 @@ export class AmsAttendanceService {
         }
 
         if (dayStatus.status === 'absent') {
-            // if ((attendance.checkIn && !attendance.checkOut) ||
-            //     (!attendance.checkIn && attendance.checkOut)) {
-            //     dayStatus.status = 'missSwipe'
-            //     dayStatus.first = 'M'
-            //     dayStatus.second = 'M'
-            // } else 
             if (attendance.checkIn && attendance.checkOut) {
                 dayStatus.status = 'present'
                 dayStatus.first = 'P'

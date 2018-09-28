@@ -78,12 +78,6 @@
     background-repeat: no-repeat;
 }
 
-.missedSwipe {
-    background-image: url(../../../../assets/images/corners/misswipe-icon.png);
-    background-position: right top;
-    background-repeat: no-repeat;
-}
-
 .holiday {
     background-image: url(../../../../assets/images/corners/holiday-icon.png);
     background-position: right top;
