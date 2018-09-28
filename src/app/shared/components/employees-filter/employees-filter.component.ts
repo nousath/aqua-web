@@ -159,15 +159,15 @@ hoursList = [];
     }]
 
     this.checkInStatusList = [{
-      id: 1, itemName: 'Early'
+      id: 1, itemName: 'Early Coming'
     }, {
-      id: 2, itemName: 'Late'
+      id: 2, itemName: 'Late Coming'
     }]
 
     this.checkOutStatusList = [{
-      id: 1, itemName: 'Early'
+      id: 1, itemName: 'Early Going'
     }, {
-      id: 2, itemName: 'Late'
+      id: 2, itemName: 'Late Going'
     }]
 
     this.hoursList = [{
