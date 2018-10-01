@@ -225,7 +225,7 @@ export class DailyComponent {
     const component = dialogRef.componentInstance;
     component.uploader = this.amsAttendanceService.dailyAttendances
     component.samples = [{
-      name: 'CSV/Excel',
+      name: 'Add-Timelogs',
       mapper: 'default',
       url_csv: 'assets/formats/attendance.csv',
       url_xlsx: 'assets/formats/attendance.xlsx'
