@@ -17,7 +17,6 @@ export class DailyAttendance {
 
 export enum AttendanceStates {
   absent,
-  missSwipe,
   checkedIn,
   'checked-in-again',
   present,
@@ -37,6 +36,10 @@ export class Attendance {
   hoursWorked: number;
   minsWorked: number;
   needsAction: string;
+  checkInStatus: string;
+  checkOutStatus: string;
+  hours: string;
+
   units: {
     earned: Number,
     consumed: Number

@@ -42,7 +42,7 @@
                     <table class="table">
                         <tr>
                             <td> Shift : </td>
-                            <td> {{ (attendance?.shift?.shiftType.name || employee?.properties?.shiftType?.name)| titlecase}}
+                            <td> {{ (attendance?.shift?.shiftType?.name || employee?.properties?.shiftType?.name)| titlecase}}
                                 <span *ngIf="extraShiftCount !== 0">+ {{extraShiftCount}} Shift(s)</span>
                             </td>
                         </tr>

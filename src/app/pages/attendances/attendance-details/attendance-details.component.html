@@ -147,8 +147,6 @@
                 <div class="dot">
                     <img src="assets/images/dots/leave.png">&nbsp;Leave</div>
                 <div class="dot">
-                    <img src="assets/images/dots/misswipe.png">&nbsp;Missed Swipe</div>
-                <div class="dot">
                     <img src="assets/images/dots/holiday.png">&nbsp;Holiday</div>
             </div>
         </md-card>
@@ -168,9 +166,8 @@
                   'present': item?.status === 'present' || item?.status === 'checkedin',
                   'absent': item?.status === 'absent'  && item?.shift?.status === 'working',
                   'leave': item?.status === 'onleave' || item?.status === 'halfday' && item?.shift?.status === 'working',
-                  'missedSwipe':item?.status === 'missswipe',
-                  'weekoff': item?.status === 'weekoff' || (item?.shift?.status === 'weekoff' && (item?.status !== 'present' && item?.status !== 'checkedin' && item?.status !== 'missswipe')),
-                   'holiday':item?.status === 'holiday' || (item?.shift?.status === 'holiday' && (item?.status !== 'present' && item?.status !== 'checkedin' && item?.status !== 'missswipe'))
+                  'weekoff': item?.status === 'weekoff' || (item?.shift?.status === 'weekoff' && (item?.status !== 'present' && item?.status !== 'checkedin')),
+                   'holiday':item?.status === 'holiday' || (item?.shift?.status === 'holiday' && (item?.status !== 'present' && item?.status !== 'checkedin'))
                   }">
                     <div class="dayTab">
                         <h5>
@@ -184,14 +181,12 @@
                         </p>
                         <p *ngIf="item?.status === 'present'
                         || item?.status === 'checkedin'
-                        || item?.status === 'missswipe'
                         || item?.status === 'checked-in-again'
                         || item?.status === 'halfday'">
                             In - {{item?.checkIn | date:'shortTime'}}
                         </p>
                         <p *ngIf="item?.status === 'present'
                         || item?.status === 'checkedin'
-                        || item?.status === 'missswipe'
                         || item?.status === 'checked-in-again'
                         || item?.status === 'halfday'">
                             Out - {{item?.checkOut | date:'shortTime'}}
@@ -212,8 +207,7 @@
                         </p>
                         <p *ngIf="item?.shift?.status === 'holiday' 
                         && (item?.status !== 'present' 
-                        && item?.status !== 'checkedin' 
-                        && item?.status !== 'missswipe')">
+                        && item?.status !== 'checkedin')">
                             <span class="capitalize">{{item?.shift?.holiday?.name}}</span>
                         </p>
                         <!--</div>-->

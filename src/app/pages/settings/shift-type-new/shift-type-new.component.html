@@ -9,7 +9,8 @@
   <md-card>
     <div class="table-responsive">
       <form #shiftForm="ngForm">
-        <table class="table table-condensed">
+        <!-- table-condensed -->
+        <table class="table ">
           <tr>
             <td class="labelWidth">
               <label>Name<span class="asterisk">*</span></label>
@@ -47,7 +48,7 @@
             </td>
             <td>
               <select class="form-control" [(ngModel)]="shifType.properties.department" [ngModelOptions]="{standalone: true}">
-                  <option [ngValue]="null">Select an option</option>
+                <option [ngValue]="null">Select an option</option>
                 <option *ngFor="let item of departments" [value]="item.name">{{item.name}}</option>
               </select>
             </td>
@@ -56,19 +57,48 @@
               <input type="text" class="form-control" [maxlength]='2' name="breakTime" [(ngModel)]="shifType.properties.breakTime"
                 required>
             </td>
-           
+
           </tr>
           <tr>
-            <td><label>Grace In<span class="asterisk">*</span></label></td>
-            <td>
-              <input type="text" class="form-control" [maxlength]='2' name="graceIn" [(ngModel)]="shifType.properties.graceIn"
-                required>
+            <td colspan="2"><label>Grace CheckIn</label></td>
+
+            <td colspan="2"><label>Grace CheckOut</label></td>
+
+          </tr>
+          <tr>
+            <td colspan="2">
+              <div class="graceLable">
+                <label>Early<span class="asterisk">*</span></label>
+                <input type="text" class="form-control graceInput" [maxlength]='2' name="earlyIn" [(ngModel)]="shifType?.properties.grace?.checkIn.early"
+                  required>
+              </div>
+              <div class="graceLable">
+                <label>Late<span class="asterisk">*</span></label><input type="text" class="form-control graceInput"
+                  [maxlength]='2' name="lateIn" [(ngModel)]="shifType?.properties.grace?.checkIn.late" required>
+              </div>
             </td>
-            <td><label>Grace Out<span class="asterisk">*</span></label></td>
-            <td>
-              <input type="text" class="form-control" [maxlength]='2' name="graceOut" [(ngModel)]="shifType.properties.graceOut"
-                required>
+            <td colspan="2">
+              <div class="graceLable">
+                <label>Early<span class="asterisk">*</span></label>
+                <input type="text" class="form-control graceInput" [maxlength]='2' name="earlyOut" [(ngModel)]="shifType?.properties.grace?.checkOut.early"
+                  required>
+              </div>
+              <div class="graceLable">
+                <label>Late<span class="asterisk">*</span></label>
+                <input type="text" class="form-control graceInput" [maxlength]='2' name="lateOut" [(ngModel)]="shifType?.properties.grace?.checkOut.late"
+                  required>
+              </div>
             </td>
+
+            <!-- <td><label>Early<span class="asterisk">*</span></label>
+      
+                <input type="text" class="form-control" [maxlength]='2' name="graceIn" [(ngModel)]="shifType.properties.graceIn"
+                  required>
+              </td>
+              <td ><label>Late<span class="asterisk">*</span></label>
+                <input type="text" class="form-control" [maxlength]='2' name="graceOut" [(ngModel)]="shifType.properties.graceOut"
+                  required>
+              </td> -->
           </tr>
           <tr>
             <td>
@@ -94,10 +124,10 @@
                 <option value="alternate">Alternate</option>
               </select>
             </td>
-           <td>
-        
-           </td>
-           <td></td>
+            <td>
+
+            </td>
+            <td></td>
           </tr>
 
           <tr>
@@ -113,8 +143,8 @@
                 <option value="alternate">Alternate</option>
               </select>
             </td>
-           <td></td>
-           <td></td>
+            <td></td>
+            <td></td>
           </tr>
           <tr>
             <td>

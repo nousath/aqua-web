@@ -84,6 +84,12 @@ export class EmployeesFilterComponent implements OnInit {
   departmentList = [];
   designationList = [];
   statusList = [];
+  checkInStatusList = [];
+  checkOutStatusList = [];
+hoursList = [];
+  selectedCheckInStatus = [];
+  selectedCheckOutStatus = [];
+  selectedHours = [];
   actionList = [];
   userTypeList = [];
   contractorList = [];
@@ -133,23 +139,32 @@ export class EmployeesFilterComponent implements OnInit {
     }, {
       id: 3, itemName: 'Absent'
     }, {
-      id: 4, itemName: 'MissedSwipe'
+      id: 4, itemName: 'HalfDay'
     }, {
-      id: 5, itemName: 'HalfDay'
+      id: 5, itemName: 'OnLeave'
     }, {
-      id: 6, itemName: 'OnLeave'
+      id: 6, itemName: 'LateComing'
     }, {
-      id: 7, itemName: 'LateComing'
-    }, {
-      id: 8, itemName: 'EarlyGoing'
+      id: 7, itemName: 'EarlyGoing'
     }]
 
-    this.actionList = [{
-      id: 1, itemName: 'Missed Check Out'
+
+    this.checkInStatusList = [{
+      id: 1, itemName: 'Early Coming'
     }, {
-      id: 2, itemName: 'Missed Check In'
+      id: 2, itemName: 'Late Coming'
+    }]
+
+    this.checkOutStatusList = [{
+      id: 1, itemName: 'Early Going'
     }, {
-      id: 3, itemName: 'Attendance Short'
+      id: 2, itemName: 'Late Going'
+    }]
+
+    this.hoursList = [{
+      id: 1, itemName: 'Short'
+    }, {
+      id: 2, itemName: 'Extra'
     }]
   }
 
@@ -253,6 +268,9 @@ export class EmployeesFilterComponent implements OnInit {
     this.selectedShift = [];
     this.tags.selected = [];
     this.selectedAction = [];
+    this.selectedCheckInStatus = [];
+    this.selectedCheckOutStatus = [];
+    this.selectedHours = [];
     this.tags.selected = []
     this.selectedShiftType = null;
     this.selectedAttendanceStatus = null;
@@ -283,6 +301,19 @@ export class EmployeesFilterComponent implements OnInit {
       status.push(item.itemName);
     })
 
+    const checkInStatus: string[] = [];
+    this.selectedCheckInStatus.forEach(item => {
+      checkInStatus.push(item.itemName);
+    })
+    const checkOutStatus: string[] = [];
+    this.selectedCheckOutStatus.forEach(item => {
+      checkOutStatus.push(item.itemName);
+    })
+    const hours: string[] = [];
+    this.selectedHours.forEach(item => {
+      hours.push(item.itemName);
+    })
+
     const action: string[] = [];
     this.selectedAction.forEach(item => {
       action.push(item.itemName);
@@ -299,6 +330,9 @@ export class EmployeesFilterComponent implements OnInit {
       tagIds: tagIds,
       shiftType: shifts,
       attendanceStatus: status,
+      attendanceCheckInStatus: checkInStatus,
+      attendanceCheckOutStatus: checkOutStatus,
+      attendanceHours: hours,
       needsAction: action,
       employeeName: this.selectedEmployeeName,
       employeeCode: this.selectedEmployeeCode
