@@ -1,0 +1,36 @@
+<div class="countShiftTab">
+    <div class="hours" *ngIf="count >= 0 && count <=0.5">
+        <div class="half"></div>
+        <div></div>
+        <div></div>
+    </div>
+    <div class="hours" *ngIf="count > 0.5 && count <1">
+        <div class="quarter"></div>
+        <div></div>
+        <div></div>
+    </div>
+    <div class="hours" *ngIf="count == 1">
+        <div class="fullShift"></div>
+        <div></div>
+        <div></div>
+    </div>
+    <div class="hours" *ngIf="count >= 1.1 && count <=1.5">
+        <div class="fullShift"></div>
+        <div class="halfShift"></div>
+        <div></div>
+    </div>
+    <div class="hours" *ngIf="count > 1.5 && count <=2">
+        <div class="fullShift"></div>
+        <div class="fullShift"></div>
+    </div>
+    <div class="hours" *ngIf="count > 2 && count <=2.5">
+        <div class="fullShift"></div>
+        <div class="fullShift"></div>
+        <div class="halfShift"></div>
+    </div>
+    <div class="hours" *ngIf="count > 2.5">
+        <div class="fullShift"></div>
+        <div class="fullShift"></div>
+        <div class="fullShift"></div>
+    </div>
+</div>

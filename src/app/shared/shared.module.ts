@@ -82,6 +82,7 @@ import { DatesService } from './services/dates.service';
 import { GetDateDialogComponent } from './components/get-date-dialog/get-date-dialog.component';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import { ExtendShiftDialogComponent } from './components/extend-shift-dialog/extend-shift-dialog.component';
+import { ShiftCountComponent } from './components/shift-count/shift-count.component';
 
 
 export const MaterialModules = [
@@ -129,7 +130,9 @@ export const MaterialModules = [
     FileUploaderDialogComponent,
     BulkTimeLogsDialogComponent,
     GetDateDialogComponent,
-    ExtendShiftDialogComponent],
+    ExtendShiftDialogComponent,
+    ShiftCountComponent
+  ],
   providers: [
     EmsEmployeeService,
     EmsDesignationService,
@@ -178,9 +181,10 @@ export const MaterialModules = [
     TimePipe,
     ShiftPickerComponent,
     EmployeesFilterComponent,
-    AddAttendanceLogsComponent
+    AddAttendanceLogsComponent,
+    ShiftCountComponent
   ],
-  entryComponents: [FileUploaderDialogComponent, BulkTimeLogsDialogComponent, GetDateDialogComponent , ExtendShiftDialogComponent],
+  entryComponents: [FileUploaderDialogComponent, BulkTimeLogsDialogComponent, GetDateDialogComponent, ExtendShiftDialogComponent],
 
 })
 export class SharedModule { }

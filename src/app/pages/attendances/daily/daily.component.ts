@@ -34,6 +34,8 @@ export class DailyComponent {
   @Output()
   data: EventEmitter<any> = new EventEmitter();
 
+  isPast = false;
+
   dailyAttendnace: Page<Attendance>;
   isFilter = false;
   isUpload = false;
@@ -101,7 +103,6 @@ export class DailyComponent {
   }
 
   applyFilters($event) {
-    console.log($event)
     this.dailyAttendnace.filters.properties['shiftTypeId']['value'] = $event.shiftType;
     this.dailyAttendnace.filters.properties['name']['value'] = $event.employeeName;
     this.dailyAttendnace.filters.properties['code']['value'] = $event.employeeCode;
@@ -125,9 +126,8 @@ export class DailyComponent {
     this.attendances = [];
     this.dailyAttendnace.fetch().then(page => {
       if (!page || !page.items) { return; }
+      this.isPast = moment(this.ofDate).isBefore(new Date(), 'day');
       page.items.forEach(pageItem => {
-
-
         const existingAttendance = this.attendances.find(item => item.employee.code === pageItem.employee.code);
         if (existingAttendance) {
           if (!existingAttendance.checkIn || existingAttendance.checkIn > pageItem.checkIn) {

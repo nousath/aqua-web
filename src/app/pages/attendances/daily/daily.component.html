@@ -21,6 +21,9 @@
             <button md-menu-item mdTooltip="Bulk Time Logs" [mdTooltipPosition]="'above'" (click)="showBulkTimeLogsDialog()">
                 <md-icon>add_circle_outline</md-icon> Add Time Logs
             </button>
+            <button md-menu-item (click)="regenerate()" [mdTooltipPosition]="'above'" mdTooltip="Regenerate">
+              <md-icon>build</md-icon> Regenerate
+          </button>
             <button md-menu-item [matMenuTriggerFor]="downloadMenu">
                 <md-icon>cloud_download</md-icon> Download
             </button>
@@ -33,9 +36,7 @@
                 <md-icon>cloud_upload</md-icon> Upload
             </button>
         </md-menu>
-        <button (click)="regenerate()" [mdTooltipPosition]="'above'" mdTooltip="Regenerate" md-icon-button>
-            <md-icon>build</md-icon>
-        </button>
+
     </div>
 </div>
 
@@ -90,55 +91,21 @@
                         <!-- <td class="tdWidth">{{item?.attendance?.hoursWorked || '--'}}</td> -->
                         <td class="tdWidth">
                             <ng-template #elsePart>
-                                <div>{{item?.status?.toLowerCase() == 'checkedin' ? 'Present' : item?.status}}</div>
-                                <div class="countShiftTab">
-                                        <div class="hours" *ngIf="item?.count >= 0 && item.count <=0.5">
-                                            <div class="half"></div>
-                                            <div></div>
-                                            <div></div>
-                                        </div>
-                                        <div class="hours" *ngIf="item?.count > 0.5 && item.count <1">
-                                                <div class="quarter"></div>
-                                                <div></div>
-                                                <div></div>
-                                            </div>
-                                            <div class="hours" *ngIf="item?.count == 1">
-                                                <div class="fullShift"></div>
-                                                <div></div>
-                                                <div></div>
-                                            </div>
-                                    <div class="hours" *ngIf="item?.count >= 1.1 && item.count <=1.5">
-                                        <div class="fullShift"></div>
-                                        <div class="halfShift"></div>
-                                        <div></div>
-                                    </div>
-                                    <div class="hours" *ngIf="item?.count > 1.5 && item.count <=2">
-                                        <div class="fullShift"></div>
-                                        <div class="fullShift"></div>
-                                    </div>
-                                    <div class="hours" *ngIf="item?.count > 2 && item.count <=2.5">
-                                        <div class="fullShift"></div>
-                                        <div class="fullShift"></div>
-                                        <div class="halfShift"></div>
-                                    </div>
-                                    <div class="hours" *ngIf="item?.count > 2.5 ">
-                                        <div class="fullShift"></div>
-                                        <div class="fullShift"></div>
-                                        <div class="fullShift"></div>
-                                    </div>
-                                </div>
-                                <!-- <br>
-                                <span class="sub-text" *ngIf="item.needsAction && !(item.shift.status === 'weekOff' || item.shift.status === 'holiday')">({{item?.needsAction}})</span> -->
+                                <div [class.cta]="item.status === 'absent'">{{item.status | titlecase}}</div>
+                                <aqua-shift-count *ngIf="this.isPast && item.status !== 'absent'" [count]="item.count"></aqua-shift-count>
                             </ng-template>
                             <span *ngIf="item.status == 'absent' && (item.shift.status === 'weekOff' || item.shift.status === 'holiday'); else elsePart">{{item.shift.status | titlecase}}</span>
                         </td>
                         <!-- <td class="tdWidth">{{item?.department || '--'}}</td> -->
                         <td class=" tdWidth">{{item.checkIn | date:'shortTime'}}<br>
-                            <span class="sub-text" *ngIf="item.checkInStatus">({{item?.checkInStatus}})</span>
+                            <span class="sub-text" *ngIf="item.checkInStatus">{{item?.checkInStatus}}</span>
                         </td>
-                        <td class=" tdWidth">{{item.checkOut | date:'shortTime'}}
-                            <br>
-                            <span class="sub-text" *ngIf="item.checkOutStatus">({{item?.checkOutStatus}})</span>
+                        <td class=" tdWidth">
+                            <ng-container *ngIf="item.checkOut">
+                                <div>{{item.checkOut | date:'shortTime'}}</div>
+                                <span class="sub-text" *ngIf="item.checkOutStatus && this.isPast">{{item?.checkOutStatus}}</span>
+                            </ng-container>
+                            <span class="cta" *ngIf="!item.checkOut && item.checkOutStatus && this.isPast">{{item?.checkOutStatus}}</span>
                         </td>
                         <td class="tdWidth">
                             <a [routerLink]="['teams',item.employee.id]" *ngIf="item.employee.hasTeam">
