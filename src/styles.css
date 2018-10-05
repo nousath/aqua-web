@@ -64,6 +64,10 @@ body::-webkit-scrollbar-thumb {
     background-color: #00A8c6;
 }
 
+.cta {
+    color: #ff6666;
+}
+
 
 /* .mat-focused.mat-form-field-underline{
     color:  #6c78a8;
@@ -465,7 +469,7 @@ display: block;
     border-radius: 4px !important;
 }
 
-.selected-list .c-btn .c-list .c-token{
+.selected-list .c-btn .c-list .c-token {
     background-color: white;
     color: black;
     padding: 0px;
@@ -474,7 +478,7 @@ display: block;
 .selected-list .c-list .c-token {
     list-style: none;
     padding: 0px !important;
-    background:white !important;
+    background: white !important;
     color: black !important;
     border-radius: 2px;
     margin-right: 4px;
@@ -484,6 +488,7 @@ display: block;
     position: relative;
     padding-right: 0px !important;
 }
+
 .selected-list .c-list .c-token .c-remove svg {
     display: none !important;
     fill: black;
@@ -491,7 +496,7 @@ display: block;
 
 .mat-drawer-content {
     position: relative;
-    transform: translate3d(0,0,0);
+    transform: translate3d(0, 0, 0);
     display: block;
     height: 100%;
     overflow-x: hidden !important;

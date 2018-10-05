@@ -71,7 +71,8 @@
 .alignText {
     margin-left: -23px;
 }
-.mini{
+
+.mini {
     display: none;
 }
 
@@ -93,14 +94,13 @@
 }
 
 @media only screen and (max-width:600px) {
-    .full{
+    .full {
         display: none;
     }
-    .mini{
+    .mini {
         display: block;
     }
 }
-
 
 button.mat-menu-item {
     width: 100%;
@@ -156,44 +156,4 @@ button.mat-menu-item {
 .table-condensed>thead>tr>th {
     padding: 5px;
     /* padding-left: 30px !important; */
-}
-
-.fullShift {
-    float: left;
-    width: 33% !important;
-    height: 5px !important;
-    background-color: green;
-    border: #f1f1f1 1px solid;
-    padding-left: 3%;
-}
-.halfShift {
-    float: left;
-    width: 16% !important;
-    height: 5px !important;
-    background-color: green;
-    border: #f1f1f1 1px solid;
-    padding-left: 3%;
-}
-
-.half {
-    float: left;
-    width: 16% !important;
-    height: 5px !important;
-    background-color: red;
-    border: #f1f1f1 1px solid;
-    padding-left: 3%;
-}
-.quarter {
-    float: left;
-    width: 24% !important;
-    height: 5px !important;
-    background-color: red;
-    border: #f1f1f1 1px solid;
-    padding-left: 3%;
-}
-.hours{
-    width: 90%;
-    height: 10px;
-    margin-left: auto;
-    margin-right: auto;
 }
