@@ -97,8 +97,12 @@
                             <span *ngIf="item.status == 'absent' && (item.shift.status === 'weekOff' || item.shift.status === 'holiday'); else elsePart">{{item.shift.status | titlecase}}</span>
                         </td>
                         <!-- <td class="tdWidth">{{item?.department || '--'}}</td> -->
-                        <td class=" tdWidth">{{item.checkIn | date:'shortTime'}}<br>
-                            <span class="sub-text" *ngIf="item.checkInStatus && item.status === 'present'">{{item?.checkInStatus}}</span>
+                        <td class=" tdWidth">
+                            <ng-container *ngIf="item.checkIn">
+                                <div>{{item.checkIn | date:'shortTime'}}</div>
+                                <span class="sub-text" *ngIf="item.checkInStatus">{{item?.checkInStatus}}</span>
+                            </ng-container>
+                            <span class="cta" *ngIf="item.status=== 'present' && !item.checkIn && item.checkInStatus">{{item?.checkInStatus}}</span>
                         </td>
                         <td class=" tdWidth">
                             <ng-container *ngIf="item.checkOut">
