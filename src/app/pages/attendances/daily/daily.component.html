@@ -98,14 +98,14 @@
                         </td>
                         <!-- <td class="tdWidth">{{item?.department || '--'}}</td> -->
                         <td class=" tdWidth">{{item.checkIn | date:'shortTime'}}<br>
-                            <span class="sub-text" *ngIf="item.checkInStatus">{{item?.checkInStatus}}</span>
+                            <span class="sub-text" *ngIf="item.checkInStatus && item.status === 'present'">{{item?.checkInStatus}}</span>
                         </td>
                         <td class=" tdWidth">
                             <ng-container *ngIf="item.checkOut">
                                 <div>{{item.checkOut | date:'shortTime'}}</div>
-                                <span class="sub-text" *ngIf="item.checkOutStatus && this.isPast">{{item?.checkOutStatus}}</span>
+                                <span class="sub-text" *ngIf="item.checkOutStatus && this.isPast && item.status === 'present'">{{item?.checkOutStatus}}</span>
                             </ng-container>
-                            <span class="cta" *ngIf="!item.checkOut && item.checkOutStatus && this.isPast">{{item?.checkOutStatus}}</span>
+                            <span class="cta" *ngIf="!item.checkOut && item.checkOutStatus && this.isPast && item.status === 'present'">{{item?.checkOutStatus}}</span>
                         </td>
                         <td class="tdWidth">
                             <a [routerLink]="['teams',item.employee.id]" *ngIf="item.employee.hasTeam">
