@@ -18,6 +18,7 @@ import { GetDateDialogComponent } from '../get-date-dialog/get-date-dialog.compo
 import { GenericApi } from '../../../common/generic-api';
 import { Http } from '@angular/http';
 import { ExtendShiftDialogComponent } from '../extend-shift-dialog/extend-shift-dialog.component';
+import { Page } from '../../../common/contracts/page';
 
 @Component({
   selector: 'aqua-shift-picker',
@@ -31,7 +32,7 @@ export class ShiftPickerComponent implements OnInit {
   updated: EventEmitter<any> = new EventEmitter();
 
   @Input()
-  shiftTypes: ShiftType[];
+  shiftTypes: ShiftType[] = [];
 
   @Input()
   effectiveShift: EffectiveShift;
@@ -108,8 +109,9 @@ export class ShiftPickerComponent implements OnInit {
     // this.compute();
   }
   ngOnChanges() {
-    if (this.effectiveShift)
+    if (this.effectiveShift){
       this.compute()
+    }
   }
 
   compute() {
@@ -280,11 +282,28 @@ export class ShiftPickerComponent implements OnInit {
       }).catch(this.errorHandler);
   }
 
+  getShiftTypes() {
+    const input = new ServerPageInput();
+    input.query = {
+      employeeId: this.effectiveShift.employee.id
+    };
+    this.shiftService.shiftTypes.search(input).then(page=>{
+      this.shiftTypes = page.items;
+      this.isProcessing = false;
+    })
+  }
+
   getMenuItems() {
+    this.isProcessing = true;
     if (this.leave) {
+      this.getShiftTypes();
       return;
     }
-
+    this.getLeaveBalances(()=>{
+      this.getShiftTypes();
+    });
+  }
+  getLeaveBalances(cb) {
     const input = new ServerPageInput();
     input.serverPaging = false;
     input.query = {
@@ -296,7 +315,7 @@ export class ShiftPickerComponent implements OnInit {
     this.compOffBalance = null;
     this.leaveBalances = [];
 
-    this.isProcessing = true;
+    
     this.amsLeaveService.leaveBalances.search(input).then(page => {
       this.leaveBalances = [];
       page.items.forEach(item => {
@@ -312,7 +331,8 @@ export class ShiftPickerComponent implements OnInit {
           }
         }
       });
-      this.isProcessing = false;
+      cb();
+
     }).catch(this.errorHandler);
   }
 
