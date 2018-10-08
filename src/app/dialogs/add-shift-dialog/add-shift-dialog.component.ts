@@ -37,11 +37,11 @@ export class AddShiftDialogComponent implements OnInit {
       date: fromDate,
       shiftType: selectedShift
     };
-    if (moment(fromDate).startOf('day').toISOString() > moment(this.date).startOf('day').toISOString()) {
+    if (moment(fromDate).startOf('day').toISOString() >= moment(this.date).startOf('day').toISOString()) {
       this.amsEffectiveShiftService.effectiveShifts.update(this.data.empId, model)
       // this.addShift = !this.addShift;
     } else {
-      this.toastyService.error({ title: 'Error', msg: 'Selected date should be greater than current date' })
+      this.toastyService.error({ title: 'Error', msg: 'Selected date should not be less than current date' })
     }
     this.dialogRef.close(this.updated = true);
   }

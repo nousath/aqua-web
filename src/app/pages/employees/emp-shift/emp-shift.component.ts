@@ -53,12 +53,15 @@ export class EmpShiftComponent implements OnInit {
       }]
     })
     this.shiftTypes = new Page({
-      api: amsShiftService.shiftTypes
+      api: amsShiftService.shiftTypes,
+      filters: [{
+        field: 'employeeId'
+      }]
     });
 
-    this.shiftTypes.fetch().catch((err) => {
-      this.toastyService.error({ title: 'Error', msg: err })
-    });
+    // this.shiftTypes.fetch().catch((err) => {
+    //   this.toastyService.error({ title: 'Error', msg: err })
+    // });
   }
 
   ngOnInit() {
@@ -121,6 +124,7 @@ export class EmpShiftComponent implements OnInit {
 
   }
   getAttendance() {
+    this.shiftTypes.filters.properties['employeeId'].value = this.employee.id;
     this.shiftTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
     this.getEffectiveShift(this.date);
 
