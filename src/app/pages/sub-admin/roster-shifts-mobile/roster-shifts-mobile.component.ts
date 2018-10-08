@@ -17,9 +17,6 @@ export class RosterShiftsMobileComponent implements OnInit {
   @Input()
   effectiveShift: EffectiveShift[];
 
-  @Input()
-  shiftTypes: ShiftType[];
-
   @Output()
   dateChanged = new EventEmitter<Date>();
 
@@ -32,7 +29,7 @@ export class RosterShiftsMobileComponent implements OnInit {
   currentDate: Date;
 
   effective: EffectiveShift[];
-  types: ShiftType[];
+  // types: ShiftType[];
   mobileView = 'full';
   isFilter = false
 
@@ -45,8 +42,8 @@ export class RosterShiftsMobileComponent implements OnInit {
   }
 
   ngOnChanges() {
-    if (this.effectiveShift.length && this.shiftTypes.length) {
-      this.getDetails(this.effectiveShift, this.shiftTypes)
+    if (this.effectiveShift.length) {
+      this.getDetails(this.effectiveShift)
       // this.getDate()
     }
   }
@@ -60,7 +57,7 @@ export class RosterShiftsMobileComponent implements OnInit {
       maxDate: new Date()
     }).on('changeDate', (e) => {
       this.date = e.date
-      this.getDetails(this.effectiveShift, this.shiftTypes)
+      this.getDetails(this.effectiveShift)
       // this.dateChanged.emit(e.date)
 
     });
@@ -73,9 +70,8 @@ export class RosterShiftsMobileComponent implements OnInit {
       this.toastyService.info({ title: 'Status', msg: 'Submitted' })
     })
   }
-  getDetails(effectiveShift: EffectiveShift[], shiftTypes: ShiftType[]) {
+  getDetails(effectiveShift: EffectiveShift[]) {
     this.effective = effectiveShift
-    this.types = shiftTypes
     this.currentDate = this.date
   }
 

@@ -127,7 +127,7 @@
                                 <div *ngIf="!item.employee.isDynamicShift" class="shift previous" [style.border-color]="shiftColour(item?.previousShift?.shiftType)">{{item?.previousShift?.shiftType?.name || '--'}}</div>
                             </td>
                             <td class="tdStyle" *ngFor="let date of dates">
-                                <aqua-shift-picker [shiftTypes]="shiftTypes.items" [effectiveShift]="item" [date]="date" (attendanceUpdated)="employeeUpdated(item)"
+                                <aqua-shift-picker [effectiveShift]="item" [date]="date" (attendanceUpdated)="employeeUpdated(item)"
                                     (shiftUpdated)="employeeUpdated(item)" (leaveUpdated)="employeeUpdated(item)"></aqua-shift-picker>
                             </td>
                         </tr>
@@ -137,7 +137,7 @@
             </md-card>
         </div>
         <div class="mobileView">
-            <aqua-roster-shifts-mobile *ngIf="effectiveShifts?.items?.length > 0" [shiftTypes]="shiftTypes.items" [effectiveShift]="effectiveShifts.items"
+            <aqua-roster-shifts-mobile *ngIf="effectiveShifts?.items?.length > 0" [effectiveShift]="effectiveShifts.items"
                 (dateChanged)="getData($event)" (dynamicEmployee)="getEmployeeStatus($event)" [date]="selectedDate"></aqua-roster-shifts-mobile>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
