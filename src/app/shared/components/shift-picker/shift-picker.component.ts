@@ -57,7 +57,7 @@ export class ShiftPickerComponent implements OnInit {
   userType: string;
   startingShift: ShiftType;
 
-  isBeforeTOday= false
+  isBeforeTOday = false
 
   isProcessing = false;
 
@@ -109,7 +109,7 @@ export class ShiftPickerComponent implements OnInit {
     // this.compute();
   }
   ngOnChanges() {
-    if (this.effectiveShift){
+    if (this.effectiveShift) {
       this.compute()
     }
   }
@@ -287,7 +287,7 @@ export class ShiftPickerComponent implements OnInit {
     input.query = {
       employeeId: this.effectiveShift.employee.id
     };
-    this.shiftService.shiftTypes.search(input).then(page=>{
+    this.shiftService.shiftTypes.search(input).then(page => {
       this.shiftTypes = page.items;
       this.isProcessing = false;
     })
@@ -299,7 +299,7 @@ export class ShiftPickerComponent implements OnInit {
       this.getShiftTypes();
       return;
     }
-    this.getLeaveBalances(()=>{
+    this.getLeaveBalances(() => {
       this.getShiftTypes();
     });
   }
@@ -315,7 +315,7 @@ export class ShiftPickerComponent implements OnInit {
     this.compOffBalance = null;
     this.leaveBalances = [];
 
-    
+
     this.amsLeaveService.leaveBalances.search(input).then(page => {
       this.leaveBalances = [];
       page.items.forEach(item => {
@@ -394,20 +394,20 @@ export class ShiftPickerComponent implements OnInit {
     component.title = 'Please Enter Time'
 
     dialogRef.afterClosed().subscribe((response: any) => {
-      if (!response) { return; }
-      else {
-        if (response == 'reset') {
-          this.attendance.checkOutExtend = null;
-          this.amsAttendanceService.attendance.update(`${attendanceId}/extendShift`, this.attendance as any)
-          this.toastyService.info({ title: 'Info', msg: 'Shift Reset' })
-        }
-        else {
-          this.attendance.checkOutExtend = response;
-          this.amsAttendanceService.attendance.update(`${attendanceId}/extendShift`, this.attendance as any)
-          this.toastyService.info({ title: 'Info', msg: 'Shift Extended' })
-
-        }
+      if (!response) {
+        return;
       }
+      if (response === 'reset') {
+        this.attendance.checkOutExtend = null;
+        this.amsAttendanceService.attendance.update(`${attendanceId}/extendShift`, this.attendance as any)
+        this.toastyService.info({ title: 'Info', msg: 'Shift Reset' })
+      } else {
+        this.attendance.checkOutExtend = response;
+        this.amsAttendanceService.attendance.update(`${attendanceId}/extendShift`, this.attendance as any)
+        this.toastyService.info({ title: 'Info', msg: 'Shift Extended' })
+
+      }
+
     });
 
   }
