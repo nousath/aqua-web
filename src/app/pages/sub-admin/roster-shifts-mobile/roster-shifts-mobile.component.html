@@ -15,7 +15,7 @@
                         <md-slide-toggle [checked]="item.employee.isDynamicShift" (change)="toggleDynamicShift(item.employee)"></md-slide-toggle>
                     </td>
                     <td class="tdStyle">
-                        <aqua-shift-picker [view]="mobileView" [effectiveShift]="item" [date]="currentDate"></aqua-shift-picker>
+                        <aqua-shift-picker [view]="mobileView" [shiftTypes]="types" [effectiveShift]="item" [date]="currentDate"></aqua-shift-picker>
                     </td>
                 </tr>
             </tbody>

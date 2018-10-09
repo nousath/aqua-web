@@ -25,6 +25,7 @@ declare var $: any;
 export class RosterShiftsComponent implements OnInit {
   dates: any = [];
   effectiveShifts: Page<EffectiveShift>;
+  shiftTypes: Page<ShiftType>;
   change: any;
   date = new Date();
   isDateToday = moment().startOf('day').toDate();
@@ -45,6 +46,10 @@ export class RosterShiftsComponent implements OnInit {
     private amsEffectiveShiftService: AmsEffectiveShiftService,
     private toastyService: ToastyService,
   ) {
+
+    this.shiftTypes = new Page({
+      api: amsShiftService.shiftTypes
+    });
 
     this.date = moment(this.activatedRoute.queryParams['value']['fromDate']).startOf('week').toDate()
 
@@ -78,6 +83,9 @@ export class RosterShiftsComponent implements OnInit {
       location: location
     });
 
+    this.shiftTypes.fetch().catch((err) => {
+      this.toastyService.error({ title: 'Error', msg: err })
+    });
   }
   applyFilters($event) {
     this.effectiveShifts.filters.properties['shiftType']['value'] = $event.shiftType;
@@ -194,6 +202,7 @@ export class RosterShiftsComponent implements OnInit {
 
   }
   getAttendance() {
+    this.shiftTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
     this.getEffectiveShift(this.date);
 
   }
