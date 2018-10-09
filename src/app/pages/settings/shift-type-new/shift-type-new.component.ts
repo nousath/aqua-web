@@ -9,6 +9,7 @@ import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs/Rx';
 import { Department } from '../../../models/department';
 import { EmsDepartmentService } from '../../../services/ems';
+import { ServerPageInput } from '../../../common/contracts/api/page-input';
 
 @Component({
   selector: 'aqua-shift-type-new',
@@ -29,10 +30,14 @@ export class ShiftTypeNewComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private emsDepartmentService: EmsDepartmentService,
     private router: Router) {
-      
-      emsDepartmentService.departments.search().then(departments => {
-        this.departments = departments.items;
-      });
+
+    const deptFilter = new ServerPageInput();
+    deptFilter.query = {
+      divisionId: 1
+    }
+    emsDepartmentService.departments.search(deptFilter).then(departments => {
+      this.departments = departments.items;
+    });
 
     this.shifType = new Model({
       api: amsShiftService.shiftTypes,
