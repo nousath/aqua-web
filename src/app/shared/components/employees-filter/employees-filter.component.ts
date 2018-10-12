@@ -32,13 +32,11 @@ export class Tags {
         if (item.tagTypeId === tag.tagTypeId) {
           this.selected.splice(index, 1)
           this.selected.push(tag);
-        }
-        else {
+        } else {
           this.selected.push(tag);
         }
       })
-    }
-    else {
+    } else {
       this.selected.push(tag);
     }
   }
@@ -86,7 +84,7 @@ export class EmployeesFilterComponent implements OnInit {
   statusList = [];
   checkInStatusList = [];
   checkOutStatusList = [];
-hoursList = [];
+  hoursList = [];
   selectedCheckInStatus = [];
   selectedCheckOutStatus = [];
   selectedHours = [];
@@ -133,32 +131,30 @@ hoursList = [];
     this.shiftTypes.fetch().then();
     this.hidden = this.hidden || {};
     this.statusList = [{
-      id: 1, itemName: 'All'
+      id: 1, itemName: 'Present'
     }, {
-      id: 2, itemName: 'Present'
+      id: 2, itemName: 'Absent'
     }, {
-      id: 3, itemName: 'Absent'
+      id: 3, itemName: 'HalfDay'
     }, {
-      id: 4, itemName: 'HalfDay'
-    }, {
-      id: 5, itemName: 'OnLeave'
-    }, {
-      id: 6, itemName: 'LateComing'
-    }, {
-      id: 7, itemName: 'EarlyGoing'
+      id: 4, itemName: 'OnLeave'
     }]
 
 
     this.checkInStatusList = [{
-      id: 1, itemName: 'Early Coming'
+      id: 1, itemName: 'Came Early'
     }, {
-      id: 2, itemName: 'Late Coming'
+      id: 2, itemName: 'Came Late'
+    }, {
+      id: 3, itemName: 'Missed'
     }]
 
     this.checkOutStatusList = [{
-      id: 1, itemName: 'Early Going'
+      id: 1, itemName: 'Left Early'
     }, {
-      id: 2, itemName: 'Late Going'
+      id: 2, itemName: 'Went Late'
+    }, {
+      id: 3, itemName: 'Missed'
     }]
 
     this.hoursList = [{
@@ -303,12 +299,27 @@ hoursList = [];
 
     const checkInStatus: string[] = [];
     this.selectedCheckInStatus.forEach(item => {
-      checkInStatus.push(item.itemName);
+      if ((item.id).toString() === '1') {
+       checkInStatus.push('early')
+      } else if ((item.id).toString() === '2') {
+        checkInStatus.push('late')
+      } else if ((item.id).toString() === '3') {
+        checkInStatus.push('missed')
+      }
     })
+
     const checkOutStatus: string[] = [];
+
     this.selectedCheckOutStatus.forEach(item => {
-      checkOutStatus.push(item.itemName);
+      if ((item.id).toString() === '1') {
+      checkOutStatus.push('early');
+      } else if ((item.id).toString() === '2') {
+      checkOutStatus.push('late');
+      } else if ((item.id).toString() === '3') {
+      checkOutStatus.push('missed');
+      }
     })
+
     const hours: string[] = [];
     this.selectedHours.forEach(item => {
       hours.push(item.itemName);
