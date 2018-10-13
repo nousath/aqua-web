@@ -104,7 +104,7 @@
                                 <span class="sub-text" *ngIf="item.checkInStatus && (item.checkInStatus === 'early')">Came Early</span>
                                 <span class="sub-text" *ngIf="item.checkInStatus && (item.checkInStatus === 'missed')">Missed</span>
                             </ng-container>
-                            <span class="cta" *ngIf="item.status=== 'present' && !item.checkIn && item.checkInStatus">{{item?.checkInStatus}}</span>
+                            <span class="cta" *ngIf="item.status=== 'present' && !item.checkIn && item.checkInStatus">Missed Check In</span>
                         </td>
                         <td class=" tdWidth">
                             <ng-container *ngIf="this.isPast && item.checkOut ">
@@ -113,7 +113,7 @@
                                 <span class="sub-text" *ngIf="item.checkOutStatus && this.isPast && item.status === 'early'">Left Early</span>
                                 <span class="sub-text" *ngIf="item.checkOutStatus && this.isPast && item.status === 'missed'">Missed</span>
                             </ng-container>
-                            <span class="cta" *ngIf="!item.checkOut && item.checkOutStatus && this.isPast && item.status === 'present'">{{item?.checkOutStatus}}</span>
+                            <span class="cta" *ngIf="!item.checkOut && item.checkOutStatus && this.isPast && item.status === 'present'">Missed Check Out</span>
                         </td>
                         <td class="tdWidth">
                             <a [routerLink]="['teams',item.employee.id]" *ngIf="item.employee.hasTeam">
