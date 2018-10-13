@@ -50,21 +50,9 @@
             <md-icon>highlight_off</md-icon>
         </button>
     </div> -->
-    <div class="row" *ngIf="isFilter">
-        <md-card class="card">
-            <div class="row text-center headr_bar">
-                <h5>
-                    <b>Filters</b>
-                </h5>
-                <div class="actionBtns">
-                    <button md-icon-button mdTooltip="Close" [mdTooltipPosition]="'above'" (click)="isFilter = !isFilter">
-                        <md-icon>highlight_off</md-icon>
-                    </button>
-                </div>
-            </div>
-            <aqua-employees-filter [hidden]="{attendanceAction: true,attendanceStatus: true}" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter>
-        </md-card>
-    </div>
+
+    <aqua-employees-filter *ngIf="isFilter" [hidden]="{attendanceAction: true,attendanceStatus: true}" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter>
+
 
     <md-spinner class="custom_spinner" *ngIf="isDownloading || isLoading" mode="indeterminate"></md-spinner>
     <div class="row">
@@ -127,8 +115,7 @@
                                 <div *ngIf="!item.employee.isDynamicShift" class="shift previous" [style.border-color]="shiftColour(item?.previousShift?.shiftType)">{{item?.previousShift?.shiftType?.name || '--'}}</div>
                             </td>
                             <td class="tdStyle" *ngFor="let date of dates">
-                                <aqua-shift-picker [shiftTypes]="shiftTypes.items" [effectiveShift]="item" [date]="date" (attendanceUpdated)="employeeUpdated(item)"
-                                    (shiftUpdated)="employeeUpdated(item)" (leaveUpdated)="employeeUpdated(item)"></aqua-shift-picker>
+                                <aqua-shift-picker [shiftTypes]="shiftTypes.items" [effectiveShift]="item" [date]="date" (attendanceUpdated)="employeeUpdated(item)" (shiftUpdated)="employeeUpdated(item)" (leaveUpdated)="employeeUpdated(item)"></aqua-shift-picker>
                             </td>
                         </tr>
                     </tbody>
@@ -137,8 +124,7 @@
             </md-card>
         </div>
         <div class="mobileView">
-            <aqua-roster-shifts-mobile *ngIf="effectiveShifts?.items?.length > 0" [shiftTypes]="shiftTypes.items" [effectiveShift]="effectiveShifts.items"
-                (dateChanged)="getData($event)" (dynamicEmployee)="getEmployeeStatus($event)" [date]="selectedDate"></aqua-roster-shifts-mobile>
+            <aqua-roster-shifts-mobile *ngIf="effectiveShifts?.items?.length > 0" [shiftTypes]="shiftTypes.items" [effectiveShift]="effectiveShifts.items" (dateChanged)="getData($event)" (dynamicEmployee)="getEmployeeStatus($event)" [date]="selectedDate"></aqua-roster-shifts-mobile>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="custom_pagination">

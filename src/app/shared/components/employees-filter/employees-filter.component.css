@@ -47,18 +47,11 @@ label.section {
     padding-right: 15px
 }
 
-.filters {
-    padding-left: 5%;
-}
-
 @media only screen and (max-width: 600px) {
     .row {
         width: 100%;
         padding-left: 0px;
         padding-right: 0px
-    }
-    .filters {
-        padding-left: 15%;
     }
 }
 

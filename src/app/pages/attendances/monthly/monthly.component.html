@@ -44,25 +44,7 @@
     </div>
 </div>
 <md-spinner class="custom_spinner" *ngIf="monthlyAttendnace?.isLoading" mode="indeterminate"></md-spinner>
-
-<div class="row" *ngIf="isFilter">
-    <md-card class="card">
-        <div class="row text-center headr_bar">
-            <h5>
-                <b>Filters</b>
-            </h5>
-            <div class="actionBtns">
-                <button md-icon-button mdTooltip="Close" [mdTooltipPosition]="'above'" (click)="isFilter = !isFilter">
-                    <md-icon>highlight_off</md-icon>
-                </button>
-            </div>
-        </div>
-
-        <aqua-employees-filter [hidden]="{attendanceStatus: true}" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter>
-
-    </md-card>
-</div>
-
+<aqua-employees-filter *ngIf="isFilter" [hidden]="{attendanceStatus: true}" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter>
 <div class="row">
     <md-card class="card">
         <div class="table-responsive full">
