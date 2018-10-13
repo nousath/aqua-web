@@ -133,12 +133,12 @@ body::-webkit-scrollbar-thumb {
 }
 
 .page_header {
-    background-color: #e4e4e4;
+    /* background-color: #e4e4e4; */
     padding-top: 0.5%;
     padding-bottom: 0.5%;
     padding-left: 0.5%;
     padding-right: 2.5%;
-    border-bottom: 1px solid #d0cdcd;
+    /* border-bottom: 1px solid #d0cdcd; */
 }
 
 .headr_bar {
