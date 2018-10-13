@@ -1,8 +1,21 @@
 label {
     width: 55px;
 }
+
 input {
     width: 200px;
+}
+
+.form-group {
+    padding: 0 5px;
+}
+
+label.section {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid #f1f1f1;
+    color: #a1a1a1;
+    font-weight: 100;
 }
 
 .tags {
@@ -19,29 +32,34 @@ input {
     border-radius: 4px;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075)
 }
-.row{
+
+.row {
     min-width: 33%;
     float: left;
     padding-left: 15px;
     padding-right: 15px
 }
-.filters{
+
+.filters {
     padding-left: 5%;
-   }
-@media only screen and (max-width: 600px) {
-   .row{
-    width: 100%;
-    padding-left: 0px;
-    padding-right: 0px
-   } 
-   .filters{
-    padding-left: 15%;
-   }
 }
+
+@media only screen and (max-width: 600px) {
+    .row {
+        width: 100%;
+        padding-left: 0px;
+        padding-right: 0px
+    }
+    .filters {
+        padding-left: 15%;
+    }
+}
+
 .tags {
     box-shadow: 0px;
     height: 34px !important;
 }
+
 .filterTag {
     width: 33%
 }
