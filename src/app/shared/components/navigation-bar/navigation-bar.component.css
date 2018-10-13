@@ -1,5 +1,5 @@
 .bodyPart {
-    margin-top: 5.1%;
+    margin-top: 60px;
     overflow-y: auto;
     max-height: 100%;
     /*width: 100%;*/
@@ -18,7 +18,6 @@
     cursor: pointer;
 }
 
-
 h5 {
     color: white;
 }
@@ -32,12 +31,12 @@ h5 {
 .leftIcon {
     float: right;
 }
+
 .fixedSideNav a {
     background-color: #283047 !important;
 }
 
 @media only screen and (max-width:600px) {
-    
     .logo_container {
         background: #444c6f;
         position: fixed;
@@ -46,8 +45,7 @@ h5 {
         width: 100%;
         z-index: 2;
     }
-    
-    md-nav-list{
+    md-nav-list {
         width: 100%
     }
-} 
+}
