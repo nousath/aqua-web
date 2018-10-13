@@ -91,8 +91,8 @@
                             <span class="cta" *ngIf="item.status=== 'present' && !item.checkIn && item.checkInStatus">Missed Check In</span>
                         </td>
                         <td class=" tdWidth">
+                            <div *ngIf="item.checkOut">{{item.checkOut | date:'shortTime'}}</div>
                             <ng-container *ngIf="this.isPast && item.checkOut ">
-                                <div>{{item.checkOut | date:'shortTime'}}</div>
                                 <span class="sub-text" *ngIf="item.checkOutStatus && this.isPast && item.status === 'late'">Went Late</span>
                                 <span class="sub-text" *ngIf="item.checkOutStatus && this.isPast && item.status === 'early'">Left Early</span>
                                 <span class="sub-text" *ngIf="item.checkOutStatus && this.isPast && item.status === 'missed'">Missed</span>
