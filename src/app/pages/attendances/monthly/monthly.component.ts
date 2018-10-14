@@ -61,6 +61,12 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
       }, {
         field: 'tagIds',
         value: ''
+      }, {
+        field: 'designations',
+        value: null
+      }, {
+        field: 'departments',
+        value: null
       }]
     });
   }
@@ -78,6 +84,8 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
     this.monthlyAttendnace.filters.properties['name']['value'] = $event.employeeName;
     this.monthlyAttendnace.filters.properties['code']['value'] = $event.employeeCode;
     this.monthlyAttendnace.filters.properties['tagIds']['value'] = $event.tagIds;
+    this.monthlyAttendnace.filters.properties['departments']['value'] = $event.departments;
+    this.monthlyAttendnace.filters.properties['designations']['value'] = $event.designations;
     this.getAttendance();
   }
 
