@@ -4,8 +4,11 @@ import { ShiftType } from '../../../models/shift-type';
 import { Page } from '../../../common/contracts/page';
 import { TagType } from '../../../models/tag';
 import { AmsTagService } from '../../../services/ams/ams-tag.service';
+import { Designation } from '../../../models';
+import { EmsDesignationService } from '../../../services/ems/ems-designation.service';
 import { Department } from '../../../models/department';
 import { EmsDepartmentService } from '../../../services/ems/ems-department.service';
+import { ServerPageInput } from '../../../common/contracts/api/page-input';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import { Item } from 'angular2-multiselect-dropdown/menu-item';
 
@@ -52,6 +55,11 @@ export class Tags {
 })
 export class EmployeesFilterComponent implements OnInit {
 
+  departments: Department[];
+  departmentId: number;
+  designations: Designation[];
+  designationsId: number;
+
   @Input()
   selectedEmployeeName: string;
 
@@ -93,8 +101,6 @@ export class EmployeesFilterComponent implements OnInit {
   contractorList = [];
   shiftTypesList = [];
 
-  designations = [];
-  departments = [];
   usertypes = [];
   contractors
 
@@ -110,10 +116,26 @@ export class EmployeesFilterComponent implements OnInit {
 
 
   constructor(
+    private emsDepartmentService: EmsDepartmentService,
+    private emsDesignationService: EmsDesignationService,
     public validatorService: ValidatorService,
     amsShiftService: AmsShiftService,
     tagService: AmsTagService,
   ) {
+
+
+    const deptFilter = new ServerPageInput();
+    deptFilter.query = {
+      divisionId: 1
+    }
+    emsDepartmentService.departments.search(deptFilter).then(departments => {
+      this.departments = departments.items;
+    });
+
+    const designationFilter = new ServerPageInput();
+    emsDesignationService.designations.search(designationFilter).then(desigations => {
+      this.designations = desigations.items;
+    });
 
     this.shiftTypes = new Page({
       api: amsShiftService.shiftTypes
@@ -167,12 +189,12 @@ export class EmployeesFilterComponent implements OnInit {
   getTags(tags: any) {
     tags.forEach(item => {
       switch (item.name.toLowerCase()) {
-        case 'department':
-          this.departments = item.tags;
-          break;
-        case 'designation':
-          this.designations = item.tags;
-          break;
+        // case 'department':
+        //   this.departments = item.tags;
+        //   break;
+        // case 'designation':
+        //   this.designations = item.tags;
+        //   break;
         case 'usertype':
           this.usertypes = item.tags;
           break;
@@ -278,12 +300,6 @@ export class EmployeesFilterComponent implements OnInit {
 
   apply() {
     const tagIds: string[] = [];
-    this.selectedDesignation.forEach(item => {
-      tagIds.push(item.id);
-    })
-    this.selectedDepartment.forEach(item => {
-      tagIds.push(item.id);
-    })
     this.selectedUsertype.forEach(item => {
       tagIds.push(item.id);
     })
@@ -296,7 +312,16 @@ export class EmployeesFilterComponent implements OnInit {
     this.selectedStatus.forEach(item => {
       status.push(item.itemName);
     })
+    const designation: string[] = [];
 
+    this.selectedDesignation.forEach(item => {
+      designation.push(item.itemName);
+    })
+    const department: string[] = [];
+
+    this.selectedDepartment.forEach(item => {
+      department.push(item.itemName);
+    })
     const checkInStatus: string[] = [];
     this.selectedCheckInStatus.forEach(item => {
       if ((item.id).toString() === '1') {
@@ -340,6 +365,8 @@ export class EmployeesFilterComponent implements OnInit {
     const values = {
       tagIds: tagIds,
       shiftType: shifts,
+      departments: department,
+      designations: designation,
       attendanceStatus: status,
       attendanceCheckInStatus: checkInStatus,
       attendanceCheckOutStatus: checkOutStatus,
