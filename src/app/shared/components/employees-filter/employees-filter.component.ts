@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { ValidatorService, AmsShiftService } from '../../../services';
 import { ShiftType } from '../../../models/shift-type';
 import { Page } from '../../../common/contracts/page';
@@ -11,6 +11,7 @@ import { EmsDepartmentService } from '../../../services/ems/ems-department.servi
 import { ServerPageInput } from '../../../common/contracts/api/page-input';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import { Item } from 'angular2-multiselect-dropdown/menu-item';
+import * as moment from 'moment';
 
 export interface SelectedTag {
   tagId: string;
@@ -53,12 +54,17 @@ export class Tags {
   templateUrl: './employees-filter.component.html',
   styleUrls: ['./employees-filter.component.css']
 })
-export class EmployeesFilterComponent implements OnInit {
+export class EmployeesFilterComponent implements OnInit, OnChanges {
+
 
   departments: Department[];
   departmentId: number;
   designations: Designation[];
   designationsId: number;
+
+  shiftTypes: ShiftType[];
+  tagTypes: TagType[];
+
 
   @Input()
   selectedEmployeeName: string;
@@ -72,6 +78,10 @@ export class EmployeesFilterComponent implements OnInit {
   @Input()
   selectedAttendanceStatus: string;
 
+
+  @Input()
+  fromDate: Date;
+
   @Input()
   hidden: any;
 
@@ -81,9 +91,8 @@ export class EmployeesFilterComponent implements OnInit {
   @Output()
   onReset: EventEmitter<any> = new EventEmitter();
 
-  shiftTypes: Page<ShiftType>;
+  showCheckOutStatus = false;
 
-  tagTypes: Page<TagType>;
 
   tags: Tags = new Tags();
 
@@ -102,7 +111,7 @@ export class EmployeesFilterComponent implements OnInit {
   shiftTypesList = [];
 
   usertypes = [];
-  contractors
+  contractors = [];
 
   selectedDesignation = [];
   selectedDepartment = [];
@@ -119,38 +128,19 @@ export class EmployeesFilterComponent implements OnInit {
     private emsDepartmentService: EmsDepartmentService,
     private emsDesignationService: EmsDesignationService,
     public validatorService: ValidatorService,
-    amsShiftService: AmsShiftService,
-    tagService: AmsTagService,
+    private amsShiftService: AmsShiftService,
+    private tagService: AmsTagService,
   ) {
+  }
 
-
-    const deptFilter = new ServerPageInput();
-    deptFilter.query = {
-      divisionId: 1
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.fromDate) {
+      this.showCheckOutStatus = moment(this.fromDate).isBefore(new Date(), 'd');
     }
-    emsDepartmentService.departments.search(deptFilter).then(departments => {
-      this.departments = departments.items;
-    });
-
-    const designationFilter = new ServerPageInput();
-    emsDesignationService.designations.search(designationFilter).then(desigations => {
-      this.designations = desigations.items;
-    });
-
-    this.shiftTypes = new Page({
-      api: amsShiftService.shiftTypes
-    });
-
-    this.tagTypes = new Page({
-      api: tagService.tagTypes
-    });
   }
 
   ngOnInit() {
-    this.tagTypes.fetch().then(result => {
-      this.getTags(result.items);
-    });
-    this.shiftTypes.fetch().then();
+
     this.hidden = this.hidden || {};
     this.statusList = [{
       id: 1, itemName: 'Present'
@@ -184,65 +174,7 @@ export class EmployeesFilterComponent implements OnInit {
     }, {
       id: 2, itemName: 'Extra'
     }]
-  }
 
-  getTags(tags: any) {
-    tags.forEach(item => {
-      switch (item.name.toLowerCase()) {
-        // case 'department':
-        //   this.departments = item.tags;
-        //   break;
-        // case 'designation':
-        //   this.designations = item.tags;
-        //   break;
-        case 'usertype':
-          this.usertypes = item.tags;
-          break;
-        case 'contractor':
-          this.contractors = item.tags;
-          break;
-      }
-    });
-
-    this.designations.forEach(item => {
-      const obj = {
-        id: item.id,
-        itemName: item.name,
-      };
-      this.designationList.push(obj);
-    })
-
-    this.departments.forEach(item => {
-      const obj = {
-        id: item.id,
-        itemName: item.name,
-      };
-      this.departmentList.push(obj);
-    })
-
-    this.contractors.forEach(item => {
-      const obj = {
-        id: item.id,
-        itemName: item.name,
-      };
-      this.contractorList.push(obj);
-    })
-
-    this.usertypes.forEach(item => {
-      const obj = {
-        id: item.id,
-        itemName: item.name,
-      };
-      this.userTypeList.push(obj);
-    })
-    console.log(this.shiftTypes);
-    this.shiftTypes.items.forEach(item => {
-      const obj = {
-        id: item.id,
-        itemName: item.name
-      }
-      this.shiftTypesList.push(obj)
-    })
 
     this.dropdownSettings = {
       singleSelection: false,
@@ -258,6 +190,95 @@ export class EmployeesFilterComponent implements OnInit {
       badgeShowLimit: 1
     };
 
+    if (this.fromDate) {
+      this.showCheckOutStatus = moment(this.fromDate).isBefore(new Date(), 'd');
+    }
+
+    this.getTags();
+    this.getDepartments();
+    this.getDesignations();
+    this.getShiftTypes();
+  }
+
+  private getShiftTypes() {
+    this.amsShiftService.shiftTypes.search().then((page) => {
+      this.shiftTypes = page.items;
+      this.shiftTypesList = [];
+      this.shiftTypes.forEach(item => {
+        const obj = {
+          id: item.id,
+          itemName: item.name
+        }
+        this.shiftTypesList.push(obj)
+      })
+    });
+  }
+
+  private getDesignations() {
+    const designationFilter = new ServerPageInput();
+    this.emsDesignationService.designations.search(designationFilter).then(page => {
+      this.designations = page.items;
+      this.designationList = [];
+      this.designations.forEach(item => {
+        const obj = {
+          id: item.id,
+          itemName: item.name,
+        };
+        this.designationList.push(obj);
+      })
+    });
+  }
+
+  private getDepartments() {
+    const deptFilter = new ServerPageInput();
+    deptFilter.query = {
+      divisionId: 1
+    }
+    this.emsDepartmentService.departments.search(deptFilter).then(page => {
+      this.departments = page.items;
+      this.departmentList = [];
+      this.departments.forEach(item => {
+        const obj = {
+          id: item.id,
+          itemName: item.name,
+        };
+        this.departmentList.push(obj);
+      })
+
+    });
+  }
+
+  private getTags() {
+    this.tagService.tagTypes.search().then(page => {
+      this.tagTypes = page.items;
+      this.tagTypes.forEach(item => {
+        switch (item.name.toLowerCase()) {
+          case 'usertype':
+            this.usertypes = item.tags;
+            break;
+          case 'contractor':
+            this.contractors = item.tags;
+            break;
+        }
+      });
+
+
+      this.contractors.forEach(item => {
+        const obj = {
+          id: item.id,
+          itemName: item.name,
+        };
+        this.contractorList.push(obj);
+      })
+
+      this.usertypes.forEach(item => {
+        const obj = {
+          id: item.id,
+          itemName: item.name,
+        };
+        this.userTypeList.push(obj);
+      })
+    })
   }
   onItemSelect(item: any) {
     console.log(item.id);
@@ -325,7 +346,7 @@ export class EmployeesFilterComponent implements OnInit {
     const checkInStatus: string[] = [];
     this.selectedCheckInStatus.forEach(item => {
       if ((item.id).toString() === '1') {
-       checkInStatus.push('early')
+        checkInStatus.push('early')
       } else if ((item.id).toString() === '2') {
         checkInStatus.push('late')
       } else if ((item.id).toString() === '3') {
@@ -337,11 +358,11 @@ export class EmployeesFilterComponent implements OnInit {
 
     this.selectedCheckOutStatus.forEach(item => {
       if ((item.id).toString() === '1') {
-      checkOutStatus.push('early');
+        checkOutStatus.push('early');
       } else if ((item.id).toString() === '2') {
-      checkOutStatus.push('late');
+        checkOutStatus.push('late');
       } else if ((item.id).toString() === '3') {
-      checkOutStatus.push('missed');
+        checkOutStatus.push('missed');
       }
     })
 
