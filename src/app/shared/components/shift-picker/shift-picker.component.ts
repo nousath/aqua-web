@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { ShiftType, EffectiveShift, Shift } from '../../../models';
 import * as moment from 'moment';
 import { AmsEffectiveShiftService, AmsAttendanceService, AmsEmployeeService, AmsLeaveService, AmsShiftService } from '../../../services/ams';
@@ -25,7 +25,7 @@ import { Page } from '../../../common/contracts/page';
   templateUrl: './shift-picker.component.html',
   styleUrls: ['./shift-picker.component.css']
 })
-export class ShiftPickerComponent implements OnInit {
+export class ShiftPickerComponent implements OnInit, OnChanges {
   [x: string]: any;
 
   @Output()
@@ -377,21 +377,31 @@ export class ShiftPickerComponent implements OnInit {
   }
 
   extendCurrentShift() {
-    const attendance = this.effectiveShift.attendances
-    let attendanceId: string
-    attendance.forEach(item => {
-      const incomingDate = item.ofDate
-      const currentDate = this.date
+    const attendance = this.effectiveShift.attendances.find(item => moment(item.ofDate).isSame(this.date, 'd'))
 
-      if (moment(incomingDate).toISOString() === moment(currentDate).toISOString()) {
-        attendanceId = item.id
+    const currentShift = new Shift();
+    currentShift.date = this.date;
+    currentShift.shiftType = this.effectiveShiftType;
+    const nextShift = new Shift();
+    nextShift.date = moment(this.date).add(1, 'd').toDate();
+    nextShift.shiftType = this.effectiveShiftType;
+
+    let date = currentShift.date;
+    let time = moment(currentShift.shiftType.endTime).format('HH:mm');
+
+    if (attendance.checkOutExtend) {
+      date = moment(attendance.checkOutExtend).startOf('day').toDate();
+      time = moment(attendance.checkOutExtend).format('HH:mm');
+    }
+
+    const dialogRef = this.dialog.open(ExtendShiftDialogComponent, {
+      data: {
+        currentShift: currentShift,
+        nextShift: nextShift,
+        date: date,
+        time: time
       }
     })
-
-    console.log(this.effectiveShift)
-    const dialogRef = this.dialog.open(ExtendShiftDialogComponent, { data: { currentShifts: this.effectiveShift.previousShift, nextShift: this.effectiveShift.shifts, date: this.date.toISOString() } })
-    const component = dialogRef.componentInstance;
-    component.title = 'Please Enter Time'
 
     dialogRef.afterClosed().subscribe((response: any) => {
       if (!response) {
@@ -399,15 +409,13 @@ export class ShiftPickerComponent implements OnInit {
       }
       if (response === 'reset') {
         this.attendance.checkOutExtend = null;
-        this.amsAttendanceService.attendance.update(`${attendanceId}/extendShift`, this.attendance as any)
+        this.amsAttendanceService.attendance.update(`${attendance.id}/extendShift`, this.attendance as any)
         this.toastyService.info({ title: 'Info', msg: 'Shift Reset' })
       } else {
         this.attendance.checkOutExtend = response;
-        this.amsAttendanceService.attendance.update(`${attendanceId}/extendShift`, this.attendance as any)
+        this.amsAttendanceService.attendance.update(`${attendance.id}/extendShift`, this.attendance as any)
         this.toastyService.info({ title: 'Info', msg: 'Shift Extended' })
-
       }
-
     });
 
   }

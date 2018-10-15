@@ -1,29 +1,65 @@
-.todayShift{
-        width: 40%;
-        float: left;
-        margin-left: auto;
-        margin-right: auto;
-        text-align: center;
-    }
-    .todayShift label{
-        color: blue
-    }
-    .tomorrowShift label{
-        color: blue
-    }
-    
-    .tomorrowShift{
-        width: 40%;
-        float: right;
-        margin-left: auto;
-        margin-right: auto;
-        text-align: center;
-        
-    }
-    
-    md-chip{
-        width: 48%;
-        margin-left: auto;
-        margin-right: auto;
-        text-align: center
-    }
+.todayShift {
+    width: 40%;
+    float: left;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.shift {
+    margin: 5px;
+    padding: 10px 16px 0 16px;
+}
+
+.shifts>label,
+.shift>label {
+    text-align: center;
+    width: 100%;
+}
+
+.shift>label:hover {
+    color: #00A8c6;
+    cursor: pointer;
+}
+
+.shift.selected>label {
+    color: #00A8c6;
+}
+
+.time.form-group>label {
+    font-size: small;
+    font-weight: 100;
+    line-height: 0;
+}
+
+.shift .time .form-control:hover {
+    border: #00A8c6 1px solid;
+    cursor: pointer;
+}
+
+.shift.selected .time.selected label {
+    color: #00A8c6;
+}
+
+.shift.selected .time.selected .form-control {
+    color: #00A8c6;
+    border: #00A8c6 1px solid;
+}
+
+.mat-button-toggle-checked {
+    color: #00A8c6;
+    background-color: #ffffff;
+    border-radius: 5px;
+    border: #00A8c6 1px solid;
+}
+
+.mat-button-toggle-group.form-control {
+    border-radius: 5px;
+    padding: 1px 5px;
+    box-shadow: none;
+}
+
+.mat-button-toggle-label>.mat-button-toggle-label-content {
+    line-height: 30px;
+    font-weight: 300px;
+}
