@@ -130,11 +130,12 @@ button.mat-menu-item {
     border-top: 0;
 }
 
-.page_header {
+
+/* .page_header {
     background-color: #e4e4e4;
     padding-top: 0.5%;
     padding-right: 1%;
-}
+} */
 
 .table>tbody>tr>td,
 .table>tbody>tr>th,

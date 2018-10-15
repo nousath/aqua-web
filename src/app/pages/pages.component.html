@@ -2,8 +2,7 @@
     <md-sidenav-container class="nav-container" *ngIf="!shouldRun">
         <md-sidenav #sidenav>
             <div style="width:100%">
-                <aqua-navigation-bar [userType]="userType" [sectionEmployee]="sections.employee" [isShowEmployeeTab]="isShowEmployeeTab"
-                    (isSelected)="closeNav($event)"></aqua-navigation-bar>
+                <aqua-navigation-bar [userType]="userType" [sectionEmployee]="sections.employee" [isShowEmployeeTab]="isShowEmployeeTab" (isSelected)="closeNav($event)"></aqua-navigation-bar>
             </div>
 
         </md-sidenav>
@@ -16,20 +15,23 @@
                     <span class="menuBtn" md-button (click)="sidenav.open()">
                         <md-icon>menu</md-icon>
                     </span>
-                    <div class="logoHeader">
-                        <img src="assets/images/splash_logo2.png" height="50px">
-                    </div>
                     <span class="example-spacer"></span>
-                    <div *ngIf="employeeSearch" class="searchbar">
+                    <div class="org-logo" *ngIf="currentUser && currentUser.organization && currentUser.organization">
+                        {{currentUser.organization.name}}
+                    </div>
+                    <!-- <div class="logoHeader">
+                        <img src="assets/images/splash_logo2.png" height="50px">
+                    </div> -->
+                    <span class="example-spacer"></span>
+                    <!-- <div *ngIf="employeeSearch" class="searchbar">
                         <input ngui-auto-complete [min-chars]="1" *ngIf="userType == 'superadmin'" placeholder="Employee search" [(ngModel)]="selectedEmp"
                             (valueChanged)="onSelectEmp($event)" [source]="empSource.bind(this)" [value-formatter]="empFormatter"
                             [list-formatter]="empListFormatter" class="form-control searchbarinput search" name="roleId" />
-                    </div>
-                    <button md-icon-button (click)="syncEmployees()" *ngIf="userType == 'superadmin'" [disabled]="isSyncing" mdTooltip="Sync Employees"
-                        class="marginLetf" [mdTooltipPosition]="'below'">
+                    </div> -->
+                    <!-- <button md-icon-button (click)="syncEmployees()" *ngIf="userType == 'superadmin'" [disabled]="isSyncing" mdTooltip="Sync Employees" class="marginLetf" [mdTooltipPosition]="'below'">
                         <i class="fa fa-refresh  fa-lg" [ngClass]="{'fa-spin':isSyncing}" aria-hidden="true"></i>
-                    </button>
-                    <button md-button (click)="logout()" class="capitalize" mdTooltip="Logout" class="marginLetf" [mdTooltipPosition]="'below'">{{currentUser?.name}}
+                    </button> -->
+                    <button md-button class="capitalize marginLetf" (click)="logout()" mdTooltip="Logout" [mdTooltipPosition]="'below'">{{currentUser?.name}}
                         <md-icon class="example-icon">exit_to_app</md-icon>
                     </button>
 
@@ -41,7 +43,7 @@
                 <div class="hidden-xs col-sm-2 col-md-2 col-lg-2">
                     <aqua-navigation-bar [userType]="userType" [sectionEmployee]="sections.employee"></aqua-navigation-bar>
                 </div>
-                <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10 section hiddenHorScroll">
+                <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10 hiddenHorScroll">
                     <router-outlet></router-outlet>
                 </div>
             </div>

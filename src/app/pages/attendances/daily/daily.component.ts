@@ -86,6 +86,12 @@ export class DailyComponent {
         field: 'byShiftLength',
         value: false
       }, {
+        field: 'designations',
+        value: null
+      }, {
+        field: 'departments',
+        value: null
+      }, {
         field: 'tagIds',
         value: ''
       }, {
@@ -112,6 +118,8 @@ export class DailyComponent {
     this.dailyAttendnace.filters.properties['hours']['value'] = $event.attendanceHours;
     this.dailyAttendnace.filters.properties['action']['value'] = $event.needsAction;
     this.dailyAttendnace.filters.properties['tagIds']['value'] = $event.tagIds;
+    this.dailyAttendnace.filters.properties['departments']['value'] = $event.departments;
+    this.dailyAttendnace.filters.properties['designations']['value'] = $event.designations;
     this.getAttendance();
   }
 

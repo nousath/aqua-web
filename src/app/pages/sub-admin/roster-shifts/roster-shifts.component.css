@@ -30,12 +30,13 @@
     float: left;
 }
 
-.page_header {
+
+/* .page_header {
     background-color: #e4e4e4;
     padding-top: 0.5%;
     padding-left: 0.5%;
     padding-right: 0% !important;
-}
+} */
 
 .file {
     width: 38%;
@@ -102,19 +103,21 @@
 .week .future {
     color: green
 }
-.mobileView{
+
+.mobileView {
     display: none;
 }
+
 @media only screen and (max-width: 600px) {
-    .webView{
+    .webView {
         display: none
     }
-    .mobileView{
+    .mobileView {
         display: block;
         padding-top: 0px;
         padding-bottom: 0px;
     }
-    .mvWidth{
+    .mvWidth {
         width: 33%;
         text-align: center;
     }

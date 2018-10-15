@@ -1,8 +1,9 @@
 .example-icon {
     padding: 0 14px;
 }
+
 .container {
-    overflow:scroll;
+    overflow: scroll;
 }
 
 .logout {
@@ -10,6 +11,12 @@
     right: 0;
     top: 0;
     color: black;
+}
+
+.org-logo {
+    font-size: xx-large;
+    font-weight: bold;
+    color: #444D6E;
 }
 
 .loginHeader {
@@ -23,16 +30,19 @@
     z-index: 3;
     box-shadow: 0 0 9px 0px black;
 }
-.logoHeader{
+
+.logoHeader {
     display: none;
 }
-.menuBtn{
+
+.menuBtn {
     display: none;
 }
 
 .bodyPart {
-    margin-top: 5.1%;
-    max-height: 100%;
+    margin-top: 60px;
+    height: 93vh;
+    background: #efefef;
     /*width: 100%;*/
     /*overflow-x: hidden;*/
 }
@@ -90,7 +100,8 @@
     margin-top: 6%;
 }
 
-@media only screen and (max-width:1359px) {
+
+/* @media only screen and (max-width:1359px) {
     .bodyPart {
         margin-top: 6%;
     }
@@ -106,7 +117,8 @@
     .bodyPart {
         margin-top: 10%;
     }
-}
+} */
+
 
 /* @media only screen and (max-width:676px) {
     .bodyPart {
@@ -121,19 +133,19 @@
     .searchXs {
         display: flex !important;
     }
-    .bodyPart {
+    /* .bodyPart {
         margin-top: 16%;
-    }
+    } */
     .loginHeader {
         width: 100%
     }
-    .searchbar   {
+    .searchbar {
         display: none;
     }
-    .logoHeader{
+    .logoHeader {
         display: block;
     }
-    .menuBtn{
+    .menuBtn {
         width: 40px;
         float: left;
         padding-left: 0px;
@@ -141,11 +153,12 @@
         padding-top: 10px;
         display: block;
     }
-    .menuHeader{
+    .menuHeader {
         display: block;
     }
-    
 }
+
+
 /* 
 @media only screen and (max-width:520px) {
     .bodyPart {
@@ -217,9 +230,8 @@ h5 {
     bottom: 0;
     left: 0;
     right: 0;
-  }
+}
 
-  md-sidenav {
+md-sidenav {
     width: 200px;
-  }
-  
+}

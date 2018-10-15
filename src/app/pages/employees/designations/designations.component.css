@@ -2,26 +2,39 @@
     width: 96px !important;
     text-align: left;
 }
-.page_header {
+
+
+/* .page_header {
     background-color: #e4e4e4;
     padding-top: 0.5%;
     padding-left: 0.5%;
     padding-right: 1% !important;
-}
-.table>caption+thead>tr:first-child>td, .table>caption+thead>tr:first-child>th, .table>colgroup+thead>tr:first-child>td, .table>colgroup+thead>tr:first-child>th, .table>thead:first-child>tr:first-child>td, .table>thead:first-child>tr:first-child>th {
+} */
+
+.table>caption+thead>tr:first-child>td,
+.table>caption+thead>tr:first-child>th,
+.table>colgroup+thead>tr:first-child>td,
+.table>colgroup+thead>tr:first-child>th,
+.table>thead:first-child>tr:first-child>td,
+.table>thead:first-child>tr:first-child>th {
     border-top: 0;
     padding-left: 2.7% !important;
 }
-.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+
+.form-control[disabled],
+.form-control[readonly],
+fieldset[disabled] .form-control {
     background-color: #eee;
     opacity: 1;
     width: 100%;
     /* margin-left: 3% !important; */
     margin-top: 3px !important
 }
+
 .tdWidth input {
     text-transform: capitalize;
 }
+
 input {
     text-transform: capitalize
 }
