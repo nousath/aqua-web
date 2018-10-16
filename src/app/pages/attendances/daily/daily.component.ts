@@ -45,6 +45,21 @@ export class DailyComponent {
   // data: Attendance;
 
 
+  filterFields = [
+    'name',
+    'code',
+    'designations',
+    'departments',
+    'userTypes',
+    'contractors',
+    'shiftTypes',
+    'shiftCount',
+    'attendanceStates',
+    'checkInStates',
+    'checkOutStates'
+  ]
+
+
 
   attendances: Attendance[] = [];
 

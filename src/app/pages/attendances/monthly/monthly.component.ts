@@ -25,6 +25,15 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
   date: Date = null;
   showDatePicker = false;
 
+  filterFields = [
+    'name',
+    'code',
+    'designations',
+    'departments',
+    'userTypes',
+    'contractors'
+  ]
+
   isDownloading = false;
 
 

@@ -44,7 +44,7 @@
     </div>
 </div>
 <md-spinner class="custom_spinner" *ngIf="monthlyAttendnace?.isLoading" mode="indeterminate"></md-spinner>
-<aqua-employees-filter *ngIf="isFilter" [hidden]="{attendanceStatus: true}" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter>
+<aqua-employees-filter *ngIf="isFilter" [fields]="filterFields" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter>
 <div class="row">
     <md-card class="card">
         <div class="table-responsive full">

@@ -2,7 +2,7 @@
     <div class="col-sm-12">
         <div class="form-group col-sm-10">
             <label for="reportList">Choose Report Type</label>
-            <select class="form-control reportList" [(ngModel)]="selectedType" (change)="onSelection()">
+            <select class="form-control reportList" [(ngModel)]="selectedType" (change)="onSelection(selectedType)">
               <option disabled></option>
               <option *ngFor="let item of reportTypes" [value]="item.type"> {{item.name}} </option>
             </select>
@@ -12,6 +12,7 @@
         </div>
     </div>
 </div>
+<aqua-employees-filter *ngIf="showFilters" [fields]="filterFields" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter>
 <aqua-report-filters *ngIf="selected" [reportTypes]="reportTypes" [type]="selected.type" [provider]="selected.provider" (submitted)="getReportLists()"></aqua-report-filters>
 <md-spinner class="custom_spinner" *ngIf="reports.isLoading" mode="indeterminate"></md-spinner>
 <div class="row" *ngIf="reports && reports.items.length">

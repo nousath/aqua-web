@@ -17,6 +17,9 @@ class ReportType {
   styleUrls: ['./reports.component.css']
 })
 export class ReportsComponent implements OnInit {
+
+  showFilters = true;
+  fields: string[] = [];
   reportTypes: ReportType[] = [{
     type: 'daily-attendance',
     name: 'Daily Attendance',
@@ -68,6 +71,20 @@ export class ReportsComponent implements OnInit {
   selectedType: String;
   selected: ReportType;
 
+  filterFields = [
+    'name',
+    'code',
+    'designations',
+    'departments',
+    'userTypes',
+    'contractors',
+    'shiftTypes',
+    'shiftCount',
+    'attendanceStates',
+    'checkInStates',
+    'checkOutStates'
+  ]
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private toastyService: ToastyService,
@@ -88,13 +105,7 @@ export class ReportsComponent implements OnInit {
     });
 
     this.activatedRoute.queryParams.subscribe(query => {
-      if (query['type']) {
-        this.selected = this.reportTypes.find(item => item.type === query['type'])
-        this.selectedType = this.selected.type;
-      } else {
-        this.selected = null;
-        this.selectedType = null;
-      }
+      this.onSelection(query['type'])
     });
   }
 
@@ -102,9 +113,47 @@ export class ReportsComponent implements OnInit {
     this.getReportLists()
   }
 
-  onSelection() {
-    this.selected = this.reportTypes.find(item => item.type === this.selectedType)
+  onSelection(type) {
+    if (!type) {
+      this.filterFields = [];
+      return;
+    }
+    this.selected = this.reportTypes.find(item => item.type === type)
+
+    switch (this.selected.type) {
+      case 'daily-attendance':
+        this.filterFields = [
+          'date',
+          'name',
+          'code',
+          'designations',
+          'departments',
+          'userTypes',
+          'contractors',
+          'shiftTypes',
+          'shiftCount',
+          'attendanceStates',
+          'checkInStates',
+          'checkOutStates'
+        ];
+        break;
+      case 'monthly-attendance':
+        this.filterFields = [
+          'month',
+          'name',
+          'code',
+          'designations',
+          'departments',
+          'userTypes',
+          'contractors'
+        ];
+        break;
+
+    }
+
     this.getReportLists();
+
+
   }
 
   getReportLists() {
@@ -112,5 +161,12 @@ export class ReportsComponent implements OnInit {
     if (this.selected) {
       this.reports.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
     }
+  }
+
+  reset() {
+
+  }
+  applyFilters($event) {
+
   }
 }

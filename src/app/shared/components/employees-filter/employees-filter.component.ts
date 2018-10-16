@@ -78,6 +78,8 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
   @Input()
   selectedAttendanceStatus: string;
 
+  @Input()
+  fields: string[] = [];
 
   @Input()
   fromDate: Date;
@@ -92,6 +94,22 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
   onReset: EventEmitter<any> = new EventEmitter();
 
   showCheckOutStatus = false;
+
+  show: {
+    date?: boolean,
+    month?: boolean,
+    name?: boolean,
+    code?: boolean,
+    userTypes?: boolean,
+    designations?: boolean,
+    departments?: boolean,
+    contractors?: boolean,
+    shiftTypes?: boolean,
+    attendanceStates?: boolean,
+    shiftCount?: boolean,
+    checkInStates?: boolean,
+    checkOutStates?: boolean
+  }
 
 
   tags: Tags = new Tags();
@@ -137,6 +155,13 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
     if (this.fromDate) {
       this.showCheckOutStatus = moment(this.fromDate).isBefore(new Date(), 'd');
     }
+    this.show = {
+    }
+
+    this.fields.forEach(field => {
+      this.show[field] = true;
+    });
+
   }
 
   ngOnInit() {
