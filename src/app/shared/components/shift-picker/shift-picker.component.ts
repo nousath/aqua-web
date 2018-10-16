@@ -57,7 +57,7 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
   userType: string;
   startingShift: ShiftType;
 
-  isBeforeTOday = false
+  isBeforeToday = false
 
   isProcessing = false;
 
