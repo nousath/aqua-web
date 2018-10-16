@@ -18,6 +18,8 @@ export class ExtendShiftDialogComponent implements OnInit {
   currentShift: Shift;
   nextShift: Shift;
 
+  isCustom = false;
+
   constructor(public dialogRef: MdDialogRef<ExtendShiftDialogComponent>,
     private toastyService: ToastyService,
     @Inject(MD_DIALOG_DATA) public data: {
@@ -31,6 +33,12 @@ export class ExtendShiftDialogComponent implements OnInit {
     this.nextShift = this.data.nextShift;
     this.date = this.data.date;
     this.time = this.data.time;
+
+    if (moment(this.date).isSame(this.currentShift.date, 'd')) {
+      this.date = this.currentShift.date
+    } else if (moment(this.date).isSame(this.nextShift.date, 'd')) {
+      this.date = this.nextShift.date
+    }
   }
 
   ngOnInit() {
@@ -72,6 +80,7 @@ export class ExtendShiftDialogComponent implements OnInit {
   // }
 
   timeChanged() {
+
     console.log(this.time);
   }
   setTime(time) {
