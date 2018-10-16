@@ -553,3 +553,10 @@ pagination-controls {
     height: 100%;
     overflow-x: hidden !important;
 }
+
+.filters {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: -15px;
+    margin-right: -15px;
+}
