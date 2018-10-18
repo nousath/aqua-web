@@ -17,10 +17,10 @@
         class="capitalize">
         <td>{{i + 1}}</td>
         <td>{{item.date | date}}</td>
-        <td><span>{{item.reportParams.reportName}}<br>
-            {{item.reportParams.name}} {{item.reportParams.code}}<br>
-            {{item.reportParams.supervisor}}
-          </span></td>
+        <td><span>{{item.reportParams.reportName}}</span>
+            <span *ngIf="item.reportParams.name"><br>Name: {{item.reportParams.name}}; Code: {{item.reportParams.code}}</span>
+           <span *ngIf= "item.reportParams.supervisor"><br>Supervisor: {{item.reportParams.supervisorName}}</span>
+        </td>
         <td>
           <span *ngIf="item.status === 'new'">Requested {{item.agoTime}} ago</span>
           <span *ngIf="item.status === 'in-progress'">Started generating {{item.agoTime}} ago</span>
