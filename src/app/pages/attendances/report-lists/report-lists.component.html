@@ -16,7 +16,10 @@
         totalItems: reportRequests.totalRecords }; let i=index" class="capitalize">
                 <td>{{i + 1}}</td>
                 <td>{{item.date | date}}</td>
-                <td>{{item.reportParams.reportName || item.type}}</td>
+                <td><span>{{item.reportParams.reportName}}<br>
+                {{item.reportParams.name}} {{item.reportParams.code}}<br>
+                {{item.reportParams.supervisor}}
+            </span></td>
                 <td>
                     <span *ngIf="item.status === 'new'">Requested {{item.agoTime}} ago</span>
                     <span *ngIf="item.status === 'in-progress'">Started generating {{item.agoTime}} ago</span>
