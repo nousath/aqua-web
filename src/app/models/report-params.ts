@@ -7,4 +7,5 @@ export class ReportParams {
   reportName: string;
   tagIds: string[] = [];
   supervisor: string;
+  supervisorName: string;
 }
