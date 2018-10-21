@@ -84,12 +84,22 @@
           </div>
         </td>
         <td>
-          <span *ngIf="item.status === 'new'">Requested {{item.agoTime}} ago</span>
-          <span *ngIf="item.status === 'in-progress'">Started generating {{item.agoTime}} ago</span>
-          <span *ngIf="item.status === 'ready'">
-            <span *ngIf="item.url" class="glyphicon glyphicon-download-alt pointer" (click)="download(item.url, item.type)"></span>
-          </span>
-          <span *ngIf="item.status === 'errored'">Failed to Generate</span>
+          <ng-container *ngIf="item.status === 'new'">
+            <button md-raised-button (click)="updateList()">Requested</button>
+            <span class="sub-text">{{item.agoTime}} ago</span>
+          </ng-container>
+          <ng-container *ngIf="item.status === 'in-progress'">
+            <button md-raised-button (click)="updateList()">Generating</button>
+            <span class="sub-text">{{item.agoTime}} ago</span>
+          </ng-container>
+          <ng-container *ngIf="item.status === 'ready'">
+            <button md-icon-button (click)="download(item.url, item.type)">
+              <md-icon>cloud_download</md-icon>
+            </button>
+          </ng-container>
+          <ng-container *ngIf="item.status === 'errored'">
+            <md-icon>report_problem</md-icon>
+          </ng-container>
         </td>
       </tr>
     </tbody>

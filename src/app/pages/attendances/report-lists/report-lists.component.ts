@@ -22,7 +22,7 @@ export class ReportListsComponent implements OnInit {
 
   ngOnInit() {
   }
-  onClick() {
+  updateList() {
     this.refresh.emit()
   }
 
