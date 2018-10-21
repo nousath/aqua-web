@@ -43,6 +43,9 @@ export class DeviceLogsComponent implements OnInit, OnDestroy, AfterViewInit {
       }, {
         field: 'date',
         value: this.activatedRoute.queryParams['value']['date']
+      }, {
+        field: 'description',
+        value: this.activatedRoute.queryParams['value']['description']
       }],
       location: location
     });
@@ -57,6 +60,7 @@ export class DeviceLogsComponent implements OnInit, OnDestroy, AfterViewInit {
         this.deviceLogs.filters.properties['level'].value = query['level'] || 'all';
         this.deviceLogs.filters.properties['date'].value = query['date'] ? query['date'] : new Date().toISOString();
         this.deviceLogs.filters.properties['deviceId'].value = query['deviceId'];
+        this.deviceLogs.filters.properties['description'].value = query['description'];
       }
     });
     this.getDeviceLogs();

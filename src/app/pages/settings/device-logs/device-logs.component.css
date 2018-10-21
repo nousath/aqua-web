@@ -1,24 +1,35 @@
-.width{
-   width: 26%;
-   margin-bottom: 1%;
-}
-.heading{
-  margin-left: 2%;
-}
-.input-group .form-control, .input-group-addon, .input-group-btn{
-        width: 350%  !important;
-}
-.cellFormat{
-    padding-left: 3%;
-}
-.footer{
- margin-top: 2%;
-}
-.pageSizeformat{
-    
+.form-group {
+    padding: 0 5px;
 }
 
-.format{
-  margin-bottom: 1%;
-  margin-left: 77%;
+.width {
+    width: 26%;
+    margin-bottom: 1%;
+}
+
+.heading {
+    margin-left: 2%;
+}
+
+
+/* 
+.input-group .form-control, 
+.input-group-addon, .input-group-btn{
+  width: 350%  !important;
+} 
+*/
+
+.cellFormat {
+    padding-left: 3%;
+}
+
+.footer {
+    margin-top: 2%;
+}
+
+.pageSizeformat {}
+
+.format {
+    margin-bottom: 1%;
+    margin-left: 77%;
 }

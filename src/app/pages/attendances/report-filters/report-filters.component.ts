@@ -110,6 +110,7 @@ export class ReportFiltersComponent implements OnInit, OnChanges {
 
   onSelectSup(emp: Employee) {
     this.reportRequest.reportParams.supervisor = emp.id;
+    this.reportRequest.reportParams.supervisorName = emp.name;
   }
 
   empSource(keyword: string): Observable<Employee[]> {
