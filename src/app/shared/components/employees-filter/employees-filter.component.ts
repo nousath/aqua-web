@@ -1,53 +1,15 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { ValidatorService, AmsShiftService } from '../../../services';
+import { ValidatorService, AmsShiftService, AutoCompleteService } from '../../../services';
 import { ShiftType } from '../../../models/shift-type';
-import { Page } from '../../../common/contracts/page';
 import { TagType } from '../../../models/tag';
 import { AmsTagService } from '../../../services/ams/ams-tag.service';
-import { Designation } from '../../../models';
+import { Designation, Employee } from '../../../models';
 import { EmsDesignationService } from '../../../services/ems/ems-designation.service';
 import { Department } from '../../../models/department';
 import { EmsDepartmentService } from '../../../services/ems/ems-department.service';
 import { ServerPageInput } from '../../../common/contracts/api/page-input';
-import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
-import { Item } from 'angular2-multiselect-dropdown/menu-item';
 import * as moment from 'moment';
-
-export interface SelectedTag {
-  tagId: string;
-  tagTypeId: string;
-}
-export class Tags {
-  selected: SelectedTag[] = [];
-  select(tag: SelectedTag) {
-    // select(tag: any) {
-    // const t: SelectedTag = this.selected.find((i: SelectedTag) => {
-    //   return i.tagTypeId === tag.tagTypeId;
-    // });
-    // if (t && tag.tagId === 'select an option')
-    //   return this.selected.splice(this.selected.indexOf(t), 1);
-    // if (!t)
-
-
-    let index = -1
-    if (this.selected.length) {
-      this.selected.forEach(item => {
-        index++
-        if (item.tagTypeId === tag.tagTypeId) {
-          this.selected.splice(index, 1)
-          this.selected.push(tag);
-        } else {
-          this.selected.push(tag);
-        }
-      })
-    } else {
-      this.selected.push(tag);
-    }
-  }
-  reset() {
-    this.selected = [];
-  }
-}
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'aqua-employees-filter',
@@ -65,6 +27,14 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
   shiftTypes: ShiftType[];
   tagTypes: TagType[];
 
+  @Input()
+  fields: string[] = [];
+
+  @Input()
+  fromDate: Date;
+
+  @Input()
+  tillDate: Date;
 
   @Input()
   selectedEmployeeName: string;
@@ -72,17 +42,23 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
   @Input()
   selectedEmployeeCode: string;
 
-  @Input()
-  selectedShiftType: ShiftType;
+  selectedAttendanceStatus = [];
+  selectedCheckInStatus = [];
+  selectedCheckOutStatus = [];
+  selectedClockedStatus = [];
+  selectedDesignation = [];
+  selectedDepartment = [];
+  selectedUserType = [];
+  selectedContractor = [];
+  selectedShiftType = [];
+  selectedSupervisor: Employee;
+  clockedGreaterThan: number;
+  clockedLessThan: number;
 
-  @Input()
-  selectedAttendanceStatus: string;
-
-  @Input()
-  fields: string[] = [];
-
-  @Input()
-  fromDate: Date;
+  checkInBefore: string;
+  checkInAfter: string;
+  checkOutBefore: string;
+  checkOutAfter: string;
 
   @Input()
   hidden: any;
@@ -93,10 +69,11 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
   @Output()
   onReset: EventEmitter<any> = new EventEmitter();
 
-  showCheckOutStatus = false;
 
   show: {
     date?: boolean,
+    tillDate?: boolean,
+
     month?: boolean,
     name?: boolean,
     code?: boolean,
@@ -104,47 +81,34 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
     designations?: boolean,
     departments?: boolean,
     contractors?: boolean,
+    supervisor?: boolean,
+
     shiftTypes?: boolean,
     attendanceStates?: boolean,
-    shiftCount?: boolean,
-    checkInStates?: boolean,
-    checkOutStates?: boolean
+
+    clocked?: boolean,
+    checkIn?: boolean,
+    checkOut?: boolean
   }
-
-
-  tags: Tags = new Tags();
 
   departmentList = [];
   designationList = [];
-  statusList = [];
-  checkInStatusList = [];
-  checkOutStatusList = [];
-  hoursList = [];
-  selectedCheckInStatus = [];
-  selectedCheckOutStatus = [];
-  selectedHours = [];
-  actionList = [];
   userTypeList = [];
   contractorList = [];
+
   shiftTypesList = [];
 
-  usertypes = [];
-  contractors = [];
+  attendanceStatusList = [];
+  checkInStatusList = [];
+  checkOutStatusList = [];
+  clockedStatusList = [];
 
-  selectedDesignation = [];
-  selectedDepartment = [];
-  selectedUsertype = [];
-  selectedContractor = [];
-  selectedStatus = [];
-  selectedAction = [];
-  selectedShift = [];
   dropdownSettings = {};
-  selectedValue: boolean;
-
 
   constructor(
     private emsDepartmentService: EmsDepartmentService,
     private emsDesignationService: EmsDesignationService,
+    private autoCompleteService: AutoCompleteService,
     public validatorService: ValidatorService,
     private amsShiftService: AmsShiftService,
     private tagService: AmsTagService,
@@ -152,9 +116,7 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.fromDate) {
-      this.showCheckOutStatus = moment(this.fromDate).isBefore(new Date(), 'd');
-    }
+
     this.show = {
     }
 
@@ -162,52 +124,48 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
       this.show[field] = true;
     });
 
+    if (this.fromDate) {
+      this.show.checkOut = moment(this.fromDate).isBefore(new Date(), 'd');
+    }
+
   }
 
   ngOnInit() {
 
     this.hidden = this.hidden || {};
-    this.statusList = [{
-      id: 1, itemName: 'Present'
-    }, {
-      id: 2, itemName: 'Absent'
-    }, {
-      id: 3, itemName: 'HalfDay'
-    }, {
-      id: 4, itemName: 'OnLeave'
-    }]
+    this.attendanceStatusList = [
+      { id: 1, code: 'present', itemName: 'Present' },
+      { id: 2, code: 'absent', itemName: 'Absent' },
+      { id: 3, code: 'halfDay', itemName: 'Half Day' },
+      { id: 4, code: 'onLeave', itemName: 'On Leave' },
+      { id: 5, code: 'weekOff', itemName: 'Week Off' }
+    ]
 
 
-    this.checkInStatusList = [{
-      id: 1, itemName: 'Came Early'
-    }, {
-      id: 2, itemName: 'Came Late'
-    }, {
-      id: 3, itemName: 'Missed'
-    }]
+    this.checkInStatusList = [
+      { id: 1, code: 'early', itemName: 'Came Early' },
+      { id: 2, code: 'late', itemName: 'Came Late' },
+      { id: 3, code: 'missed', itemName: 'Missed' }]
 
-    this.checkOutStatusList = [{
-      id: 1, itemName: 'Left Early'
-    }, {
-      id: 2, itemName: 'Went Late'
-    }, {
-      id: 3, itemName: 'Missed'
-    }]
+    this.checkOutStatusList = [
+      { id: 1, code: 'early', itemName: 'Left Early' },
+      { id: 2, code: 'late', itemName: 'Went Late' },
+      { id: 3, code: 'missed', itemName: 'Missed' }
+    ]
 
-    this.hoursList = [{
-      id: 1, itemName: 'Short'
-    }, {
-      id: 2, itemName: 'Extra'
-    }]
+    this.clockedStatusList = [
+      { id: 1, code: 'short', itemName: 'Short' },
+      { id: 2, code: 'extra', itemName: 'Extra' }
+    ]
 
 
     this.dropdownSettings = {
       singleSelection: false,
       idField: 'id',
       textField: 'name',
-      text: 'Select an option',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
+      text: '',
+      selectAllText: 'All',
+      unSelectAllText: 'All',
       enableSearchFilter: true,
       classes: 'myclass',
       displayAllSelectedText: true,
@@ -216,13 +174,22 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
     };
 
     if (this.fromDate) {
-      this.showCheckOutStatus = moment(this.fromDate).isBefore(new Date(), 'd');
+      this.show.checkOut = moment(this.fromDate).isBefore(new Date(), 'd');
     }
 
-    this.getTags();
-    this.getDepartments();
-    this.getDesignations();
-    this.getShiftTypes();
+    if (this.show.contractors || this.show.userTypes) {
+      this.getTags();
+    }
+    if (this.show.departments) {
+      this.getDepartments();
+    }
+    if (this.show.designations) {
+      this.getDesignations();
+    }
+
+    if (this.show.shiftTypes) {
+      this.getShiftTypes();
+    }
   }
 
   private getShiftTypes() {
@@ -237,6 +204,22 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
         this.shiftTypesList.push(obj)
       })
     });
+  }
+
+  onSelectSup(emp: Employee) {
+    this.selectedSupervisor = emp
+  }
+
+  empSource(keyword: string): Observable<Employee[]> {
+    return this.autoCompleteService.searchByKey<Employee>('name', keyword, 'ams', 'employees');
+  }
+
+  empFormatter(data: Employee): string {
+    return data.name;
+  }
+
+  empListFormatter(data: Employee): string {
+    return `${data.name} (${data.code})`;
   }
 
   private getDesignations() {
@@ -269,162 +252,202 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
         };
         this.departmentList.push(obj);
       })
-
     });
   }
 
   private getTags() {
     this.tagService.tagTypes.search().then(page => {
       this.tagTypes = page.items;
+      this.userTypeList = [];
+      this.contractorList = []
       this.tagTypes.forEach(item => {
         switch (item.name.toLowerCase()) {
           case 'usertype':
-            this.usertypes = item.tags;
+            item.tags.forEach(obj => {
+              this.userTypeList.push({
+                id: obj.id,
+                itemName: obj.name,
+              });
+            });
             break;
           case 'contractor':
-            this.contractors = item.tags;
+            item.tags.forEach(obj => {
+              this.contractorList.push({
+                id: obj.id,
+                itemName: obj.name,
+              });
+            });
             break;
         }
       });
-
-
-      this.contractors.forEach(item => {
-        const obj = {
-          id: item.id,
-          itemName: item.name,
-        };
-        this.contractorList.push(obj);
-      })
-
-      this.usertypes.forEach(item => {
-        const obj = {
-          id: item.id,
-          itemName: item.name,
-        };
-        this.userTypeList.push(obj);
-      })
     })
   }
   onItemSelect(item: any) {
-    console.log(item.id);
   }
   OnItemDeSelect(item: any) {
-    console.log(item.id);
   }
   onSelectAll(items: any) {
-    console.log(items);
   }
   onDeSelectAll(items: any) {
-    console.log(items);
   }
 
   reset() {
-
-    const tagElements: any[] = document.getElementsByName('tags') as any;
-    if (tagElements) {
-      tagElements.forEach(item => item.value = '');
-    }
     this.selectedDesignation = [];
     this.selectedDepartment = [];
-    this.selectedUsertype = [];
+    this.selectedUserType = [];
     this.selectedContractor = [];
-    this.selectedStatus = [];
-    this.selectedShift = [];
-    this.tags.selected = [];
-    this.selectedAction = [];
+    this.selectedAttendanceStatus = [];
+    this.selectedShiftType = [];
+
     this.selectedCheckInStatus = [];
     this.selectedCheckOutStatus = [];
-    this.selectedHours = [];
-    this.tags.selected = []
-    this.selectedShiftType = null;
+
+    this.selectedClockedStatus = [];
+
     this.selectedAttendanceStatus = null;
+    this.clockedGreaterThan = null;
+    this.clockedLessThan = null;
+    this.checkInBefore = null;
+    this.checkInAfter = null;
+    this.checkOutBefore = null;
+    this.checkOutAfter = null;
+
     this.selectedEmployeeName = null;
     this.selectedEmployeeCode = null;
-    this.selectedValue = undefined;
+    this.selectedSupervisor = null;
     this.onReset.emit();
   }
 
   apply() {
-    const tagIds: string[] = [];
-    this.selectedUsertype.forEach(item => {
-      tagIds.push(item.id);
-    })
-    this.selectedContractor.forEach(item => {
-      tagIds.push(item.id);
-    })
-    console.log(tagIds)
 
-    const status: string[] = [];
-    this.selectedStatus.forEach(item => {
-      status.push(item.itemName);
-    })
-    const designation: string[] = [];
-
-    this.selectedDesignation.forEach(item => {
-      designation.push(item.itemName);
-    })
-    const department: string[] = [];
-
-    this.selectedDepartment.forEach(item => {
-      department.push(item.itemName);
-    })
-    const checkInStatus: string[] = [];
-    this.selectedCheckInStatus.forEach(item => {
-      if ((item.id).toString() === '1') {
-        checkInStatus.push('early')
-      } else if ((item.id).toString() === '2') {
-        checkInStatus.push('late')
-      } else if ((item.id).toString() === '3') {
-        checkInStatus.push('missed')
-      }
-    })
-
-    const checkOutStatus: string[] = [];
-
-    this.selectedCheckOutStatus.forEach(item => {
-      if ((item.id).toString() === '1') {
-        checkOutStatus.push('early');
-      } else if ((item.id).toString() === '2') {
-        checkOutStatus.push('late');
-      } else if ((item.id).toString() === '3') {
-        checkOutStatus.push('missed');
-      }
-    })
-
-    const hours: string[] = [];
-    this.selectedHours.forEach(item => {
-      hours.push(item.itemName);
-    })
-
-    const action: string[] = [];
-    this.selectedAction.forEach(item => {
-      action.push(item.itemName);
-    })
-    console.log(action)
-
-    const shifts: string[] = [];
-    this.selectedShift.forEach(item => {
-      shifts.push(item.id)
-    })
-    console.log(shifts)
-
-    const values = {
-      tagIds: tagIds,
-      shiftType: shifts,
-      departments: department,
-      designations: designation,
-      attendanceStatus: status,
-      attendanceCheckInStatus: checkInStatus,
-      attendanceCheckOutStatus: checkOutStatus,
-      attendanceHours: hours,
-      needsAction: action,
-      employeeName: this.selectedEmployeeName,
-      employeeCode: this.selectedEmployeeCode
+    const values: any = {}
+    if (this.fromDate) {
+      values.dates = values.dates || {}
+      values.dates.from = this.fromDate
     }
 
+    if (this.tillDate) {
+      values.dates = values.dates || {}
+      values.dates.till = this.tillDate
+    }
+
+    if (this.selectedEmployeeName) {
+      values.employee = values.employee || {}
+      values.employee.name = this.selectedEmployeeName
+    }
+
+    if (this.selectedEmployeeCode) {
+      values.employee = values.employee || {}
+      values.employee.code = this.selectedEmployeeCode
+    }
+
+    if (this.selectedSupervisor) {
+      values.employee = values.employee || {}
+      values.employee.supervisor = {
+        id: this.selectedSupervisor.id,
+        code: this.selectedSupervisor.code,
+        name: this.selectedSupervisor.name
+      }
+    }
+
+    if (this.selectedContractor && this.selectedContractor.length) {
+      values.employee = values.employee || {}
+      values.employee.contractors = this.selectedContractor.map(item => ({ id: item.id, name: item.itemName }))
+    }
+
+    if (this.selectedUserType && this.selectedUserType.length) {
+      values.employee = values.employee || {}
+      values.employee.userTypes = this.selectedUserType.map(item => ({ id: item.id, name: item.itemName }))
+    }
+
+    if (this.selectedDepartment && this.selectedDepartment.length) {
+      values.employee = values.employee || {}
+      values.employee.departments = this.selectedDepartment.map(item => ({ id: item.id, name: item.itemName }))
+    }
+
+    if (this.selectedDesignation && this.selectedDesignation.length) {
+      values.employee = values.employee || {}
+      values.employee.designations = this.selectedDesignation.map(item => ({ id: item.id, name: item.itemName }))
+    }
+
+    if (this.selectedShiftType && this.selectedShiftType.length) {
+      values.shiftType = this.selectedShiftType.map(item => ({ id: item.id, name: item.itemName }))
+    }
+
+    if (this.selectedAttendanceStatus && this.selectedAttendanceStatus.length) {
+      values.attendance = values.attendance || {}
+      values.attendance.status = this.selectedAttendanceStatus.map(item => ({ id: item.code, name: item.itemName }))
+    }
+
+    if (this.selectedCheckInStatus && this.selectedCheckInStatus.length) {
+      values.attendance = values.attendance || {}
+      values.attendance.checkIn = values.attendance.checkIn || {}
+      values.attendance.checkIn.status = this.selectedCheckInStatus.map(item => ({ id: item.code, name: item.itemName }))
+    }
+
+    if (this.checkInBefore) {
+      values.attendance = values.attendance || {}
+      values.attendance.checkIn = values.attendance.checkIn || {}
+      values.attendance.checkIn.before = this.checkInBefore
+    }
+
+    if (this.checkInBefore) {
+      values.attendance = values.attendance || {}
+      values.attendance.checkIn = values.attendance.checkIn || {}
+      values.attendance.checkIn.after = this.checkInAfter
+    }
+
+    if (this.selectedCheckOutStatus && this.selectedCheckOutStatus.length) {
+      values.attendance = values.attendance || {}
+      values.attendance.checkOut = values.attendance.checkOut || {}
+      values.attendance.checkOut.status = this.selectedCheckOutStatus.map(item => ({ id: item.code, name: item.itemName }))
+    }
+
+    if (this.checkOutBefore) {
+      values.attendance = values.attendance || {}
+      values.attendance.checkOut = values.attendance.checkOut || {}
+      values.attendance.checkOut.before = this.checkOutBefore
+    }
+
+    if (this.checkOutBefore) {
+      values.attendance = values.attendance || {}
+      values.attendance.checkOut = values.attendance.checkOut || {}
+      values.attendance.checkOut.after = this.checkOutAfter
+    }
+
+    if (this.selectedClockedStatus && this.selectedClockedStatus.length) {
+      values.attendance = values.attendance || {}
+      values.attendance.clocked = values.attendance.clocked || {}
+      values.attendance.clocked.status = this.selectedClockedStatus.map(item => ({ id: item.code, name: item.itemName }))
+    }
+
+    if (this.clockedGreaterThan) {
+      values.attendance = values.attendance || {}
+      values.attendance.clocked = values.attendance.clocked || {}
+      values.attendance.clocked.hours = values.attendance.clocked.hours || {}
+      values.attendance.clocked.hours.greaterThan = this.clockedGreaterThan
+    }
+
+    if (this.clockedLessThan) {
+      values.attendance = values.attendance || {}
+      values.attendance.clocked = values.attendance.clocked || {}
+      values.attendance.clocked.hours = values.attendance.clocked.hours || {}
+      values.attendance.clocked.hours.lessThan = this.clockedLessThan
+    }
+
+    // this.selectedUserType.forEach(item => {
+    //   values.employee.tags.push({
+    //     id: item.id,
+    //     name: item.itemName
+    //   });
+    // })
+    // this.selectedContractor.forEach(item => {
+    //   values.employee.tags.push({
+    //     id: item.id,
+    //     name: item.itemName
+    //   });
+    // })
 
     this.onChange.emit(values);
   }
-
-
 }

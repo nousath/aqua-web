@@ -87,14 +87,19 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
     this.getAttendance();
   }
 
-  applyFilters($event) {
+  applyFilters(values) {
 
-    this.monthlyAttendnace.filters.properties['shiftType']['value'] = $event.shiftType;
-    this.monthlyAttendnace.filters.properties['name']['value'] = $event.employeeName;
-    this.monthlyAttendnace.filters.properties['code']['value'] = $event.employeeCode;
-    this.monthlyAttendnace.filters.properties['tagIds']['value'] = $event.tagIds;
-    this.monthlyAttendnace.filters.properties['departments']['value'] = $event.departments;
-    this.monthlyAttendnace.filters.properties['designations']['value'] = $event.designations;
+    const filters = this.monthlyAttendnace.filters.properties;
+
+    filters['name']['value'] = values.employee.name;
+    filters['code']['value'] = values.employee.code;
+    filters['departments']['value'] = values.employee.departments.map(item => item.name);
+    filters['designations']['value'] = values.employee.designations.map(item => item.name);
+    filters['tagIds']['value'] = values.employee.tags.map(item => item.id);
+
+    filters['shiftType']['value'] = values.shiftType.map(item => item.id);
+
+    filters['clockedStatus']['value'] = values.attendance.clocked.status.map(item => item.id);
     this.getAttendance();
   }
 

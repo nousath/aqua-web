@@ -1,22 +1,23 @@
 <div class="row page_header">
-    <div class="col-sm-12">
-        <div class="form-group col-sm-10">
-            <label for="reportList">Choose Report Type</label>
-            <select class="form-control reportList" [(ngModel)]="selectedType" (change)="onSelection(selectedType)">
-              <option disabled></option>
-              <option *ngFor="let item of reportTypes" [value]="item.type"> {{item.name}} </option>
-            </select>
-        </div>
-        <div class="col-sm-2">
-            <button class="pull-right" md-icon-button (click)="getReportLists()"><md-icon>loop</md-icon></button>
-        </div>
+  <div class="col-sm-12">
+    <div class="form-group col-sm-10">
+      <label for="reportList">Choose Report Type</label>
+      <select class="form-control reportList" [(ngModel)]="selectedType" (change)="onSelection(selectedType)">
+        <option disabled></option>
+        <option *ngFor="let item of reportTypes" [value]="item.type"> {{item.name}} </option>
+      </select>
     </div>
+    <div class="col-sm-2">
+      <button class="pull-right" md-icon-button (click)="getReportLists()">
+        <md-icon>loop</md-icon>
+      </button>
+    </div>
+  </div>
 </div>
-<aqua-employees-filter *ngIf="showFilters" [fields]="filterFields" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter>
-<aqua-report-filters *ngIf="selected" [reportTypes]="reportTypes" [type]="selected.type" [provider]="selected.provider" (submitted)="getReportLists()"></aqua-report-filters>
+<aqua-employees-filter *ngIf="showFilters" [fields]="filterFields" (onReset)="reset()" (onChange)="createReport($event)"></aqua-employees-filter>
 <md-spinner class="custom_spinner" *ngIf="reports.isLoading" mode="indeterminate"></md-spinner>
 <div class="row" *ngIf="reports && reports.items.length">
-    <md-card class="card">
-        <aqua-report-lists [reportRequests]="reports" (refresh)="getReportLists()"></aqua-report-lists>
-    </md-card>
+  <md-card class="card">
+    <aqua-report-lists [reportRequests]="reports" (refresh)="getReportLists()"></aqua-report-lists>
+  </md-card>
 </div>

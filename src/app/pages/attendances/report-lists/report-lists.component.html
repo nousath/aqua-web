@@ -2,11 +2,10 @@
   <table class="table">
     <thead>
       <tr>
-        <th>S.No</th>
-        <th>Date</th>
-        <th>Type</th>
-        <th>Status</th>
-        <th>Export</th>
+        <th>#</th>
+        <th style="width:115px">Date</th>
+        <th>Params</th>
+        <th style="width:125px">Status</th>
       </tr>
     </thead>
     <tbody>
@@ -14,26 +13,87 @@
         itemsPerPage: reportRequests.pageSize,
         currentPage: reportRequests.pageNo,
         totalItems: reportRequests.totalRecords }; let i=index"
-        class="capitalize">
+        class="capitalize {{item.status}}">
         <td>{{i + 1}}</td>
-        <td>{{item.date | date}}</td>
-        <td><span>{{item.reportParams.reportName}}</span>
-            <span *ngIf="item.reportParams.name"><br>Name: {{item.reportParams.name}}; Code: {{item.reportParams.code}}</span>
-           <span *ngIf= "item.reportParams.supervisor"><br>Supervisor: {{item.reportParams.supervisorName}}</span>
+        <td>
+          <span *ngIf="item.reportParams.dates">
+            {{item.reportParams.dates.from| date: 'dd-MM-yyyy'}}</span>
+          <br>
+          <span class="sub-text">{{item.date | date: 'HH:mm dd-MM-yyyy'}}</span>
+        </td>
+        <td>
+          <div class="params">
+            <ng-container *ngIf="item.reportParams.employee">
+              <span *ngIf="item.reportParams.employee.name" class="badge-holder">
+                Name <span class="badge badge-primary">{{item.reportParams.employee.name}}</span>
+              </span>
+              <span *ngIf="item.reportParams.employee.code" class="badge-holder">
+                Code<span class="badge badge-primary"> {{item.reportParams.employee.code}}</span>
+              </span>
+              <span *ngIf="item.reportParams.employee.supervisor" class="badge-holder">
+                Supervisor<span class="badge badge-primary">{{item.reportParams.employee.supervisor.name}}</span>
+              </span>
+              <span *ngIf="item.reportParams.employee.departments" class="badge-holder">
+                Departments<span class="badge badge-primary" *ngFor="let department of item.reportParams.employee.departments">{{department.name}}</span>
+              </span>
+              <span *ngIf="item.reportParams.employee.designations" class="badge-holder">
+                Designations<span class="badge badge-primary" *ngFor="let designation of item.reportParams.employee.designations">{{designation.name}}</span>
+              </span>
+            </ng-container>
+            <span class="badge-holder" *ngIf="item.reportParams.shiftType">
+              Shifts<span class="badge badge-primary" *ngFor="let shiftType of item.reportParams.shiftType">{{shiftType.name}}</span>
+            </span>
+            <ng-container *ngIf="item.reportParams.attendance">
+              <span class="badge-holder" *ngIf="item.reportParams.attendance.status">
+                Attendance<span class="badge badge-primary" *ngFor="let status of item.reportParams.attendance.status">{{status.name}}</span>
+              </span>
+
+              <span class="badge-holder" *ngIf="item.reportParams.attendance.clocked">
+                Clocked
+                <span class="badge badge-primary" *ngFor="let status of item.reportParams.attendance.clocked.status">{{status.name}}</span>
+                <ng-container *ngIf="item.reportParams.attendance.clocked.hours">
+                  <span class="badge badge-primary" *ngIf="item.reportParams.attendance.clocked.hours.greaterThan">
+                    &gt;{{item.reportParams.attendance.clocked.hours.greaterThan}} hrs </span>
+                  <span class="badge badge-primary" *ngIf="item.reportParams.attendance.clocked.hours.greaterThan">
+                    &lt;{{item.reportParams.attendance.clocked.hours.lessThan}} hrs </span>
+                </ng-container>
+              </span>
+
+              <span class="badge-holder" *ngIf="item.reportParams.attendance.checkIn">
+                Check In
+                <span class="badge badge-primary" *ngFor="let status of item.reportParams.attendance.checkIn.status">{{status.name}}</span>
+                <ng-container *ngIf="item.reportParams.attendance.clocked.hours">
+                  <span class="badge badge-primary" *ngIf="item.reportParams.attendance.checkIn.before">
+                    before: {{item.reportParams.attendance.checkIn.before}} </span>
+                  <span class="badge badge-primary" *ngIf="item.reportParams.attendance.checkIn.after">
+                    after: {{item.reportParams.attendance.checkIn.after}}</span>
+                </ng-container>
+              </span>
+
+              <span class="badge-holder" *ngIf="item.reportParams.attendance.checkOut">
+                Check Out
+                <span class="badge badge-primary" *ngFor="let status of item.reportParams.attendance.checkOut.status">{{status.name}}</span>
+                <ng-container *ngIf="item.reportParams.attendance.clocked.hours">
+                  <span class="badge badge-primary" *ngIf="item.reportParams.attendance.checkOut.before">
+                    before: {{item.reportParams.attendance.checkOut.before}} </span>
+                  <span class="badge badge-primary" *ngIf="item.reportParams.attendance.checkOut.after">
+                    after: {{item.reportParams.attendance.checkOut.after}}</span>
+                </ng-container>
+              </span>
+            </ng-container>
+          </div>
         </td>
         <td>
           <span *ngIf="item.status === 'new'">Requested {{item.agoTime}} ago</span>
           <span *ngIf="item.status === 'in-progress'">Started generating {{item.agoTime}} ago</span>
-          <span *ngIf="item.status === 'ready'">Available</span>
+          <span *ngIf="item.status === 'ready'">
+            <span *ngIf="item.url" class="glyphicon glyphicon-download-alt pointer" (click)="download(item.url, item.type)"></span>
+          </span>
           <span *ngIf="item.status === 'errored'">Failed to Generate</span>
-        </td>
-        <td *ngIf="item.url">
-          <span class="glyphicon glyphicon-download-alt pointer" (click)="download(item.url, item.type)"></span>
         </td>
       </tr>
     </tbody>
   </table>
-
 </div>
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
   <div class="custom_pagination">

@@ -5,12 +5,9 @@ import { Page } from '../../../common/contracts/page';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common'
 import { ToastyService } from 'ng2-toasty';
+import { ReportType } from '../../../models';
 
-class ReportType {
-  type: String;
-  name: String
-  provider: String
-}
+
 @Component({
   selector: 'aqua-reports',
   templateUrl: './reports.component.html',
@@ -18,58 +15,16 @@ class ReportType {
 })
 export class ReportsComponent implements OnInit {
 
-  showFilters = true;
+  showFilters = false;
   fields: string[] = [];
-  reportTypes: ReportType[] = [{
-    type: 'daily-attendance',
-    name: 'Daily Attendance',
-    provider: 'ams'
-  }, {
-    type: 'monthly-attendance',
-    name: 'Monthly Attendance (summary)',
-    provider: 'ams'
-  }, {
-    type: 'attendance-details',
-    name: 'Monthly Attendance (detailed)',
-    provider: 'ams'
-  }, {
-    type: 'form-25',
-    name: 'Form 25',
-    provider: 'ams'
-  }, {
-    type: 'daily-extra-hours-after-shift-end',
-    name: 'Daily Extra Hours (after shift)',
-    provider: 'ams'
-  }, {
-    type: 'daily-extra-hours-after-shift-hours',
-    name: 'Daily Extra Hours (net)',
-    provider: 'ams'
-  }, {
-    type: 'monthly-extra-hours-after-shift-end',
-    name: 'Monthly Extra Hours (after shift)',
-    provider: 'ams'
-  }, {
-    type: 'monthly-extra-hours-after-shift-hours',
-    name: 'Monthly Extra Hours (net)',
-    provider: 'ams'
-  }, {
-    type: 'monthly-late-check-in',
-    name: 'Late Check-in (monthly)',
-    provider: 'ams'
-  }, {
-    type: 'monthly-early-check-out',
-    name: 'Early Check-out (monthly)',
-    provider: 'ams'
-  }, {
-    type: 'employees-details',
-    name: 'Employee Details',
-    provider: 'ems'
-  }];
+  reportTypes: ReportType[] = [];
 
   reports: Page<ReportRequest>;
 
   selectedType: String;
   selected: ReportType;
+
+  isCreating = false;
 
   filterFields = [
     'name',
@@ -88,12 +43,14 @@ export class ReportsComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private toastyService: ToastyService,
-    amsReportRequestService: AmsReportRequestService,
+    private amsReportRequest: AmsReportRequestService,
     location: Location,
   ) {
 
+    this.reportTypes = amsReportRequest.reportTypes;
+
     this.reports = new Page({
-      api: amsReportRequestService.reportRequests,
+      api: amsReportRequest.reportRequests,
       location: location,
       filters: [{
         field: 'type',
@@ -116,6 +73,7 @@ export class ReportsComponent implements OnInit {
   onSelection(type) {
     if (!type) {
       this.filterFields = [];
+      this.showFilters = false;
       return;
     }
     this.selected = this.reportTypes.find(item => item.type === type)
@@ -130,11 +88,14 @@ export class ReportsComponent implements OnInit {
           'departments',
           'userTypes',
           'contractors',
+          'supervisor',
+
           'shiftTypes',
-          'shiftCount',
           'attendanceStates',
-          'checkInStates',
-          'checkOutStates'
+
+          'clocked',
+          'checkIn',
+          'checkOut',
         ];
         break;
       case 'monthly-attendance':
@@ -144,6 +105,7 @@ export class ReportsComponent implements OnInit {
           'code',
           'designations',
           'departments',
+          'supervisor',
           'userTypes',
           'contractors'
         ];
@@ -151,13 +113,13 @@ export class ReportsComponent implements OnInit {
 
     }
 
+    this.showFilters = true;
     this.getReportLists();
-
 
   }
 
   getReportLists() {
-    this.reports.filters.properties['type']['value'] = this.selected ? this.selected.type : null;
+    this.reports.filters.properties['type'] = this.selected ? this.selected.type : null;
     if (this.selected) {
       this.reports.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
     }
@@ -166,7 +128,24 @@ export class ReportsComponent implements OnInit {
   reset() {
 
   }
-  applyFilters($event) {
+  createReport(params) {
 
+    const reportRequest = new ReportRequest();
+
+    reportRequest.type = this.selected.type;
+    reportRequest.provider = this.selected.provider;
+    reportRequest.name = this.selected.name;
+
+    reportRequest.reportParams = params;
+    this.isCreating = true;
+    this.amsReportRequest.reportRequests
+      .create(reportRequest)
+      .then(response => {
+        this.isCreating = false;
+        this.getReportLists();
+      })
+      .catch(err => {
+        this.isCreating = false;
+      });
   }
 }

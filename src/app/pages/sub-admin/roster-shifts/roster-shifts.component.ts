@@ -36,6 +36,15 @@ export class RosterShiftsComponent implements OnInit {
   isUpload = false;
   isFilter: boolean;
 
+  filterFields = [
+    'name',
+    'code',
+    'designations',
+    'departments',
+    'contractors',
+    'shiftTypes',
+  ]
+
   constructor(
     public activatedRoute: ActivatedRoute,
     private location: Location,
@@ -65,6 +74,12 @@ export class RosterShiftsComponent implements OnInit {
         field: 'code',
         value: this.activatedRoute.queryParams['value']['code']
       }, {
+        field: 'contractors',
+        value: this.activatedRoute.queryParams['value']['contractors']
+      }, {
+        field: 'departments',
+        value: this.activatedRoute.queryParams['value']['departments']
+      }, {
         field: 'designation',
         value: this.activatedRoute.queryParams['value']['designation']
       }, {
@@ -87,11 +102,16 @@ export class RosterShiftsComponent implements OnInit {
       this.toastyService.error({ title: 'Error', msg: err })
     });
   }
-  applyFilters($event) {
-    this.effectiveShifts.filters.properties['shiftType']['value'] = $event.shiftType;
-    this.effectiveShifts.filters.properties['name']['value'] = $event.employeeName;
-    this.effectiveShifts.filters.properties['code']['value'] = $event.employeeCode;
-    this.effectiveShifts.filters.properties['tagIds']['value'] = $event.tagIds;
+  applyFilters(values) {
+
+    const filters = this.effectiveShifts.filters.properties;
+
+    filters['name']['value'] = values.employee.name;
+    filters['code']['value'] = values.employee.code;
+    filters['departments']['value'] = values.employee.departments.map(item => item.name);
+    filters['designation']['value'] = values.employee.designations.map(item => item.name);
+    filters['contractors']['value'] = values.employee.contractors.map(item => item.name);
+    filters['shiftType']['value'] = values.shiftType.map(item => item.id);
     this.getEffectiveShift(this.date)
   }
 
@@ -145,7 +165,7 @@ export class RosterShiftsComponent implements OnInit {
     $('#weekSelector').datepicker('setDate', moment(this.activatedRoute.queryParams['value']['fromDate']).startOf('week').toDate());
   }
 
-  createDaySelector(){
+  createDaySelector() {
 
     $('#daySelector').datepicker({
       format: 'dd/mm/yyyy',
@@ -230,12 +250,12 @@ export class RosterShiftsComponent implements OnInit {
     return this.amsShiftService.shiftColour(shiftType)
   }
 
-  getData($event){
+  getData($event) {
     this.date = $event;
     this.getEffectiveShift(this.date);
   }
 
-  getEmployeeStatus($event){
+  getEmployeeStatus($event) {
     this.toggleDynamicShift($event)
   }
 

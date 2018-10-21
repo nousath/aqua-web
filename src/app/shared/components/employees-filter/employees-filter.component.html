@@ -1,82 +1,129 @@
 <!-- <label class="section">Filters</label> -->
 <md-card class="filters">
 
-    <div class="flex-row  four">
-        <div class="form-group" *ngIf="show.date">
-            <label>Date <span class="required">*</span></label>
-            <input class="form-control calendar no-spin" type="date" required [(ngModel)]="fromDate">
-        </div>
-
-        <div class="form-group" *ngIf="show.month">
-            <label>Month<span class="required">*</span></label>
-            <input class="form-control calendar no-spin" type="month" required [(ngModel)]="fromDate">
-        </div>
-        <div class="form-group" *ngIf="show.name">
-            <label for="email">Name</label>
-            <input [maxlength]="validatorService.textLength" type="text" class="form-control tags" [(ngModel)]="selectedEmployeeName" name="Name">
-        </div>
-        <div class="form-group" *ngIf="show.code">
-            <label for="pwd">Code</label>
-
-            <input [maxlength]="validatorService.textLength" type="text" class="form-control tags" [(ngModel)]="selectedEmployeeCode" name="Code">
-        </div>
-
-        <div class="form-group" *ngIf="show.userTypes">
-            <label>UserType</label>
-            <angular2-multiselect [data]="userTypeList" class="form-control tags" [(ngModel)]="selectedUsertype" [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"
-                [ngModelOptions]="{standalone: true}"></angular2-multiselect>
-        </div>
-        <div class="form-group" *ngIf="designationList.length >1 && show.designations">
-            <label>Designation</label>
-            <angular2-multiselect [data]="designationList" class="form-control tags" [(ngModel)]="selectedDesignation" [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"
-                [ngModelOptions]="{standalone: true}"></angular2-multiselect>
-        </div>
-        <div class="form-group" *ngIf="departmentList.length >1 && show.departments">
-            <label>Department</label>
-            <angular2-multiselect [data]="departmentList" class="form-control tags" [(ngModel)]="selectedDepartment" [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"
-                [ngModelOptions]="{standalone: true}"></angular2-multiselect>
-        </div>
-        <div class="form-group" *ngIf="contractorList.length && show.contractors">
-            <label>Contractor</label>
-            <angular2-multiselect [data]="contractorList" class="form-control tags" [(ngModel)]="selectedContractor" [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"
-                [ngModelOptions]="{standalone: true}"></angular2-multiselect>
-        </div>
-        <!-- </div> -->
-        <!-- <label class="section">Attendance Filters</label>
-<div class="flex-row five"> -->
-        <div class="form-group" *ngIf="shiftTypesList.length >1 && show.shiftTypes">
-            <label for="pwd">Shift</label>
-            <angular2-multiselect [data]="shiftTypesList" class="form-control tags" [(ngModel)]="selectedShift" [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"
-                [ngModelOptions]="{standalone: true}"></angular2-multiselect>
-        </div>
-        <div class="form-group" *ngIf="!hidden.attendanceStatus && show.attendanceStates">
-            <label>Attendance Status</label>
-            <angular2-multiselect [data]="statusList" class="form-control tags" [(ngModel)]="selectedStatus" [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"
-                [ngModelOptions]="{standalone: true}"></angular2-multiselect>
-        </div>
-        <div class="form-group" *ngIf="!hidden.attendanceStatus && show.shiftCount">
-            <label>Shift Hours</label>
-            <angular2-multiselect [data]="hoursList" class="form-control tags" [(ngModel)]="selectedHours" [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"
-                [ngModelOptions]="{standalone: true}"></angular2-multiselect>
-        </div>
-        <div class="form-group" *ngIf="!hidden.attendanceStatus && show.checkInStates">
-            <label>Check In Status</label>
-            <angular2-multiselect [data]="checkInStatusList" class="form-control tags" [(ngModel)]="selectedCheckInStatus" [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"
-                [ngModelOptions]="{standalone: true}"></angular2-multiselect>
-        </div>
-        <div class="form-group" *ngIf="!hidden.attendanceStatus && showCheckOutStatus && show.checkOutStates">
-            <label>Check Out Status</label>
-            <angular2-multiselect [data]="checkOutStatusList" class="form-control tags" [(ngModel)]="selectedCheckOutStatus" [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
-                (onDeSelectAll)="onDeSelectAll($event)" [ngModelOptions]="{standalone: true}"></angular2-multiselect>
-        </div>
+  <div class="flex-row three">
+    <div class="form-group" *ngIf="show.date">
+      <label>Date <span class="required">*</span></label>
+      <input class="form-control calendar no-spin" type="date" required [(ngModel)]="fromDate">
     </div>
-    <md-card-footer>
-        <div class="flex-row">
-            <div class="spacer"></div>
-            <div class="form-group">
-                <button md-button mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()">Reset</button>
-                <button md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="apply()">Apply</button>
-            </div>
-        </div>
-    </md-card-footer>
+
+    <div class="form-group" *ngIf="show.month">
+      <label>Month<span class="required">*</span></label>
+      <input class="form-control calendar no-spin" type="month" required [(ngModel)]="fromDate">
+    </div>
+    <div class="form-group" *ngIf="show.name">
+      <label for="email">Name</label>
+      <input [maxlength]="validatorService.textLength" type="text" class="form-control" [(ngModel)]="selectedEmployeeName"
+        name="Name">
+    </div>
+    <div class="form-group" *ngIf="show.code">
+      <label for="pwd">Code</label>
+      <input [maxlength]="validatorService.textLength" type="text" class="form-control" [(ngModel)]="selectedEmployeeCode"
+        name="Code">
+    </div>
+    <div class="form-group" *ngIf="show.supervisor">
+      <label for="name">Team</label>
+      <!-- <input class="form-control" ngui-auto-complete [min-chars]="1" placeholder="Supervisor search" [(ngModel)]="selectedSupervisor"
+        (valueChanged)="onSelectSup($event)" [source]="empSource.bind(this)" [value-formatter]="empFormatter"
+        [list-formatter]="empListFormatter" /> -->
+    </div>
+    <div class="form-group" *ngIf="show.userTypes">
+      <label>User Type</label>
+      <angular2-multiselect [data]="userTypeList" class="form-control" [(ngModel)]="selectedUserType" [settings]="dropdownSettings"
+        (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+        (onDeSelectAll)="onDeSelectAll($event)" [ngModelOptions]="{standalone: true}"></angular2-multiselect>
+    </div>
+    <div class="form-group" *ngIf="designationList.length >1 && show.designations">
+      <label>Designation</label>
+      <angular2-multiselect [data]="designationList" class="form-control" [(ngModel)]="selectedDesignation" [settings]="dropdownSettings"
+        (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+        (onDeSelectAll)="onDeSelectAll($event)" [ngModelOptions]="{standalone: true}"></angular2-multiselect>
+    </div>
+    <div class="form-group" *ngIf="departmentList.length >1 && show.departments">
+      <label>Department</label>
+      <angular2-multiselect [data]="departmentList" class="form-control" [(ngModel)]="selectedDepartment" [settings]="dropdownSettings"
+        (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+        (onDeSelectAll)="onDeSelectAll($event)" [ngModelOptions]="{standalone: true}"></angular2-multiselect>
+    </div>
+    <div class="form-group" *ngIf="contractorList.length && show.contractors">
+      <label>Contractor</label>
+      <angular2-multiselect [data]="contractorList" class="form-control" [(ngModel)]="selectedContractor" [settings]="dropdownSettings"
+        (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+        (onDeSelectAll)="onDeSelectAll($event)" [ngModelOptions]="{standalone: true}"></angular2-multiselect>
+    </div>
+    <!-- </div> -->
+    <!-- <label class="section">Attendance Filters</label>
+<div class="flex-row five"> -->
+    <div class="form-group" *ngIf="shiftTypesList.length >1 && show.shiftTypes">
+      <label for="pwd">Shift</label>
+      <angular2-multiselect [data]="shiftTypesList" class="form-control" [(ngModel)]="selectedShiftType" [settings]="dropdownSettings"
+        (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+        (onDeSelectAll)="onDeSelectAll($event)" [ngModelOptions]="{standalone: true}"></angular2-multiselect>
+    </div>
+
+    <div class="form-group" *ngIf="show.attendanceStates">
+      <label>Attendance Status</label>
+      <angular2-multiselect [data]="attendanceStatusList" class="form-control" [(ngModel)]="selectedAttendanceStatus"
+        [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"
+        (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)" [ngModelOptions]="{standalone: true}"></angular2-multiselect>
+    </div>
+  </div>
+  <div class="flex-row three" *ngIf="show.clocked">
+    <div class="form-group">
+      <label>Clocked</label>
+      <angular2-multiselect [data]="clockedStatusList" class="form-control" [(ngModel)]="selectedClockedStatus"
+        [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"
+        (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)" [ngModelOptions]="{standalone: true}"></angular2-multiselect>
+    </div>
+    <div class="form-group">
+      <label for="email">More Than (hrs)</label>
+      <input type="number" class="form-control" [(ngModel)]="clockedGreaterThan">
+    </div>
+    <div class="form-group">
+      <label for="email">Less Than (hrs)</label>
+      <input type="number" class="form-control" [(ngModel)]="clockedLessThan">
+    </div>
+  </div>
+  <div class="flex-row three" *ngIf="show.checkIn">
+    <div class="form-group">
+      <label>Check In</label>
+      <angular2-multiselect [data]="checkInStatusList" class="form-control" [(ngModel)]="selectedCheckInStatus"
+        [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"
+        (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)" [ngModelOptions]="{standalone: true}"></angular2-multiselect>
+    </div>
+    <div class="form-group">
+      <label for="email">After</label>
+      <input type="time" class="form-control" [(ngModel)]="checkInAfter">
+    </div>
+    <div class="form-group">
+      <label for="email">Before</label>
+      <input type="time" class="form-control" [(ngModel)]="checkInBefore">
+    </div>
+  </div>
+  <div class="flex-row three" *ngIf="show.checkOut">
+    <div class="form-group">
+      <label>Check Out</label>
+      <angular2-multiselect [data]="checkOutStatusList" class="form-control" [(ngModel)]="selectedCheckOutStatus"
+        [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"
+        (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)" [ngModelOptions]="{standalone: true}"></angular2-multiselect>
+    </div>
+    <div class="form-group">
+      <label for="email">After</label>
+      <input type="time" class="form-control" [(ngModel)]="checkOutAfter">
+    </div>
+    <div class="form-group">
+      <label for="email">Before</label>
+      <input type="time" class="form-control" [(ngModel)]="checkOutBefore">
+    </div>
+
+  </div>
+  <md-card-footer>
+    <div class="flex-row">
+      <div class="spacer"></div>
+      <div class="form-group">
+        <button md-button mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()">Reset</button>
+        <button md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="apply()">Apply</button>
+      </div>
+    </div>
+  </md-card-footer>
 </md-card>
