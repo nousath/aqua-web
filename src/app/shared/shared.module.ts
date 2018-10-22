@@ -163,7 +163,7 @@ export const MaterialModules = [
     CommonModule,
     FormsModule,
     MaterialModules,
-
+    NguiAutoCompleteModule,
     Angulartics2Module.forChild(),
     ToastyModule.forRoot(),
     AgmCoreModule.forRoot({

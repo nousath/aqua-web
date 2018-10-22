@@ -23,9 +23,9 @@
     </div>
     <div class="form-group" *ngIf="show.supervisor">
       <label for="name">Team</label>
-      <!-- <input class="form-control" ngui-auto-complete [min-chars]="1" placeholder="Supervisor search" [(ngModel)]="selectedSupervisor"
+      <input class="form-control" ngui-auto-complete [min-chars]="1" placeholder="Supervisor search" [(ngModel)]="selectedSupervisor"
         (valueChanged)="onSelectSup($event)" [source]="empSource.bind(this)" [value-formatter]="empFormatter"
-        [list-formatter]="empListFormatter" /> -->
+        [list-formatter]="empListFormatter" /> 
     </div>
     <div class="form-group" *ngIf="show.userTypes">
       <label>User Type</label>

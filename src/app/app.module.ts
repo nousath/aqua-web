@@ -37,15 +37,14 @@ import { NavigationBarComponent } from './shared/components/navigation-bar/navig
     NavigationBarComponent,
     LeaveConfirmDialogComponent,
     LeaveReasonDialogComponent,
-    AddShiftDialogComponent,
-
+    AddShiftDialogComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
     SharedModule,
-    AppRoutingModule,
+    AppRoutingModule
   ],
   providers: [
     LoginGuard, UserGuard, AdminGuard, EmsDepartmentService
