@@ -320,119 +320,146 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
 
   apply() {
 
+    const params: any = {}
     const values: any = {}
     if (this.fromDate) {
-      values.dates = values.dates || {}
-      values.dates.from = this.fromDate
+      params.dates = params.dates || {}
+      params.dates.from = this.fromDate
+      values.fromDate = this.fromDate;
     }
 
     if (this.tillDate) {
-      values.dates = values.dates || {}
-      values.dates.till = this.tillDate
+      params.dates = params.dates || {}
+      params.dates.till = this.tillDate
+      values.tillDate = this.tillDate;
     }
 
     if (this.selectedEmployeeName) {
-      values.employee = values.employee || {}
-      values.employee.name = this.selectedEmployeeName
+      params.employee = params.employee || {}
+      params.employee.name = this.selectedEmployeeName
+      values.employeeName = this.selectedEmployeeName;
+
     }
 
     if (this.selectedEmployeeCode) {
-      values.employee = values.employee || {}
-      values.employee.code = this.selectedEmployeeCode
+      params.employee = params.employee || {}
+      params.employee.code = this.selectedEmployeeCode
+      values.employeeCode = this.selectedEmployeeCode;
     }
 
     if (this.selectedSupervisor) {
-      values.employee = values.employee || {}
-      values.employee.supervisor = {
+      params.employee = params.employee || {}
+      params.employee.supervisor = {
         id: this.selectedSupervisor.id,
         code: this.selectedSupervisor.code,
         name: this.selectedSupervisor.name
       }
+
+      values.supervisorId = this.selectedSupervisor.id;
     }
 
     if (this.selectedContractor && this.selectedContractor.length) {
-      values.employee = values.employee || {}
-      values.employee.contractors = this.selectedContractor.map(item => ({ id: item.id, name: item.itemName }))
+      params.employee = params.employee || {}
+      params.employee.contractors = this.selectedContractor.map(item => ({ id: item.id, name: item.itemName }))
+      values.contractors = this.selectedContractor.map(item => item.id)
     }
 
     if (this.selectedUserType && this.selectedUserType.length) {
-      values.employee = values.employee || {}
-      values.employee.userTypes = this.selectedUserType.map(item => ({ id: item.id, name: item.itemName }))
+      params.employee = params.employee || {}
+      params.employee.userTypes = this.selectedUserType.map(item => ({ id: item.id, name: item.itemName }))
+      values.userTypeIds = this.selectedUserType.map(item => item.id)
     }
 
     if (this.selectedDepartment && this.selectedDepartment.length) {
-      values.employee = values.employee || {}
-      values.employee.departments = this.selectedDepartment.map(item => ({ id: item.id, name: item.itemName }))
+      params.employee = params.employee || {}
+      params.employee.departments = this.selectedDepartment.map(item => ({ id: item.id, name: item.itemName }))
+      values.departmentIds = this.selectedDepartment.map(item => item.id)
+      values.departmentNames = this.selectedDepartment.map(item => item.itemName)
     }
 
     if (this.selectedDesignation && this.selectedDesignation.length) {
-      values.employee = values.employee || {}
-      values.employee.designations = this.selectedDesignation.map(item => ({ id: item.id, name: item.itemName }))
+      params.employee = params.employee || {}
+      params.employee.designations = this.selectedDesignation.map(item => ({ id: item.id, name: item.itemName }))
+      values.designationIds = this.selectedDesignation.map(item => item.id)
+      values.designationNames = this.selectedDesignation.map(item => item.itemName)
     }
 
     if (this.selectedShiftType && this.selectedShiftType.length) {
-      values.shiftType = this.selectedShiftType.map(item => ({ id: item.id, name: item.itemName }))
+      params.shiftType = this.selectedShiftType.map(item => ({ id: item.id, name: item.itemName }))
+      params.shiftTypes = params.shiftType
+      values.shiftTypeIds = this.selectedShiftType.map(item => item.id)
     }
 
     if (this.selectedAttendanceStatus && this.selectedAttendanceStatus.length) {
-      values.attendance = values.attendance || {}
-      values.attendance.status = this.selectedAttendanceStatus.map(item => ({ id: item.code, name: item.itemName }))
+      params.attendance = params.attendance || {}
+      params.attendance.states = this.selectedAttendanceStatus.map(item => ({ code: item.code, name: item.itemName }))
+      values.attendanceStates = this.selectedAttendanceStatus.map(item => item.code)
     }
 
     if (this.selectedCheckInStatus && this.selectedCheckInStatus.length) {
-      values.attendance = values.attendance || {}
-      values.attendance.checkIn = values.attendance.checkIn || {}
-      values.attendance.checkIn.status = this.selectedCheckInStatus.map(item => ({ id: item.code, name: item.itemName }))
+      params.attendance = params.attendance || {}
+      params.attendance.checkIn = params.attendance.checkIn || {}
+      params.attendance.checkIn.states = this.selectedCheckInStatus.map(item => ({ code: item.code, name: item.itemName }))
+      values.checkInStates = this.selectedCheckInStatus.map(item => item.code)
     }
 
     if (this.checkInBefore) {
-      values.attendance = values.attendance || {}
-      values.attendance.checkIn = values.attendance.checkIn || {}
-      values.attendance.checkIn.before = this.checkInBefore
+      params.attendance = params.attendance || {}
+      params.attendance.checkIn = params.attendance.checkIn || {}
+      params.attendance.checkIn.before = this.checkInBefore
+      values.checkInBefore = this.checkInBefore
     }
 
-    if (this.checkInBefore) {
-      values.attendance = values.attendance || {}
-      values.attendance.checkIn = values.attendance.checkIn || {}
-      values.attendance.checkIn.after = this.checkInAfter
+    if (this.checkInAfter) {
+      params.attendance = params.attendance || {}
+      params.attendance.checkIn = params.attendance.checkIn || {}
+      params.attendance.checkIn.after = this.checkInAfter
+      values.checkInAfter = this.checkInAfter
     }
 
     if (this.selectedCheckOutStatus && this.selectedCheckOutStatus.length) {
-      values.attendance = values.attendance || {}
-      values.attendance.checkOut = values.attendance.checkOut || {}
-      values.attendance.checkOut.status = this.selectedCheckOutStatus.map(item => ({ id: item.code, name: item.itemName }))
+      params.attendance = params.attendance || {}
+      params.attendance.checkOut = params.attendance.checkOut || {}
+      params.attendance.checkOut.states = this.selectedCheckOutStatus.map(item => ({ code: item.code, name: item.itemName }))
+      values.checkOutStates = this.selectedCheckOutStatus.map(item => item.code)
     }
 
     if (this.checkOutBefore) {
-      values.attendance = values.attendance || {}
-      values.attendance.checkOut = values.attendance.checkOut || {}
-      values.attendance.checkOut.before = this.checkOutBefore
+      params.attendance = params.attendance || {}
+      params.attendance.checkOut = params.attendance.checkOut || {}
+      params.attendance.checkOut.before = this.checkOutBefore
+      values.checkOutBefore = this.checkOutBefore
     }
 
-    if (this.checkOutBefore) {
-      values.attendance = values.attendance || {}
-      values.attendance.checkOut = values.attendance.checkOut || {}
-      values.attendance.checkOut.after = this.checkOutAfter
+    if (this.checkOutAfter) {
+      params.attendance = params.attendance || {}
+      params.attendance.checkOut = params.attendance.checkOut || {}
+      params.attendance.checkOut.after = this.checkOutAfter
+      values.checkOutAfter = this.checkOutAfter
     }
 
     if (this.selectedClockedStatus && this.selectedClockedStatus.length) {
-      values.attendance = values.attendance || {}
-      values.attendance.clocked = values.attendance.clocked || {}
-      values.attendance.clocked.status = this.selectedClockedStatus.map(item => ({ id: item.code, name: item.itemName }))
+      params.attendance = params.attendance || {}
+      params.attendance.clocked = params.attendance.clocked || {}
+      params.attendance.clocked.states = this.selectedClockedStatus.map(item => ({ code: item.code, name: item.itemName }))
+      values.clockedStates = this.selectedClockedStatus.map(item => item.code)
+
     }
 
     if (this.clockedGreaterThan) {
-      values.attendance = values.attendance || {}
-      values.attendance.clocked = values.attendance.clocked || {}
-      values.attendance.clocked.hours = values.attendance.clocked.hours || {}
-      values.attendance.clocked.hours.greaterThan = this.clockedGreaterThan
+      params.attendance = params.attendance || {}
+      params.attendance.clocked = params.attendance.clocked || {}
+      params.attendance.clocked.hours = params.attendance.clocked.hours || {}
+      params.attendance.clocked.hours.greaterThan = this.clockedGreaterThan
+      values.clockedGreaterThan = this.clockedGreaterThan
     }
 
     if (this.clockedLessThan) {
-      values.attendance = values.attendance || {}
-      values.attendance.clocked = values.attendance.clocked || {}
-      values.attendance.clocked.hours = values.attendance.clocked.hours || {}
-      values.attendance.clocked.hours.lessThan = this.clockedLessThan
+      params.attendance = params.attendance || {}
+      params.attendance.clocked = params.attendance.clocked || {}
+      params.attendance.clocked.hours = params.attendance.clocked.hours || {}
+      params.attendance.clocked.hours.lessThan = this.clockedLessThan
+      values.clockedLessThan = this.clockedLessThan
     }
 
     // this.selectedUserType.forEach(item => {
@@ -448,6 +475,9 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
     //   });
     // })
 
-    this.onChange.emit(values);
+    this.onChange.emit({
+      values: values,
+      params: params
+    });
   }
 }

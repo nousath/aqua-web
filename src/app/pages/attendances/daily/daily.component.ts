@@ -55,7 +55,6 @@ export class DailyComponent {
     'supervisor',
     'shiftTypes',
     'attendanceStates',
-
     'clocked',
     'checkIn',
     'checkOut',
@@ -78,43 +77,47 @@ export class DailyComponent {
     this.dailyAttendnace = new Page({
       api: amsAttendanceService.dailyAttendances,
       location: location,
-      filters: ['ofDate', 'name', 'code', 'designations', 'departments', 'tagIds',
+      filters: ['ofDate', 'name', 'code', 'designations', 'departments', 'supervisorId', 'contractors', 'userTypes', 'tagIds',
         'status', 'attendance-status', 'shiftType-id', 'byShiftEnd', 'shiftTypeId', 'byShiftLength',
-        'checkInStatus', 'checkIn-status', 'checkIn-after', 'checkIn-before',
-        'checkOutStatus', 'checkOut-status', 'checkOut-after', 'checkOut-before',
-        'hours', 'clocked-status', 'clocked-gt', 'clocked-lt']
+        'checkInStatus', 'checkIn-status', 'checkInAfter', 'checkInBefore',
+        'checkOutStatus', 'checkOut-status', 'checkOutAfter', 'checkOutBefore',
+        'hours', 'clocked-status', 'clockedGt', 'clockedLt']
     });
 
   }
 
-  applyFilters(values) {
+  applyFilters(result) {
     const filters = this.dailyAttendnace.filters.properties;
 
-    filters['name']['value'] = values.employee.name || null;
-    filters['code']['value'] = values.employee.code || null;
-    filters['departments']['value'] = values.employee.departments.map(item => item.name) || null;
-    filters['designations']['value'] = values.employee.designations.map(item => item.name) || null;
-    filters['tagIds']['value'] = values.employee.tags.map(item => item.id) || null;
+    const values = result.values;
 
-    filters['shiftTypeId']['value'] = values.shiftType.map(item => item.id) || null;
+    filters['name']['value'] = values.employeeName;
+    filters['code']['value'] = values.employeeCode;
+    filters['departments']['value'] = values.departmentNames;
+    filters['designations']['value'] = values.designationNames;
+    filters['supervisorId']['value'] = values.supervisorId;
+    filters['tagIds']['value'] = values.tagIds;
+    filters['contractors']['value'] = values.contractors;
+    filters['userTypes']['value'] = values.userTypeIds;
+    filters['shiftTypeId']['value'] = values.shiftTypeIds;
     // filters['shiftType-id']['value'] = values.shiftType.map(item => item.id) || null;
 
-    filters['status']['value'] = values.attendance.status.map(item => item.id) || null;
+    filters['status']['value'] = values.attendanceStates;
 
-    filters['checkInStatus']['value'] = values.attendance.checkIn.status.map(item => item.id) || null;
+    filters['checkInStatus']['value'] = values.checkInStates;
     // filters['checkIn-status']['value'] = values.attendance.checkIn.status.map(item => item.id) || null;
-    filters['checkIn-after']['value'] = values.attendance.checkIn.after || null;
-    filters['checkIn-before']['value'] = values.attendance.checkIn.before || null;
+    filters['checkInAfter']['value'] = values.checkInAfter;
+    filters['checkInBefore']['value'] = values.checkInBefore;
 
-    filters['checkOutStatus']['value'] = values.attendance.checkOut.status.map(item => item.id) || null;
+    filters['checkOutStatus']['value'] = values.checkOutStates;
     // filters['checkOut-status']['value'] = values.attendance.checkOut.status.map(item => item.id) || null;
-    filters['checkOut-after']['value'] = values.attendance.checkOut.after || null;
-    filters['checkOut-before']['value'] = values.attendance.checkOut.before || null;
+    filters['checkOutAfter']['value'] = values.checkOutAfter;
+    filters['checkOutBefore']['value'] = values.checkOutBefore;
 
-    filters['hours']['value'] = values.attendance.clocked.status.map(item => item.id) || null;
+    filters['hours']['value'] = values.clockedStates;
     // filters['clocked-status']['value'] = values.attendance.clocked.status.map(item => item.id) || null;
-    filters['clocked-gt']['value'] = values.attendance.clocked.hours.greaterThan || null;
-    filters['clocked-lt']['value'] = values.attendance.clocked.hours.lessThan || null;
+    filters['clockedGt']['value'] = values.clockedGreaterThan;
+    filters['clockedLt']['value'] = values.clockedLlessThan
 
     this.getAttendance();
   }
