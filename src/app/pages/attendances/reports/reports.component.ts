@@ -128,7 +128,7 @@ export class ReportsComponent implements OnInit {
   reset() {
 
   }
-  createReport(params) {
+  createReport(result) {
 
     const reportRequest = new ReportRequest();
 
@@ -136,7 +136,7 @@ export class ReportsComponent implements OnInit {
     reportRequest.provider = this.selected.provider;
     reportRequest.name = this.selected.name;
 
-    reportRequest.reportParams = params;
+    reportRequest.reportParams = result.params;
     this.isCreating = true;
     this.amsReportRequest.reportRequests
       .create(reportRequest)

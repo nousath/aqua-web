@@ -33,6 +33,9 @@
               <span *ngIf="item.reportParams.employee.supervisor" class="badge-holder">
                 Supervisor<span class="badge badge-primary">{{item.reportParams.employee.supervisor.name}}</span>
               </span>
+              <span *ngIf="item.reportParams.employee.contractors" class="badge-holder">
+                  Contractors<span class="badge badge-primary" *ngFor="let contractor of item.reportParams.employee.contractors">{{contractor.name}}</span>
+                </span>
               <span *ngIf="item.reportParams.employee.departments" class="badge-holder">
                 Departments<span class="badge badge-primary" *ngFor="let department of item.reportParams.employee.departments">{{department.name}}</span>
               </span>

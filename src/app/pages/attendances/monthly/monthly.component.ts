@@ -29,6 +29,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
     'name',
     'code',
     'designations',
+    'supervisor',
     'departments',
     'userTypes',
     'contractors'
@@ -45,35 +46,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
 
     this.monthlyAttendnace = new Page({
       api: amsAttendanceService.monthlyAttendances,
-      filters: [{
-        field: 'ofDate',
-        value: null
-      }, {
-        field: 'name',
-        value: null
-      }, {
-        field: 'code',
-        value: null
-      }, {
-        field: 'shiftType',
-        value: null
-      }, {
-        field: 'byShiftEnd',
-        value: false
-      },
-      {
-        field: 'byShiftLength',
-        value: false
-      }, {
-        field: 'tagIds',
-        value: ''
-      }, {
-        field: 'designations',
-        value: null
-      }, {
-        field: 'departments',
-        value: null
-      }]
+      filters: ['ofDate', 'name', 'code', 'designations', 'departments', 'supervisorId', 'userTypes', 'tagIds', 'contractors']
     });
   }
 
@@ -93,9 +66,10 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
     filters['code']['value'] = values.employeeCode;
     filters['departments']['value'] = values.departmentNames;
     filters['designations']['value'] = values.designationNames;
-    // filters['tagIds']['value'] = values.employee.tags.map(item => item.id);
-
-    filters['shiftType']['value'] = values.shiftTypeIds;
+    filters['supervisorId']['value'] = values.supervisorId;
+    filters['userTypes']['value'] = values.userTypeIds;
+    filters['contractors']['value'] = values.contractors;
+    filters['tagIds']['value'] = values.tagIds;
 
     this.getAttendance();
   }
