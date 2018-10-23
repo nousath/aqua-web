@@ -126,6 +126,7 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
 
     if (this.fromDate) {
       this.show.checkOut = moment(this.fromDate).isBefore(new Date(), 'd');
+      this.show.clocked = moment(this.fromDate).isBefore(new Date(), 'd');
     }
 
   }
