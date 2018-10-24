@@ -27,17 +27,14 @@ export class ReportsComponent implements OnInit {
   isCreating = false;
 
   filterFields = [
+    'month',
     'name',
     'code',
     'designations',
     'departments',
+    'supervisor',
     'userTypes',
-    'contractors',
-    'shiftTypes',
-    'shiftCount',
-    'attendanceStates',
-    'checkInStates',
-    'checkOutStates'
+    'contractors'
   ]
 
   constructor(

@@ -65,7 +65,7 @@
               <span class="badge-holder" *ngIf="item.reportParams.attendance.checkIn">
                 Check In
                 <span class="badge badge-primary" *ngFor="let status of item.reportParams.attendance.checkIn.status">{{status.name}}</span>
-                <ng-container *ngIf="item.reportParams.attendance.clocked.hours">
+                <ng-container *ngIf="item.reportParams.attendance.clocked?.hours">
                   <span class="badge badge-primary" *ngIf="item.reportParams.attendance.checkIn.before">
                     before: {{item.reportParams.attendance.checkIn.before}} </span>
                   <span class="badge badge-primary" *ngIf="item.reportParams.attendance.checkIn.after">
