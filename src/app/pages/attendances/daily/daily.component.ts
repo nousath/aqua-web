@@ -117,7 +117,7 @@ export class DailyComponent {
     filters['hours']['value'] = values.clockedStates;
     // filters['clocked-status']['value'] = values.attendance.clocked.status.map(item => item.id) || null;
     filters['clockedGt']['value'] = values.clockedGreaterThan;
-    filters['clockedLt']['value'] = values.clockedLlessThan
+    filters['clockedLt']['value'] = values.clockedLessThan
 
     this.getAttendance();
   }

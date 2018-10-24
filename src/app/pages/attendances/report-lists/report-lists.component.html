@@ -54,7 +54,7 @@
               <span class="badge-holder" *ngIf="item.reportParams.attendance.clocked">
                 Clocked
                 <span class="badge badge-primary" *ngFor="let status of item.reportParams.attendance.clocked.status">{{status.name}}</span>
-                <ng-container *ngIf="item.reportParams.attendance.clocked.hours">
+                <ng-container *ngIf="item.reportParams.attendance.clocked?.hours">
                   <span class="badge badge-primary" *ngIf="item.reportParams.attendance.clocked.hours.greaterThan">
                     &gt;{{item.reportParams.attendance.clocked.hours.greaterThan}} hrs </span>
                   <span class="badge badge-primary" *ngIf="item.reportParams.attendance.clocked.hours.greaterThan">
@@ -76,7 +76,7 @@
               <span class="badge-holder" *ngIf="item.reportParams.attendance.checkOut">
                 Check Out
                 <span class="badge badge-primary" *ngFor="let status of item.reportParams.attendance.checkOut.status">{{status.name}}</span>
-                <ng-container *ngIf="item.reportParams.attendance.clocked.hours">
+                <ng-container *ngIf="item.reportParams.attendance.clocked?.hours">
                   <span class="badge badge-primary" *ngIf="item.reportParams.attendance.checkOut.before">
                     before: {{item.reportParams.attendance.checkOut.before}} </span>
                   <span class="badge badge-primary" *ngIf="item.reportParams.attendance.checkOut.after">
