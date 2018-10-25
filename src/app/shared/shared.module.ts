@@ -32,7 +32,7 @@ import {
 
 import { ValidatorService } from '../services/validator.service';
 import { LocalStorageService } from '../services/local-storage.service';
-import { TimePipe } from './time.pipe';
+import { TimePipe } from './pipes/time.pipe';
 import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
 import { AmsTagService } from '../services/ams/ams-tag.service';
 import { ShiftPickerComponent } from './components/shift-picker/shift-picker.component';
@@ -83,6 +83,7 @@ import { GetDateDialogComponent } from './components/get-date-dialog/get-date-di
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import { ExtendShiftDialogComponent } from './components/extend-shift-dialog/extend-shift-dialog.component';
 import { ShiftCountComponent } from './components/shift-count/shift-count.component';
+import { NamePipe } from './pipes/name.pipe';
 
 
 export const MaterialModules = [
@@ -131,7 +132,8 @@ export const MaterialModules = [
     BulkTimeLogsDialogComponent,
     GetDateDialogComponent,
     ExtendShiftDialogComponent,
-    ShiftCountComponent
+    ShiftCountComponent,
+    NamePipe
   ],
   providers: [
     EmsEmployeeService,
@@ -161,6 +163,7 @@ export const MaterialModules = [
     CommonModule,
     FormsModule,
     MaterialModules,
+    NguiAutoCompleteModule,
     Angulartics2Module.forChild(),
     ToastyModule.forRoot(),
     AgmCoreModule.forRoot({
@@ -182,7 +185,8 @@ export const MaterialModules = [
     ShiftPickerComponent,
     EmployeesFilterComponent,
     AddAttendanceLogsComponent,
-    ShiftCountComponent
+    ShiftCountComponent,
+    NamePipe
   ],
   entryComponents: [FileUploaderDialogComponent, BulkTimeLogsDialogComponent, GetDateDialogComponent, ExtendShiftDialogComponent],
 

@@ -41,7 +41,7 @@
 </div>
 
 <md-spinner class="custom_spinner" *ngIf="dailyAttendnace?.isLoading" mode="indeterminate"></md-spinner>
-<aqua-employees-filter *ngIf="isFilter" [fromDate]="ofDate" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter>
+<aqua-employees-filter *ngIf="isFilter" [fields]="filterFields" [fromDate]="ofDate" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter>
 
 <div class="row">
     <md-card class="card">

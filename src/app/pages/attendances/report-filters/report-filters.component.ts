@@ -8,7 +8,6 @@ import { AmsTagService } from '../../../services/ams/ams-tag.service';
 import { Page } from '../../../common/contracts/page';
 import { TagType } from '../../../models/tag';
 import { ToastyService } from 'ng2-toasty';
-import { Tags } from '../../../shared/components/employees-filter/employees-filter.component';
 
 @Component({
   selector: 'aqua-report-filters',
@@ -18,7 +17,6 @@ import { Tags } from '../../../shared/components/employees-filter/employees-filt
 export class ReportFiltersComponent implements OnInit, OnChanges {
   reportRequest: ReportRequest = new ReportRequest();
   tagTypes: Page<TagType>;
-  tags: Tags = new Tags();
 
   employee: Employee;
   supervisor: Employee;
@@ -58,7 +56,7 @@ export class ReportFiltersComponent implements OnInit, OnChanges {
     this.tagTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
   ngOnChanges() {
     if (this.type) {
       this.reportRequest.type = this.type;
@@ -126,22 +124,22 @@ export class ReportFiltersComponent implements OnInit, OnChanges {
   }
 
   onSubmit() {
-    const tags: string[] = [];
-    this.tags.selected.forEach((tag: any) => {
-      tags.push(tag.tagId)
-    })
-    this.reportRequest.reportParams.tagIds = tags;
-    this.isLoading = true;
-    this.amsReportRequest.reportRequests
-      .create(this.reportRequest)
-      .then(response => {
-        this.isLoading = false;
-        this.tags.reset();
-        this.submitted.next();
-      })
-      .catch(err => {
-        this.isLoading = false;
-        this.tags.reset()
-      });
+    // const tags: string[] = [];
+    // this.tags.selected.forEach((tag: any) => {
+    //   tags.push(tag.tagId)
+    // })
+    // this.reportRequest.reportParams.tagIds = tags;
+    // this.isLoading = true;
+    // this.amsReportRequest.reportRequests
+    //   .create(this.reportRequest)
+    //   .then(response => {
+    //     this.isLoading = false;
+    //     this.tags.reset();
+    //     this.submitted.next();
+    //   })
+    //   .catch(err => {
+    //     this.isLoading = false;
+    //     this.tags.reset()
+    //   });
   }
 }

@@ -1,30 +1,31 @@
 <div class="row page_header">
-    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <h5>
-            <b>Monthly Attendance</b>
-        </h5>
+  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+    <h5>
+      <b>Monthly Attendance</b>
+    </h5>
+  </div>
+  <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 controls-row">
+    <span class="spacer"></span>
+    <div class="input-group">
+      <span class="input-group-addon" id="basic-addon1">Month</span>
+      <input id="monthSelector" type="text" class="form-control input-sm calendar no-spin">
     </div>
-    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 controls-row">
-        <span class="spacer"></span>
-        <div class="input-group">
-            <span class="input-group-addon" id="basic-addon1">Month</span>
-            <input id="monthSelector" type="text" class="form-control input-sm calendar no-spin">
-        </div>
-        <button [disabled]="monthlyAttendnace?.isLoading" md-icon-button mdTooltip="Filters" [mdTooltipPosition]="'above'" (click)="isFilter = !isFilter">
-            <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
-        </button>
-        <button (click)="downloadlink()" md-icon-button>
-            <md-icon>cloud_download</md-icon>
-        </button>
+    <button [disabled]="monthlyAttendnace?.isLoading" md-icon-button mdTooltip="Filters" [mdTooltipPosition]="'above'"
+      (click)="isFilter = !isFilter">
+      <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
+    </button>
+    <button (click)="downloadlink()" md-icon-button>
+      <md-icon>cloud_download</md-icon>
+    </button>
 
-        <button (click)="regenerate()" [mdTooltipPosition]="'above'" mdTooltip="Regenerate" md-icon-button>
-            <md-icon>build</md-icon>
-        </button>
-        <!-- <button [disabled]="monthlyAttendnace?.isLoading || isDownloading || employee?.isProcessing" [mdMenuTriggerFor]="appMenu"
+    <button (click)="regenerate()" [mdTooltipPosition]="'above'" mdTooltip="Regenerate" md-icon-button>
+      <md-icon>build</md-icon>
+    </button>
+    <!-- <button [disabled]="monthlyAttendnace?.isLoading || isDownloading || employee?.isProcessing" [mdMenuTriggerFor]="appMenu"
                 md-icon-button>
                 <md-icon>cloud_download</md-icon>
             </button> -->
-        <!-- <md-menu #appMenu="mdMenu">
+    <!-- <md-menu #appMenu="mdMenu">
                 <button md-menu-item [matMenuTriggerFor]="appSubMenu1">Extra hours - after Shift end time</button>
                 <button md-menu-item [matMenuTriggerFor]="appSubMenu2">Extra hours - after Shift hours</button>
                 <button md-menu-item [matMenuTriggerFor]="appSubMenu3">Monthly Attendance</button>
@@ -41,62 +42,62 @@
                 <button md-menu-item (click)="download(false, false, 'Day Attendance')">Excel</button>
                 <button *ngIf="org ==='sh'" md-menu-item (click)="downloadPdf('attendance')">PDF</button>
             </md-menu> -->
-    </div>
+  </div>
 </div>
 <md-spinner class="custom_spinner" *ngIf="monthlyAttendnace?.isLoading" mode="indeterminate"></md-spinner>
-<aqua-employees-filter *ngIf="isFilter" [hidden]="{attendanceStatus: true}" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter>
+<aqua-employees-filter *ngIf="isFilter" [fields]="filterFields" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter>
 <div class="row">
-    <md-card class="card">
-        <div class="table-responsive full">
-            <table class="table table-condensed table-hover">
-                <thead class="primary_thead">
-                    <tr>
-                        <th>Name</th>
-                        <th class="tdWidth">Code</th>
-                        <th class="tdWidth">Shift</th>
-                        <th class="tdWidth">Present Days</th>
-                        <th class="tdWidth">Absent Days</th>
-                        <th class="tdWidth">Leave Balance</th>
-                        <!-- <th></th> -->
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of monthlyAttendnace.items | paginate: { id: 'foo',
+  <md-card class="card">
+    <div class="table-responsive full">
+      <table class="table table-condensed table-hover">
+        <thead class="primary_thead">
+          <tr>
+            <th>Name</th>
+            <th class="tdWidth">Code</th>
+            <th class="tdWidth">Shift</th>
+            <th class="tdWidth">Present Days</th>
+            <th class="tdWidth">Absent Days</th>
+            <th class="tdWidth">Leave Balance</th>
+            <!-- <th></th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of monthlyAttendnace.items | paginate: { id: 'foo',
                                                       itemsPerPage: monthlyAttendnace.pageSize,
                                                       currentPage: monthlyAttendnace.pageNo,
-                                                      totalItems: monthlyAttendnace.totalRecords };" class="capitalize">
-                        <td>
-                            <img *ngIf="item?.picUrl" class="img-circle profile_pic" alt="img" [src]="item?.picUrl" onError="this.src='/assets/images/blank.png'">
-                            <img *ngIf="!item?.picUrl" class="img-circle profile_pic" alt="img" src="assets/images/blank.png"> &nbsp;
-                            <a [routerLink]="[item.id]">{{item?.name || '--'}}</a>
-                        </td>
-                        <td class="tdWidth">{{item?.code || '--'}}</td>
-                        <td class="tdWidth">{{item?.shiftType?.name || '--'}}</td>
-                        <td class="tdWidth">{{item?.presentDays || '--'}}</td>
-                        <td class="tdWidth">{{item?.absentDays || '--'}}</td>
-                        <td class="tdWidth">{{item?.totalLeaveBalance | number:'1.0-2'}}</td>
-                    </tr>
-                </tbody>
-            </table>
+                                                      totalItems: monthlyAttendnace.totalRecords };"
+            class="capitalize">
+            <td>
+              <img *ngIf="item?.picUrl" class="img-circle profile_pic" alt="img" [src]="item?.picUrl" onError="this.src='/assets/images/blank.png'">
+              <img *ngIf="!item?.picUrl" class="img-circle profile_pic" alt="img" src="assets/images/blank.png"> &nbsp;
+              <a [routerLink]="[item.id]">{{item?.name || '--'}}</a>
+            </td>
+            <td class="tdWidth">{{item?.code || '--'}}</td>
+            <td class="tdWidth">{{item?.shiftType?.name || '--'}}</td>
+            <td class="tdWidth">{{item?.presentDays || '--'}}</td>
+            <td class="tdWidth">{{item?.absentDays || '--'}}</td>
+            <td class="tdWidth">{{item?.totalLeaveBalance | number:'1.0-2'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="mini">
+      <aqua-monthly-mobile-view [monthlyAttendance]="monthlyAttendnace.items"></aqua-monthly-mobile-view>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="custom_pagination">
+        <pagination-controls id="foo" (pageChange)="monthlyAttendnace.pageNo = $event;getAttendance();"></pagination-controls>
+        <label class="full">Total Records: {{monthlyAttendnace.totalRecords}}</label>
+        <div class="pageSize">
+          <label>Page Size:</label>
+          <select name="pageSize" [(ngModel)]="monthlyAttendnace.pageSize" (change)="monthlyAttendnace.pageNo = 1;getAttendance();">
+            <option value=10>10</option>
+            <option value=50>50</option>
+            <option value=100>100</option>
+            <option value=500>500</option>
+          </select>
         </div>
-        <div class="mini">
-            <aqua-monthly-mobile-view [monthlyAttendance]="monthlyAttendnace.items"></aqua-monthly-mobile-view>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="custom_pagination">
-                <pagination-controls id="foo" (pageChange)="monthlyAttendnace.pageNo = $event;getAttendance();"></pagination-controls>
-                <label class="full">Total Records: {{monthlyAttendnace.totalRecords}}</label>
-                <div class="pageSize">
-                    <label>Page Size:</label>
-                    <select name="pageSize" [(ngModel)]="monthlyAttendnace.pageSize" (change)="monthlyAttendnace.pageNo = 1;getAttendance();">
-                        <option value=10>10</option>
-                        <option value=50>50</option>
-                        <option value=100>100</option>
-                        <option value=500>500</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-    </md-card>
-
+      </div>
+    </div>
+  </md-card>
 </div>

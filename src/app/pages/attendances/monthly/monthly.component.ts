@@ -25,6 +25,16 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
   date: Date = null;
   showDatePicker = false;
 
+  filterFields = [
+    'name',
+    'code',
+    'designations',
+    'supervisor',
+    'departments',
+    'userTypes',
+    'contractors'
+  ]
+
   isDownloading = false;
 
 
@@ -36,38 +46,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
 
     this.monthlyAttendnace = new Page({
       api: amsAttendanceService.monthlyAttendances,
-      filters: [{
-        field: 'ofDate',
-        value: null
-      }, {
-        field: 'name',
-        value: null
-      }, {
-        field: 'code',
-        value: null
-      }, {
-        field: 'designation',
-        value: null
-      }, {
-        field: 'shiftType',
-        value: null
-      }, {
-        field: 'byShiftEnd',
-        value: false
-      },
-      {
-        field: 'byShiftLength',
-        value: false
-      }, {
-        field: 'tagIds',
-        value: ''
-      }, {
-        field: 'designations',
-        value: null
-      }, {
-        field: 'departments',
-        value: null
-      }]
+      filters: ['ofDate', 'name', 'code', 'designations', 'departments', 'supervisorId', 'userTypes', 'tagIds', 'contractors']
     });
   }
 
@@ -78,14 +57,20 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
     this.getAttendance();
   }
 
-  applyFilters($event) {
+  applyFilters(result) {
 
-    this.monthlyAttendnace.filters.properties['shiftType']['value'] = $event.shiftType;
-    this.monthlyAttendnace.filters.properties['name']['value'] = $event.employeeName;
-    this.monthlyAttendnace.filters.properties['code']['value'] = $event.employeeCode;
-    this.monthlyAttendnace.filters.properties['tagIds']['value'] = $event.tagIds;
-    this.monthlyAttendnace.filters.properties['departments']['value'] = $event.departments;
-    this.monthlyAttendnace.filters.properties['designations']['value'] = $event.designations;
+    const filters = this.monthlyAttendnace.filters.properties;
+
+    const values = result.values
+    filters['name']['value'] = values.employeeName;
+    filters['code']['value'] = values.employeeCode;
+    filters['departments']['value'] = values.departmentNames;
+    filters['designations']['value'] = values.designationNames;
+    filters['supervisorId']['value'] = values.supervisorId;
+    filters['userTypes']['value'] = values.userTypeIds;
+    filters['contractors']['value'] = values.contractors;
+    filters['tagIds']['value'] = values.tagIds;
+
     this.getAttendance();
   }
 

@@ -45,6 +45,22 @@ export class DailyComponent {
   // data: Attendance;
 
 
+  filterFields = [
+    'name',
+    'code',
+    'designations',
+    'departments',
+    'userTypes',
+    'contractors',
+    'supervisor',
+    'shiftTypes',
+    'attendanceStates',
+    'clocked',
+    'checkIn',
+    'checkOut',
+  ]
+
+
 
   attendances: Attendance[] = [];
 
@@ -61,65 +77,48 @@ export class DailyComponent {
     this.dailyAttendnace = new Page({
       api: amsAttendanceService.dailyAttendances,
       location: location,
-      filters: [{
-        field: 'ofDate',
-        value: null
-      }, {
-        field: 'name',
-        value: null
-      }, {
-        field: 'code',
-        value: null
-      }, {
-        field: 'shiftTypeId',
-        value: null
-      }, {
-        field: 'action',
-        value: null
-      }, {
-        field: 'status',
-        value: null
-      }, {
-        field: 'byShiftEnd',
-        value: false
-      }, {
-        field: 'byShiftLength',
-        value: false
-      }, {
-        field: 'designations',
-        value: null
-      }, {
-        field: 'departments',
-        value: null
-      }, {
-        field: 'tagIds',
-        value: ''
-      }, {
-        field: 'checkInStatus',
-        value: null
-      }, {
-        field: 'checkOutStatus',
-        value: null
-      }, {
-        field: 'hours',
-        value: null
-      }],
+      filters: ['ofDate', 'name', 'code', 'designations', 'departments', 'supervisorId', 'contractors', 'userTypes', 'tagIds',
+        'status', 'attendance-status', 'shiftType-id', 'byShiftEnd', 'shiftTypeId', 'byShiftLength',
+        'checkInStatus', 'checkIn-status', 'checkInAfter', 'checkInBefore',
+        'checkOutStatus', 'checkOut-status', 'checkOutAfter', 'checkOutBefore',
+        'hours', 'clocked-status', 'clockedGt', 'clockedLt']
     });
 
   }
 
-  applyFilters($event) {
-    this.dailyAttendnace.filters.properties['shiftTypeId']['value'] = $event.shiftType;
-    this.dailyAttendnace.filters.properties['name']['value'] = $event.employeeName;
-    this.dailyAttendnace.filters.properties['code']['value'] = $event.employeeCode;
-    this.dailyAttendnace.filters.properties['status']['value'] = $event.attendanceStatus;
-    this.dailyAttendnace.filters.properties['checkInStatus']['value'] = $event.attendanceCheckInStatus;
-    this.dailyAttendnace.filters.properties['checkOutStatus']['value'] = $event.attendanceCheckOutStatus;
-    this.dailyAttendnace.filters.properties['hours']['value'] = $event.attendanceHours;
-    this.dailyAttendnace.filters.properties['action']['value'] = $event.needsAction;
-    this.dailyAttendnace.filters.properties['tagIds']['value'] = $event.tagIds;
-    this.dailyAttendnace.filters.properties['departments']['value'] = $event.departments;
-    this.dailyAttendnace.filters.properties['designations']['value'] = $event.designations;
+  applyFilters(result) {
+    const filters = this.dailyAttendnace.filters.properties;
+
+    const values = result.values;
+
+    filters['name']['value'] = values.employeeName;
+    filters['code']['value'] = values.employeeCode;
+    filters['departments']['value'] = values.departmentNames;
+    filters['designations']['value'] = values.designationNames;
+    filters['supervisorId']['value'] = values.supervisorId;
+    filters['tagIds']['value'] = values.tagIds;
+    filters['contractors']['value'] = values.contractors;
+    filters['userTypes']['value'] = values.userTypeIds;
+    filters['shiftTypeId']['value'] = values.shiftTypeIds;
+    // filters['shiftType-id']['value'] = values.shiftType.map(item => item.id) || null;
+
+    filters['status']['value'] = values.attendanceStates;
+
+    filters['checkInStatus']['value'] = values.checkInStates;
+    // filters['checkIn-status']['value'] = values.attendance.checkIn.status.map(item => item.id) || null;
+    filters['checkInAfter']['value'] = values.checkInAfter;
+    filters['checkInBefore']['value'] = values.checkInBefore;
+
+    filters['checkOutStatus']['value'] = values.checkOutStates;
+    // filters['checkOut-status']['value'] = values.attendance.checkOut.status.map(item => item.id) || null;
+    filters['checkOutAfter']['value'] = values.checkOutAfter;
+    filters['checkOutBefore']['value'] = values.checkOutBefore;
+
+    filters['hours']['value'] = values.clockedStates;
+    // filters['clocked-status']['value'] = values.attendance.clocked.status.map(item => item.id) || null;
+    filters['clockedGt']['value'] = values.clockedGreaterThan;
+    filters['clockedLt']['value'] = values.clockedLessThan
+
     this.getAttendance();
   }
 
@@ -141,7 +140,6 @@ export class DailyComponent {
           if (!existingAttendance.checkIn || existingAttendance.checkIn > pageItem.checkIn) {
             existingAttendance.checkIn = pageItem.checkIn;
           }
-
 
           if (!existingAttendance.checkOut || existingAttendance.checkOut < pageItem.checkOut) {
             existingAttendance.checkOut = pageItem.checkOut;
