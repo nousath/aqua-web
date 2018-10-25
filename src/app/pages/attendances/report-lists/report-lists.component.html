@@ -110,11 +110,11 @@
 </div>
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
   <div class="custom_pagination">
-    <pagination-controls id="foo" (pageChange)="reportRequests.pageNo = $event;onClick();"></pagination-controls>
+    <pagination-controls id="foo" (pageChange)="reportRequests.pageNo = $event;"></pagination-controls>
     <label>Total Records: {{reportRequests.totalRecords}}</label>
     <div class="pageSize">
       <label>Page Size:</label>
-      <select name="pageSize" [(ngModel)]="reportRequests.pageSize" (change)="reportRequests.pageNo = 1;onClick();">
+      <select name="pageSize" [(ngModel)]="reportRequests.pageSize" (change)="reportRequests.pageNo = 1;">
         <option value=10>10</option>
         <option value=50>50</option>
         <option value=100>100</option>
@@ -122,4 +122,5 @@
       </select>
     </div>
   </div>
-</div>
+  </div>
+
