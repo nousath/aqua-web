@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { EmsEmployeeService } from '../../../services/ems';
 import { Employee } from '../../../models/employee';
 import { Page } from '../../../common/contracts/page';
@@ -23,14 +23,25 @@ import { FileUploaderDialogComponent } from '../../../shared/components/file-upl
   styleUrls: ['./employee-list.component.css']
 })
 export class EmployeeListComponent implements OnInit {
+  @Output()
+  data: EventEmitter<any> = new EventEmitter();
 
   employees: Page<EmsEmployee>
   employee: Model<EmsEmployee>
   statusFilter: string;
   uploader: FileUploader;
   isUpload = false;
+  isFilter = false;
   status;
-
+  filterFields = [
+    'name',
+    'code',
+    'designations',
+    'departments',
+    // 'supervisor',
+    'userTypes',
+    'contractors'
+  ]
 
   constructor(private emsEmployeeService: EmsEmployeeService,
     private toastyService: ToastyService,
@@ -75,16 +86,17 @@ export class EmployeeListComponent implements OnInit {
 
     this.employees = new Page({
       api: emsEmployeeService.employees,
-      filters: [{
-        field: 'name',
-        value: null
-      }, {
-        field: 'code',
-        value: null
-      }, {
-        field: 'status',
-        value: 'activate'
-      }]
+      filters: [
+      'ofDate',
+      'name',
+      'code',
+      'status',
+      'designations',
+      'departments',
+      // 'supervisor',
+      'userTypes',
+      'contractors',
+ ]
     });
 
     this.employee = new Model({
@@ -93,6 +105,27 @@ export class EmployeeListComponent implements OnInit {
     });
     this.fetchEmp();
   }
+
+  reset() {
+
+  }
+
+  applyFilters(result) {
+    const filters = this.employees.filters.properties;
+
+    const values = result.params;
+
+    filters['name']['value'] = values.employee.name;
+    filters['code']['value'] = values.employee.code;
+    filters['departments']['value'] = values.employee.departments ? values.employee.departments.map(item => item.id) : '';
+    filters['designations']['value'] = values.employee.designations ? values.employee.designations.map(item => item.code) : '';
+    // filters['supervisor']['value'] = values.employee.supervisor ? values.employee.supervisor.code : '';
+    filters['contractors']['value'] = values.employee.contractors ? values.employee.contractors.map(item => item.name) : '';
+    filters['userTypes']['value'] = values.employee.userTypes ? values.employee.userTypes.map(item => item.name) : '';
+    filters['status']['value'] = values.attendanceStates;
+    this.fetchEmp();
+  }
+
 
   fetchEmp(status?: string) {
     if (status) {

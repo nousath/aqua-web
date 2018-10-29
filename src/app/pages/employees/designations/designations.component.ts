@@ -24,6 +24,11 @@ export class DesignationsComponent implements OnInit {
   isNew = false;
   uploader: FileUploader;
   isUpload = false;
+  isFilter = false;
+  filterFields = [
+    'designations'
+  ]
+
 
   constructor(private emsDesignationService: EmsDesignationService,
     public validatorService: ValidatorService,
@@ -32,7 +37,11 @@ export class DesignationsComponent implements OnInit {
     public dialog: MdDialog) {
 
     this.designations = new Page({
-      api: emsDesignationService.designations
+      api: emsDesignationService.designations,
+      filters: [
+        'ofDate',
+        'designations'
+   ]
     });
 
     this.designation = new Model({
@@ -51,6 +60,19 @@ export class DesignationsComponent implements OnInit {
         })
       }
     ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+  }
+
+  applyFilters(result) {
+    const filters = this.designations.filters.properties;
+
+    const values = result.params;
+
+    filters['designations']['value'] = values.employee.designations ? values.employee.designations.map(item => item.name) : '';
+    this.fetchDesignation();
+  }
+
+  reset() {
+
   }
 
   toggleDesignation(isOpen?: boolean) {

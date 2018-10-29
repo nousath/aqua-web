@@ -1,13 +1,34 @@
 <div class="row page_header">
-    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <h5>
-            <b>Designations</b>
-        </h5>
+  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+    <h5>
+      <b>Designations</b>
+    </h5>
+  </div>
+  <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+    <span class="spacer"></span>
+    <div style="float: right">
+      <button [matMenuTriggerFor]="moreMenu" md-icon-button>
+        <md-icon>more_vert</md-icon>
+      </button>
+      <md-menu #moreMenu="mdMenu">
+        <button md-menu-item [disabled]="designations?.isLoading   || designation.isProcessing  " mdTooltip="Add"
+          [mdTooltipPosition]="'above'" (click)="toggleDesignation(true)">
+          <md-icon>add_circle_outline</md-icon> New Designation
+        </button>
+        <button md-menu-item (click)="import()" mdTooltip="Uploader" [mdTooltipPosition]="'above'" angulartics2On="click"
+          angularticsEvent="excelUploadClick" angularticsCategory="designation ">
+          <md-icon>cloud_upload</md-icon> Import
+        </button>
+      </md-menu>
     </div>
-    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-        <div *ngIf="!isUpload" class="headerBtns">
-            <!--<button [disabled]="designations?.isLoading   || designation.isProcessing  " md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>-->
-            <button md-icon-button [disabled]="designations?.isLoading   || designation.isProcessing  " mdTooltip="Add" class="marginLetf"
+    <div style="float: right">
+      <button md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'">
+        <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
+      </button>
+    </div>
+    <!-- <div *ngIf="!isUpload" class="headerBtns"> -->
+    <!--<button [disabled]="designations?.isLoading   || designation.isProcessing  " md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>-->
+    <!-- <button md-icon-button [disabled]="designations?.isLoading   || designation.isProcessing  " mdTooltip="Add" class="marginLetf"
                 [mdTooltipPosition]="'above'" (click)="toggleDesignation(true)">
                 <md-icon>add_circle_outline</md-icon>
             </button>
@@ -17,98 +38,100 @@
                 angularticsEvent="excelUploadClick" angularticsCategory="designation " [angularticsProperties]="{label: 'Fall Campaign'}">
                 <md-icon>cloud_upload</md-icon>
             </a>
-        </div>
-    </div>
+        </div> -->
+
+
+  </div>
 </div>
+<aqua-employees-filter *ngIf="isFilter" [fields]="filterFields" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter>
 <md-spinner class="custom_spinner" *ngIf="designations?.isLoading   || designation.isProcessing  " mode="indeterminate"></md-spinner>
-
-
-
-
 <div class="row" *ngIf="isNew">
-    <md-card class="card">
-        <div class="row text-center headr_bar">
-            <h5>
-                <b>New Designation</b>
-            </h5>
-            <div class="actionBtns">
-                <button md-icon-button mdTooltip="Close" [mdTooltipPosition]="'above'" (click)="toggleDesignation()">
-                    <md-icon>highlight_off</md-icon>
-                </button>
-            </div>
+  <md-card class="card">
+    <div class="row text-center headr_bar">
+      <h5>
+        <b>New Designation</b>
+      </h5>
+      <div class="actionBtns">
+        <button md-icon-button mdTooltip="Close" [mdTooltipPosition]="'above'" (click)="toggleDesignation()">
+          <md-icon>highlight_off</md-icon>
+        </button>
+      </div>
+    </div>
+    <br>
+    <form class="row">
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6  form-group">
+        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+          <label for="email">Name
+            <span class="asterisk">*</span>
+          </label>
         </div>
-        <br>
-        <form class="row">
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6  form-group">
-                <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-                    <label for="email">Name
-                        <span class="asterisk">*</span>
-                    </label>
-                </div>
-                <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                    <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="designations?.isLoading   || designation?.isProcessing  "
-                        [(ngModel)]="designation.properties.name" name="Name" required>
-                </div>
-            </div>
-            
+        <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+          <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="designations?.isLoading   || designation?.isProcessing  "
+            [(ngModel)]="designation.properties.name" name="Name" required>
+        </div>
+      </div>
 
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 button_align form-group text-center">
-                <button [disabled]="designations?.isLoading   || designation?.isProcessing  " type="submit" md-raised-button color="primary"
-                    mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="save();">Save</button>&nbsp;&nbsp;
-                <button [disabled]="designations?.isLoading   || designation?.isProcessing  " md-raised-button class="btn_grey" mdTooltip="Reset"
-                    [mdTooltipPosition]="'above'" (click)="toggleDesignation(true)">Reset</button>
-            </div>
 
-        </form>
-    </md-card>
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 button_align form-group text-center">
+        <button [disabled]="designations?.isLoading   || designation?.isProcessing  " type="submit" md-raised-button
+          color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="save();">Save</button>&nbsp;&nbsp;
+        <button [disabled]="designations?.isLoading   || designation?.isProcessing  " md-raised-button class="btn_grey"
+          mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="toggleDesignation(true)">Reset</button>
+      </div>
+
+    </form>
+  </md-card>
 </div>
 
 
 <div class="row">
-    <md-card class="card">
-        <div class="row text-center noData" *ngIf="designations?.items?.length == 0">
-            <h5>
-                <b>no data to display !</b>
-            </h5>
-        </div>
-        <div class="table-responsive" *ngIf="designations?.items?.length > 0">
-            <table class="table table-condensed table-hover">
-                <thead class="primary_thead">
-                    <tr>
-                        <th class="tdWidth">Name</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of designations.items;let i = index" class="capitalize">
-                        <td class="col-md-6">
-                            <input [maxlength]="validatorService.textLength" type="text" [name]="'name_'+i" [readOnly]="designations.isLoading || designation.isProcessing || !item?.isEdit"
-                                class="number form-control input-xs" [(ngModel)]="item.name">
-                        </td>
-                        <!-- <td>
+  <md-card class="card">
+    <div class="row text-center noData" *ngIf="designations?.items?.length == 0">
+      <h5>
+        <b>no data to display !</b>
+      </h5>
+    </div>
+    <div class="table-responsive" *ngIf="designations?.items?.length > 0">
+      <table class="table table-condensed table-hover">
+        <thead class="primary_thead">
+          <tr>
+            <th class="tdWidth">Name</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of designations.items;let i = index" class="capitalize">
+            <td class="col-md-6">
+              <input [maxlength]="validatorService.textLength" type="text" [name]="'name_'+i" [readOnly]="designations.isLoading || designation.isProcessing || !item?.isEdit"
+                class="number form-control input-xs" [(ngModel)]="item.name">
+            </td>
+            <!-- <td>
                             <input [maxlength]="validatorService.textLength" type="text" [name]="'code_'+i" [disabled]="designations.isLoading || designation.isProcessing" readonly
                                 class="number form-control input-xs" [(ngModel)]="item.code">
                         
                          </td> -->
-                        <td class="btnClmWidth">
-                            <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="edit(item, true)">
-                                <md-icon>edit</md-icon>
-                            </button>
-                            <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="removeConfirm(item)">
-                                <md-icon>delete</md-icon>
-                            </button>
-                            <button *ngIf="item?.isEdit" [disabled]="designations.isLoading || designation.isProcessing" md-icon-button class="button_align cursor "
-                                (click)="save(item)" mdTooltip="Save" [mdTooltipPosition]="'above'">
-                                <md-icon>save</md-icon>
-                            </button>
-                            <button *ngIf="item?.isEdit" [disabled]="designations.isLoading || designation.isProcessing" md-icon-button class="button_align cursor"
-                                (click)="edit(item, false)" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
-                                <md-icon>undo</md-icon>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </md-card>
+            <td class="btnClmWidth">
+              <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit"
+                [mdTooltipPosition]="'above'" (click)="edit(item, true)">
+                <md-icon>edit</md-icon>
+              </button>
+              <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit"
+                [mdTooltipPosition]="'above'" (click)="removeConfirm(item)">
+                <md-icon>delete</md-icon>
+              </button>
+              <button *ngIf="item?.isEdit" [disabled]="designations.isLoading || designation.isProcessing"
+                md-icon-button class="button_align cursor " (click)="save(item)" mdTooltip="Save" [mdTooltipPosition]="'above'">
+                <md-icon>save</md-icon>
+              </button>
+              <button *ngIf="item?.isEdit" [disabled]="designations.isLoading || designation.isProcessing"
+                md-icon-button class="button_align cursor" (click)="edit(item, false)" mdTooltip="Cancel"
+                [mdTooltipPosition]="'above'">
+                <md-icon>undo</md-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </md-card>
 </div>

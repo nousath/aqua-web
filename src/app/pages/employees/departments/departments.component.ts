@@ -23,6 +23,10 @@ export class DepartmentsComponent implements OnInit {
   isNew = false;
   uploader: FileUploader;
   isUpload = false;
+  isFilter = false;
+  filterFields = [
+    'departments'
+  ]
 
   constructor(private emsDepartmentService: EmsDepartmentService,
     public validatorService: ValidatorService,
@@ -34,8 +38,10 @@ export class DepartmentsComponent implements OnInit {
       api: emsDepartmentService.departments,
       filters: [{
         field: 'divisionId',
-        value: 1
-      }]
+        value: 1,
+      },
+      'ofDate',
+      'departments']
     });
 
     this.department = new Model({
@@ -56,6 +62,17 @@ export class DepartmentsComponent implements OnInit {
     ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
+  applyFilters(result) {
+    const filters = this.departments.filters.properties;
+
+    const values = result.params;
+    filters['departments']['value'] = values.employee.departments ? values.employee.departments.map(item => item.name) : '';
+    this.fetchDepartment();
+  }
+
+  reset() {
+
+  }
   toggleDepartment(isOpen?: boolean) {
     this.isNew = isOpen ? true : false;
     this.department.properties = new Department();
