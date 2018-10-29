@@ -14,14 +14,17 @@
                 <option [value]="'archive'">Archived</option>
             </select>
         </div>
-        <div class="input-group">
+        <!-- <div class="input-group">
             <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="employees?.isLoading || employee?.isProcessing" [(ngModel)]="employees.filters.properties['name']['value']" name="Name" placeholder="name/code">
             <span class="input-group-btn">
                 <button [disabled]="employees?.isLoading || employee?.isProcessing" class="btn btn-default" type="submit" (click)="fetchEmp()">
                   <i class="fa fa-search"></i>
                 </button>
             </span>
-        </div>
+        </div> -->
+        <button md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'">
+            <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
+        </button>
         <button [matMenuTriggerFor]="moreMenu" md-icon-button> <md-icon>more_vert</md-icon></button>
         <md-menu #moreMenu="mdMenu">
             <button md-menu-item [routerLink]="['new']" mdTooltip="New Employee" [mdTooltipPosition]="'above'">
@@ -36,6 +39,7 @@
         </md-menu>
     </div>
 </div>
+<aqua-employees-filter *ngIf="isFilter" [fields]="filterFields" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter>
 <md-spinner class="custom_spinner" *ngIf="employees?.isLoading || uploader.isUploading || employee?.isProcessing" mode="indeterminate"></md-spinner>
 <div class="row">
     <md-card class="card">
