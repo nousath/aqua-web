@@ -115,10 +115,10 @@ export class EmployeeListComponent implements OnInit {
 
     const values = result.params;
 
-    filters['name']['value'] = values.employee.name;
-    filters['code']['value'] = values.employee.code;
+    filters['name']['value'] = values.employee.name ? values.employee.name : '';
+    filters['code']['value'] = values.employee.code ? values.employee.code : '';
     filters['departments']['value'] = values.employee.departments ? values.employee.departments.map(item => item.id) : '';
-    filters['designations']['value'] = values.employee.designations ? values.employee.designations.map(item => item.code) : '';
+    filters['designations']['value'] = values.employee.designations ? values.employee.designations.map(item => item.id) : '';
     // filters['supervisor']['value'] = values.employee.supervisor ? values.employee.supervisor.code : '';
     filters['contractors']['value'] = values.employee.contractors ? values.employee.contractors.map(item => item.name) : '';
     filters['userTypes']['value'] = values.employee.userTypes ? values.employee.userTypes.map(item => item.name) : '';
