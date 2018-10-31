@@ -24,6 +24,10 @@
             <button md-menu-item (click)="regenerate()" [mdTooltipPosition]="'above'" mdTooltip="Regenerate">
               <md-icon>build</md-icon> Regenerate
           </button>
+
+          <button md-menu-item (click)="resetLogs()" [mdTooltipPosition]="'above'" mdTooltip="Reset Logs">
+                <md-icon>build</md-icon> Reset Logs
+            </button>
             <button md-menu-item [matMenuTriggerFor]="downloadMenu">
                 <md-icon>cloud_download</md-icon> Download
             </button>

@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Location } from '@angular/common'
 import { Page } from '../../../common/contracts/page';
-import { AmsEmployeeService, AmsShiftService, AmsAttendanceService } from '../../../services/ams';
+import { AmsEmployeeService, AmsShiftService, AmsAttendanceService, AmsTimelogsService } from '../../../services/ams';
 import { ToastyService } from 'ng2-toasty';
 import { MonthAttendance, ShiftType } from '../../../models';
 import * as moment from 'moment';
@@ -70,6 +70,7 @@ export class DailyComponent {
     public router: Router,
     private location: Location,
     private amsAttendanceService: AmsAttendanceService,
+    private amsTimelogsService: AmsTimelogsService,
     private toastyService: ToastyService,
     public dialog: MdDialog) {
 
@@ -205,14 +206,22 @@ export class DailyComponent {
     this.router.navigate([`/pages/attendances/daily/${empId}/attendance-logs/${this.ofDate}`])
     // }
   }
+
+  resetLogs() {
+    const model = {
+      date: this.dailyAttendnace.filters.properties['ofDate']['value'] || moment().toISOString()
+    }
+    this.amsTimelogsService.timeLogs.simplePost(model, 'regenerate').then(() => {
+      this.toastyService.info({ title: 'Info', msg: 'Kindly reload after some time' })
+    })
+  }
   regenerate() {
     const model = {
       period: 'day',
       date: this.dailyAttendnace.filters.properties['ofDate']['value'] || moment().toISOString()
     }
     this.amsAttendanceService.attendance.simplePost(model, 'regenerate').then(() => {
-      this.toastyService.info({ title: 'Status', msg: 'Submitted' })
-      this.toastyService.info({ title: 'Info', msg: 'Kindly reload' })
+      this.toastyService.info({ title: 'Info', msg: 'Kindly reload after some time' })
 
     })
   }
