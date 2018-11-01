@@ -95,6 +95,7 @@ export class ReportsComponent implements OnInit {
           'checkOut',
         ];
         break;
+      case 'attendance-details':
       case 'monthly-attendance':
         this.filterFields = [
           'month',
