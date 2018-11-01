@@ -1,7 +1,7 @@
 <md-spinner class="custom_spinner" *ngIf="isProcessing" mode="indeterminate"></md-spinner>
 <div class="shift" [class.hasValue]="selectedShiftType && !isDynamic" [class.continue]="!selectedShiftType || isDynamic" [style.border-color]="shiftColour()">
     <button [mdMenuTriggerFor]="dayMenu" class="display-text" [disabled]="isProcessing" (click)="getMenuItems()" [class.fullView]="view">
-        <ng-container *ngIf="!isPast">
+        <ng-container *ngIf="!isBeforeToday">
             <div *ngIf="isDynamic" [class.compressed]="isOff && leave">
                 <span *ngIf="!isOff && !leave && view === 'mini'" class="name" mdTooltip="Shift is same as previous day">&raquo;</span>
                 <span *ngIf="!isOff && !leave && view === 'full'" class="name" mdTooltip="Shift is same as previous day">{{effectiveShift.previousShift.shiftType.name}}</span>
@@ -20,7 +20,7 @@
                 <span *ngIf="isOff" class="badge" mdTooltip="Off Day">Off</span>
             </div>
         </ng-container>
-        <ng-container *ngIf="isPast" [ngSwitch]="daySummary.status">
+        <ng-container *ngIf="isBeforeToday" [ngSwitch]="daySummary.status">
             <span *ngIf="selectedShiftType" class="name info" mdTooltip="New shift starts from this day"> {{selectedShiftType.name}}</span>
             <br *ngIf="selectedShiftType">
             <span *ngSwitchCase="'present'" class="name" [class.sub-text]="selectedShiftType" mdTooltip="Present (In: {{daySummary.attendance.checkIn| date: 'HH:MM'}}, Out: {{daySummary.attendance.checkOut| date: 'HH:MM'}})">&#10003;</span>
@@ -37,7 +37,7 @@
         <button md-menu-item [disabled]="leave || isProcessing || !compOffBalance" (click)="setCompOff()">Comp Off</button>
         <button md-menu-item [mdMenuTriggerFor]="offOptions">Weekly Off</button>
         <button md-menu-item [mdMenuTriggerFor]="leaveOptions" [disabled]="isProcessing">Apply Leave</button>
-        <button md-menu-item [mdMenuTriggerFor]="shiftOptions" [disabled]="isDynamic || isPast" (click)="stopPropagation($event)">Shifts</button>
+        <button md-menu-item [mdMenuTriggerFor]="shiftOptions" [disabled]="isDynamic || isBeforeToday" (click)="stopPropagation($event)">Shifts</button>
         <button md-menu-item (click)="stopPropagation($event)" [disabled]="isDynamic || !isToday" (click)="extendCurrentShift()">Extend Shift</button>
     </md-menu>
     <md-menu #offOptions="mdMenu" class="off" xPosition="after" [overlapTrigger]="false">
