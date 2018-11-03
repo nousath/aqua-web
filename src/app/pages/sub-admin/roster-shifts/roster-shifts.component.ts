@@ -39,9 +39,11 @@ export class RosterShiftsComponent implements OnInit {
   filterFields = [
     'name',
     'code',
+    'userTypes',
+    'contractors',
     'designations',
     'departments',
-    'contractors',
+    'supervisor',
     'shiftTypes',
   ]
 
@@ -80,8 +82,11 @@ export class RosterShiftsComponent implements OnInit {
         field: 'departments',
         value: this.activatedRoute.queryParams['value']['departments']
       }, {
-        field: 'designation',
+        field: 'designations',
         value: this.activatedRoute.queryParams['value']['designation']
+      }, {
+        field: 'contractors',
+        value: this.activatedRoute.queryParams['value']['contractors']
       }, {
         field: 'shiftType',
         value: this.activatedRoute.queryParams['value']['shiftType']
@@ -94,6 +99,12 @@ export class RosterShiftsComponent implements OnInit {
       }, {
         field: 'tagIds',
         value: ''
+      }, {
+        field: 'userTypes',
+        value: this.activatedRoute.queryParams['value']['userTypes']
+      }, {
+        field: 'supervisorId',
+        value: this.activatedRoute.queryParams['value']['supervisorId']
       }],
       location: location
     });
@@ -102,16 +113,18 @@ export class RosterShiftsComponent implements OnInit {
       this.toastyService.error({ title: 'Error', msg: err })
     });
   }
-  applyFilters(values) {
-
+  applyFilters(result) {
+    const values = result.params;
     const filters = this.effectiveShifts.filters.properties;
 
-    filters['name']['value'] = values.employee.name;
-    filters['code']['value'] = values.employee.code;
-    filters['departments']['value'] = values.employee.departments.map(item => item.name);
-    filters['designation']['value'] = values.employee.designations.map(item => item.name);
-    filters['contractors']['value'] = values.employee.contractors.map(item => item.name);
-    filters['shiftType']['value'] = values.shiftType.map(item => item.id);
+    filters['name']['value'] = values.employee && values.employee.name ? values.employee.name : '';
+    filters['code']['value'] = values.employee && values.employee.code ? values.employee.code : '';
+    filters['departments']['value'] = values.employee && values.employee.departments ? values.employee.departments.map(item => item.name) : '';
+    filters['designations']['value'] = values.employee && values.employee.designations ? values.employee.designations.map(item => item.name) : '';
+    filters['supervisorId']['value'] = values.employee && values.employee.supervisor ? values.employee.supervisor.id : '';
+    filters['contractors']['value'] = values.employee && values.employee.contractors ? values.employee.contractors.map(item => item.id) : '';
+    filters['userTypes']['value'] = values.employee && values.employee.userTypes ? values.employee.userTypes.map(item => item.id) : '';
+    filters['shiftType']['value'] = values.shiftType && values.shiftType.map(item => item.id) || null;
     this.getEffectiveShift(this.date)
   }
 
