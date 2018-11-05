@@ -33,12 +33,15 @@ export class EmployeeListComponent implements OnInit {
   isUpload = false;
   isFilter = false;
   status;
+  isStatus;
   filterFields = [
     'name',
     'code',
+    'biometricId',
     'designations',
     'departments',
-    // 'supervisor',
+    'supervisor',
+    'employeeTypes',
     'userTypes',
     'contractors'
   ]
@@ -87,16 +90,20 @@ export class EmployeeListComponent implements OnInit {
     this.employees = new Page({
       api: emsEmployeeService.employees,
       filters: [
-      'ofDate',
-      'name',
-      'code',
-      'status',
-      'designations',
-      'departments',
-      // 'supervisor',
-      'userTypes',
-      'contractors',
- ]
+        'ofDate',
+        'name',
+        'code',
+        'status',
+        'designations',
+        'departments',
+        'biometricId',
+        // 'supervisor',
+        'userTypes',
+        'employeeTypes',
+        'terminationReason',
+        'terminationDate',
+        'contractors',
+      ]
     });
 
     this.employee = new Model({
@@ -107,7 +114,6 @@ export class EmployeeListComponent implements OnInit {
   }
 
   reset() {
-
   }
 
   applyFilters(result) {
@@ -115,13 +121,17 @@ export class EmployeeListComponent implements OnInit {
 
     const values = result.params;
 
-    filters['name']['value'] = values.employee.name ? values.employee.name : '';
-    filters['code']['value'] = values.employee.code ? values.employee.code : '';
-    filters['departments']['value'] = values.employee.departments ? values.employee.departments.map(item => item.id) : '';
-    filters['designations']['value'] = values.employee.designations ? values.employee.designations.map(item => item.id) : '';
+    filters['name']['value'] = values.employee && values.employee.name ? values.employee.name : '';
+    filters['code']['value'] = values.employee && values.employee.code ? values.employee.code : '';
+    filters['biometricId']['value'] = values.employee && values.employee.biometricId ? values.employee.biometricId : '';
+    filters['departments']['value'] = values.employee && values.employee.departments ? values.employee.departments.map(item => item.id) : '';
+    filters['designations']['value'] = values.employee && values.employee.designations ? values.employee.designations.map(item => item.id) : '';
     // filters['supervisor']['value'] = values.employee.supervisor ? values.employee.supervisor.code : '';
-    filters['contractors']['value'] = values.employee.contractors ? values.employee.contractors.map(item => item.name) : '';
-    filters['userTypes']['value'] = values.employee.userTypes ? values.employee.userTypes.map(item => item.name) : '';
+    filters['contractors']['value'] = values.employee && values.employee.contractors ? values.employee.contractors.map(item => item.name) : '';
+    filters['userTypes']['value'] = values.employee && values.employee.userTypes ? values.employee.userTypes.map(item => item.name) : '';
+    filters['employeeTypes']['value'] = values.employee && values.employee.employeeTypes ? values.employee.employeeTypes.map(item => item.code) : '';
+    filters['terminationReason']['value'] = values.employee && values.employee.terminationReason ? values.employee.terminationReason.map(item => item.code) : '';
+    filters['terminationDate']['value'] = values.dates && values.dates.terminationDate ? values.dates.terminationDate : '';
     filters['status']['value'] = values.attendanceStates;
     this.fetchEmp();
   }
@@ -129,16 +139,57 @@ export class EmployeeListComponent implements OnInit {
 
   fetchEmp(status?: string) {
     if (status) {
-      this.status = status;
+      this.status = status
     }
-    this.statusFilter = status ? status : 'activate';
+    this.statusFilter = this.status ? this.status : 'activate';
+    this.status = this.statusFilter
     this.employees.filters.properties['status'].value = this.status ? this.status : 'activate';
     this.employees.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+    this.isStatus = true;
 
-  }
+    switch (this.statusFilter) {
+      case 'activate':
+        this.filterFields = [
+          'name',
+          'code',
+          'biometricId',
+          'designations',
+          'departments',
+          // 'supervisor',
+          'employeeTypes',
+          'userTypes',
+          'contractors'
+        ];
+        break;
+      case 'deactivate':
+        this.filterFields = [
+          'name',
+          'code',
+          'terminationDate',
+          'terminationReason',
+          'designations',
+          'departments',
+          // 'supervisor',
+        ];
+        break;
+      case 'archive':
+        this.filterFields = [
+          'name',
+          'code',
+          'biometricId',
+          'designations',
+          'departments',
+          'supervisor',
+          'employeeTypes',
+          'userTypes',
+          'contractors'
+        ];
+        break;
 
+    }
+}
 
-  terminateEmp(empId: string, empName: string) {
+terminateEmp(empId: string, empName: string) {
     const dialog = this.dialog.open(RelievingDialogComponent, { width: '40%' });
     dialog.componentInstance.msg = `Are you sure to want to terminate ${empName} ?`;
     dialog.afterClosed().subscribe((emp: any) => {
@@ -174,32 +225,33 @@ export class EmployeeListComponent implements OnInit {
     const component = dialogRef.componentInstance;
     component.uploader = this.emsEmployeeService.employees
     component.samples = [
-    {
-      name: 'Add Employee',
-      mapper: 'default',
-      url_csv: 'assets/formats/add-new-employee.csv',
-      url_xlsx: 'assets/formats/add-new-employee.xlsx'
-    }, {
-      name: 'Update Employee',
-      mapper: 'default',
-      url_csv: 'assets/formats/update-employee.csv',
-      url_xlsx: 'assets/formats/update-employee.xlsx'
-    },
-    {
-      name: 'Update Biometric',
-      mapper: 'default',
-      url_csv: 'assets/formats/update-employee-biometricId.csv',
-      url_xlsx: 'assets/formats/update-employee-biometricId.xlsx'
-    },
-    {
-      name: 'Update Status',
-      mapper: 'default',
-      url_csv: 'assets/formats/update-employee-status.csv',
-      url_xlsx: 'assets/formats/update-employee-status.xlsx'
+      {
+        name: 'Add Employee',
+        mapper: 'default',
+        url_csv: 'assets/formats/add-new-employee.csv',
+        url_xlsx: 'assets/formats/add-new-employee.xlsx'
+      }, {
+        name: 'Update Employee',
+        mapper: 'default',
+        url_csv: 'assets/formats/update-employee.csv',
+        url_xlsx: 'assets/formats/update-employee.xlsx'
+      },
+      {
+        name: 'Update Biometric',
+        mapper: 'default',
+        url_csv: 'assets/formats/update-employee-biometricId.csv',
+        url_xlsx: 'assets/formats/update-employee-biometricId.xlsx'
+      },
+      {
+        name: 'Update Status',
+        mapper: 'default',
+        url_csv: 'assets/formats/update-employee-status.csv',
+        url_xlsx: 'assets/formats/update-employee-status.xlsx'
 
-    }];
+      }];
   }
   ngOnInit() {
+
   }
 
 }

@@ -389,7 +389,7 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
     let date = currentShift.date;
     let time = moment(currentShift.shiftType.endTime).format('HH:mm');
 
-    if (attendance.checkOutExtend) {
+    if (attendance && attendance.checkOutExtend) {
       date = moment(attendance.checkOutExtend).startOf('day').toDate();
       time = moment(attendance.checkOutExtend).format('HH:mm');
     }
