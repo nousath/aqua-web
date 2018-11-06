@@ -1,116 +1,113 @@
 <div class="row page_header">
-    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <h5>
-            <b>Employees</b>
-        </h5>
+  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+    <h5>
+      <b>Employees</b>
+    </h5>
+  </div>
+  <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 controls-row">
+    <span class="spacer"></span>
+    <div class="input-group">
+      <span class="input-group-addon">Status:</span>
+      <select class="form-control" [(ngModel)]="statusFilter" (change)="fetchByStatus()">
+        <option [value]="'activate'">Activated</option>
+        <option [value]="'deactivate'">Deactivated</option>
+        <option [value]="'archive'">Archived</option>
+      </select>
     </div>
-    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 controls-row">
-        <span class="spacer"></span>
-        <div class="input-group">
-            <span class="input-group-addon">Status:</span>
-            <select class="form-control" [(ngModel)]="statusFilter" (change)="fetchByStatus()" >
-                <option [value]="'activate'">Activated</option>
-                <option [value]="'deactivate'">Deactivated</option>
-                <option [value]="'archive'">Archived</option>
-            </select>
-        </div>
-        <!-- <div class="input-group">
-            <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="employees?.isLoading || employee?.isProcessing" [(ngModel)]="employees.filters.properties['name']['value']" name="Name" placeholder="name/code">
-            <span class="input-group-btn">
-                <button [disabled]="employees?.isLoading || employee?.isProcessing" class="btn btn-default" type="submit" (click)="fetchEmp()">
-                  <i class="fa fa-search"></i>
-                </button>
-            </span>
-        </div> -->
-        <button md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'">
-            <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
-        </button>
-        <button [matMenuTriggerFor]="moreMenu" md-icon-button> <md-icon>more_vert</md-icon></button>
-        <md-menu #moreMenu="mdMenu">
-            <button md-menu-item [routerLink]="['new']" mdTooltip="New Employee" [mdTooltipPosition]="'above'">
-                <md-icon>add_circle_outline</md-icon> New Employee
-            </button>
-            <button md-menu-item (click)="downloadlink()">
-                <md-icon>cloud_download</md-icon> Export
-            </button>
-            <button md-menu-item (click)="import()" mdTooltip="Upload">
-                <md-icon>cloud_upload</md-icon> Import
-            </button>
-        </md-menu>
-    </div>
+    <button md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'">
+      <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
+    </button>
+    <button [matMenuTriggerFor]="moreMenu" md-icon-button>
+      <md-icon>more_vert</md-icon>
+    </button>
+    <md-menu #moreMenu="mdMenu">
+      <button md-menu-item [routerLink]="['new']" mdTooltip="New Employee" [mdTooltipPosition]="'above'">
+        <md-icon>add_circle_outline</md-icon> New Employee
+      </button>
+      <button md-menu-item (click)="downloadlink()">
+        <md-icon>cloud_download</md-icon> Export
+      </button>
+      <button md-menu-item (click)="import()" mdTooltip="Upload">
+        <md-icon>cloud_upload</md-icon> Import
+      </button>
+    </md-menu>
+  </div>
 </div>
 <aqua-employees-filter *ngIf="isFilter" [fields]="filterFields" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter>
 <md-spinner class="custom_spinner" *ngIf="employees?.isLoading || uploader.isUploading || employee?.isProcessing" mode="indeterminate"></md-spinner>
 <div class="row">
-    <md-card class="card">
-        <div class="row text-center noData" *ngIf="employees?.items?.length == 0">
-            <h5>
-                <b>no data to display !</b>
-            </h5>
-        </div>
-        <div class="table-responsive" *ngIf="employees?.items?.length > 0">
-            <table class="table table-condensed table-hover">
-                <thead class="primary_thead">
-                    <tr>
-                        <th colspan="2">Name</th>
-                        <th class="tdWidth">Code</th>
-                        <th class="tdWidth">Designation</th>
-                        <th class="tdWidth">Biometric Id</th>
-                        <th class="tdWidth  text-center">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of employees.items | paginate: { id: 'foo',
+  <md-card class="card">
+    <div class="row text-center noData" *ngIf="employees?.items?.length == 0">
+      <h5>
+        <b>no data to display !</b>
+      </h5>
+    </div>
+    <div class="table-responsive" *ngIf="employees?.items?.length > 0">
+      <table class="table table-condensed table-hover">
+        <thead class="primary_thead">
+          <tr>
+            <th colspan="2">Name</th>
+            <th class="tdWidth">Code</th>
+            <th class="tdWidth">Designation</th>
+            <th class="tdWidth">Biometric Id</th>
+            <th class="tdWidth  text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of employees.items | paginate: { id: 'foo',
                                                       itemsPerPage: employees.pageSize,
                                                       currentPage: employees.pageNo,
-                                                      totalItems: employees.totalRecords };" class="capitalize">
+                                                      totalItems: employees.totalRecords };"
+            class="capitalize">
 
-                        <td>
-                            <img *ngIf="item?.picUrl" class="img-circle profile_pic" alt="img" [src]="item?.picUrl">
-                            <img *ngIf="!item?.picUrl" class="img-circle profile_pic" alt="img" src="assets/images/blank.png">
-                        </td>
-                        <td>
-                            <a [routerLink]="[item.id]">{{item?.name || '--'}}</a>
-                            <br>
+            <td>
+              <img *ngIf="item?.picUrl" class="img-circle profile_pic" alt="img" [src]="item?.picUrl">
+              <img *ngIf="!item?.picUrl" class="img-circle profile_pic" alt="img" src="assets/images/blank.png">
+            </td>
+            <td>
+              <a [routerLink]="[item.id]">{{item?.name || '--'}}</a>
+              <br>
 
-                        </td>
-                        <td><span>{{item?.displayCode || item?.code || '--'}}</span></td>
-                        <td class="tdWidth">
-                            <span *ngIf="item?.designation"></span>{{item?.designation?.name || (item?.designation || '--' )}}
-                            <!-- <br>
+            </td>
+            <td><span>{{item?.displayCode || item?.code || '--'}}</span></td>
+            <td class="tdWidth">
+              <span *ngIf="item?.designation"></span>{{item?.designation?.name || (item?.designation || '--' )}}
+              <!-- <br>
                             <span *ngIf="item?.department"></span>{{item?.department?.name || item?.department}} -->
-                        </td>
-                        <td><span>{{item?.code || '--'}}</span></td>
+            </td>
+            <td><span>{{item?.code || '--'}}</span></td>
 
-                        <td class="tdWidth text-center">
-                            <a md-icon-button class="button_align cursor" mdTooltip="Edit details" [mdTooltipPosition]="'above'" [routerLink]="[item.id]">
-                                <md-icon>edit</md-icon>
-                            </a>
-                            &nbsp;
-                            <button [disabled]="employees?.isLoading || employee?.isProcessing" md-icon-button class="button_align cursor" mdTooltip="Terminate" [mdTooltipPosition]="'above'" (click)="terminateEmp(item.id, item.name)">
-                                <i class="fa fa-user-times fa-lg" aria-hidden="true"></i>
-                            </button>
-                        </td>
-                    </tr>
+            <td class="tdWidth text-center">
+              <a md-icon-button class="button_align cursor" mdTooltip="Edit details" [mdTooltipPosition]="'above'"
+                [routerLink]="[item.id]">
+                <md-icon>edit</md-icon>
+              </a>
+              &nbsp;
+              <button [disabled]="employees?.isLoading || employee?.isProcessing" md-icon-button class="button_align cursor"
+                mdTooltip="Terminate" [mdTooltipPosition]="'above'" (click)="terminateEmp(item.id, item.name)">
+                <i class="fa fa-user-times fa-lg" aria-hidden="true"></i>
+              </button>
+            </td>
+          </tr>
 
-                </tbody>
-            </table>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="custom_pagination">
-                <pagination-controls id="foo" (pageChange)="employees.pageNo = $event;fetchEmp(status);"></pagination-controls>
-                <label>Total Records: {{employees.totalRecords}}</label>
-                <div class="pageSize">
-                    <label>Page Size:</label>
-                    <select name="pageSize" [(ngModel)]="employees.pageSize" (change)="employees.pageNo = 1;fetchEmp()">
-                        <!-- <option value=10>10</option>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="custom_pagination">
+        <pagination-controls id="foo" (pageChange)="employees.pageNo = $event;fetchEmp();"></pagination-controls>
+        <label>Total Records: {{employees.totalRecords}}</label>
+        <div class="pageSize">
+          <label>Page Size:</label>
+          <select name="pageSize" [(ngModel)]="employees.pageSize" (change)="employees.pageNo = 1;fetchEmp()">
+            <!-- <option value=10>10</option>
                       <option value=20>20</option> -->
-                        <option value=50>50</option>
-                        <option value=100>100</option>
-                        <option value=500>500</option>
-                    </select>
-                </div>
-            </div>
+            <option value=50>50</option>
+            <option value=100>100</option>
+            <option value=500>500</option>
+          </select>
         </div>
-    </md-card>
+      </div>
+    </div>
+  </md-card>
 </div>
