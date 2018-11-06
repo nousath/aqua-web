@@ -113,7 +113,7 @@ export class EmployeeListComponent implements OnInit {
 
   reset() {
     setTimeout(() => {
-      this.applyFilters( {
+      this.applyFilters({
         params: {}
       });
     }, 1)
@@ -138,7 +138,7 @@ export class EmployeeListComponent implements OnInit {
     this.fetchEmp();
   }
 
-  fetchByStatus(status: string) {
+  fetchByStatus() {
     this.employees.filters.properties['status'].value = this.statusFilter ? this.statusFilter : 'activate';
     switch (this.statusFilter) {
       case 'activate':
