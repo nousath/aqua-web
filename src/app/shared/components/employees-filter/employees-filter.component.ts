@@ -31,10 +31,16 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
   fields: string[] = [];
 
   @Input()
+  isStatus: string[] = [];
+
+  @Input()
   fromDate: Date;
 
   @Input()
   tillDate: Date;
+
+  @Input()
+  terminationDate: Date;
 
   @Input()
   selectedEmployeeName: string;
@@ -42,6 +48,10 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
   @Input()
   selectedEmployeeCode: string;
 
+  @Input()
+  selectedEmployeeBiometricId: string;
+  selectedEmployeeType: string;
+  selectedTerminationReason: string;
   selectedAttendanceStatus = [];
   selectedCheckInStatus = [];
   selectedCheckOutStatus = [];
@@ -73,15 +83,18 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
   show: {
     date?: boolean,
     tillDate?: boolean,
-
+    terminationDate?: boolean,
+    terminationReason?: boolean,
     month?: boolean,
     name?: boolean,
     code?: boolean,
+    biometricId?: boolean,
     userTypes?: boolean,
     designations?: boolean,
     departments?: boolean,
     contractors?: boolean,
     supervisor?: boolean,
+    employeeTypes?: boolean,
 
     shiftTypes?: boolean,
     attendanceStates?: boolean,
@@ -101,6 +114,8 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
   attendanceStatusList = [];
   checkInStatusList = [];
   checkOutStatusList = [];
+  employeeTypeList = [];
+  terminationReasonList = [];
   clockedStatusList = [];
 
   dropdownSettings = {};
@@ -124,16 +139,19 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
       this.show[field] = true;
     });
 
-    if (this.fromDate) {
+      if (this.fromDate) {
       this.show.checkOut = moment(this.fromDate).isBefore(new Date(), 'd');
       this.show.clocked = moment(this.fromDate).isBefore(new Date(), 'd');
     }
 
-  }
+    }
 
   ngOnInit() {
 
     this.hidden = this.hidden || {};
+    if (this.isStatus) {
+      this.reset();
+    }
     this.attendanceStatusList = [
       { id: 1, code: 'present', itemName: 'Present' },
       { id: 2, code: 'absent', itemName: 'Absent' },
@@ -152,6 +170,17 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
       { id: 1, code: 'early', itemName: 'Left Early' },
       { id: 2, code: 'late', itemName: 'Went Late' },
       { id: 3, code: 'missed', itemName: 'Missed' }
+    ]
+
+    this.employeeTypeList = [
+      { id: 1, code: 'permanent', itemName: 'Permanent' },
+      { id: 2, code: 'contract', itemName: 'Contract' }
+    ]
+
+    this.terminationReasonList = [
+      { id: 1, code: 'resign', itemName: 'Resign' },
+      { id: 2, code: 'terminate', itemName: 'Terminate' },
+      { id: 3, code: 'death', itemName: 'Death' }
     ]
 
     this.clockedStatusList = [
@@ -191,7 +220,8 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
     if (this.show.shiftTypes) {
       this.getShiftTypes();
     }
-  }
+
+     }
 
   private getShiftTypes() {
     this.amsShiftService.shiftTypes.search().then((page) => {
@@ -315,7 +345,11 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
 
     this.selectedEmployeeName = null;
     this.selectedEmployeeCode = null;
+    this.selectedEmployeeBiometricId = null;
+    this.selectedEmployeeType = null;
+    this.selectedTerminationReason = null;
     this.selectedSupervisor = null;
+    this.terminationDate = null;
     this.onReset.emit();
   }
 
@@ -335,6 +369,12 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
       values.tillDate = this.tillDate;
     }
 
+    if (this.terminationDate) {
+      params.dates = params.dates || {}
+      params.dates.terminationDate = this.terminationDate
+      values.terminationDate = this.terminationDate;
+    }
+
     if (this.selectedEmployeeName) {
       params.employee = params.employee || {}
       params.employee.name = this.selectedEmployeeName
@@ -346,6 +386,12 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
       params.employee = params.employee || {}
       params.employee.code = this.selectedEmployeeCode
       values.employeeCode = this.selectedEmployeeCode;
+    }
+
+    if (this.selectedEmployeeBiometricId) {
+      params.employee = params.employee || {}
+      params.employee.biometricId = this.selectedEmployeeBiometricId
+      values.employeeBiometricId = this.selectedEmployeeBiometricId;
     }
 
     if (this.selectedSupervisor) {
@@ -369,6 +415,18 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
       params.employee = params.employee || {}
       params.employee.userTypes = this.selectedUserType.map(item => ({ id: item.id, name: item.itemName }))
       values.userTypeIds = this.selectedUserType.map(item => item.id)
+    }
+
+    if (this.selectedTerminationReason && this.selectedTerminationReason.length) {
+      params.employee = params.employee || {}
+      params.employee.terminationReason = this.selectedTerminationReason
+      values.terminationReason = this.selectedTerminationReason
+    }
+
+    if (this.selectedEmployeeType && this.selectedEmployeeType.length) {
+      params.employee = params.employee || {}
+      params.employee.employeeTypes = this.selectedEmployeeType
+      values.employeeTypes = this.selectedEmployeeType
     }
 
     if (this.selectedDepartment && this.selectedDepartment.length) {
