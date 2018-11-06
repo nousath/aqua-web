@@ -132,26 +132,34 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
 
-    this.show = {
+    const show = {
     }
 
+    let hasFieldsChanged = false;
+
     this.fields.forEach(field => {
-      this.show[field] = true;
+      show[field] = true;
+
+      if (this.show && this.show[field] !== show[field]) {
+        hasFieldsChanged = true;
+      }
     });
 
-      if (this.fromDate) {
+    this.show = show
+
+    if (this.fromDate) {
       this.show.checkOut = moment(this.fromDate).isBefore(new Date(), 'd');
       this.show.clocked = moment(this.fromDate).isBefore(new Date(), 'd');
     }
-
+    if (hasFieldsChanged) {
+      this.reset();
     }
+
+  }
 
   ngOnInit() {
 
     this.hidden = this.hidden || {};
-    if (this.isStatus) {
-      this.reset();
-    }
     this.attendanceStatusList = [
       { id: 1, code: 'present', itemName: 'Present' },
       { id: 2, code: 'absent', itemName: 'Absent' },
@@ -221,7 +229,7 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
       this.getShiftTypes();
     }
 
-     }
+  }
 
   private getShiftTypes() {
     this.amsShiftService.shiftTypes.search().then((page) => {

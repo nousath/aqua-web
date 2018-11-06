@@ -28,12 +28,10 @@ export class EmployeeListComponent implements OnInit {
 
   employees: Page<EmsEmployee>
   employee: Model<EmsEmployee>
-  statusFilter: string;
+  statusFilter = 'activate';
   uploader: FileUploader;
   isUpload = false;
   isFilter = false;
-  status;
-  isStatus;
   filterFields = [
     'name',
     'code',
@@ -114,6 +112,11 @@ export class EmployeeListComponent implements OnInit {
   }
 
   reset() {
+    setTimeout(() => {
+      this.applyFilters( {
+        params: {}
+      });
+    }, 1)
   }
 
   applyFilters(result) {
@@ -132,21 +135,11 @@ export class EmployeeListComponent implements OnInit {
     filters['employeeTypes']['value'] = values.employee && values.employee.employeeTypes ? values.employee.employeeTypes.map(item => item.code) : '';
     filters['terminationReason']['value'] = values.employee && values.employee.terminationReason ? values.employee.terminationReason.map(item => item.code) : '';
     filters['terminationDate']['value'] = values.dates && values.dates.terminationDate ? values.dates.terminationDate : '';
-    filters['status']['value'] = values.attendanceStates;
     this.fetchEmp();
   }
 
-
-  fetchEmp(status?: string) {
-    if (status) {
-      this.status = status
-    }
-    this.statusFilter = this.status ? this.status : 'activate';
-    this.status = this.statusFilter
-    this.employees.filters.properties['status'].value = this.status ? this.status : 'activate';
-    this.employees.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
-    this.isStatus = true;
-
+  fetchByStatus(status: string) {
+    this.employees.filters.properties['status'].value = this.statusFilter ? this.statusFilter : 'activate';
     switch (this.statusFilter) {
       case 'activate':
         this.filterFields = [
@@ -185,11 +178,18 @@ export class EmployeeListComponent implements OnInit {
           'contractors'
         ];
         break;
-
     }
-}
 
-terminateEmp(empId: string, empName: string) {
+    if (!this.isFilter) {
+      this.fetchEmp();
+    }
+  }
+
+  fetchEmp() {
+    this.employees.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+  }
+
+  terminateEmp(empId: string, empName: string) {
     const dialog = this.dialog.open(RelievingDialogComponent, { width: '40%' });
     dialog.componentInstance.msg = `Are you sure to want to terminate ${empName} ?`;
     dialog.afterClosed().subscribe((emp: any) => {
