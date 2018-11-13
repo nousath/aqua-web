@@ -31,8 +31,8 @@
         <input class="form-control" type="time" [(ngModel)]="time" (blur)="timeChanged()">
         <div (click)="date = nextShift.date" class="sub-text controls-row">
           <span class="spacer"></span>
-          <a class="hint" (click)="setTime(nextShift.shiftType.startTime);">Next Start</a>
-          <a class="hint" (click)="setTime(nextShift.shiftType.endTime)">Next End</a>
+          <!-- <a class="hint" (click)="setTime(nextShift.shiftType.startTime);">Next Start</a> -->
+          <a class="hint" (click)="setTime(nextShift.shiftType.endTime)">Merge</a>
         </div>
       </div>
     </md-card>
