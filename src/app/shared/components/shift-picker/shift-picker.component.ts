@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
-import { ShiftType, EffectiveShift, Shift } from '../../../models';
+import { ShiftType, EffectiveShift, Shift, LeaveType } from '../../../models';
 import * as moment from 'moment';
 import { AmsEffectiveShiftService, AmsAttendanceService, AmsEmployeeService, AmsLeaveService, AmsShiftService } from '../../../services/ams';
 import { ToastyService } from 'ng2-toasty';
@@ -67,6 +67,7 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
 
   isPast = true;
   isToday = false;
+  isRunning = false;
   isDynamic = false;
   isOnDuty = false;
 
@@ -136,6 +137,8 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
     this.daySummary = this.amsAttendanceService.getSummary(this.attendance, this.leaveSummary)
 
     this.computeWeeklyOff();
+
+    this.computeIfRunning();
   }
 
   computeEffectiveShift() {
@@ -374,6 +377,22 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
     //   if (!purpose) { return; }
     //   this.setOnLeave(this.onDutyBalance, `Purpose: ${purpose} `);
     // });
+  }
+
+  computeIfRunning() {
+    const shiftType = this.effectiveShiftType;
+
+    const date = this.date;
+
+    const startTime = this.dates.date(date).setTime(shiftType.startTime);
+    let endDate = date;
+
+    if (this.dates.time(shiftType.endTime).lt(shiftType.startTime)) {
+      endDate = this.dates.date(date).nextBod();
+    }
+
+    const endTime = this.dates.date(endDate).setTime(shiftType.endTime);
+    this.isRunning = moment(new Date()).isBetween(moment(startTime), moment(endTime), 's', '[]')
   }
 
   extendCurrentShift() {
