@@ -146,7 +146,8 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
     let lastDate: Date;
     this.effectiveShift.shifts.forEach(item => {
       const mDate = moment(item.date);
-      if (mDate.isBefore(this.date, 'd') && (!lastDate || mDate.isAfter(lastDate))) {
+
+      if (!mDate.isAfter(this.date, 'd') && (!lastDate || mDate.isAfter(lastDate))) {
         lastDate = mDate.toDate();
         this.effectiveShiftType = item.shiftType
       }
