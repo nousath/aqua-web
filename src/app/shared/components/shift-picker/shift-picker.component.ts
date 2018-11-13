@@ -409,12 +409,12 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
       }
 
       let isReset = false
-     const currentShiftEnd =  moment(currentShift.shiftType.endTime).format('HH:mm')
-     const checkTimes: string[] = currentShiftEnd.split(':');
-     const value = moment(this.date).hours(parseInt(checkTimes[0])).minutes(parseInt(checkTimes[1])).toDate()
-     if (moment(response).isSame(moment(value))) {
-       isReset = true
-     }
+      const currentShiftEnd = moment(currentShift.shiftType.endTime).format('HH:mm')
+      const checkTimes: string[] = currentShiftEnd.split(':');
+      const value = moment(this.date).hours(parseInt(checkTimes[0])).minutes(parseInt(checkTimes[1])).toDate()
+      if (moment(response).isSame(moment(value))) {
+        isReset = true
+      }
       if (isReset) {
         this.attendance.checkOutExtend = null;
         this.amsAttendanceService.attendance.update(`${attendance.id}/extendShift`, this.attendance as any)
