@@ -8,6 +8,7 @@ import { Page } from '../../../common/contracts/page';
 import { Model } from '../../../common/contracts/model';
 import { Device, Category } from '../../../models';
 import { DeviceDialogComponent } from '../../../dialogs/device-dialog/device-dialog.component';
+import { SyncDialogComponent } from '../../../dialogs/sync-dialog/sync-dialog.component';
 import { Machine } from '../../../models/category';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-dialog.component';
@@ -133,6 +134,30 @@ export class DevicesComponent implements OnInit {
           }
         ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
       }
+    });
+  }
+
+  sync(device?: Device) {
+    const dialogRef = this.dialog.open(SyncDialogComponent);
+
+    dialogRef.afterClosed().subscribe((response?: Date) => {
+      if (!response) {
+        return;
+      }
+
+      const data: any = {
+        date: response
+      };
+
+      if (device) {
+        data.device = {
+          id: device.id
+        }
+      }
+
+      this.amsDeviceService.devices.simplePost(data, 'lastSyncTime')
+
+      this.toastyService.info({ title: 'Info', msg: 'Last Sync time has been set' })
     });
   }
 

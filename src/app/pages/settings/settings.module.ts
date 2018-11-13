@@ -13,6 +13,7 @@ import { ChannelTypeEditComponent } from './channel-type-edit/channel-type-edit.
 import { DeviceLogsComponent } from './device-logs/device-logs.component';
 import { SettingsRoutingModule } from './settings-routing.module';
 import { DeviceDialogComponent } from '../../dialogs/device-dialog/device-dialog.component';
+import { SyncDialogComponent } from '../../dialogs/sync-dialog/sync-dialog.component';
 import { SharedModule } from '../../shared/shared.module';
 import { ChannelTypesComponent } from './channel-types/channel-types.component';
 import { ReportFormatComponent } from './report-format/report-format.component';
@@ -36,10 +37,12 @@ import { ReportFormatComponent } from './report-format/report-format.component';
     ChannelTypesComponent,
     ChannelTypeEditComponent,
     DeviceDialogComponent,
+    SyncDialogComponent,
     ReportFormatComponent
   ],
   entryComponents: [
-    DeviceDialogComponent
+    DeviceDialogComponent,
+    SyncDialogComponent
   ],
   exports: [
     SettingsComponent,
@@ -53,7 +56,8 @@ import { ReportFormatComponent } from './report-format/report-format.component';
     DeviceLogsComponent,
     ChannelTypesComponent,
     ChannelTypeEditComponent,
-    DeviceDialogComponent
+    DeviceDialogComponent,
+    SyncDialogComponent
   ]
 })
 export class SettingsModule { }

@@ -1,0 +1,14 @@
+<div>
+  <div md-dialog-title>Select Date</div>
+  <div md-dialog-content>
+    <form #deviceForm="ngForm">
+      <label>Date <span class="asterisk">*</span></label>
+      <input class="form-control calendar no-spin" type="date" required [(ngModel)]="fromDate" [ngModelOptions]="{standalone: true}">
+    </form>
+  </div>
+  <div md-dialog-actions class="controls-row">
+    <span class="spacer"></span>
+    <button md-button md-dialog-close>Cancel</button>
+    <button md-raised-button color="primary" (click)="save()">Save</button>
+  </div>
+</div>
