@@ -69,7 +69,8 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
   isToday = false;
   isRunning = false;
   isDynamic = false;
-  isOnDuty = false;
+  isAttendance = false;
+  isContinue = false;
 
   selectedShift: Shift;
   selectedShiftType: ShiftType;
@@ -79,15 +80,6 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
   leaveBalances: LeaveBalance[] = [];
   onDutyBalance: LeaveBalance;
   compOffBalance: LeaveBalance;
-
-  // currentDate: ''
-  // onSelectedDate = [{
-  //   type: '',
-  //   date: '',
-  //   status: '',
-  //   units: ''
-  // }]
-
 
   days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
 
@@ -306,6 +298,12 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
     this.getLeaveBalances(() => {
       this.getShiftTypes();
     });
+
+    this.getAttendance()
+  }
+
+  getAttendance() {
+// Todo
   }
   getLeaveBalances(cb) {
     const input = new ServerPageInput();
@@ -318,8 +316,6 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
     this.onDutyBalance = null;
     this.compOffBalance = null;
     this.leaveBalances = [];
-
-
     this.amsLeaveService.leaveBalances.search(input).then(page => {
       this.leaveBalances = [];
       page.items.forEach(item => {
@@ -394,6 +390,46 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
 
     const endTime = this.dates.date(endDate).setTime(shiftType.endTime);
     this.isRunning = moment(new Date()).isBetween(moment(startTime), moment(endTime), 's', '[]')
+  }
+
+  onChange(value) {
+    if (value.checked === true) {
+      this.isContinue = true
+    } else {
+      this.isContinue = false
+    }
+  }
+
+
+  continueCurrentShift(isContinue) {
+    const attendance = this.effectiveShift.attendances.find(item => moment(item.ofDate).isSame(this.date, 'd'))
+
+    if (!this.isContinue) {
+      const nextShift = new Shift();
+      nextShift.date = moment(this.date).add(1, 'd').toDate();
+      nextShift.shiftType = this.effectiveShiftType;
+      const nextShiftEnd = moment(nextShift.shiftType.startTime).format('HH:mm')
+      const checkTimes: string[] = nextShiftEnd.split(':');
+      const value = moment(nextShift.date).hours(parseInt(checkTimes[0])).minutes(parseInt(checkTimes[1])).toDate()
+      attendance.checkOutExtend = value.toString();
+      this.attendance.checkOutExtend = attendance.checkOutExtend;
+      this.attendance.isContinue = this.isContinue;
+      this.amsAttendanceService.attendance.update(`${attendance.id}/extendShift`, this.attendance as any)
+    } else {
+      this.attendance.checkOutExtend = null;
+      this.amsAttendanceService.attendance.update(`${attendance.id}/extendShift`, this.attendance as any)
+    }
+    const model = {
+      continue: this.isContinue,
+      date: this.date,
+      employee: {
+        id: this.effectiveShift.employee.id
+      }
+    }
+
+    this.amsAttendanceService.attendance.simplePost(model, `continue`).then(() => {
+      this.toastyService.info({ title: 'Info', msg: 'Shift Continue' })
+    })
   }
 
   extendCurrentShift() {

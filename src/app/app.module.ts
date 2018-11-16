@@ -37,7 +37,7 @@ import { NavigationBarComponent } from './shared/components/navigation-bar/navig
     NavigationBarComponent,
     LeaveConfirmDialogComponent,
     LeaveReasonDialogComponent,
-    AddShiftDialogComponent
+    AddShiftDialogComponent,
   ],
   imports: [
     BrowserModule,

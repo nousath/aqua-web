@@ -84,6 +84,8 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2
 import { ExtendShiftDialogComponent } from './components/extend-shift-dialog/extend-shift-dialog.component';
 import { ShiftCountComponent } from './components/shift-count/shift-count.component';
 import { NamePipe } from './pipes/name.pipe';
+import { CommentDialogComponent } from './../dialogs/comment-dialog/comment-dialog.component';
+
 
 
 export const MaterialModules = [
@@ -133,6 +135,7 @@ export const MaterialModules = [
     GetDateDialogComponent,
     ExtendShiftDialogComponent,
     ShiftCountComponent,
+    CommentDialogComponent,
     NamePipe
   ],
   providers: [
@@ -188,7 +191,7 @@ export const MaterialModules = [
     ShiftCountComponent,
     NamePipe
   ],
-  entryComponents: [FileUploaderDialogComponent, BulkTimeLogsDialogComponent, GetDateDialogComponent, ExtendShiftDialogComponent],
+  entryComponents: [CommentDialogComponent, FileUploaderDialogComponent, BulkTimeLogsDialogComponent, GetDateDialogComponent, ExtendShiftDialogComponent],
 
 })
 export class SharedModule { }

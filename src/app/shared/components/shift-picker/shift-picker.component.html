@@ -43,8 +43,7 @@
     <button md-menu-item [mdMenuTriggerFor]="offOptions">Weekly Off</button>
     <button md-menu-item [mdMenuTriggerFor]="leaveOptions" [disabled]="isProcessing">Apply Leave</button>
     <button md-menu-item [mdMenuTriggerFor]="shiftOptions" [disabled]="isDynamic || isBeforeToday" (click)="stopPropagation($event)">Shifts</button>
-    <button md-menu-item (click)="stopPropagation($event)" [disabled]="isDynamic || !isRunning" (click)="extendCurrentShift()">Extend
-      Shift</button>
+    <button md-menu-item [mdMenuTriggerFor]="currentShiftOptions" (click)="stopPropagation($event)">Current Shift</button>
   </md-menu>
   <md-menu #offOptions="mdMenu" class="off" xPosition="after" [overlapTrigger]="false">
     <button md-menu-item [disabled]="isPast" (click)="setWeeklyOff()">
@@ -82,5 +81,16 @@
         <span>{{shiftType.name}}</span>
       </button>
     </div>
+  </md-menu>
+  
+
+  <md-menu #currentShiftOptions="mdMenu" class="off" xPosition="after" [overlapTrigger]="false">
+    <button md-menu-item (click)="stopPropagation($event)" [disabled]="isDynamic || !isRunning" (click)="extendCurrentShift()">
+        <span>Extend Shift</span>
+      </button>
+      <button md-menu-item (click)="stopPropagation($event)" [disabled]="isDynamic || !isRunning" (click)="continueCurrentShift(isContinue)">
+        <span>Continue Shift</span>
+    <md-slide-toggle [checked]="isContinue" (change)="onChange($event)"></md-slide-toggle>
+      </button>
   </md-menu>
 </div>
