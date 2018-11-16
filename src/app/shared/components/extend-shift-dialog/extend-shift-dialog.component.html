@@ -14,26 +14,28 @@
     <div class="controls-row">
       <label>End Time</label>
       <span class="spacer"></span>
-      <div  class="sub-text">
-        <a  class="hint" (click)="reset()">Reset</a>
+      <div class="sub-text">
+        <a class="hint" (click)="reset()">Reset</a>
       </div>
     </div>
     <md-card>
       <div class="form-group">
         <label>Date</label>
         <md-button-toggle-group class="form-control" [(ngModel)]="date">
-          <md-button-toggle [value]="currentShift.date">{{currentShift.date | date}}</md-button-toggle>
-          <md-button-toggle [value]="nextShift.date">{{nextShift.date | date}}</md-button-toggle>
+          <md-button-toggle [value]="currentShift.date" (click)="setTime(currentShift.shiftType.endTime)">{{currentShift.date
+            | date}}</md-button-toggle>
+          <md-button-toggle [value]="nextShift.date" (click)="setTime(nextShift.shiftType.startTime)">{{nextShift.date
+            | date}}</md-button-toggle>
         </md-button-toggle-group>
       </div>
       <div class="form-group">
         <label>Time</label>
-        <input class="form-control" type="time" [(ngModel)]="time" (blur)="timeChanged()">
-        <div (click)="date = nextShift.date" class="sub-text controls-row">
+        <input class="form-control" type="time" [(ngModel)]="time" (blur)="timeChanged()" [max]="nextShift.shiftType.startTime">
+        <!-- <div (click)="date = nextShift.date" class="sub-text controls-row">
           <span class="spacer"></span>
-          <!-- <a class="hint" (click)="setTime(nextShift.shiftType.startTime);">Next Start</a> -->
+          <a class="hint" (click)="setTime(nextShift.shiftType.startTime);">Next Start</a>
           <a class="hint" (click)="setTime(nextShift.shiftType.endTime)">Merge</a>
-        </div>
+        </div> -->
       </div>
     </md-card>
   </div>

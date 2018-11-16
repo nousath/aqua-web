@@ -42,7 +42,7 @@ import { ReportFormatComponent } from './report-format/report-format.component';
   ],
   entryComponents: [
     DeviceDialogComponent,
-    SyncDialogComponent
+    SyncDialogComponent,
   ],
   exports: [
     SettingsComponent,
@@ -57,7 +57,7 @@ import { ReportFormatComponent } from './report-format/report-format.component';
     ChannelTypesComponent,
     ChannelTypeEditComponent,
     DeviceDialogComponent,
-    SyncDialogComponent
+    SyncDialogComponent,
   ]
 })
 export class SettingsModule { }

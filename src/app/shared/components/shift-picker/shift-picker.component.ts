@@ -69,7 +69,8 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
   isToday = false;
   isRunning = false;
   isDynamic = false;
-  isOnDuty = false;
+  isAttendance = false;
+  isContinue = false;
 
   selectedShift: Shift;
   selectedShiftType: ShiftType;
@@ -79,15 +80,6 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
   leaveBalances: LeaveBalance[] = [];
   onDutyBalance: LeaveBalance;
   compOffBalance: LeaveBalance;
-
-  // currentDate: ''
-  // onSelectedDate = [{
-  //   type: '',
-  //   date: '',
-  //   status: '',
-  //   units: ''
-  // }]
-
 
   days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
 
@@ -306,6 +298,12 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
     this.getLeaveBalances(() => {
       this.getShiftTypes();
     });
+
+    this.getAttendance()
+  }
+
+  getAttendance() {
+    // Todo
   }
   getLeaveBalances(cb) {
     const input = new ServerPageInput();
@@ -318,8 +316,6 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
     this.onDutyBalance = null;
     this.compOffBalance = null;
     this.leaveBalances = [];
-
-
     this.amsLeaveService.leaveBalances.search(input).then(page => {
       this.leaveBalances = [];
       page.items.forEach(item => {
@@ -396,8 +392,17 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
     this.isRunning = moment(new Date()).isBetween(moment(startTime), moment(endTime), 's', '[]')
   }
 
+  toggleContinue() {
+    const isContinue = !this.attendance.isContinue
+    this.amsAttendanceService.attendance.update(`${this.attendance.id}/continue`, {
+      isContinue: isContinue
+    } as any).then(() => {
+      this.attendance.isContinue = isContinue
+      this.toastyService.info({ title: 'Info', msg: 'Done' })
+    })
+  }
+
   extendCurrentShift() {
-    const attendance = this.effectiveShift.attendances.find(item => moment(item.ofDate).isSame(this.date, 'd'))
 
     const currentShift = new Shift();
     currentShift.date = this.date;
@@ -409,9 +414,9 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
     let date = currentShift.date;
     let time = moment(currentShift.shiftType.endTime).format('HH:mm');
 
-    if (attendance && attendance.checkOutExtend) {
-      date = moment(attendance.checkOutExtend).startOf('day').toDate();
-      time = moment(attendance.checkOutExtend).format('HH:mm');
+    if (this.attendance && this.attendance.checkOutExtend) {
+      date = moment(this.attendance.checkOutExtend).startOf('day').toDate();
+      time = moment(this.attendance.checkOutExtend).format('HH:mm');
     }
 
     const dialogRef = this.dialog.open(ExtendShiftDialogComponent, {
@@ -437,11 +442,11 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
       }
       if (isReset) {
         this.attendance.checkOutExtend = null;
-        this.amsAttendanceService.attendance.update(`${attendance.id}/extendShift`, this.attendance as any)
+        this.amsAttendanceService.attendance.update(`${this.attendance.id}/extendShift`, this.attendance as any)
         this.toastyService.info({ title: 'Info', msg: 'Shift Reset' })
       } else {
         this.attendance.checkOutExtend = response;
-        this.amsAttendanceService.attendance.update(`${attendance.id}/extendShift`, this.attendance as any)
+        this.amsAttendanceService.attendance.update(`${this.attendance.id}/extendShift`, this.attendance as any)
         this.toastyService.info({ title: 'Info', msg: 'Shift Extended' })
       }
     });

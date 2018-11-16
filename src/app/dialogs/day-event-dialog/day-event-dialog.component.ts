@@ -17,7 +17,7 @@ export class DayEventDialogComponent implements OnInit {
   checkIn: string;
   checkOut: string;
   isHoliday = false;
-  hloiday = '';
+  holiday = '';
 
 
 
