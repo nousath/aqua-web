@@ -52,8 +52,25 @@ export class ExtendShiftDialogComponent implements OnInit {
   }
 
   timeChanged() {
+    const checkTimes: string[] = this.time.split(':');
+    const value = moment(this.date).hours(parseInt(checkTimes[0])).minutes(parseInt(checkTimes[1])).toDate()
 
-    console.log(this.time);
+    const nextStartTime = moment(this.nextShift.shiftType.startTime).toDate()
+    const upperLimit = moment(this.nextShift.date).hours(nextStartTime.getHours()).minutes(nextStartTime.getMinutes()).toDate()
+
+
+    const currentEndTime = moment(this.currentShift.shiftType.endTime).toDate()
+    const lowerLimit = moment(this.currentShift.date).hours(currentEndTime.getHours()).minutes(currentEndTime.getMinutes()).toDate()
+
+    if (value > upperLimit) {
+      this.setTime(this.nextShift.shiftType.startTime);
+      this.toastyService.info({ title: 'Info', msg: `You cannot extend the shift beyond next shift's start time. Instead you may want to 'Continue' the shift` })
+    }
+
+    if (value < lowerLimit) {
+      this.setTime(this.currentShift.shiftType.endTime);
+      this.toastyService.info({ title: 'Info', msg: `The time needs to be more than the shift's end time.` })
+    }
   }
   setTime(time) {
     this.time = moment(time).format('HH:mm')

@@ -303,7 +303,7 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
   }
 
   getAttendance() {
-// Todo
+    // Todo
   }
   getLeaveBalances(cb) {
     const input = new ServerPageInput();
@@ -392,48 +392,17 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
     this.isRunning = moment(new Date()).isBetween(moment(startTime), moment(endTime), 's', '[]')
   }
 
-  onChange(value) {
-    if (value.checked === true) {
-      this.isContinue = true
-    } else {
-      this.isContinue = false
-    }
-  }
-
-
-  continueCurrentShift(isContinue) {
-    const attendance = this.effectiveShift.attendances.find(item => moment(item.ofDate).isSame(this.date, 'd'))
-
-    if (!this.isContinue) {
-      const nextShift = new Shift();
-      nextShift.date = moment(this.date).add(1, 'd').toDate();
-      nextShift.shiftType = this.effectiveShiftType;
-      const nextShiftEnd = moment(nextShift.shiftType.startTime).format('HH:mm')
-      const checkTimes: string[] = nextShiftEnd.split(':');
-      const value = moment(nextShift.date).hours(parseInt(checkTimes[0])).minutes(parseInt(checkTimes[1])).toDate()
-      attendance.checkOutExtend = value.toString();
-      this.attendance.checkOutExtend = attendance.checkOutExtend;
-      this.attendance.isContinue = this.isContinue;
-      this.amsAttendanceService.attendance.update(`${attendance.id}/extendShift`, this.attendance as any)
-    } else {
-      this.attendance.checkOutExtend = null;
-      this.amsAttendanceService.attendance.update(`${attendance.id}/extendShift`, this.attendance as any)
-    }
-    const model = {
-      continue: this.isContinue,
-      date: this.date,
-      employee: {
-        id: this.effectiveShift.employee.id
-      }
-    }
-
-    this.amsAttendanceService.attendance.simplePost(model, `continue`).then(() => {
-      this.toastyService.info({ title: 'Info', msg: 'Shift Continue' })
+  toggleContinue() {
+    const isContinue = !this.attendance.isContinue
+    this.amsAttendanceService.attendance.update(`${this.attendance.id}/continue`, {
+      isContinue: isContinue
+    } as any).then(() => {
+      this.attendance.isContinue = isContinue
+      this.toastyService.info({ title: 'Info', msg: 'Done' })
     })
   }
 
   extendCurrentShift() {
-    const attendance = this.effectiveShift.attendances.find(item => moment(item.ofDate).isSame(this.date, 'd'))
 
     const currentShift = new Shift();
     currentShift.date = this.date;
@@ -445,9 +414,9 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
     let date = currentShift.date;
     let time = moment(currentShift.shiftType.endTime).format('HH:mm');
 
-    if (attendance && attendance.checkOutExtend) {
-      date = moment(attendance.checkOutExtend).startOf('day').toDate();
-      time = moment(attendance.checkOutExtend).format('HH:mm');
+    if (this.attendance && this.attendance.checkOutExtend) {
+      date = moment(this.attendance.checkOutExtend).startOf('day').toDate();
+      time = moment(this.attendance.checkOutExtend).format('HH:mm');
     }
 
     const dialogRef = this.dialog.open(ExtendShiftDialogComponent, {
@@ -473,11 +442,11 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
       }
       if (isReset) {
         this.attendance.checkOutExtend = null;
-        this.amsAttendanceService.attendance.update(`${attendance.id}/extendShift`, this.attendance as any)
+        this.amsAttendanceService.attendance.update(`${this.attendance.id}/extendShift`, this.attendance as any)
         this.toastyService.info({ title: 'Info', msg: 'Shift Reset' })
       } else {
         this.attendance.checkOutExtend = response;
-        this.amsAttendanceService.attendance.update(`${attendance.id}/extendShift`, this.attendance as any)
+        this.amsAttendanceService.attendance.update(`${this.attendance.id}/extendShift`, this.attendance as any)
         this.toastyService.info({ title: 'Info', msg: 'Shift Extended' })
       }
     });
