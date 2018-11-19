@@ -41,6 +41,7 @@ export class AttendanceLogsComponent implements OnInit {
   date: any;
   isButton = true;
   checkTime: Date;
+  logsSource = false;
   attendanceLogs = [];
   extraShiftCount = 0;
   nextDayIn = false;
@@ -171,6 +172,20 @@ export class AttendanceLogsComponent implements OnInit {
       }
 
       this.timeLogsLength = this.attendance.timeLogs.length;
+
+      if (this.attendance && this.attendance.timeLogs && this.timeLogsLength !== 0) {
+        // tslint:disable-next-line:no-shadowed-variable
+        let count = 0;
+        // tslint:disable-next-line:no-shadowed-variable
+        this.attendance.timeLogs.forEach(item => {
+          if (item.source === 'system') {
+            count = count + 1;
+          }
+          if (count !== 0) {
+            this.logsSource = true;
+          }
+        })
+      }
       if (shiftSpan) {
         this.extraShiftCount = (workSpan / shiftSpan) - 1
 
@@ -181,6 +196,7 @@ export class AttendanceLogsComponent implements OnInit {
         }
       }
     }).catch();
+  this.logsSource = false;
   }
 
   getLogs() {

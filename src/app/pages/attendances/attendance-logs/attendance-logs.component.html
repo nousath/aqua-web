@@ -1,126 +1,133 @@
 <div class="row page_header">
-    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-        <a md-raised-button class="reply" color="primary" (click)="backClicked()">
-            <md-icon>reply</md-icon> Back
-        </a>
-        <h5>
-            <b>Time Logs</b>
-        </h5>
-    </div>
-    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-        <h5>
-            <button md-icon-button (click)="showPreviousDate()">
-                <md-icon>arrow_back</md-icon>
-            </button>
-            {{ofDate | date}}
-            <button md-icon-button (click)="showNextDate()">
-                <md-icon>arrow_forward</md-icon>
-            </button>
-        </h5>
-    </div>
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+    <a md-raised-button class="reply" color="primary" (click)="backClicked()">
+      <md-icon>reply</md-icon> Back
+    </a>
+    <h5>
+      <b>Time Logs</b>
+    </h5>
+  </div>
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+    <h5>
+      <button md-icon-button (click)="showPreviousDate()">
+        <md-icon>arrow_back</md-icon>
+      </button>
+      {{ofDate | date}}
+      <button md-icon-button (click)="showNextDate()">
+        <md-icon>arrow_forward</md-icon>
+      </button>
+    </h5>
+  </div>
 </div>
 <md-spinner class="custom_spinner" *ngIf="employee?.isProcessing || logs?.isLoading || attendances?.isLoading || timeLog?.isProcessing"
-    mode="indeterminate"></md-spinner>
+  mode="indeterminate"></md-spinner>
 <br>
 <div class="row">
-    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-        <md-card>
-            <div class="row">
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 capitalize">
-                    <h4>{{employee?.properties?.name}}</h4>
-                    <h5>{{employee?.properties?.displayCode}}</h5>
-                    <h5>{{employee?.properties?.designation}}</h5>
-                </div>
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    <div class="row profileImage">
-                        <img *ngIf="employee?.properties?.picUrl" [src]="employee?.properties?.picUrl" width="100%" onError="this.src='/assets/images/blank.png'">
-                        <img *ngIf="!employee?.properties?.picUrl" alt="img" src="assets/images/blank.png" width="100%">
-                    </div>
-                </div>
-                <br>
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <table class="table">
-                        <tr>
-                            <td> Shift : </td>
-                            <td> {{ (attendance?.shift?.shiftType?.name || employee?.properties?.shiftType?.name)| titlecase}}
-                                <span *ngIf="extraShiftCount !== 0">+ {{extraShiftCount}} Shift(s)</span>
-                            </td>
-                        </tr>
-                        <tr class="capitalize">
-                            <td> Shift Time: </td>
-                            <td> {{(attendance?.shift?.shiftType || employee?.properties?.shiftType)?.startTime | date:'shortTime'}}
-                                - {{(attendance?.shift?.shiftType || employee?.properties?.shiftType)?.endTime | date:'shortTime'}}</td>
-                        </tr>
-                        <tr class="capitalize">
-                            <td> CheckIn : </td>
-                            <td> {{attendance?.checkIn | date: 'shortTime'}}</td>
-                        </tr>
-                        <tr class="capitalize">
-                            <td> CheckOut : </td>
-                            <td> {{attendance?.checkOut | date: 'shortTime'}}</td>
-                        </tr>
-                        <tr class="capitalize">
-                            <td> Shift Extended : </td>
-                            <td> {{attendance?.checkOutExtend | date: 'shortTime'}}</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </md-card>
-    </div>
-    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-        <div>
-            <md-card>
-                <div>
-                    <!-- <aqua-add-attendance-logs [attendance]="attendance"></aqua-add-attendance-logs> -->
-                    <div class="table-responsive">
-                        <table class="table table-condensed table-hover">
-                            <thead class="primary_thead">
-                                <tr>
-                                    <th width="20%" class="text-center">Day</th>
-                                    <th width="20%" class="text-center">Time</th>
-                                    <th width="10%" class="text-center" *ngIf="timeLogsLength != 1">Type</th>
-                                    <th width="25%" class="text-center">Source</th>
-                                    <th width="20%" class="text-center">IP Address</th>
-                                    <th width="20%" class="text-center"></th>
-                                </tr>
-                            </thead>
-
-                            <tbody *ngIf="attendance">
-
-                                <tr class="capitalize" *ngFor="let item of attendance.timeLogs;index as i">
-                                    <td class="text-center" *ngIf="!item?.location?.show && item">{{item?.time | date: 'dd-MM-yyyy' || '--'}}</td>
-                                    <td class="text-center" *ngIf="!item?.location?.show && item">{{item?.time | date: 'h:mm a' || '--'}}</td>
-                                    <td class="text-center" *ngIf="!item?.location?.show && item.type =='checkIn' && timeLogsLength != 1">In</td>
-                                    <td class="text-center" *ngIf="!item?.location?.show && item.type =='checkOut' &&  timeLogsLength != 1">Out</td>
-                                    <td class="text-center" *ngIf="!item?.location?.show">{{item.source}}</td>
-                                    <td class="text-center" *ngIf="!item?.location?.show">{{item.ipAddress}}</td>
-                                    <td class="text-center" *ngIf="!item?.location?.show">
-                                        <span [matMenuTriggerFor]="moreMenu" md-icon-button style="cursor: pointer" *ngIf="(i == 0 || i == timeLogsLength - 1) && (userType === 'superadmin')">
-                                            <md-icon>more_vert</md-icon>
-                                        </span>
-                                        <md-menu #moreMenu="mdMenu">
-                                            <button md-menu-item (click)="moveNext(item)" [disabled]="!canMoveNext(item)">
-                                                <md-icon>arrow_forward</md-icon> Move to Next
-                                            </button>
-                                            <button md-menu-item (click)="movePrevious(item)" [disabled]="!canMovePrevious(item)">
-                                                <md-icon>arrow_back</md-icon> Move to Previous
-                                            </button>
-                                        </md-menu>
-                                    </td>
-                                </tr>
-                                <tr *ngIf="userType === 'superadmin'">
-                                    <td colspan="6">
-                                        <a md-raised-button color="primary" (click)="addLogs()" style="float: right">
-                                            Add Logs
-                                        </a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </md-card>
+  <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+    <md-card>
+      <div class="row">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 capitalize">
+          <h4>{{employee?.properties?.name}}</h4>
+          <h5>{{employee?.properties?.displayCode}}</h5>
+          <h5>{{employee?.properties?.designation}}</h5>
         </div>
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+          <div class="row profileImage">
+            <img *ngIf="employee?.properties?.picUrl" [src]="employee?.properties?.picUrl" width="100%" onError="this.src='/assets/images/blank.png'">
+            <img *ngIf="!employee?.properties?.picUrl" alt="img" src="assets/images/blank.png" width="100%">
+          </div>
+        </div>
+        <br>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <table class="table">
+            <tr>
+              <td> Shift : </td>
+              <td> {{ (attendance?.shift?.shiftType?.name || employee?.properties?.shiftType?.name)| titlecase}}
+                <span *ngIf="extraShiftCount !== 0">+ {{extraShiftCount}} Shift(s)</span>
+              </td>
+            </tr>
+            <tr class="capitalize">
+              <td> Shift Time: </td>
+              <td> {{(attendance?.shift?.shiftType || employee?.properties?.shiftType)?.startTime | date:'shortTime'}}
+                - {{(attendance?.shift?.shiftType || employee?.properties?.shiftType)?.endTime | date:'shortTime'}}</td>
+            </tr>
+            <tr class="capitalize">
+              <td> CheckIn : </td>
+              <td> {{attendance?.checkIn | date: 'shortTime'}}</td>
+            </tr>
+            <tr class="capitalize">
+              <td> CheckOut : </td>
+              <td> {{attendance?.checkOut | date: 'shortTime'}}</td>
+            </tr>
+            <tr class="capitalize" *ngIf="logsSource">
+              <td> Shift Continued </td>
+              <td></td>
+            </tr>
+            <tr class="capitalize" *ngIf="!logsSource">
+              <td> Shift Extended : </td>
+              <td> {{attendance?.checkOutExtend | date: 'shortTime'}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </md-card>
+  </div>
+  <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+    <div>
+      <md-card>
+        <div>
+          <!-- <aqua-add-attendance-logs [attendance]="attendance"></aqua-add-attendance-logs> -->
+          <div class="table-responsive">
+            <table class="table table-condensed table-hover">
+              <thead class="primary_thead">
+                <tr>
+                  <th width="20%" class="text-center">Day</th>
+                  <th width="20%" class="text-center">Time</th>
+                  <th width="10%" class="text-center" *ngIf="timeLogsLength != 1">Type</th>
+                  <th width="25%" class="text-center">Source</th>
+                  <th width="20%" class="text-center">IP Address</th>
+                  <th width="20%" class="text-center"></th>
+                </tr>
+              </thead>
+
+              <tbody *ngIf="attendance">
+
+                <tr class="capitalize" *ngFor="let item of attendance.timeLogs;index as i">
+                  <td class="text-center" *ngIf="!item?.location?.show && item">{{item?.time | date: 'dd-MM-yyyy' ||
+                    '--'}}</td>
+                  <td class="text-center" *ngIf="!item?.location?.show && item">{{item?.time | date: 'h:mm a' || '--'}}</td>
+                  <td class="text-center" *ngIf="!item?.location?.show && item.type =='checkIn' && timeLogsLength != 1">In</td>
+                  <td class="text-center" *ngIf="!item?.location?.show && item.type =='checkOut' &&  timeLogsLength != 1">Out</td>
+                  <td class="text-center" *ngIf="!item?.location?.show">{{item.source}}</td>
+                  <td class="text-center" *ngIf="!item?.location?.show">{{item.ipAddress}}</td>
+                  <td class="text-center" *ngIf="!item?.location?.show">
+                    <span [matMenuTriggerFor]="moreMenu" md-icon-button style="cursor: pointer" *ngIf="(i == 0 || i == timeLogsLength - 1) && (userType === 'superadmin')">
+                      <md-icon>more_vert</md-icon>
+                    </span>
+                    <md-menu #moreMenu="mdMenu">
+                      <!-- <button md-menu-item (click)="moveNext(item)" [disabled]="!canMoveNext(item)"> -->
+                      <button md-menu-item (click)="moveNext(item)" [disabled]=" timeLogsLength > 1 && i == 0">
+                        <md-icon>arrow_forward</md-icon> Move to Next
+                      </button>
+                      <!-- <button md-menu-item (click)="movePrevious(item)" [disabled]="!canMovePrevious(item)"> -->
+                      <button md-menu-item (click)="movePrevious(item)" [disabled]=" timeLogsLength > 1 && i == timeLogsLength - 1">
+                        <md-icon>arrow_back</md-icon> Move to Previous
+                      </button>
+                    </md-menu>
+                  </td>
+                </tr>
+                <tr *ngIf="userType === 'superadmin'">
+                  <td colspan="6">
+                    <a md-raised-button color="primary" (click)="addLogs()" style="float: right">
+                      Add Logs
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </md-card>
     </div>
+  </div>
 </div>
