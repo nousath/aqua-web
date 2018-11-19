@@ -91,30 +91,32 @@
               </thead>
 
               <tbody *ngIf="attendance">
-
                 <tr class="capitalize" *ngFor="let item of attendance.timeLogs;index as i">
-                  <td class="text-center" *ngIf="!item?.location?.show && item">{{item?.time | date: 'dd-MM-yyyy' ||
-                    '--'}}</td>
-                  <td class="text-center" *ngIf="!item?.location?.show && item">{{item?.time | date: 'h:mm a' || '--'}}</td>
-                  <td class="text-center" *ngIf="!item?.location?.show && item.type =='checkIn' && timeLogsLength != 1">In</td>
-                  <td class="text-center" *ngIf="!item?.location?.show && item.type =='checkOut' &&  timeLogsLength != 1">Out</td>
-                  <td class="text-center" *ngIf="!item?.location?.show">{{item.source}}</td>
-                  <td class="text-center" *ngIf="!item?.location?.show">{{item.ipAddress}}</td>
-                  <td class="text-center" *ngIf="!item?.location?.show">
-                    <span [matMenuTriggerFor]="moreMenu" md-icon-button style="cursor: pointer" *ngIf="(i == 0 || i == timeLogsLength - 1) && (userType === 'superadmin')">
-                      <md-icon>more_vert</md-icon>
-                    </span>
-                    <md-menu #moreMenu="mdMenu">
-                      <!-- <button md-menu-item (click)="moveNext(item)" [disabled]="!canMoveNext(item)"> -->
-                      <button md-menu-item (click)="moveNext(item)" [disabled]=" timeLogsLength > 1 && i == 0">
-                        <md-icon>arrow_forward</md-icon> Move to Next
-                      </button>
-                      <!-- <button md-menu-item (click)="movePrevious(item)" [disabled]="!canMovePrevious(item)"> -->
-                      <button md-menu-item (click)="movePrevious(item)" [disabled]=" timeLogsLength > 1 && i == timeLogsLength - 1">
-                        <md-icon>arrow_back</md-icon> Move to Previous
-                      </button>
-                    </md-menu>
-                  </td>
+                  <ng-container *ngIf="item.source != 'system'">
+                    <td class="text-center" *ngIf="!item?.location?.show && item">{{item?.time | date: 'dd-MM-yyyy' ||
+                      '--'}}</td>
+                    <td class="text-center" *ngIf="!item?.location?.show && item">{{item?.time | date: 'h:mm a' ||
+                      '--'}}</td>
+                    <td class="text-center" *ngIf="!item?.location?.show && item.type =='checkIn' && timeLogsLength != 1">In</td>
+                    <td class="text-center" *ngIf="!item?.location?.show && item.type =='checkOut' &&  timeLogsLength != 1">Out</td>
+                    <td class="text-center" *ngIf="!item?.location?.show">{{item.source}}</td>
+                    <td class="text-center" *ngIf="!item?.location?.show">{{item.ipAddress}}</td>
+                    <td class="text-center" *ngIf="!item?.location?.show">
+                      <span [matMenuTriggerFor]="moreMenu" md-icon-button style="cursor: pointer" *ngIf="(i == 0 || i == timeLogsLength - 1) && (userType === 'superadmin')">
+                        <md-icon>more_vert</md-icon>
+                      </span>
+                      <md-menu #moreMenu="mdMenu">
+                        <!-- <button md-menu-item (click)="moveNext(item)" [disabled]="!canMoveNext(item)"> -->
+                        <button md-menu-item (click)="moveNext(item)" [disabled]=" timeLogsLength > 1 && i == 0">
+                          <md-icon>arrow_forward</md-icon> Move to Next
+                        </button>
+                        <!-- <button md-menu-item (click)="movePrevious(item)" [disabled]="!canMovePrevious(item)"> -->
+                        <button md-menu-item (click)="movePrevious(item)" [disabled]=" timeLogsLength > 1 && i == timeLogsLength - 1">
+                          <md-icon>arrow_back</md-icon> Move to Previous
+                        </button>
+                      </md-menu>
+                    </td>
+                  </ng-container>
                 </tr>
                 <tr *ngIf="userType === 'superadmin'">
                   <td colspan="6">
