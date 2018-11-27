@@ -173,18 +173,8 @@ export class AttendanceLogsComponent implements OnInit {
 
       this.timeLogsLength = this.attendance.timeLogs.length;
 
-      if (this.attendance && this.attendance.timeLogs && this.timeLogsLength !== 0) {
-        // tslint:disable-next-line:no-shadowed-variable
-        let count = 0;
-        // tslint:disable-next-line:no-shadowed-variable
-        this.attendance.timeLogs.forEach(item => {
-          if (item.source === 'system') {
-            count = count + 1;
-          }
-          if (count !== 0) {
+      if (this.attendance && this.attendance.timeLogs && this.timeLogsLength !== 0 && this.attendance.isContinue) {
             this.logsSource = true;
-          }
-        })
       }
       if (shiftSpan) {
         this.extraShiftCount = (workSpan / shiftSpan) - 1
