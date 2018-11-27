@@ -77,7 +77,6 @@ export class ReportsComponent implements OnInit {
 
     switch (this.selected.type) {
       case 'daily-attendance':
-      case 'employees-details':
         this.filterFields = [
           'date',
           'name',
@@ -110,7 +109,21 @@ export class ReportsComponent implements OnInit {
           'contractors'
         ];
         break;
-
+        case 'employees-details':
+        this.filterFields = [
+          'employeeStatus',
+          'name',
+          'code',
+          'biometricId',
+          'joiningDate',
+          'designations',
+          'departments',
+          'employeeTypes',
+          'userTypes',
+          'contractors',
+          // 'supervisor',
+        ];
+        break;
     }
 
     this.showFilters = true;
