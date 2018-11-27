@@ -8,8 +8,10 @@ export class DayEvent {
   hoursWorked: number = null;
   ofDate: string = null;
   status: string;
+  isContinue: boolean;
   shift: Shift = new Shift();
   timeLogs: TimeLogs[];
   employee: { id: string } = { id: '' };
   checkOutExtend: string;
 }
+
