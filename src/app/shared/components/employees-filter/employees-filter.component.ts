@@ -35,12 +35,17 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
 
   @Input()
   fromDate: Date;
+  @Input()
+  statusFilter: string[] = [];
 
   @Input()
   tillDate: Date;
 
   @Input()
   terminationDate: Date;
+
+  @Input()
+ joiningDate: Date;
 
   @Input()
   selectedEmployeeName: string;
@@ -59,6 +64,7 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
   selectedDesignation = [];
   selectedDepartment = [];
   selectedUserType = [];
+  selectedEmployeeStatusList = [];
   selectedContractor = [];
   selectedShiftType = [];
   selectedSupervisor: Employee;
@@ -84,6 +90,7 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
     date?: boolean,
     tillDate?: boolean,
     terminationDate?: boolean,
+    joiningDate?: boolean,
     terminationReason?: boolean,
     month?: boolean,
     name?: boolean,
@@ -95,7 +102,7 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
     contractors?: boolean,
     supervisor?: boolean,
     employeeTypes?: boolean,
-
+    employeeStatus?: boolean,
     shiftTypes?: boolean,
     attendanceStates?: boolean,
 
@@ -115,6 +122,7 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
   checkInStatusList = [];
   checkOutStatusList = [];
   employeeTypeList = [];
+  employeeStatusList = [];
   terminationReasonList = [];
   clockedStatusList = [];
 
@@ -185,6 +193,11 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
       { id: 2, code: 'contract', itemName: 'Contract' }
     ]
 
+    this.employeeStatusList = [
+      { id: 1, code: 'activate', itemName: 'Activate' },
+      { id: 2, code: 'deactivate', itemName: 'Deactivate' },
+      { id: 3, code: 'archive', itemName: 'Archive' }
+    ]
     this.terminationReasonList = [
       { id: 1, code: 'resign', itemName: 'Resign' },
       { id: 2, code: 'terminate', itemName: 'Terminate' },
@@ -334,6 +347,7 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
     this.selectedDesignation = [];
     this.selectedDepartment = [];
     this.selectedUserType = [];
+    this.selectedEmployeeStatusList = [];
     this.selectedContractor = [];
     this.selectedAttendanceStatus = [];
     this.selectedShiftType = [];
@@ -358,6 +372,7 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
     this.selectedTerminationReason = null;
     this.selectedSupervisor = null;
     this.terminationDate = null;
+    this.joiningDate = null;
     this.onReset.emit();
   }
 
@@ -381,6 +396,12 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
       params.dates = params.dates || {}
       params.dates.terminationDate = this.terminationDate
       values.terminationDate = this.terminationDate;
+    }
+
+    if (this.joiningDate) {
+      params.dates = params.dates || {}
+      params.dates.joiningDate = this.joiningDate
+      values.joiningDate = this.joiningDate;
     }
 
     if (this.selectedEmployeeName) {
@@ -424,6 +445,13 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
       params.employee.userTypes = this.selectedUserType.map(item => ({ id: item.id, name: item.itemName }))
       values.userTypeIds = this.selectedUserType.map(item => item.id)
     }
+
+    if (this.selectedEmployeeStatusList && this.selectedEmployeeStatusList.length) {
+      params.employee = params.employee || {}
+      params.employee.employeeStatus = this.selectedEmployeeStatusList.map(item => ({ id: item.id, name: item.itemName, code: item.code }))
+      values.employeeStatus = this.selectedEmployeeStatusList.map(item => item.id)
+    }
+
 
     if (this.selectedTerminationReason && this.selectedTerminationReason.length) {
       params.employee = params.employee || {}
