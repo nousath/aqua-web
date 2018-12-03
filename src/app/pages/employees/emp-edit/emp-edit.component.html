@@ -473,12 +473,12 @@
                         <b>Reason:</b>
                     </div>
                     <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <select class="form-control" [(ngModel)]="employee.reason">
-                            <option disabled value="null">Select an option</option>
-                            <option value="resign">Resign</option>
-                            <option value="terminate">Terminate</option>
-                            <option value="death">Death</option>
-                        </select>
+                            <input list="reason" name="reason" class="form-control" [(ngModel)]="employee.reason">
+                            <datalist id="reason">
+                                    <option value="Resign"></option>
+                                    <option value="Death"></option>
+                                    <option value="Terminate"></option>
+                                </datalist>
                     </div>
                 </div>
             </div>

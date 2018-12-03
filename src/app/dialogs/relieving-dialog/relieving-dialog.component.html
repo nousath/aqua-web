@@ -11,14 +11,15 @@
 </div> -->
   <table style="float: left; width: 100%;">
     <tr>
-      <th>Reason of Releiving</th>
+      <th>Reason of Releiving
+      <input list="reason" name="reason" class="form-control" [(ngModel)]="employee.reason">
+    </th>
       <td>
-        <select name="reason" class="form-control" [(ngModel)]="employee.reason">
-          <option disabled value="" selected="selected">Select an reason</option>
-          <option value="resign">Resign</option>
-          <option value="death">Death</option>
-          <option value="terminate">Terminate</option>
-        </select>
+        <datalist id="reason">
+          <option value="Resign"></option>
+          <option value="Death"></option>
+          <option value="Terminate"></option>
+      </datalist>
       </td>
     </tr>
     <tr style="padding-top: 10px;">
