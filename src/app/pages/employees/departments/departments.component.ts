@@ -40,8 +40,8 @@ export class DepartmentsComponent implements OnInit {
         field: 'divisionId',
         value: 1,
       },
-      'ofDate',
-      'departments']
+        'ofDate',
+        'departments']
     });
 
     this.department = new Model({

@@ -1,498 +1,507 @@
 <br>
 <div class="row text-center">
-    <a md-raised-button class="reply" (click)="backClicked()">
-        <md-icon>reply</md-icon>
-    </a>
-    <h5>
-        <b> {{employee?.id ? 'Employee Details' : 'New Employee' }}</b>
-    </h5>
-    <span class="hradrbtns">
-        <button *ngIf="!isNew" md-raised-button [disabled]="isProcessing" (click)="resetPassword()">Reset Password</button>
-        <button md-raised-button [disabled]="isProcessing || !employee.name || !employee.displayCode" color="primary" (click)="save()">
-            <span *ngIf="isNew">Create</span>
-            <span *ngIf="!isNew">Update</span>
-        </button>
-    </span>
+  <a md-raised-button class="reply" (click)="backClicked()">
+    <md-icon>reply</md-icon>
+  </a>
+  <h5>
+    <b> {{employee?.id ? 'Employee Details' : 'New Employee' }}</b>
+  </h5>
+  <span class="hradrbtns">
+    <button *ngIf="!isNew" md-raised-button [disabled]="isProcessing" (click)="resetPassword()">Reset Password</button>
+    <button md-raised-button [disabled]="isProcessing || !employee.name || !employee.displayCode" color="primary"
+      (click)="save()">
+      <span *ngIf="isNew">Create</span>
+      <span *ngIf="!isNew">Update</span>
+    </button>
+  </span>
 
 </div>
 <br>
 <br>
 <br>
 <div class="row capitalize">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 profieCrd">
-        <md-card>
-            <div class="row nameFormat">
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    <h4>{{employee?.name}}</h4>
-                    <h5>{{employee?.displayCode}}</h5>
-                </div>
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    <div class="row profileImage cursor">
-                        <img *ngIf="employee?.picUrl" class="avatar" [src]="employee?.picUrl" onerror="this.src = 'assets/images/blank.png'" width="100%">
-                        <img *ngIf="!employee?.picUrl" class="avatar" alt="img" src="assets/images/blank.png" width="100%">
-                        <button *ngIf="employee?.id" (click)="isChangeImage = !isChangeImage" class="btn chimg" mdTooltip="Change Profile Picture"
-                            [mdTooltipPosition]="'above'">
-                            Change Profile Photo
-                        </button>
-                    </div>
-                </div>
-                <br>
-                <div *ngIf="isChangeImage" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center fileBox">
-                    <h5>
-                        <b>Image Upload</b>
-                    </h5>
-                    <input class="file" id="uploader" type="file" ng2FileSelect [uploader]="uploader" />
-                    <div *ngFor="let item of uploader.queue">
-                        <button md-raised-button color="primary" (click)="uploadImg()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
-                            Upload
-                        </button>
-                        <button md-raised-button class="btn_grey" (click)="isChangeImage = !isChangeImage" [disabled]="item.isReady || item.isUploading  || uploader.isUploading">
-                            Cancel
-                        </button>
-                    </div>
-                    <button *ngIf="uploader?.queue?.length == 0" (click)="isChangeImage = !isChangeImage" md-raised-button class="btn_grey">
-                        Cancel
-                    </button>
-                </div>
-                <br>
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <br> User Type:&nbsp;
-                    <select class="form-control userType" [(ngModel)]="employee.userType">
-                        <option value="superadmin">Super Admin</option>
-                        <option value="admin">Admin</option>
-                        <option value="normal">Normal</option>
-                    </select>
-                </div>
-            </div>
-        </md-card>
-        <br>
-        <md-card *ngIf="!isNew">
-            <aqua-finger-print [employee]="amsEmployee"></aqua-finger-print>
-        </md-card>
-        <br>
-        <div *ngIf="!isNew">
-            <aqua-emp-leaves [employee]="amsEmployee"></aqua-emp-leaves>
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 profieCrd">
+    <md-card>
+      <div class="row nameFormat">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+          <h4>{{employee?.name}}</h4>
+          <h5>{{employee?.displayCode}}</h5>
         </div>
-        <br>
-        <div *ngIf="!isNew">
-            <aqua-emp-shift [employee]="amsEmployee"></aqua-emp-shift>
-        </div>
-        <br>
-    </div>
-
-    <md-spinner class="custom_spinner" *ngIf="isProcessing" mode="indeterminate">
-    </md-spinner>
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
-        <md-card>
-            <div class="dialog_Header text-center">
-                <h5>
-                    <b>Personal</b>
-                </h5>
-            </div>
-            <br>
-            <div class="form-group row">
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>Name:</b>
-                        <span class="asterisk">*</span>
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input name="empName" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.name"
-                            required>
-                    </div>
-                </div>
-                <br class="fieldsGap">
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>Gender:</b>
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <select name="gender" class="form-control" [(ngModel)]="employee.gender">
-                            <option [ngValue]="null">Select an option</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="others">Others</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class=" form-group row">
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>DOB:</b>
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input name="dob" id="dateSelector" type="text" class="form-control input-sm calendar no-spin">
-                    </div>
-                </div>
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>Father/Husband:</b>
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input name="fname" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.fatherName">
-                    </div>
-                </div>
-            </div>
-            <div class=" form-group row">
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>Blood Group:</b>
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <select name="bgroup" class="form-control" [(ngModel)]="employee.bloodGroup">
-                            <option [ngValue]="null">Select an option</option>
-                            <option value="A+">A+</option>
-                            <option value="B+">B+</option>
-                            <option value="O+">O+</option>
-                            <option value="AB+">AB+</option>
-                            <option value="A-">A-</option>
-                            <option value="B-">B-</option>
-                            <option value="O-">O-</option>
-                            <option value="AB-">AB-</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>{{isNew ? '':'Status:'}}</b>
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <select *ngIf="!isNew" name="status" class="form-control" [(ngModel)]="employee.status" [required]="!isNew">
-                            <option [ngValue]="null">Select an option</option>
-                            <option value="activate">Activate</option>
-                            <option value="deactivate">Deactivate</option>
-                            <option value="archive">Archive</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class=" form-group row">
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>Phone:</b>
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input name="phone" type="text" class="form-control" [maxlength]="validatorService.phoneNumberLength" [minLength]="validatorService.phoneNumberLength"
-                            [pattern]="validatorService.onlyNumber" [(ngModel)]="employee.phone">
-                    </div>
-                </div>
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>Email:</b>
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input name="email" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.email">
-                    </div>
-                </div>
-            </div>
-            <div class=" form-group row">
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>Aadhaar No:</b>
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input name="aadhaar" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.aadhaar">
-                    </div>
-                </div>
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>Pan No:</b>
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input name="pan" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.pan">
-                    </div>
-                </div>
-            </div>
-        </md-card>
-        <br>
-        <md-card>
-            <div class="dialog_Header text-center">
-                <h5>
-                    <b>Employment</b>
-                </h5>
-            </div>
-            <br>
-            <div class=" form-group row">
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>Code:</b>
-                        <span class="asterisk">*</span>
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.displayCode">
-                    </div>
-                </div>
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>Supervisor:</b>
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input ngui-auto-complete [min-chars]="1" placeholder="Employee search" [(ngModel)]="employee.supervisor" [source]="empSource.bind(this)"
-                            [value-formatter]="empFormatter" [list-formatter]="empListFormatter" class="form-control search"
-                            name="Supervisor" />
-                    </div>
-                </div>
-            </div>
-            <div class=" form-group row">
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>Biometric Id:</b>
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input type="number" class="form-control" [(ngModel)]="employee.code" required>
-                    </div>
-                </div>
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>Designation:</b>
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <select class="form-control" [(ngModel)]="designationId">
-                            <option [ngValue]="null">Select an option</option>
-                            <option *ngFor="let item of designations" [value]="item.id">{{item.name}}</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class=" form-group row">
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>Type:</b>
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <select class="form-control" [(ngModel)]="employee.employmentType">
-                            <option disabled value=" " selected>Select an option</option>
-                            <option value="permanent">Permanent</option>
-                            <option value="contract">Contract</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>Department:</b>
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <select class="form-control" [(ngModel)]="departmentId">
-                            <option *ngFor="let item of departments" [value]="item.id">{{item.name}}</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class=" form-group row">
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>Date Of Joining:</b>
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input id="joiningDate" type="text" class="form-control input-sm calendar no-spin">
-                    </div>
-                </div>
-            </div>
-        </md-card>
-        <br *ngIf="employee.employmentType == 'contract'">
-        <md-card [class.show]="employee.employmentType == 'contract'" [class.hide]="employee.employmentType != 'contract'">
-            <div class="dialog_Header text-center">
-                <h5>
-                    <b>Contractor Details</b>
-                </h5>
-            </div>
-            <br>
-            <div class=" form-group row">
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>Contractor:</b>
-
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input ngui-auto-complete [min-chars]="1" placeholder="Contractor search" [(ngModel)]="employee.contractor" [source]="empSource.bind(this)"
-                            [value-formatter]="empFormatter" [list-formatter]="empListFormatter" class="form-control search"
-                            name="Contractor">
-                    </div>
-                </div>
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>Date of Membership:</b>
-                        <span *ngIf="!isNew" class="asterisk">*</span>
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input id="membershipDate" type="text" class="form-control input-sm calendar no-spin">
-                    </div>
-                </div>
-            </div>
-        </md-card>
-        <br>
-        <md-card>
-            <div class="dialog_Header text-center">
-                <h5>
-                    <b>Address</b>
-                </h5>
-            </div>
-            <br>
-            <div class=" form-group row">
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>Line 1:</b>
-
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input name="address1" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.address1">
-                    </div>
-                </div>
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>Line 2:</b>
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input name="address2" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.address2">
-                    </div>
-                </div>
-            </div>
-            <div class=" form-group row">
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>City:</b>
-
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input name="city" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.city">
-                    </div>
-                </div>
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>District:</b>
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input name="district" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.district">
-                    </div>
-                </div>
-            </div>
-            <div class=" form-group row">
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>State:</b>
-
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input name="state" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.state">
-                    </div>
-                </div>
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>Pin Code:</b>
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input name="pincode" #pincode="ngModel" type="text" class="form-control" [maxlength]="validatorService.pinCodeLength" [minlength]="validatorService.pinCodeLength"
-                            [pattern]="validatorService.onlyNumber" [(ngModel)]="employee.pincode">
-                        <span class="asterisk" *ngIf="pincode.invalid">Enter 6 digit valid pin code</span>
-                    </div>
-                </div>
-            </div>
-        </md-card>
-        <br>
-        <md-card>
-            <div class="dialog_Header text-center">
-                <h5>
-                    <b>Bank Details</b>
-                </h5>
-            </div>
-            <br>
-            <div class=" form-group row">
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>Account No.:</b>
-
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input name="accountNo" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.accountNo">
-                    </div>
-                </div>
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>IFSC Code:</b>
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input name="ifsc" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.ifsc">
-                    </div>
-                </div>
-            </div>
-            <div class=" form-group row">
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>Bank.:</b>
-
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input name="bank" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.bank">
-                    </div>
-                </div>
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>Branch:</b>
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input name="branch" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.branch">
-                    </div>
-                </div>
-            </div>
-            <div class=" form-group row">
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>Account Holder Name.:</b>
-
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input name="accountHolder" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.accountHolder">
-                    </div>
-                </div>
-            </div>
-
-
-        </md-card>
-        <br>
-        <md-card *ngIf="!isNew">
-
-            <div class="dialog_Header text-center">
-                <h5>
-                    <b>Relieving</b>
-                </h5>
-            </div>
-            <br>
-            <div class=" form-group row">
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>Date:</b>
-
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <input id="terminateDate" type="text" class="form-control input-sm calendar no-spin">
-                    </div>
-                </div>
-                <div class="fields">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <b>Reason:</b>
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                            <input list="reason" name="reason" class="form-control" [(ngModel)]="employee.reason">
-                            <datalist id="reason">
-                                    <option value="Resign"></option>
-                                    <option value="Death"></option>
-                                    <option value="Terminate"></option>
-                                </datalist>
-                    </div>
-                </div>
-            </div>
-        </md-card>
-
-        <div class="controls-row footer">
-            <span class="spacer"></span>
-            <button md-button (click)="backClicked()" *ngIf="isNew">
-                Cancel
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+          <div class="row profileImage cursor">
+            <img *ngIf="employee?.picUrl" class="avatar" [src]="employee?.picUrl" onerror="this.src = 'assets/images/blank.png'"
+              width="100%">
+            <img *ngIf="!employee?.picUrl" class="avatar" alt="img" src="assets/images/blank.png" width="100%">
+            <button *ngIf="employee?.id" (click)="isChangeImage = !isChangeImage" class="btn chimg" mdTooltip="Change Profile Picture"
+              [mdTooltipPosition]="'above'">
+              Change Profile Photo
             </button>
-            <button md-raised-button [disabled]="isProcessing || !employee.name || !employee.displayCode" color="primary" (click)="save()">
-                <span *ngIf="isNew">Create</span>
-                <span *ngIf="!isNew">Update</span>
-            </button>
+          </div>
         </div>
+        <br>
+        <div *ngIf="isChangeImage" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center fileBox">
+          <h5>
+            <b>Image Upload</b>
+          </h5>
+          <input class="file" id="uploader" type="file" ng2FileSelect [uploader]="uploader" />
+          <div *ngFor="let item of uploader.queue">
+            <button md-raised-button color="primary" (click)="uploadImg()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+              Upload
+            </button>
+            <button md-raised-button class="btn_grey" (click)="isChangeImage = !isChangeImage" [disabled]="item.isReady || item.isUploading  || uploader.isUploading">
+              Cancel
+            </button>
+          </div>
+          <button *ngIf="uploader?.queue?.length == 0" (click)="isChangeImage = !isChangeImage" md-raised-button class="btn_grey">
+            Cancel
+          </button>
+        </div>
+        <br>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <br> User Type:&nbsp;
+          <select class="form-control userType" [(ngModel)]="employee.userType">
+            <option value="superadmin">Super Admin</option>
+            <option value="admin">Admin</option>
+            <option value="normal">Normal</option>
+          </select>
+        </div>
+      </div>
+    </md-card>
+    <br>
+    <md-card *ngIf="!isNew">
+      <aqua-finger-print [employee]="amsEmployee"></aqua-finger-print>
+    </md-card>
+    <br>
+    <div *ngIf="!isNew">
+      <aqua-emp-leaves [employee]="amsEmployee"></aqua-emp-leaves>
     </div>
+    <br>
+    <div *ngIf="!isNew">
+      <aqua-emp-shift [employee]="amsEmployee"></aqua-emp-shift>
+    </div>
+    <br>
+  </div>
+
+  <md-spinner class="custom_spinner" *ngIf="isProcessing" mode="indeterminate">
+  </md-spinner>
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
+    <md-card>
+      <div class="dialog_Header text-center">
+        <h5>
+          <b>Personal</b>
+        </h5>
+      </div>
+      <br>
+      <div class="form-group row">
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>Name:</b>
+            <span class="asterisk">*</span>
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <input name="empName" type="text" class="form-control" [maxlength]="validatorService.textLength"
+              [(ngModel)]="employee.name" required>
+          </div>
+        </div>
+        <br class="fieldsGap">
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>Gender:</b>
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <select name="gender" class="form-control" [(ngModel)]="employee.gender">
+              <option [ngValue]="null">Select an option</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="others">Others</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class=" form-group row">
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>DOB:</b>
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <input name="dob" id="dateSelector" type="text" class="form-control input-sm calendar no-spin">
+          </div>
+        </div>
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>Father/Husband:</b>
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <input name="fname" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.fatherName">
+          </div>
+        </div>
+      </div>
+      <div class=" form-group row">
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>Blood Group:</b>
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <select name="bgroup" class="form-control" [(ngModel)]="employee.bloodGroup">
+              <option [ngValue]="null">Select an option</option>
+              <option value="A+">A+</option>
+              <option value="B+">B+</option>
+              <option value="O+">O+</option>
+              <option value="AB+">AB+</option>
+              <option value="A-">A-</option>
+              <option value="B-">B-</option>
+              <option value="O-">O-</option>
+              <option value="AB-">AB-</option>
+            </select>
+          </div>
+        </div>
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>{{isNew ? '':'Status:'}}</b>
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <select *ngIf="!isNew" name="status" class="form-control" [(ngModel)]="employee.status" [required]="!isNew">
+              <option [ngValue]="null">Select an option</option>
+              <option value="activate">Activate</option>
+              <option value="deactivate">Deactivate</option>
+              <option value="archive">Archive</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class=" form-group row">
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>Phone:</b>
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <input name="phone" type="text" class="form-control" [maxlength]="validatorService.phoneNumberLength"
+              [minLength]="validatorService.phoneNumberLength" [pattern]="validatorService.onlyNumber" [(ngModel)]="employee.phone">
+          </div>
+        </div>
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>Email:</b>
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <input name="email" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.email">
+          </div>
+        </div>
+      </div>
+      <div class=" form-group row">
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>Aadhaar No:</b>
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <input name="aadhaar" type="text" class="form-control" [maxlength]="validatorService.textLength"
+              [(ngModel)]="employee.aadhaar">
+          </div>
+        </div>
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>Pan No:</b>
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <input name="pan" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.pan">
+          </div>
+        </div>
+      </div>
+    </md-card>
+    <br>
+    <md-card>
+      <div class="dialog_Header text-center">
+        <h5>
+          <b>Employment</b>
+        </h5>
+      </div>
+      <br>
+      <div class=" form-group row">
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>Code:</b>
+            <span class="asterisk">*</span>
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <input type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.displayCode">
+          </div>
+        </div>
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>Supervisor:</b>
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <input ngui-auto-complete [min-chars]="1" placeholder="Employee search" [(ngModel)]="employee.supervisor"
+              [source]="empSource.bind(this)" [value-formatter]="empFormatter" [list-formatter]="empListFormatter"
+              class="form-control search" name="Supervisor" />
+          </div>
+        </div>
+      </div>
+      <div class=" form-group row">
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>Biometric Id:</b>
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <input type="number" class="form-control" [(ngModel)]="employee.code" required>
+          </div>
+        </div>
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>Designation:</b>
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <select class="form-control" [(ngModel)]="designationId">
+              <option [ngValue]="null">Select an option</option>
+              <option *ngFor="let item of designations" [value]="item.id">{{item.name}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class=" form-group row">
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>Type:</b>
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <select class="form-control" [(ngModel)]="employee.employmentType">
+              <option disabled value=" " selected>Select an option</option>
+              <option value="permanent">Permanent</option>
+              <option value="contract">Contract</option>
+            </select>
+          </div>
+        </div>
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>Department:</b>
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <select class="form-control" [(ngModel)]="departmentId">
+              <option *ngFor="let item of departments" [value]="item.id">{{item.name}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class=" form-group row">
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>Date Of Joining:</b>
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <input id="joiningDate" type="text" class="form-control input-sm calendar no-spin">
+          </div>
+        </div>
+      </div>
+    </md-card>
+    <br *ngIf="employee.employmentType == 'contract'">
+    <md-card [class.show]="employee.employmentType == 'contract'" [class.hide]="employee.employmentType != 'contract'">
+      <div class="dialog_Header text-center">
+        <h5>
+          <b>Contractor Details</b>
+        </h5>
+      </div>
+      <br>
+      <div class=" form-group row">
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>Contractor:</b>
+
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <input ngui-auto-complete [min-chars]="1" placeholder="Contractor search" [(ngModel)]="employee.contractor"
+              [source]="empSource.bind(this)" [value-formatter]="empFormatter" [list-formatter]="empListFormatter"
+              class="form-control search" name="Contractor">
+          </div>
+        </div>
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>Date of Membership:</b>
+            <span *ngIf="!isNew" class="asterisk">*</span>
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <input id="membershipDate" type="text" class="form-control input-sm calendar no-spin">
+          </div>
+        </div>
+      </div>
+    </md-card>
+    <br>
+    <md-card>
+      <div class="dialog_Header text-center">
+        <h5>
+          <b>Address</b>
+        </h5>
+      </div>
+      <br>
+      <div class=" form-group row">
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>Line 1:</b>
+
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <input name="address1" type="text" class="form-control" [maxlength]="validatorService.textLength"
+              [(ngModel)]="employee.address1">
+          </div>
+        </div>
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>Line 2:</b>
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <input name="address2" type="text" class="form-control" [maxlength]="validatorService.textLength"
+              [(ngModel)]="employee.address2">
+          </div>
+        </div>
+      </div>
+      <div class=" form-group row">
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>City:</b>
+
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <input name="city" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.city">
+          </div>
+        </div>
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>District:</b>
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <input name="district" type="text" class="form-control" [maxlength]="validatorService.textLength"
+              [(ngModel)]="employee.district">
+          </div>
+        </div>
+      </div>
+      <div class=" form-group row">
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>State:</b>
+
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <input name="state" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.state">
+          </div>
+        </div>
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>Pin Code:</b>
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <input name="pincode" #pincode="ngModel" type="text" class="form-control" [maxlength]="validatorService.pinCodeLength"
+              [minlength]="validatorService.pinCodeLength" [pattern]="validatorService.onlyNumber" [(ngModel)]="employee.pincode">
+            <span class="asterisk" *ngIf="pincode.invalid">Enter 6 digit valid pin code</span>
+          </div>
+        </div>
+      </div>
+    </md-card>
+    <br>
+    <md-card>
+      <div class="dialog_Header text-center">
+        <h5>
+          <b>Bank Details</b>
+        </h5>
+      </div>
+      <br>
+      <div class=" form-group row">
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>Account No.:</b>
+
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <input name="accountNo" type="text" class="form-control" [maxlength]="validatorService.textLength"
+              [(ngModel)]="employee.accountNo">
+          </div>
+        </div>
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>IFSC Code:</b>
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <input name="ifsc" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.ifsc">
+          </div>
+        </div>
+      </div>
+      <div class=" form-group row">
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>Bank.:</b>
+
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <input name="bank" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.bank">
+          </div>
+        </div>
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>Branch:</b>
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <input name="branch" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.branch">
+          </div>
+        </div>
+      </div>
+      <div class=" form-group row">
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>Account Holder Name.:</b>
+
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <input name="accountHolder" type="text" class="form-control" [maxlength]="validatorService.textLength"
+              [(ngModel)]="employee.accountHolder">
+          </div>
+        </div>
+      </div>
+
+
+    </md-card>
+    <br>
+    <md-card *ngIf="!isNew">
+
+      <div class="dialog_Header text-center">
+        <h5>
+          <b>Relieving</b>
+        </h5>
+      </div>
+      <br>
+      <div class=" form-group row">
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>Date:</b>
+
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <input id="terminateDate" type="text" class="form-control input-sm calendar no-spin">
+          </div>
+        </div>
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>Reason:</b>
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <input list="reason" name="reason" class="form-control" [(ngModel)]="employee.reason">
+            <datalist id="reason">
+              <option value="Resign"></option>
+              <option value="Death"></option>
+              <option value="Terminate"></option>
+            </datalist>
+          </div>
+        </div>
+      </div>
+    </md-card>
+
+    <div class="controls-row footer">
+      <span class="spacer"></span>
+      <button md-button (click)="backClicked()" *ngIf="isNew">
+        Cancel
+      </button>
+      <button md-raised-button [disabled]="isProcessing || !employee.name || !employee.displayCode" color="primary"
+        (click)="save()">
+        <span *ngIf="isNew">Create</span>
+        <span *ngIf="!isNew">Update</span>
+      </button>
+    </div>
+  </div>
 </div>
