@@ -112,7 +112,7 @@ export class DesignationsComponent implements OnInit {
   }
 
   nameChange() {
-    this.designation.properties.code = this.designation.properties.name.split(' ').join('');
+    this.designation.properties.code = this.designation.properties.code;
     console.log(this.designation.properties.name)
     console.log(this.designation.properties.code)
   }
