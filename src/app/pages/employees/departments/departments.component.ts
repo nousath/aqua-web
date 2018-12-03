@@ -99,7 +99,7 @@ export class DepartmentsComponent implements OnInit {
   }
 
   nameChange() {
-    this.department.properties.code = this.department.properties.name.split(' ').join('');
+    this.department.properties.code = this.department.properties.code;
     console.log(this.department.properties.name)
     console.log(this.department.properties.code)
   }
@@ -119,12 +119,10 @@ export class DepartmentsComponent implements OnInit {
     }
     if (!this.department.properties.name)
       return this.toastyService.info({ title: 'Info', msg: 'Enter  Name' });
-    if (!this.department.properties.code)
-      return this.toastyService.info({ title: 'Info', msg: 'Select  Code' });
     this.department.save().then(data => {
       if (department) {
         department.isEdit = false;
-        this.store.removeItem(`leeaveBalance_${department.divisionId}`);
+        this.store.removeItem(`leaveBalance_${department.divisionId}`);
       } else {
         this.toggleDepartment();
       }
