@@ -76,7 +76,7 @@
                         <td>
                             <a (click)="updateDayEvent(item.employee.id)">{{item.employee.name || '--'}}</a>
                             <br>
-                            <span class="sub-text">{{item.employee.code || '--'}}</span>
+                            <span class="sub-text">{{item.employee.displayCode || '--'}}</span>
                         </td>
                         <td class="tdWidth">{{item.employee.designation || '--'}}</td>
                         <td class="tdWidth">{{item.shift.shiftType.name}}</td>
