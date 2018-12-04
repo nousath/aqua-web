@@ -9,9 +9,9 @@
 
     <div class="form-group" *ngIf="show.employeeStatus">
       <label>Status</label>
-      <angular2-multiselect [data]="employeeStatusList" class="form-control" [(ngModel)]="selectedEmployeeStatusList" [settings]="dropdownSettings"
-        (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
-        (onDeSelectAll)="onDeSelectAll($event)" [ngModelOptions]="{standalone: true}"></angular2-multiselect>
+      <angular2-multiselect [data]="employeeStatusList" class="form-control" [(ngModel)]="selectedEmployeeStatusList"
+        [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"
+        (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)" [ngModelOptions]="{standalone: true}"></angular2-multiselect>
     </div>
 
     <div class="form-group" *ngIf="show.month">
@@ -47,21 +47,21 @@
 
     <div class="form-group" *ngIf="show.terminationReason">
       <label>Termination Reason</label>
-      <angular2-multiselect [data]="terminationReasonList" class="form-control" [(ngModel)]="selectedTerminationReason" [settings]="dropdownSettings"
-        (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
-        (onDeSelectAll)="onDeSelectAll($event)" [ngModelOptions]="{standalone: true}"></angular2-multiselect>
+      <angular2-multiselect [data]="terminationReasonList" class="form-control" [(ngModel)]="selectedTerminationReason"
+        [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"
+        (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)" [ngModelOptions]="{standalone: true}"></angular2-multiselect>
     </div>
     <div class="form-group" *ngIf="show.supervisor">
       <label for="name">Team</label>
       <input class="form-control" ngui-auto-complete [min-chars]="1" placeholder="Supervisor search" [(ngModel)]="selectedSupervisor"
         (valueChanged)="onSelectSup($event)" [source]="empSource.bind(this)" [value-formatter]="empFormatter"
-        [list-formatter]="empListFormatter" /> 
+        [list-formatter]="empListFormatter" />
     </div>
     <div class="form-group" *ngIf="show.employeeTypes">
       <label>Employee Type</label>
-      <angular2-multiselect [data]="employeeTypeList" class="form-control" [(ngModel)]="selectedEmployeeType" [settings]="dropdownSettings"
-        (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
-        (onDeSelectAll)="onDeSelectAll($event)" [ngModelOptions]="{standalone: true}"></angular2-multiselect>
+      <angular2-multiselect [data]="employeeTypeList" class="form-control" [(ngModel)]="selectedEmployeeType"
+        [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"
+        (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)" [ngModelOptions]="{standalone: true}"></angular2-multiselect>
     </div>
     <div class="form-group" *ngIf="show.userTypes">
       <label>User Type</label>

@@ -176,7 +176,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
       this.initEmployee(this.employee)
       if (this.isNew) {
         this.isNew = false;
-        this.router.navigate(['../', this.employee.id], { relativeTo: this.activatedRoute });
+        this.router.navigate(['../', data.id], { relativeTo: this.activatedRoute });
       }
     }).catch(this.errorHandler);
   }

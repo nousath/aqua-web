@@ -59,6 +59,10 @@
                         <th class="tdWidth">Shift</th>
                         <th class="tdWidth">Status</th>
                         <th class="text-center tdWidth">Check In</th>
+                        <th class="text-center tdWidth">Out 1</th>
+                        <th class="text-center tdWidth">In 2</th>
+                        <th class="text-center tdWidth">Out 2</th>
+                        <th class="text-center tdWidth">In 3</th>
                         <th class="text-center tdWidth">Check Out</th>
                         <th class="tdWidth">Team</th>
                         <!-- <th class="tdWidth">Action</th> -->
@@ -72,7 +76,7 @@
                         <td>
                             <a (click)="updateDayEvent(item.employee.id)">{{item.employee.name || '--'}}</a>
                             <br>
-                            <span class="sub-text">{{item.employee.code || '--'}}</span>
+                            <span class="sub-text">{{item.employee.displayCode || '--'}}</span>
                         </td>
                         <td class="tdWidth">{{item.employee.designation || '--'}}</td>
                         <td class="tdWidth">{{item.shift.shiftType.name}}</td>
@@ -94,6 +98,10 @@
                             </ng-container>
                             <span class="cta" *ngIf="item.status=== 'present' && !item.checkIn && item.checkInStatus">Missed Check In</span>
                         </td>
+                        <td class="tdWidth" ><span *ngIf = 'item.out1'>{{item.out1 | date:'shortTime'}}</span></td>
+                        <td class="tdWidth"><span *ngIf = 'item.in2'>{{item.in2 | date:'shortTime'}}</span></td>
+                        <td class="tdWidth"><span *ngIf = 'item.out2'>{{item.out2 | date:'shortTime'}}</span></td>
+                        <td class="tdWidth"><span *ngIf = 'item.in3'>{{item.in3 | date:'shortTime'}}</span></td>
                         <td class=" tdWidth">
                             <div *ngIf="item.checkOut">{{item.checkOut | date:'shortTime'}}</div>
                             <ng-container *ngIf="this.isPast && item.checkOut ">

@@ -53,7 +53,7 @@
         <thead class="primary_thead">
           <tr>
             <th>Name</th>
-            <th class="tdWidth">Code</th>
+            <th class="tdWidth">Designation</th>
             <th class="tdWidth">Shift</th>
             <th class="tdWidth">Present Days</th>
             <th class="tdWidth">Absent Days</th>
@@ -71,8 +71,10 @@
               <img *ngIf="item?.picUrl" class="img-circle profile_pic" alt="img" [src]="item?.picUrl" onError="this.src='/assets/images/blank.png'">
               <img *ngIf="!item?.picUrl" class="img-circle profile_pic" alt="img" src="assets/images/blank.png"> &nbsp;
               <a [routerLink]="[item.id]">{{item?.name || '--'}}</a>
+              <br>
+              <span class='sub-text' style= 'margin-left: 20%;'>{{item?.displayCode || '--'}}</span>
             </td>
-            <td class="tdWidth">{{item?.code || '--'}}</td>
+            <td class="tdWidth">{{item?.designation || '--'}}</td>
             <td class="tdWidth">{{item?.shiftType?.name || '--'}}</td>
             <td class="tdWidth">{{item?.presentDays || '--'}}</td>
             <td class="tdWidth">{{item?.absentDays || '--'}}</td>

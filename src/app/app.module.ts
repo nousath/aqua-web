@@ -22,6 +22,7 @@ import { LeaveConfirmDialogComponent } from './dialogs/leave-confirm-dialog/leav
 import { LeaveReasonDialogComponent } from './dialogs/leave-reason-dialog/leave-reason-dialog.component';
 import { AddShiftDialogComponent } from './dialogs/add-shift-dialog/add-shift-dialog.component';
 import { NavigationBarComponent } from './shared/components/navigation-bar/navigation-bar.component';
+import { CopyContentComponent } from './dialogs/copy-content/copy-content.component';
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import { NavigationBarComponent } from './shared/components/navigation-bar/navig
     LeaveConfirmDialogComponent,
     LeaveReasonDialogComponent,
     AddShiftDialogComponent,
+    CopyContentComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,6 +56,7 @@ import { NavigationBarComponent } from './shared/components/navigation-bar/navig
     LeaveConfirmDialogComponent,
     LeaveReasonDialogComponent,
     AddShiftDialogComponent,
+    CopyContentComponent
   ],
   exports: [
     ResetPasswordDialogComponent,

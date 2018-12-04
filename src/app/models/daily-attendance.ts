@@ -49,6 +49,12 @@ export class Attendance {
   employee: Employee;
   timeLogs: TimeLogs[];
   shift: Shift;
+  out1: any;
+  out2: any;
+  out3: any;
+  in2: any;
+  in3: any;
+  in4: any;
 }
 
 export class ExtendShift {
