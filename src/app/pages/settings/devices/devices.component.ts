@@ -12,6 +12,7 @@ import { SyncDialogComponent } from '../../../dialogs/sync-dialog/sync-dialog.co
 import { Machine } from '../../../models/category';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-dialog.component';
+import { CopyContentComponent } from '../../../dialogs/copy-content/copy-content.component';
 
 @Component({
   selector: 'aqua-devices',
@@ -173,21 +174,21 @@ export class DevicesComponent implements OnInit {
 
   getActivationKey() {
 
-    alert('Disabled')
+    // alert('Disabled')
 
     // TOOD: this is broken
 
-    // this.isDownloading = true;
-    // this.orgService.organizations.get('my').then(
-    //   data => {
-    //     const dialogRef = this.dialog.open(CopyContentComponent, {
-    //       width: '40%',
-    //       data: data.activationKey,
-    //     });
-    //     // this.activationKey = data.activationKey;
-    //     this.isDownloading = false;
-    //   }
-    // ).catch(err => { this.isDownloading = false; this.toastyService.error({ title: 'Error', msg: err }) });
+    this.isDownloading = true;
+    this.orgService.organizations.get('my').then(
+      data => {
+        const dialogRef = this.dialog.open(CopyContentComponent, {
+          width: '40%',
+          data: data.activationKey,
+        });
+        // this.activationKey = data.activationKey;
+        this.isDownloading = false;
+      }
+    ).catch(err => { this.isDownloading = false; this.toastyService.error({ title: 'Error', msg: err }) });
   }
 
 
