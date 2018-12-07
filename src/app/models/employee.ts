@@ -17,6 +17,7 @@ export class Employee {
   email = '';
   password = '';
   phone = '';
+  biometricCode = '';
   displayCode = '';
   organization: Organization = new Organization();
   device: Device = new Device();

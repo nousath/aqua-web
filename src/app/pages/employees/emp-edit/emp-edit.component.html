@@ -8,8 +8,7 @@
   </h5>
   <span class="hradrbtns">
     <button *ngIf="!isNew" md-raised-button [disabled]="isProcessing" (click)="resetPassword()">Reset Password</button>
-    <button md-raised-button [disabled]="isProcessing || !employee.name || !employee.displayCode" color="primary"
-      (click)="save()">
+    <button md-raised-button [disabled]="isProcessing || !employee.profile.firstName" color="primary" (click)="save()">
       <span *ngIf="isNew">Create</span>
       <span *ngIf="!isNew">Update</span>
     </button>
@@ -58,7 +57,7 @@
         <br>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <br> User Type:&nbsp;
-          <select class="form-control userType" [(ngModel)]="employee.type">
+          <select class="form-control small right" [(ngModel)]="employee.type">
             <option value="superadmin">Super Admin</option>
             <option value="admin">Admin</option>
             <option value="normal">Normal</option>
@@ -66,7 +65,7 @@
         </div>
         <div *ngIf="!isNew" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <br>{{isNew ? '':'Status:'}}&nbsp;
-          <select name="status" class="form-control userType" [(ngModel)]="employee.status" [required]="!isNew">
+          <select name="status" class="form-control small right" [(ngModel)]="employee.status" [required]="!isNew">
             <option [ngValue]="null">Select an option</option>
             <option value="new">New</option>
             <option value="active">Active</option>
@@ -78,15 +77,15 @@
       </div>
     </md-card>
     <br>
-    <md-card *ngIf="!isNew">
+    <div *ngIf="!isNew && amsEmployee">
       <aqua-finger-print [employee]="amsEmployee"></aqua-finger-print>
-    </md-card>
+    </div>
     <br>
-    <div *ngIf="!isNew">
+    <div *ngIf="!isNew && amsEmployee">
       <aqua-emp-leaves [employee]="amsEmployee"></aqua-emp-leaves>
     </div>
     <br>
-    <div *ngIf="!isNew">
+    <div *ngIf="!isNew && amsEmployee">
       <aqua-emp-shift [employee]="amsEmployee"></aqua-emp-shift>
     </div>
     <br>
@@ -118,7 +117,6 @@
         <div class="fields">
           <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
             <b>Last Name:</b>
-            <span class="asterisk">*</span>
           </div>
           <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
             <input name="lastName" type="text" class="form-control" [maxlength]="validatorService.textLength"
@@ -249,10 +247,10 @@
       <div class=" form-group row">
         <div class="fields">
           <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-            <b>Biometric Id:</b>
+            <b>Date Of Joining:</b>
           </div>
           <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-            <input type="number" class="form-control" [(ngModel)]="employee.custom.biometricId" required>
+            <input id="joiningDate" type="text" class="form-control input-sm calendar no-spin">
           </div>
         </div>
         <div class="fields">
@@ -286,18 +284,9 @@
           </div>
           <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
             <select class="form-control" [(ngModel)]="employee.department">
+              <option [ngValue]="null">Select an option</option>
               <option *ngFor="let item of departments" [value]="item">{{item.name}}</option>
             </select>
-          </div>
-        </div>
-      </div>
-      <div class=" form-group row">
-        <div class="fields">
-          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-            <b>Date Of Joining:</b>
-          </div>
-          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-            <input id="joiningDate" type="text" class="form-control input-sm calendar no-spin">
           </div>
         </div>
       </div>

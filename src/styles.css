@@ -337,6 +337,11 @@ pagination-controls {
     z-index: 99;
 }
 
+.form-control.small.right {
+  width: 64%;
+  float: right;
+}
+
 .mat-radio-label-content {
     font-weight: 100 !important;
 }

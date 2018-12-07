@@ -109,8 +109,16 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     this.uploader.setOptions({ url: `/ems/api/employees/image/${employee.id}` });
 
     employee.profile = employee.profile || new Profile();
-    employee.designation = employee.designation || new Designation();
-    employee.department = employee.department || new Department();
+
+    if (employee.department && employee.department.code === 'default') {
+      employee.department = null;
+    }
+
+    if (employee.designation && employee.designation.code === 'default') {
+      employee.designation = null;
+    }
+    // employee.designation = employee.designation || new Designation();
+    // employee.department = employee.department || new Department();
     employee.address = employee.address || new Address();
 
     employee.custom = employee.custom || new CustomFields();

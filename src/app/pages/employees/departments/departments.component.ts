@@ -100,8 +100,6 @@ export class DepartmentsComponent implements OnInit {
 
   nameChange() {
     this.department.properties.code = this.department.properties.code;
-    console.log(this.department.properties.name)
-    console.log(this.department.properties.code)
   }
 
   removeConfirm(department: Department) {

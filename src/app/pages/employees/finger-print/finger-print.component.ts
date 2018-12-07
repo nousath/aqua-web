@@ -65,6 +65,12 @@ export class FingerPrintComponent implements OnInit {
 
   }
 
+  setBiometricCode() {
+    this.amsEmployeeService.employees.update(this.employee.id, this.employee).then(() => {
+      this.toastyService.success(`${this.employee.biometricCode} is now biometric code of employee ${this.employee.name}`);
+    })
+  }
+
   isExists(device) {
     const deviceExits: any = this.employee.devices.find(item => {
       return item.id === device;
@@ -106,7 +112,7 @@ export class FingerPrintComponent implements OnInit {
           this.fingerPrint = this.getWipFingerPrint(this.employee);
         }
         if (isExist) {
-          this.toastyService.success('FingerPrint Removed Succesfully');
+          this.toastyService.success('FingerPrint Removed Successfully');
         } else {
           this.toastyService.success('FingerPrint Added Successfully');
         }

@@ -58,8 +58,8 @@ export class EmsEmployee {
   address: Address;
 
   supervisor: EmsEmployee;
-  designation = new Designation();
-  department = new Department();
+  designation: Designation;
+  department: Department;
   organization: Organization = new Organization();
 
   role: Role;
@@ -89,8 +89,8 @@ export class EmsEmployee {
 
   constructor() {
     this.profile = this.profile || new Profile();
-    this.designation = this.designation || new Designation();
-    this.department = this.department || new Department();
+    // this.designation = this.designation || new Designation();
+    // this.department = this.department || new Department();
     this.address = this.address || new Address();
     this.custom = this.custom || new CustomFields();
   }
