@@ -162,9 +162,9 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
     ]
 
     this.employeeStatusList = [
-      { id: 1, code: 'activate', itemName: 'Activate' },
-      { id: 2, code: 'deactivate', itemName: 'Deactivate' },
-      { id: 3, code: 'archive', itemName: 'Archive' }
+      { id: 1, code: 'active', itemName: 'Active' },
+      { id: 2, code: 'in-active', itemName: 'Deactivate' },
+      { id: 3, code: 'archived', itemName: 'Archived' }
     ]
     this.terminationReasonList = [
       { id: 1, code: 'resign', itemName: 'Resign' },

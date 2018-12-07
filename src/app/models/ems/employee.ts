@@ -31,7 +31,7 @@ export class Address {
   city = '';
   state = '';
   district = '';
-  pincode = '';
+  pinCode = '';
 }
 
 export class Role {
@@ -45,6 +45,14 @@ export class CustomFields {
   biometricId: string;
   contractor: string;
   employmentType: string;
+  accountNo: string;
+  accountHolder: string;
+  ifsc: string;
+  bank: string;
+  branch: string;
+
+  aadhaar: string;
+  pan: string;
 }
 export class EmsEmployee {
   id = '';
@@ -72,27 +80,22 @@ export class EmsEmployee {
   // leaveBalances: any[];
   // avgHours: number = null;
 
-  accountNo = '';
-  accountHolder = '';
-  ifsc = '';
-  bank = '';
-  branch = '';
+
 
   // displayCode: string;
-  aadhaar = '';
-  pan = '';
+
 
   doj: Date;
   dol: Date;
   reason = '';
-  custom: CustomFields;
+  config: CustomFields;
 
   constructor() {
     this.profile = this.profile || new Profile();
     // this.designation = this.designation || new Designation();
     // this.department = this.department || new Department();
     this.address = this.address || new Address();
-    this.custom = this.custom || new CustomFields();
+    this.config = this.config || new CustomFields();
   }
 }
 

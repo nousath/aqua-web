@@ -202,7 +202,7 @@
           </div>
           <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
             <input name="aadhaar" type="text" class="form-control" [maxlength]="validatorService.textLength"
-              [(ngModel)]="employee.aadhaar">
+              [(ngModel)]="employee.config.aadhaar">
           </div>
         </div>
         <div class="fields">
@@ -210,7 +210,7 @@
             <b>Pan No:</b>
           </div>
           <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-            <input name="pan" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.pan">
+            <input name="pan" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.config.pan">
           </div>
         </div>
       </div>
@@ -227,7 +227,6 @@
         <div class="fields">
           <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
             <b>Code:</b>
-            <span class="asterisk">*</span>
           </div>
           <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
             <input type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.code">
@@ -271,7 +270,7 @@
             <b>Type:</b>
           </div>
           <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-            <select class="form-control" [(ngModel)]="employee.custom.employmentType">
+            <select class="form-control" [(ngModel)]="employee.config.employmentType">
               <option disabled value=" " selected>Select an option</option>
               <option value="permanent">Permanent</option>
               <option value="contract">Contract</option>
@@ -291,8 +290,8 @@
         </div>
       </div>
     </md-card>
-    <br *ngIf="employee.custom.employmentType == 'contract'">
-    <md-card [class.show]="employee.custom.employmentType == 'contract'" [class.hide]="employee.custom.employmentType != 'contract'">
+    <br *ngIf="employee.config.employmentType == 'contract'">
+    <md-card [class.show]="employee.config.employmentType == 'contract'" [class.hide]="employee.config.employmentType != 'contract'">
       <div class="dialog_Header text-center">
         <h5>
           <b>Contractor Details</b>
@@ -306,7 +305,7 @@
 
           </div>
           <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-            <input ngui-auto-complete [min-chars]="1" placeholder="Contractor search" [(ngModel)]="employee.custom.contractor"
+            <input ngui-auto-complete [min-chars]="1" placeholder="Contractor search" [(ngModel)]="employee.config.contractor"
               [source]="empSource.bind(this)" [value-formatter]="empFormatter" [list-formatter]="empListFormatter"
               class="form-control search" name="Contractor">
           </div>
@@ -385,7 +384,7 @@
           </div>
           <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
             <input name="pincode" #pincode="ngModel" type="text" class="form-control" [maxlength]="validatorService.pinCodeLength"
-              [minlength]="validatorService.pinCodeLength" [pattern]="validatorService.onlyNumber" [(ngModel)]="employee.address.pincode">
+              [minlength]="validatorService.pinCodeLength" [pattern]="validatorService.onlyNumber" [(ngModel)]="employee.address.pinCode">
             <span class="asterisk" *ngIf="pincode.invalid">Enter 6 digit valid pin code</span>
           </div>
         </div>
@@ -407,7 +406,7 @@
           </div>
           <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
             <input name="accountNo" type="text" class="form-control" [maxlength]="validatorService.textLength"
-              [(ngModel)]="employee.accountNo">
+              [(ngModel)]="employee.config.accountNo">
           </div>
         </div>
         <div class="fields">
@@ -415,7 +414,7 @@
             <b>IFSC Code:</b>
           </div>
           <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-            <input name="ifsc" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.ifsc">
+            <input name="ifsc" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.config.ifsc">
           </div>
         </div>
       </div>
@@ -426,7 +425,7 @@
 
           </div>
           <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-            <input name="bank" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.bank">
+            <input name="bank" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.config.bank">
           </div>
         </div>
         <div class="fields">
@@ -434,7 +433,7 @@
             <b>Branch:</b>
           </div>
           <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-            <input name="branch" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.branch">
+            <input name="branch" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.config.branch">
           </div>
         </div>
       </div>
@@ -446,7 +445,7 @@
           </div>
           <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
             <input name="accountHolder" type="text" class="form-control" [maxlength]="validatorService.textLength"
-              [(ngModel)]="employee.accountHolder">
+              [(ngModel)]="employee.config.accountHolder">
           </div>
         </div>
       </div>
@@ -493,8 +492,7 @@
       <button md-button (click)="backClicked()" *ngIf="isNew">
         Cancel
       </button>
-      <button md-raised-button [disabled]="isProcessing || !employee.name || !employee.displayCode" color="primary"
-        (click)="save()">
+      <button md-raised-button [disabled]="isProcessing || !employee.profile.firstName" color="primary" (click)="save()">
         <span *ngIf="isNew">Create</span>
         <span *ngIf="!isNew">Update</span>
       </button>

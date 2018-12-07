@@ -121,15 +121,15 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     // employee.department = employee.department || new Department();
     employee.address = employee.address || new Address();
 
-    employee.custom = employee.custom || new CustomFields();
+    employee.config = employee.config || new CustomFields();
 
     if (employee.profile.dob) { $('#dateSelector').datepicker('setDate', employee.profile.dob); }
-    if (employee.custom.dom) { $('#membershipDate').datepicker('setDate', employee.custom.dom); }
+    if (employee.config.dom) { $('#membershipDate').datepicker('setDate', employee.config.dom); }
     if (employee.doj) { $('#joiningDate').datepicker('setDate', employee.doj); }
     if (employee.dol) { $('#terminateDate').datepicker('setDate', employee.dol); }
 
-    if (!employee.custom.biometricId) {
-      employee.custom.biometricId = employee.code
+    if (!employee.config.biometricId) {
+      employee.config.biometricId = employee.code
     }
     // this.employee.supervisor = this.employee.supervisor ? this.employee.supervisor : new Supervisor();
     // this.employee.designation = this.employee.designation ? this.employee.designation : new Designation();
@@ -146,7 +146,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
   beforeSave() {
     const employee = this.employee;
     if (this.isNew) {
-      employee.status = 'activate';
+      employee.status = 'active';
     }
 
     const profile = employee.profile;
@@ -159,9 +159,9 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   save() {
-    if (!this.employee.code) {
-      return this.toastyService.error({ title: 'Code', msg: 'Code is required' })
-    }
+    // if (!this.employee.code) {
+    //   return this.toastyService.error({ title: 'Code', msg: 'Code is required' })
+    // }
 
     if (this.employee.email && !this.validatorService.validateEmail(this.employee.email)) {
       return this.toastyService.error({ title: 'Invalid Email', msg: 'Please fill valid email' })
@@ -181,7 +181,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
       this.initEmployee(this.employee)
       if (this.isNew) {
         this.isNew = false;
-        this.router.navigate(['../', data.id], { relativeTo: this.activatedRoute });
+        this.router.navigate(['../', data.code], { relativeTo: this.activatedRoute });
       }
     }).catch(this.errorHandler);
   }
@@ -240,7 +240,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
       this.employee.doj = new Date(d.date);
     });
     $('#membershipDate').datepicker(pickerOptions).on('changeDate', (d) => {
-      this.employee.custom.dom = new Date(d.date);
+      this.employee.config.dom = new Date(d.date);
     });
   }
 
