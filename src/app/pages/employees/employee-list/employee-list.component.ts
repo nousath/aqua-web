@@ -28,7 +28,7 @@ export class EmployeeListComponent implements OnInit {
 
   employees: Page<EmsEmployee>
   employee: Model<EmsEmployee>
-  statusFilter = 'activate';
+  statusFilter = 'active';
   uploader: FileUploader;
   isUpload = false;
   isFilter = false;

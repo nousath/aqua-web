@@ -4,7 +4,7 @@ import { ToastyService } from 'ng2-toasty';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Employee, Designation } from '../../../models';
 import { Observable } from 'rxjs/Rx';
-import { EmsEmployee, Supervisor } from '../../../models/ems/employee';
+import { EmsEmployee, CustomFields, Address, Profile } from '../../../models/ems/employee';
 import { ValidatorService } from '../../../services/validator.service';
 import { AutoCompleteService } from '../../../services/auto-complete.service';
 import { NgForm } from '@angular/forms';
@@ -32,9 +32,6 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
 
   designations: Designation[];
   departments: Department[];
-
-  departmentId: number;
-  designationId: number;
 
   isProcessing = false;
 
@@ -77,9 +74,6 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
 
     });
   }
-  ngOnChanges() {
-
-  }
 
   getAmsDetails(code) {
     console.log(this.employee.code)
@@ -113,17 +107,21 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
 
   initEmployee(employee: EmsEmployee) {
     this.uploader.setOptions({ url: `/ems/api/employees/image/${employee.id}` });
-    this.departmentId = employee.departmentId;
-    this.designationId = employee.designationId
 
-    if (employee.dob) { $('#dateSelector').datepicker('setDate', new Date(employee.dob)); }
-    if (employee.dol) { $('#terminateDate').datepicker('setDate', new Date(employee.dol)); }
-    if (employee.dom) { $('#membershipDate').datepicker('setDate', new Date(employee.dom)); }
-    if (employee.doj) { $('#joiningDate').datepicker('setDate', new Date(employee.doj)); }
+    employee.profile = employee.profile || new Profile();
+    employee.designation = employee.designation || new Designation();
+    employee.department = employee.department || new Department();
+    employee.address = employee.address || new Address();
 
+    employee.custom = employee.custom || new CustomFields();
 
-    if (!employee.displayCode) {
-      employee.displayCode = employee.code
+    if (employee.profile.dob) { $('#dateSelector').datepicker('setDate', employee.profile.dob); }
+    if (employee.custom.dom) { $('#membershipDate').datepicker('setDate', employee.custom.dom); }
+    if (employee.doj) { $('#joiningDate').datepicker('setDate', employee.doj); }
+    if (employee.dol) { $('#terminateDate').datepicker('setDate', employee.dol); }
+
+    if (!employee.custom.biometricId) {
+      employee.custom.biometricId = employee.code
     }
     // this.employee.supervisor = this.employee.supervisor ? this.employee.supervisor : new Supervisor();
     // this.employee.designation = this.employee.designation ? this.employee.designation : new Designation();
@@ -143,18 +141,18 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
       employee.status = 'activate';
     }
 
-    if (employee.picUrl) {
-      employee.picUrl = employee.picUrl.indexOf('?time=') === -1 ?
-        this.employee.picUrl :
-        this.employee.picUrl.slice(0, employee.picUrl.indexOf('?time='));
-    }
+    const profile = employee.profile;
 
-    if (this.designationId) { employee.designationId = typeof this.designationId === 'string' ? parseInt(this.designationId) : this.designationId; }
-    if (this.departmentId) { employee.departmentId = typeof this.departmentId === 'string' ? parseInt(this.departmentId) : this.departmentId; }
+    if (profile.pic) {
+
+      profile.pic.url = profile.pic.url.indexOf('?time=') === -1 ?
+        profile.pic.url :
+        profile.pic.url.slice(0, profile.pic.url.indexOf('?time='));
+    }
   }
 
   save() {
-    if (!this.employee.displayCode) {
+    if (!this.employee.code) {
       return this.toastyService.error({ title: 'Code', msg: 'Code is required' })
     }
 
@@ -172,7 +170,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
 
     promise.then(data => {
       this.isProcessing = false
-      this.toastyService.success({ title: 'Success', msg: `${this.employee.name} ${this.isNew ? 'added' : 'updated'} successfully` });
+      this.toastyService.success({ title: 'Success', msg: `${this.employee.profile.firstName} ${this.employee.profile.lastName} ${this.isNew ? 'added' : 'updated'} successfully` });
       this.initEmployee(this.employee)
       if (this.isNew) {
         this.isNew = false;
@@ -226,16 +224,16 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
       autoclose: true
     }
     $('#dateSelector').datepicker(pickerOptions).on('changeDate', (e) => {
-      this.employee.dob = new Date(e.date).toISOString();
+      this.employee.profile.dob = new Date(e.date);
     });
     $('#terminateDate').datepicker(pickerOptions).on('changeDate', (d) => {
-      this.employee.dol = new Date(d.date).toISOString();
+      this.employee.dol = new Date(d.date);
     });
     $('#joiningDate').datepicker(pickerOptions).on('changeDate', (d) => {
-      this.employee.doj = new Date(d.date).toISOString();
+      this.employee.doj = new Date(d.date);
     });
     $('#membershipDate').datepicker(pickerOptions).on('changeDate', (d) => {
-      this.employee.dom = new Date(d.date).toISOString();
+      this.employee.custom.dom = new Date(d.date);
     });
   }
 
@@ -294,7 +292,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
       if (!res.isSuccess) {
         return this.toastyService.error({ title: 'Error', msg: 'Image upload failed' })
       }
-      this.employee.picUrl = `${res.message.picUrl}?time=${new Date().toString().replace(/ /g, '')}`;
+      this.employee.profile.pic.url = `${res.message.picUrl}?time=${new Date().toString().replace(/ /g, '')}`;
       this.isChangeImage = false;
 
     };

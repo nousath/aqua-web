@@ -216,6 +216,8 @@ pagination-controls {
 
 .asterisk {
     color: red;
+    position: absolute;
+    padding-left: 5px;
 }
 
 .ng-untouched {

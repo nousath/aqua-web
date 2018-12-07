@@ -1,7 +1,6 @@
 import { ShiftType } from './shift-type';
 import { Device } from './device';
 import { Organization } from './organization';
-import { Supervisor } from './ems/employee';
 
 // class Device {
 //   id: 'string';
@@ -25,7 +24,7 @@ export class Employee {
   leaveBalances: any[];
   avgHours: number = null;
   token = '';
-  supervisor: Supervisor = new Supervisor();
+  supervisor: any;
   abilities: Abilities = new Abilities();
   currentAblitiy: 'maualAttendance' | 'manualByBeacon' | 'manualByGeoFencing' | 'manualByWifi' | 'none' = 'none';
   userType: 'admin' | 'superadmin' | 'normal' = 'normal';
