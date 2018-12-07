@@ -30,6 +30,9 @@
               <span *ngIf="item.reportParams.employee.code" class="badge-holder">
                 Code<span class="badge badge-primary"> {{item.reportParams.employee.code}}</span>
               </span>
+              <span *ngIf="item.reportParams.employee.biomatricId" class="badge-holder">
+                Biomatric<span class="badge badge-primary"> {{item.reportParams.employee.biomatricId}}</span>
+              </span>
               <span *ngIf="item.reportParams.employee.supervisor" class="badge-holder">
                 Supervisor<span class="badge badge-primary">{{item.reportParams.employee.supervisor.name}}</span>
               </span>

@@ -41,7 +41,7 @@ export class DesignationsComponent implements OnInit {
       filters: [
         'ofDate',
         'designations'
-   ]
+      ]
     });
 
     this.designation = new Model({
@@ -112,7 +112,7 @@ export class DesignationsComponent implements OnInit {
   }
 
   nameChange() {
-    this.designation.properties.code = this.designation.properties.name.split(' ').join('');
+    this.designation.properties.code = this.designation.properties.code;
     console.log(this.designation.properties.name)
     console.log(this.designation.properties.code)
   }
@@ -123,7 +123,7 @@ export class DesignationsComponent implements OnInit {
     }
     if (!this.designation.properties.name)
       return this.toastyService.info({ title: 'Info', msg: 'Enter  Name' });
-        this.designation.save().then(data => {
+    this.designation.save().then(data => {
       if (designation) {
         designation.isEdit = false;
         this.store.removeItem(`leeaveBalance_${designation.id}`);
