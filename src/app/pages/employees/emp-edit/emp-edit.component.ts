@@ -151,8 +151,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
 
     const profile = employee.profile;
 
-    if (profile.pic) {
-
+    if (profile.pic && profile.pic.url) {
       profile.pic.url = profile.pic.url.indexOf('?time=') === -1 ?
         profile.pic.url :
         profile.pic.url.slice(0, profile.pic.url.indexOf('?time='));

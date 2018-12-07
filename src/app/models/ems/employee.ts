@@ -26,8 +26,8 @@ export class Profile {
 }
 
 export class Address {
-  address1 = '';
-  address2 = '';
+  line1 = '';
+  line2 = '';
   city = '';
   state = '';
   district = '';

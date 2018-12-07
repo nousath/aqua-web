@@ -66,7 +66,7 @@
               <img *ngIf="!item?.profile?.pic?.url" class="img-circle profile_pic" alt="img" src="assets/images/blank.png">
             </td>
             <td>
-              <a [routerLink]="[item.id]">{{item?.profile?.firstName || '-'}} {{item?.profile?.lastName || '-'}}</a>
+              <a [routerLink]="[item.code]">{{item?.profile?.firstName || '-'}} {{item?.profile?.lastName || '-'}}</a>
               <br>
 
             </td>
@@ -79,7 +79,7 @@
 
             <td class="tdWidth text-center">
               <a md-icon-button class="button_align cursor" mdTooltip="Edit details" [mdTooltipPosition]="'above'"
-                [routerLink]="[item.id]">
+                [routerLink]="[item.code]">
                 <md-icon>edit</md-icon>
               </a>
               &nbsp;
