@@ -28,7 +28,7 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
   tagTypes: TagType[];
 
   @Input()
-  fields: string[] = [];
+  fields: any[] = [];
 
   @Input()
   isStatus: string[] = [];
@@ -45,7 +45,7 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
   terminationDate: Date;
 
   @Input()
- joiningDate: Date;
+  joiningDate: Date;
 
   @Input()
   selectedEmployeeName: string;
@@ -136,38 +136,6 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
     private amsShiftService: AmsShiftService,
     private tagService: AmsTagService,
   ) {
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-
-    const show = {
-    }
-
-    let hasFieldsChanged = false;
-
-    this.fields.forEach(field => {
-      show[field] = true;
-
-      if (this.show && this.show[field] !== show[field]) {
-        hasFieldsChanged = true;
-      }
-    });
-
-    this.show = show
-
-    if (this.fromDate) {
-      this.show.checkOut = moment(this.fromDate).isBefore(new Date(), 'd');
-      this.show.clocked = moment(this.fromDate).isBefore(new Date(), 'd');
-    }
-    if (hasFieldsChanged) {
-      this.reset();
-    }
-
-  }
-
-  ngOnInit() {
-
-    this.hidden = this.hidden || {};
     this.attendanceStatusList = [
       { id: 1, code: 'present', itemName: 'Present' },
       { id: 2, code: 'absent', itemName: 'Absent' },
@@ -223,6 +191,52 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
       maxHeight: 200,
       badgeShowLimit: 1
     };
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+
+    const show = {
+    }
+
+    let hasFieldsChanged = false;
+
+    this.fields.forEach(item => {
+      const field = item.field || item
+      show[field] = true;
+
+      if (item.value !== undefined) {
+        switch (field) {
+          case 'attendanceStates':
+
+            const value = this.attendanceStatusList.find(i => i.code === item.value)
+            if (value) {
+              this.selectedAttendanceStatus = [];
+              this.selectedAttendanceStatus.push(value)
+            }
+            break;
+        }
+      }
+
+      if (this.show && this.show[field] !== show[field]) {
+        hasFieldsChanged = true;
+      }
+    });
+
+    this.show = show
+
+    if (this.fromDate) {
+      this.show.checkOut = moment(this.fromDate).isBefore(new Date(), 'd');
+      this.show.clocked = moment(this.fromDate).isBefore(new Date(), 'd');
+    }
+    if (hasFieldsChanged) {
+      this.reset();
+    }
+  }
+
+  ngOnInit() {
+
+    this.hidden = this.hidden || {};
+
 
     if (this.fromDate) {
       this.show.checkOut = moment(this.fromDate).isBefore(new Date(), 'd');
