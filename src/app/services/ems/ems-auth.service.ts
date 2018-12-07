@@ -15,11 +15,11 @@ export class EmsAuthService {
 
   constructor(private http: Http) {
     const baseApi = 'ems';
-    this.signin = new GenericApi<any>('authorizations/signIn', http, baseApi);
+    this.signin = new GenericApi<any>('users/signIn', http, baseApi);
     this.signup = new GenericApi<any>('authorizations/signUp', http, baseApi);
     this.verify = new GenericApi<any>('authorizations/verification', http, baseApi);
-    this.forgotPassword = new GenericApi<any>('authorizations/forgotPassword', http, baseApi);
-    this.resetPassword = new GenericApi<any>('authorizations/resetPassword', http, baseApi);
+    this.forgotPassword = new GenericApi<any>('users/resend', http, baseApi);
+    this.resetPassword = new GenericApi<any>('users/setPassword', http, baseApi);
     this.completeSignup = new GenericApi<any>('authorizations/completeSignup', http, baseApi);
   }
 

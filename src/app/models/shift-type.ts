@@ -26,12 +26,12 @@ class Grace {
   checkIn: CheckIn = new CheckIn();
   checkOut: CheckOut = new CheckOut();
 }
- class CheckIn {
+class CheckIn {
   early: '';
   late: '';
- }
+}
 
- class CheckOut {
+class CheckOut {
   early: '';
   late: '';
- }
+}

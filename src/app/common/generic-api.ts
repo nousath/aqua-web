@@ -22,6 +22,13 @@ export class GenericApi<TModel> implements IApi<TModel> {
     const externalToken = window.localStorage.getItem('external-token');
     const amsToken = window.localStorage.getItem('ams_token');
     const orgCode = window.localStorage.getItem('orgCode');
+    const roleKey = window.localStorage.getItem('roleKey');
+
+    headers.append('x-tenant-code', 'aqua');
+
+    if (roleKey) {
+      headers.append('x-role-key', roleKey);
+    }
 
     if (this.apiName === 'ams') {
       if (amsToken)

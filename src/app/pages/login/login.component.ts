@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   isLoggingIn = false;
   section: 'SIGNIN' | 'SIGNUP' | 'OTP' | 'COMPLETE' | 'FORGOTPASSWORD' | 'RESETPASSWORD' = 'SIGNIN';
   verifyOTP: VerifyOTP = new VerifyOTP();
-  organizations: Page<Organization>;
+  // organizations: Page<Organization>;
   newOrg = false;
   profileModel: EmsEmployee = new EmsEmployee();
   subscription: Subscription;
@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(private activatedRoute: ActivatedRoute,
     private emsEmployeeService: EmsEmployeeService,
     private amsEmployeeService: AmsEmployeeService,
-    private emsOrganizationService: EmsOrganizationService,
+    // private emsOrganizationService: EmsOrganizationService,
     private emsAuthService: EmsAuthService,
     public validatorService: ValidatorService,
     private store: LocalStorageService,
@@ -80,10 +80,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       properties: new User()
     });
 
-    this.organizations = new Page({
-      api: emsOrganizationService.organizations,
-    });
-    this.organizations.fetch().catch(err => toastyService.error({ title: 'Error', msg: err }));
+    // this.organizations = new Page({
+    //   api: emsOrganizationService.organizations,
+    // });
+    // this.organizations.fetch().catch(err => toastyService.error({ title: 'Error', msg: err }));
 
   }
 
@@ -93,31 +93,40 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
     this.isLoggingIn = true;
     this.user.create().then(
-      (emsUser: User) => {
-        if (emsUser.status.toLowerCase() === 'verified') {
-          this.section = 'COMPLETE';
-          return this.isLoggingIn = false;
-        }
-        this.store.setItem('external-token', emsUser.token); // for ems its aceess-token
-        this.store.setItem('orgCode', emsUser.organization.code);
-        this.store.setItem('emsUserId', emsUser.id);
+      (data: any) => {
+        // if (emsUser.status.toLowerCase() === 'verified') {
+        //   this.section = 'COMPLETE';
+        //   return this.isLoggingIn = false;
+        // }
+        this.setUser(data)
+        // this.store.setItem('external-token', emsUser.token); // for ems its aceess-token
+        // this.store.setItem('orgCode', emsUser.organization.code);
+        // this.store.setItem('emsUserId', emsUser.id);
+        this.isLoggingIn = false
         this.loginToAms();
       }
     ).catch(err => { this.isLoggingIn = false; this.toastyService.error({ title: 'Error', msg: err }); });
+  }
+
+  setUser(data) {
+    const roles: any[] = data.roles;
+    const role = roles.find(item => !!item.organization)
+    this.store.setItem('external-token', data.token); // for ems its aceess-token
+    this.store.setItem('roleKey', role.key); // for ems its aceess-token
+    this.store.setItem('orgCode', role.organization.code);
   }
 
 
   loginToAms() {
     const tempData: any = { 'device': { 'id': 'string' } };
     this.isLoggingIn = true;
-    this.amsEmployeeService.employees.create(tempData).then(
+    this.amsEmployeeService.employees.get('my').then(
       (amsUser) => {
         this.isLoggingIn = false;
-        // if (amsUser.userType == 'normal') {
-
-          // this.router.navigate(['/download']);
-          // this.router.navigate(['/pages/attendances/daily',amsUser.id]);
-          // return this.toastyService.info({ title: 'Info', msg: 'You are not authorized to use this application. Please contact the system administrator if you need to access this application' })
+        // if (amsUser.userType === 'normal') {
+        //   this.router.navigate(['/download']);
+        //   this.router.navigate(['/pages/attendances/daily', amsUser.id]);
+        //   return this.toastyService.info({ title: 'Info', msg: 'You are not authorized to use this application. Please contact the system administrator if you need to access this application' })
         // }
         this.store.setItem('ams_token', amsUser.token);
         this.store.setItem('userId', amsUser.id);
@@ -126,7 +135,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.store.setItem('orgCode', amsUser.organization.code.toLowerCase());
         if (amsUser.userType === 'superadmin')
           return this.router.navigate(['/pages']);
-          if (amsUser.userType === 'normal' || 'admin')
+        if (amsUser.userType === 'normal' || 'admin')
           return this.router.navigate(['/pages/attendances/daily', amsUser.id]);
         // if (amsUser.userType == 'admin')
         //   return this.router.navigate(['/pages/attendances/daily',amsUser.id]);
@@ -223,8 +232,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.isLoggingIn = true;
     this.emsAuthService.resetPassword.create(resetPassModel, `${this.profileModel.id}`).then(
       data => {
-        this.store.setItem('external-token', data.token); // for ems its aceess-token
-        this.store.setItem('orgCode', data.organization.code);
+
+        this.setUser(data)
         this.isLoggingIn = false;
         this.loginToAms();
       }
