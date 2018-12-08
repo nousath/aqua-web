@@ -11,6 +11,7 @@ export const environment = {
     // ems: 'http://ems.aquateams.com',
     ams: 'http://localhost:3040',
     // ams: 'http://ams.aquateams.com',
+    drive: 'http://docs-api-dev.m-sas.com',
     website: 'http://aquahrms.m-sas.com',
     register: 'http://ams-getting-started.m-sas.com'
   },

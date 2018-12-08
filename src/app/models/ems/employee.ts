@@ -3,13 +3,10 @@ import { Device } from '../device';
 import { ShiftType } from '../shift-type';
 import { Designation } from '../designation';
 import { Department } from '../department';
+import { Doc } from '../doc.model';
 
 
-export class Doc {
-  id: string;
-  url: string;
-  thumbnail: string;
-}
+
 export class Profile {
   dob: Date;
   firstName: string;

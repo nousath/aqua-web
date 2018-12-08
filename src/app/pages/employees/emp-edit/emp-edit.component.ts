@@ -212,12 +212,13 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     return this.autoCompleteService.searchByKey<EmsEmployee>('name', keyword, 'ems', 'employees');
   }
 
-  empFormatter(data: Employee): string {
-    return data.name;
+  empFormatter(data: EmsEmployee): string {
+    return `${data.profile.firstName} ${data.profile.lastName}`.trim();
   }
 
-  empListFormatter(data: Employee): string {
-    return `${data.name} (${data.code})`;
+  empListFormatter(data: EmsEmployee): string {
+    const name = `${data.profile.firstName} ${data.profile.lastName}`.trim()
+    return `${data.code}:${name}`;
   }
 
   ngOnInit() {

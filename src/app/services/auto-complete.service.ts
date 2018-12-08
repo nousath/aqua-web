@@ -17,6 +17,12 @@ export class AutoCompleteService {
   private getHeaders(apiName: string): Headers {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
+    headers.append('x-tenant-code', 'aqua');
+
+    const roleKey = window.localStorage.getItem('roleKey');
+    if (roleKey) {
+      headers.append('x-role-key', roleKey);
+    }
     const externalToken = this.store.getItem('external-token');
     const amsToken = this.store.getItem('ams_token');
     const orgCode = this.store.getItem('orgCode');
@@ -82,9 +88,9 @@ export class AutoCompleteService {
         const json = res.json().items as TModel[];
         return json;
       }).catch(
-      err => {
-        return Observable.of([]);
-      }
+        err => {
+          return Observable.of([]);
+        }
       );
     // } else {
     //   return Observable.of([]);
