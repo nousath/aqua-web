@@ -61,6 +61,10 @@ body::-webkit-scrollbar-thumb {
     padding: 0 !important;
 }
 
+.cards-col .mat-card {
+  margin-bottom: 20px
+}
+
 .example-spacer {
     flex: 1 1 auto;
 }
@@ -135,6 +139,11 @@ body::-webkit-scrollbar-thumb {
 .btn_grey {
     background-color: #6b6b6b;
     color: white !important;
+}
+
+.tool-bar {
+  margin-top: 10px;
+  margin-bottom: 5px;
 }
 
 .page_header {
@@ -309,7 +318,7 @@ pagination-controls {
     padding: 7%;
 }
 
-.profieCrd {
+.profile-card {
     word-break: break-all;
 }
 

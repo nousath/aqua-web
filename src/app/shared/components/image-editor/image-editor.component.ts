@@ -72,7 +72,22 @@ export class ImageEditorComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     const image = document.getElementById('image') as HTMLImageElement;
     image.onload = () => {
-      this.cropper = new Cropper(image);
+      // this.cropper = new Cropper(image);
+
+      this.cropper = new Cropper(image, {
+        dragMode: 'crop', // only in case of 'FALSE' value
+        aspectRatio: this.isFixedRatio ? this.ratio : NaN, // for free crop
+        autoCrop: true,
+        autoCropArea: 0.9,
+        restore: false,
+        guides: true,
+        center: true,
+        responsive: true,
+        highlight: false,
+        cropBoxMovable: true,
+        cropBoxResizable: false,
+        toggleDragModeOnDblclick: true,
+      });
     };
     this.dataUrl(this.file, (err, base64) => {
       image.src = base64;

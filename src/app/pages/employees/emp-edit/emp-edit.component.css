@@ -21,6 +21,7 @@
 .profileImage {
   right: 15px;
   position: relative;
+
 }
 
 .avatar {
@@ -28,6 +29,9 @@
   height: 130px;
   border-radius: 3px;
   object-fit: cover;
+  -webkit-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.57);
+  -moz-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.57);
+  box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.57);
 }
 
 
@@ -74,6 +78,7 @@ td{
 .upload{
     padding-top: 10px;
 }
+
 .fields {
     width: 50%;
     float: left;

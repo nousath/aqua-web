@@ -1,20 +1,21 @@
-<div class="row text-center">
-  <a md-raised-button class="reply" (click)="backClicked()">
-    <md-icon>reply</md-icon>
-  </a>
+<div class="tool-bar controls-row">
   <h5>
-    <b> {{employee?.id ? 'Employee Details' : 'New Employee' }}</b>
+    <b>{{employee?.id ? 'Employee Details' : 'New Employee' }}</b>
   </h5>
-  <span class="hradrbtns">
-    <button *ngIf="!isNew" md-raised-button [disabled]="isProcessing" (click)="resetPassword()">Reset Password</button>
-    <button md-raised-button [disabled]="isProcessing || !employee.profile.firstName" color="primary" (click)="save()">
-      <span *ngIf="isNew">Create</span>
-      <span *ngIf="!isNew">Update</span>
+  <span class="spacer"></span>
+  <a md-icon-button *ngIf="!isNew" (click)="backClicked()">
+    <md-icon>close</md-icon>
+  </a>
+  <ng-container *ngIf="isNew">
+    <button md-button (click)="backClicked()">Cancel</button>
+    <button md-raised-button [disabled]="isProcessing || !employee.profile.firstName" color="primary" (click)="save()">Next
     </button>
-  </span>
+  </ng-container>
 </div>
 <div class="row capitalize">
-  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 profieCrd">
+  <md-spinner class="custom_spinner" *ngIf="isProcessing" mode="indeterminate">
+  </md-spinner>
+  <div *ngIf="!isNew" class="col-xs-12 col-sm-12 col-md-12 col-lg-4 cards-col profile-card">
     <md-card>
       <div class="row nameFormat">
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
@@ -41,7 +42,7 @@
           </select>
         </div>
         <div *ngIf="!isNew" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-          <br>{{isNew ? '':'Status:'}}&nbsp;
+          <br>Status:&nbsp;
           <select name="status" class="form-control small right" [(ngModel)]="employee.status" [required]="!isNew">
             <option [ngValue]="null">Select an option</option>
             <option value="new">New</option>
@@ -53,14 +54,14 @@
         </div>
       </div>
     </md-card>
-    <aqua-finger-print *ngIf="!isNew && amsEmployee" [employee]="amsEmployee"></aqua-finger-print>
-    <aqua-emp-leaves *ngIf="!isNew && amsEmployee" [employee]="amsEmployee"></aqua-emp-leaves>
-    <aqua-emp-shift *ngIf="!isNew && amsEmployee" [employee]="amsEmployee"></aqua-emp-shift>
+    <app-processing-indicator *ngIf="!amsEmployee"></app-processing-indicator>
+    <aqua-finger-print *ngIf="amsEmployee" [employee]="amsEmployee"></aqua-finger-print>
+    <aqua-emp-leaves *ngIf="amsEmployee" [employee]="amsEmployee"></aqua-emp-leaves>
+    <aqua-emp-shift *ngIf="amsEmployee" [employee]="amsEmployee"></aqua-emp-shift>
+
   </div>
 
-  <md-spinner class="custom_spinner" *ngIf="isProcessing" mode="indeterminate">
-  </md-spinner>
-  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
+  <div [class.col-lg-offset-2]="isNew" class=" col-xs-12 col-sm-12 col-md-12 col-lg-8 cards-col">
     <md-card>
       <div class="dialog_Header text-center">
         <h5>
@@ -182,7 +183,6 @@
         </div>
       </div>
     </md-card>
-    <br>
     <md-card>
       <div class="dialog_Header text-center">
         <h5>
@@ -257,7 +257,6 @@
         </div>
       </div>
     </md-card>
-    <br *ngIf="employee.config.employmentType == 'contract'">
     <md-card [class.show]="employee.config.employmentType == 'contract'" [class.hide]="employee.config.employmentType != 'contract'">
       <div class="dialog_Header text-center">
         <h5>
@@ -288,7 +287,6 @@
         </div>
       </div>
     </md-card>
-    <br>
     <md-card>
       <div class="dialog_Header text-center">
         <h5>
@@ -357,7 +355,6 @@
         </div>
       </div>
     </md-card>
-    <br>
     <md-card>
       <div class="dialog_Header text-center">
         <h5>
@@ -416,9 +413,7 @@
         </div>
       </div>
     </md-card>
-    <br>
     <md-card *ngIf="!isNew">
-
       <div class="dialog_Header text-center">
         <h5>
           <b>Relieving</b>
@@ -452,13 +447,14 @@
     </md-card>
     <div class="controls-row footer">
       <span class="spacer"></span>
-      <button md-button (click)="backClicked()" *ngIf="isNew">
-        Cancel
-      </button>
-      <button md-raised-button [disabled]="isProcessing || !employee.profile.firstName" color="primary" (click)="save()">
-        <span *ngIf="isNew">Create</span>
-        <span *ngIf="!isNew">Update</span>
-      </button>
+      <ng-container *ngIf="isNew">
+        <button md-button (click)="backClicked()">Cancel</button>
+        <button md-raised-button [disabled]="isProcessing || !employee.profile.firstName" color="primary" (click)="save()">Next</button>
+      </ng-container>
+      <ng-container *ngIf="!isNew">
+        <button md-raised-button [disabled]="isProcessing" (click)="resetPassword()">Reset Password</button>
+        <button md-raised-button [disabled]="isProcessing || !employee.profile.firstName" color="primary" (click)="save()">Save</button>
+      </ng-container>
     </div>
   </div>
 </div>

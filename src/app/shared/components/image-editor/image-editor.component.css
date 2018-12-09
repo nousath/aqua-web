@@ -37,8 +37,8 @@
 .content {
   background: #fff;
   top: 0;
-  padding: 40px;
-  width: 50%;
+  padding: 20px;
+  width: 440px;
   position: relative;
   z-index: 10000000;
   margin: 20px auto;
@@ -52,11 +52,17 @@
 }
 
 .image-container {
-  border: 1px solid #f1f1f1;
+  border: 2px dotted #dadada;
   padding: 25px 0;
   overflow: hidden;
-  height: 500px;
-  width: 500px;
+  height: 400px;
+  width: 400px;
+}
+
+.tools {
+  position: absolute;
+  bottom: 75px;
+  width: 100%;
 }
 
 .alertBody p {

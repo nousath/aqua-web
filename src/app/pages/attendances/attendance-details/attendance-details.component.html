@@ -43,7 +43,7 @@
     mode="indeterminate"></md-spinner>
 <br>
 <div class="row">
-    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 profieCrd nameFormat">
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 profile-card nameFormat">
         <md-card>
             <div class="row">
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 capitalize">
@@ -53,7 +53,8 @@
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                     <div class="row profileImage">
-                        <img *ngIf="employee?.properties?.picUrl" [src]="employee?.properties?.picUrl" width="100%" onError="this.src='/assets/images/blank.png'">
+                        <img *ngIf="employee?.properties?.picUrl" [src]="employee?.properties?.picUrl" width="100%"
+                            onError="this.src='/assets/images/blank.png'">
                         <img *ngIf="!employee?.properties?.picUrl" alt="img" src="assets/images/blank.png" width="100%">
                     </div>
                 </div>
@@ -68,7 +69,8 @@
                         <tr class="capitalize">
                             <!-- <td>Supervisor:</td> -->
                             <td>Supervisor:</td>
-                            <td>{{employee?.properties?.supervisor?.name}} {{employee?.properties?.supervisor?.code ? '('+employee?.properties?.supervisor?.code+')':'--'}}</td>
+                            <td>{{employee?.properties?.supervisor?.name}} {{employee?.properties?.supervisor?.code ?
+                                '('+employee?.properties?.supervisor?.code+')':'--'}}</td>
                         </tr>
                         <!-- <tr>
                             <td>Email:</td>
@@ -112,7 +114,8 @@
                         </tr>
                         <tr>
                             <td>
-                                <md-radio-group class="example-radio-group" [(ngModel)]="this.employee.properties['currentAblitiy']" (change)="selectAbility(this.employee.properties['currentAblitiy'])">
+                                <md-radio-group class="example-radio-group" [(ngModel)]="this.employee.properties['currentAblitiy']"
+                                    (change)="selectAbility(this.employee.properties['currentAblitiy'])">
                                     <md-radio-button class="example-radio-button" [value]="'maualAttendance'">
                                         Manual CheckIn/CheckOut
                                     </md-radio-button>
@@ -152,7 +155,8 @@
         </md-card>
         <br>
         <md-card>
-            <div class="row" angulartics2On="click" angularticsEvent="dailyTimeLogClick" angularticsCategory="dailyTimelog" [angularticsProperties]="{label: 'Fall Campaign'}">
+            <div class="row" angulartics2On="click" angularticsEvent="dailyTimeLogClick" angularticsCategory="dailyTimelog"
+                [angularticsProperties]="{label: 'Fall Campaign'}">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 calHeader text-center cursor" (click)="openCalnder()">
                     <h5>
                         <b>{{selectedDate | date:'MMMM y'}}</b>
@@ -161,8 +165,8 @@
                 <br>
                 <div class="calBox dayName" *ngFor="let item of days">{{item}}</div>
                 <div class="calBox" *ngFor="let item of emptyStartDays"></div>
-                <div class="calBox day corners shadow" [mdTooltipPosition]="'above'" mdTooltip="{{item.needsAction}}" *ngFor="let item of events;let i = index"
-                    (click)="updateDayEvent(item)" [ngClass]="{
+                <div class="calBox day corners shadow" [mdTooltipPosition]="'above'" mdTooltip="{{item.needsAction}}"
+                    *ngFor="let item of events;let i = index" (click)="updateDayEvent(item)" [ngClass]="{
                   'present': item?.status === 'present' || item?.status === 'checkedin',
                   'absent': item?.status === 'absent'  && item?.shift?.status === 'working',
                   'leave': item?.status === 'onleave' || item?.status === 'halfday' && item?.shift?.status === 'working',
@@ -177,7 +181,8 @@
                         <!--<p>{{item?.ofDate}}</p>-->
                         <!--<div *ngIf="item?.shift?.status == 'working'">-->
                         <p style="height: 10px;">
-                            <img *ngIf="item?.checkOutExtend" alt="img" src="assets/images/extend.png" width="60%" height="8px">
+                            <img *ngIf="item?.checkOutExtend" alt="img" src="assets/images/extend.png" width="60%"
+                                height="8px">
                         </p>
                         <p *ngIf="item?.status === 'present'
                         || item?.status === 'checkedin'
@@ -248,7 +253,8 @@
                     <h5>
                         <b>Leave Submitted</b>
                     </h5>
-                    <a md-icon-button [routerLink]="['apply-leave']" class="levbtn" mdTooltip="Apply Leave" [mdTooltipPosition]="'above'">
+                    <a md-icon-button [routerLink]="['apply-leave']" class="levbtn" mdTooltip="Apply Leave"
+                        [mdTooltipPosition]="'above'">
                         <md-icon>add_circle_outline</md-icon>
                     </a>
                 </div>
@@ -281,16 +287,19 @@
                                       || item?.status == 'cancelled'" (click)="accept_reject_leave(item, 'approved')" mdTooltip="Approve" [mdTooltipPosition]="'above'">
                                 <md-icon>check_cirle</md-icon>
                             </button>-->
-                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status == 'submitted'"
-                                (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
+                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject"
+                                *ngIf="item?.status == 'submitted'" (click)="accept_reject_leave(item, 'rejected')"
+                                mdTooltip="Reject" [mdTooltipPosition]="'above'">
                                 <md-icon>highlight_off</md-icon>
                             </button>
-                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status == 'submitted'"
-                                (click)="accept_reject_leave(item, 'approved')" mdTooltip="Approve" [mdTooltipPosition]="'above'">
+                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve"
+                                *ngIf="item?.status == 'submitted'" (click)="accept_reject_leave(item, 'approved')"
+                                mdTooltip="Approve" [mdTooltipPosition]="'above'">
                                 <md-icon>check_cirle</md-icon>
                             </button>
-                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status?.toLowerCase() == 'approved'"
-                                (click)="accept_reject_leave(item, 'cancelled')" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
+                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve"
+                                *ngIf="item?.status?.toLowerCase() == 'approved'" (click)="accept_reject_leave(item, 'cancelled')"
+                                mdTooltip="Cancel" [mdTooltipPosition]="'above'">
                                 <md-icon>close</md-icon>
                             </button>
                         </td>
