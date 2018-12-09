@@ -70,7 +70,7 @@ import { MonthlyMobileViewComponent } from './monthly-mobile-view/monthly-mobile
     LeavesComponent,
     LeaveBalancesComponent,
     ManageLeavesComponent,
-
+    TeamsComponent
   ]
 })
 export class AttendancesModule { }

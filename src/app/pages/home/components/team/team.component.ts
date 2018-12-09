@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Employee } from '../../../../models';
-import { EmsAuthService } from '../../../../services';
+import { EmsAuthService } from '../../../../services/ems/ems-auth.service';
 
 @Component({
-  selector: 'aqua-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  selector: 'aqua-team',
+  templateUrl: './team.component.html',
+  styleUrls: ['./team.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class TeamComponent implements OnInit {
 
   employee: Employee;
   constructor(private auth: EmsAuthService) { }

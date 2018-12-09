@@ -1,18 +1,24 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 import { Employee } from '../../../models/employee';
 import { AmsEmployeeService } from '../../../services/index';
 import { LocalStorageService } from '../../../services/local-storage.service';
 
 
 class Sections {
+  home = false;
   employee = false;
   attendance = false;
   settings = false;
   select(section: string) {
     this[section] = !this[section];
   }
+}
+
+class NavItem {
+  routerLink: string[];
+  title: string;
 }
 
 @Component({

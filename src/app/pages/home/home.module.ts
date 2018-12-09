@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { HomeRoutingModule } from './home.routing';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AttendancesModule } from '../attendances/attendances.module';
+import { TeamComponent } from './components/team/team.component';
 
 @NgModule({
   imports: [
@@ -13,7 +14,8 @@ import { AttendancesModule } from '../attendances/attendances.module';
     HomeRoutingModule
   ],
   declarations: [
-    DashboardComponent
+    DashboardComponent,
+    TeamComponent
   ],
   entryComponents: [
   ],

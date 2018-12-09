@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, Input } from '@angular/core';
 import { DayEventDialogComponent } from '../../../dialogs/day-event-dialog/day-event-dialog.component';
 import { DayEvent } from '../../../models/day-event';
 import { ServerPageInput } from '../../../common/contracts/api/page-input';
@@ -35,7 +35,9 @@ declare var $: any;
 })
 export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
 
+  @Input()
   empId: string;
+
   subscription: Subscription;
   employee: Model<Employee>;
   user: string;
@@ -107,13 +109,13 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
     this.shifTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
     this.subscription = activatedRoute.params.subscribe(params => {
       if (params['empId']) {
-        this.setEmployee(params['empId'])
+        this.empId = params['empId'];
+        this.setEmployee()
       }
     });
   }
 
-  setEmployee(id) {
-    this.empId = id;
+  setEmployee() {
     this.leavesSubmiited.filters.properties['employeeId'].value = this.empId;
     this.leaveBalances.filters.properties['id'].value = this.empId;
     this.fetchSubmittedLeaveBalance();
@@ -323,9 +325,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
   };
 
   ngOnInit() {
-    if (!this.empId) {
-      this.empId = this.auth.getCurrentUser().id
-    }
+    this.setEmployee();
   }
 
   ngAfterViewInit() {

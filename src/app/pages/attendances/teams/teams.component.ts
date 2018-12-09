@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, Input } from '@angular/core';
 import { Location } from '@angular/common'
 import { Page } from '../../../common/contracts/page';
 import { AmsEmployeeService, AmsShiftService, AmsAttendanceService } from '../../../services/ams';
@@ -47,6 +47,7 @@ export class Tags {
   styleUrls: ['./teams.component.css']
 })
 export class TeamsComponent implements OnInit {
+  @Input()
   empId: any;
 
   dailyAttendnace: Page<DailyAttendance>;
