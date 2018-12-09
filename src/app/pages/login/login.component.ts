@@ -64,11 +64,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     private toastyService: ToastyService) {
 
     this.subscription = activatedRoute.queryParams.subscribe(queryParams => {
-      const token: string = queryParams['user_access_token'];
-      let orgCode: string = queryParams['org_code'];
-      if (token && orgCode) {
+      const roleKey: string = queryParams['role-key'];
+      let orgCode: string = queryParams['org-code'];
+      if (roleKey && orgCode) {
         orgCode = orgCode.toLowerCase();
-        this.store.setItem('external-token', token);
+        this.store.setItem('roleKey', roleKey);
         this.store.setItem('orgCode', orgCode);
         return this.loginToAms();
       }

@@ -12,17 +12,22 @@ export class AdminGuard implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
+    const roleKey = this.store.getItem('roleKey')
+    if (!roleKey) {
+      return false
+    }
+
     const currentUser: Employee = this.store.getObject('user') as Employee;
-    if (currentUser.userType === 'superadmin' || currentUser.userType === 'admin'  || currentUser.userType === 'normal') {
+    if (currentUser.userType === 'superadmin' || currentUser.userType === 'admin' || currentUser.userType === 'normal') {
       return true;
     }
     this.router.navigate(['/pages/subAdmin']);
     return false;
   }
   // if (currentUser.userType == 'admin') {
-    //   this.router.navigate([`/pages/daily/${currentUser.id}`]);
-    //   return false;
-    // }
+  //   this.router.navigate([`/pages/daily/${currentUser.id}`]);
+  //   return false;
+  // }
 
-    // return false;
+  // return false;
 }

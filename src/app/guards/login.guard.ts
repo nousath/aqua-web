@@ -11,13 +11,13 @@ export class LoginGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
 
-    const orgcode = route.queryParams['org_code'];
-    const externalToken = route.queryParams['user_access_token'];
-    if (orgcode && externalToken) {
+    const orgCode = route.queryParams['org-code'];
+    let roleKey = route.queryParams['role-key'];
+    if (orgCode && roleKey) {
       this.store.clear();
     }
-    const amstoken: string = this.store.getItem('ams_token');
-    if (amstoken) {
+    roleKey = this.store.getItem('roleKey');
+    if (roleKey) {
       this.router.navigate(['/pages']);
       return false;
     }

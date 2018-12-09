@@ -23,7 +23,13 @@ export class LocalStorageService {
 
   getObject(key): any {
     const item = window.localStorage.getItem(key);
-    return item ? JSON.parse(item) : null;
+    try {
+      return item ? JSON.parse(item) : null;
+    } catch (err) {
+      console.log(item)
+      console.error(err)
+      return null;
+    }
   }
 
   setObject(key: string, value: any): any {

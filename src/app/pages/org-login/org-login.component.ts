@@ -22,21 +22,20 @@ export class OrgLoginComponent implements OnInit, OnDestroy {
     private router: Router,
     private toastyService: ToastyService) {
     this.subscription = activatedRoute.queryParams.subscribe(queryParams => {
-      const token: string = queryParams['user_access_token'];
-      let orgCode: string = queryParams['org_code'];
-      if (!token || !orgCode) {
-        return alert('Token or Org Not Found')
+      const roleKey: string = queryParams['role-key'];
+      let orgCode: string = queryParams['org-code'];
+      if (!roleKey || !orgCode) {
+        return alert('Role or organization Not Found')
       }
       orgCode = orgCode.toLowerCase();
       this.store.clear();
-      this.store.setItem('external-token', token);
+      this.store.setItem('roleKey', roleKey);
       this.store.setItem('orgCode', orgCode);
 
       const tempData: any = { 'device': { 'id': 'string' } };
 
       this.amsEmployeeService.signInViaExternalToken.create(tempData).then(
         (amsUser) => {
-          this.store.setItem('ams_token', amsUser.token);
           amsUser.userType = 'superadmin';
           this.store.setObject('user', amsUser);
           this.store.setItem('orgCode', amsUser.organization.code ? amsUser.organization.code.toLowerCase() : orgCode);

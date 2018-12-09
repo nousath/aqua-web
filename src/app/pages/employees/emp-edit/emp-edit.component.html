@@ -1,4 +1,3 @@
-<br>
 <div class="row text-center">
   <a md-raised-button class="reply" (click)="backClicked()">
     <md-icon>reply</md-icon>
@@ -14,9 +13,6 @@
     </button>
   </span>
 </div>
-<br>
-<br>
-<br>
 <div class="row capitalize">
   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 profieCrd">
     <md-card>
@@ -25,35 +21,16 @@
           <h4>{{employee?.profile?.firstName}} {{employee?.profile?.lastName}}</h4>
           <h5>{{employee?.code}}</h5>
         </div>
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-          <div class="row profileImage cursor">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 image-picker" *ngIf="employee?.id">
+          <a class="profileImage" (click)="profileImageInput.click()" mdTooltip="Change Profile Picture"
+            [mdTooltipPosition]="'above'">
             <img *ngIf="employee?.profile?.pic?.url" class="avatar" [src]="employee?.profile?.pic?.url" onerror="this.src = 'assets/images/blank.png'"
               width="100%">
-            <img *ngIf="!employee?.picUrl" class="avatar" alt="img" src="assets/images/blank.png" width="100%">
-            <button *ngIf="employee?.id" (click)="isChangeImage = !isChangeImage" class="btn chimg" mdTooltip="Change Profile Picture"
-              [mdTooltipPosition]="'above'">
-              Change Profile Photo
-            </button>
-          </div>
+            <img *ngIf="!employee?.profile?.pic?.url" class="avatar" alt="img" src="assets/images/blank.png" width="100%">
+          </a>
+          <input #profileImageInput type="file" accept="image/*" (change)="onNewImageSelect($event)" style="position: fixed;top: -100px;" />
         </div>
         <br>
-        <div *ngIf="isChangeImage" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center fileBox">
-          <h5>
-            <b>Image Upload</b>
-          </h5>
-          <input class="file" id="uploader" type="file" ng2FileSelect [uploader]="uploader" />
-          <div *ngFor="let item of uploader.queue">
-            <button md-raised-button color="primary" (click)="uploadImg()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
-              Upload
-            </button>
-            <button md-raised-button class="btn_grey" (click)="isChangeImage = !isChangeImage" [disabled]="item.isReady || item.isUploading  || uploader.isUploading">
-              Cancel
-            </button>
-          </div>
-          <button *ngIf="uploader?.queue?.length == 0" (click)="isChangeImage = !isChangeImage" md-raised-button class="btn_grey">
-            Cancel
-          </button>
-        </div>
         <br>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <br> User Type:&nbsp;
@@ -76,19 +53,9 @@
         </div>
       </div>
     </md-card>
-    <br>
-    <div *ngIf="!isNew && amsEmployee">
-      <aqua-finger-print [employee]="amsEmployee"></aqua-finger-print>
-    </div>
-    <br>
-    <div *ngIf="!isNew && amsEmployee">
-      <aqua-emp-leaves [employee]="amsEmployee"></aqua-emp-leaves>
-    </div>
-    <br>
-    <div *ngIf="!isNew && amsEmployee">
-      <aqua-emp-shift [employee]="amsEmployee"></aqua-emp-shift>
-    </div>
-    <br>
+    <aqua-finger-print *ngIf="!isNew && amsEmployee" [employee]="amsEmployee"></aqua-finger-print>
+    <aqua-emp-leaves *ngIf="!isNew && amsEmployee" [employee]="amsEmployee"></aqua-emp-leaves>
+    <aqua-emp-shift *ngIf="!isNew && amsEmployee" [employee]="amsEmployee"></aqua-emp-shift>
   </div>
 
   <md-spinner class="custom_spinner" *ngIf="isProcessing" mode="indeterminate">
@@ -421,8 +388,7 @@
       <div class=" form-group row">
         <div class="fields">
           <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-            <b>Bank.:</b>
-
+            <b>Bank:</b>
           </div>
           <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
             <input name="bank" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.config.bank">
@@ -449,8 +415,6 @@
           </div>
         </div>
       </div>
-
-
     </md-card>
     <br>
     <md-card *ngIf="!isNew">
@@ -486,7 +450,6 @@
         </div>
       </div>
     </md-card>
-
     <div class="controls-row footer">
       <span class="spacer"></span>
       <button md-button (click)="backClicked()" *ngIf="isNew">

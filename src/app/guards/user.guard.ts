@@ -15,9 +15,9 @@ export class UserGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
     const user: Employee = this.store.getObject('user') as Employee;
-    const amstoken: string = this.store.getItem('ams_token');
+    const roleKey: string = this.store.getItem('roleKey');
     const orgCode: string = this.store.getItem('orgCode');
-    if (!amstoken || !orgCode) {
+    if (!roleKey || !orgCode) {
       this.router.navigate(['/login']);
       return false;
     }

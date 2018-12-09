@@ -85,6 +85,10 @@ import { ExtendShiftDialogComponent } from './components/extend-shift-dialog/ext
 import { ShiftCountComponent } from './components/shift-count/shift-count.component';
 import { NamePipe } from './pipes/name.pipe';
 import { CommentDialogComponent } from './../dialogs/comment-dialog/comment-dialog.component';
+import { DriveService } from './services/drive.service';
+import { ImageEditorComponent } from './components/image-editor/image-editor.component';
+import { UxService } from '../services/ux.service';
+import { ProcessingIndicatorComponent } from './components/processing-indicator/processing-indicator.component';
 
 
 
@@ -136,7 +140,9 @@ export const MaterialModules = [
     ExtendShiftDialogComponent,
     ShiftCountComponent,
     CommentDialogComponent,
-    NamePipe
+    NamePipe,
+    ImageEditorComponent,
+    ProcessingIndicatorComponent
   ],
   providers: [
     EmsEmployeeService,
@@ -159,7 +165,9 @@ export const MaterialModules = [
     AmsSystemUsageService,
     AmsEffectiveShiftService,
     AmsReportRequestService,
-    DatesService
+    DatesService,
+    DriveService,
+    UxService
   ],
   imports: [
     HttpModule,
@@ -184,14 +192,16 @@ export const MaterialModules = [
     NgxPaginationModule,
     NguiAutoCompleteModule,
     AgmCoreModule,
+    AgmCoreModule,
     TimePipe,
     ShiftPickerComponent,
     EmployeesFilterComponent,
     AddAttendanceLogsComponent,
     ShiftCountComponent,
+    ProcessingIndicatorComponent,
     NamePipe
   ],
-  entryComponents: [CommentDialogComponent, FileUploaderDialogComponent, BulkTimeLogsDialogComponent, GetDateDialogComponent, ExtendShiftDialogComponent],
+  entryComponents: [CommentDialogComponent, FileUploaderDialogComponent, BulkTimeLogsDialogComponent, GetDateDialogComponent, ExtendShiftDialogComponent, ImageEditorComponent],
 
 })
 export class SharedModule { }

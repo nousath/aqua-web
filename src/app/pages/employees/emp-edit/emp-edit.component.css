@@ -9,11 +9,27 @@
     margin-left: 1%;
 }
 
-.fileBox {
-    margin-top: 5%;
-    border: 1px solid #bfbdbd;
-    padding: 4%;
+.image-picker {
+  height: 130px;
+  widows: 130px;
+  /* border: 1px solid #bfbfbf; */
+
+  margin-bottom: 25px;
+
 }
+
+.profileImage {
+  right: 15px;
+  position: relative;
+}
+
+.avatar {
+  width: 130px;
+  height: 130px;
+  border-radius: 3px;
+  object-fit: cover;
+}
+
 
 .userType {
     width: 64%;

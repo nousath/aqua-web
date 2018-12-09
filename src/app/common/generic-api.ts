@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response, URLSearchParams, ResponseContentType } from '@angular/http';
-import 'rxjs';
-import { Observable } from 'rxjs';
 import { IApi, ServerDataModel, ServerPageInput, ServerPageModel } from './contracts/api';
 import { ILocalStore } from './contracts/local-store-interface';
 import * as _ from 'lodash';
@@ -19,8 +17,6 @@ export class GenericApi<TModel> implements IApi<TModel> {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
-    const externalToken = window.localStorage.getItem('external-token');
-    const amsToken = window.localStorage.getItem('ams_token');
     const orgCode = window.localStorage.getItem('orgCode');
     const roleKey = window.localStorage.getItem('roleKey');
 
@@ -29,22 +25,6 @@ export class GenericApi<TModel> implements IApi<TModel> {
     if (roleKey) {
       headers.append('x-role-key', roleKey);
     }
-
-    if (this.apiName === 'ams') {
-      if (amsToken)
-        headers.append('x-access-token', amsToken);
-      if (externalToken)
-        headers.append('external-token', externalToken);
-      // else if (emsToken)
-      //   headers.append('external-token', emsToken);
-
-    } else if (this.apiName === 'ems') {
-      // if (externalToken)
-      //   headers.append('external-token', externalToken)
-      if (externalToken)
-        headers.append('x-access-token', externalToken);
-    }
-
 
     headers.append('org-code', orgCode);
 

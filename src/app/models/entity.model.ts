@@ -1,10 +1,6 @@
-export class Doc {
+export class Entity {
   id: string;
-  name: string;
   type: string;
-  url: string;
-  thumbnail: string;
-
   constructor(obj?: any) {
 
     if (!obj) {
@@ -12,8 +8,6 @@ export class Doc {
     }
 
     this.id = obj.id;
-    this.name = obj.name;
     this.type = obj.type;
-    this.url = obj.url;
   }
 }

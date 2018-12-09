@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewContainerRef } from '@angular/core';
 import { EmsEmployeeService, EmsDesignationService, EmsDepartmentService } from '../../../services/ems';
 import { ToastyService } from 'ng2-toasty';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,6 +17,8 @@ import { LocalStorageService } from '../../../services/local-storage.service';
 import { environment } from '../../../../environments/environment.qa';
 import { Department } from '../../../models/department';
 import { AmsEmployeeService } from '../../../services/index';
+import { DriveService } from '../../../shared/services/drive.service';
+import { UxService } from '../../../services/ux.service';
 declare var $: any;
 
 
@@ -34,12 +36,13 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
   departments: Department[];
 
   isProcessing = false;
+  newImageFile: File;
 
-  uploader: FileUploader;
+  // uploader: FileUploader;
   isChangeImage = false;
-  isUpload = false;
+  isUploadingImage = false;
 
-  imgUploadUrl: string = environment.apiUrls.ems;
+  // imgUploadUrl: string = environment.apiUrls.ems;
 
   isNew = false;
 
@@ -55,11 +58,13 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     private router: Router,
     public _location: Location,
     private amsEmployeeService: AmsEmployeeService,
+    private uxService: UxService,
+    public viewContainerRef: ViewContainerRef
   ) {
 
-    this.initUploader()
+    // this.initUploader()
 
-    this.employee = new EmsEmployee()
+    this.employee = new EmsEmployee();
     this.isProcessing = true;
     emsDesignationService.designations.search().then(designations => {
       this.designations = designations.items;
@@ -70,13 +75,13 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
 
     activatedRoute.params.subscribe(params => {
       const empId = params['id'];
-      this.fetchEmployee(empId)
+      this.fetchEmployee(empId);
 
     });
   }
 
   getAmsDetails(code) {
-    console.log(this.employee.code)
+    console.log(this.employee.code);
     this.amsEmployeeService.employees
       .get(code)
       .then(amsEmployee => {
@@ -85,20 +90,20 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   fetchEmployee(id) {
-    this.store.setItem('Ems-employeeID', id)
+    this.store.setItem('Ems-employeeID', id);
     if (!id) {
       return this.toastyService.error({ title: 'Error', msg: 'Please select an employee' });
     }
-    this.isNew = id === 'new'
+    this.isNew = id === 'new';
     if (this.isNew) {
-      this.employee = new EmsEmployee()
-      this.isProcessing = false
+      this.employee = new EmsEmployee();
+      this.isProcessing = false;
 
     } else {
       this.emsEmployeeService.employees.get(id).then(employee => {
         this.employee = employee;
-        this.initEmployee(this.employee)
-        this.isProcessing = false
+        this.initEmployee(this.employee);
+        this.isProcessing = false;
         this.getAmsDetails(this.employee.code);
 
       }).catch(this.errorHandler);
@@ -106,7 +111,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   initEmployee(employee: EmsEmployee) {
-    this.uploader.setOptions({ url: `/ems/api/employees/image/${employee.id}` });
+    // this.uploader.setOptions({ url: `/ems/api/employees/image/${employee.id}` });
 
     employee.profile = employee.profile || new Profile();
 
@@ -129,7 +134,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     if (employee.dol) { $('#terminateDate').datepicker('setDate', employee.dol); }
 
     if (!employee.config.biometricId) {
-      employee.config.biometricId = employee.code
+      employee.config.biometricId = employee.code;
     }
     // this.employee.supervisor = this.employee.supervisor ? this.employee.supervisor : new Supervisor();
     // this.employee.designation = this.employee.designation ? this.employee.designation : new Designation();
@@ -164,7 +169,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     // }
 
     if (this.employee.email && !this.validatorService.validateEmail(this.employee.email)) {
-      return this.toastyService.error({ title: 'Invalid Email', msg: 'Please fill valid email' })
+      return this.toastyService.error({ title: 'Invalid Email', msg: 'Please fill valid email' });
     }
 
     this.isProcessing = true;
@@ -176,9 +181,9 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
       this.emsEmployeeService.employees.update(this.employee.id, this.employee);
 
     promise.then(data => {
-      this.isProcessing = false
+      this.isProcessing = false;
       this.toastyService.success({ title: 'Success', msg: `${this.employee.profile.firstName} ${this.employee.profile.lastName} ${this.isNew ? 'added' : 'updated'} successfully` });
-      this.initEmployee(this.employee)
+      this.initEmployee(this.employee);
       if (this.isNew) {
         this.isNew = false;
         this.router.navigate(['../', data.code], { relativeTo: this.activatedRoute });
@@ -187,8 +192,8 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   excel() {
-    this.isUpload = !this.isUpload;
-    this.uploader.clearQueue();
+    this.isUploadingImage = !this.isUploadingImage;
+    // this.uploader.clearQueue();
   }
 
   resetPassword() {
@@ -203,7 +208,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
         this.emsEmployeeService.employees.update(this.employee.id, emp).then(data => {
           this.isProcessing = false;
           this.toastyService.success({ title: 'Success', msg: 'Password updated successfully' });
-        }).catch(this.errorHandler)
+        }).catch(this.errorHandler);
       }
     });
   }
@@ -217,7 +222,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   empListFormatter(data: EmsEmployee): string {
-    const name = `${data.profile.firstName} ${data.profile.lastName}`.trim()
+    const name = `${data.profile.firstName} ${data.profile.lastName}`.trim();
     return `${data.code}:${name}`;
   }
 
@@ -230,7 +235,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
       minViewMode: 0,
       maxViewMode: 2,
       autoclose: true
-    }
+    };
     $('#dateSelector').datepicker(pickerOptions).on('changeDate', (e) => {
       this.employee.profile.dob = new Date(e.date);
     });
@@ -250,7 +255,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
       queryParams: {
         type: 'employees-details'
       }
-    })
+    });
   }
 
   ngOnDestroy() {
@@ -265,94 +270,32 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     this.toastyService.error({ title: 'Error', msg: err });
   }
 
-  initUploader = () => {
-    const access_Token: string = this.store.getItem('external-token');
-    const orgCode = this.store.getItem('orgCode');
-    this.uploader = new FileUploader({
-      itemAlias: 'image',
-      allowedMimeType: ['image/png', 'image/gif', 'image/jpeg', 'image/jpg'],
-      headers: [{
-        name: 'x-access-token',
-        value: access_Token
-      }, {
-        name: 'org-code',
-        value: orgCode
-      }]
-    });
+  onNewImageSelect($event) {
 
-    this.uploader.onAfterAddingAll = (fileItems: FileItem) => {
-      if (this.uploader.queue[this.uploader.queue.length - 1].file.size > 1048576 && this.uploader.queue.length > 0) {
-        this.toastyService.info({ title: 'Info', msg: 'Image size should be less than 1 mb' })
-        document.getElementById('uploader')['value'] = null;
-        return this.uploader.clearQueue();
-      }
-      if (this.uploader.queue.length > 1)
-        this.uploader.removeFromQueue(this.uploader.queue[0]);
-    };
-
-    this.uploader.onErrorItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
-      console.log('onErrorItem', response, headers);
-    };
-
-    this.uploader.onCompleteItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
-
-      const res: any = JSON.parse(response);
-      if (!res.isSuccess) {
-        return this.toastyService.error({ title: 'Error', msg: 'Image upload failed' })
-      }
-      this.employee.profile.pic.url = `${res.message.picUrl}?time=${new Date().toString().replace(/ /g, '')}`;
-      this.isChangeImage = false;
-
-    };
-  }
-
-  getImgFromBase64(image: FileItem, base64: string, cb) {
-    const canvas: HTMLCanvasElement = document.createElement('canvas'),
-      ctx: CanvasRenderingContext2D = canvas.getContext('2d');
-    const img = new Image();
-    img.onload = () => {
-      const ratio = img.width / img.height;
-      img.width = img.width <= 150 ? img.width : 150;
-      canvas.width = img.width;
-      canvas.height = img.width / ratio;
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      const dataURI = canvas.toDataURL('image/jpeg', 0.6);
-
-      const typeOfImage = image.file.type;
-      const nameOfImage = image.file.name;
-      // convert base64 to raw binary data held in a string
-      const byteString = atob(dataURI.split(',')[1]);
-      // separate out the mime component
-      const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
-      // write the bytes of the string to an ArrayBuffer
-      const ab = new ArrayBuffer(byteString.length);
-      const ia = new Uint8Array(ab);
-      for (let i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i);
-      }
-      // write the ArrayBuffer to a blob, and you're done
-      const bb = new Blob([ab], { type: typeOfImage });
-      const file = new File([bb], nameOfImage, { type: typeOfImage });
-      cb(file);
-    };
-    img.src = base64;
-
-  }
-
-  getBase64(image: FileItem, cb) {
-    const reader = new FileReader();
-    reader.onloadend = (e) => {
-      this.getImgFromBase64(image, reader.result as any, cb);
+    if (!$event.target.files || !$event.target.files[0]) {
+      return;
     }
-    return reader.readAsDataURL(image._file);
-  }
 
-  uploadImg() {
-    if (!this.uploader.queue[0]) { return; }
-    this.getBase64(this.uploader.queue[0], (file: any) => {
-      this.uploader.clearQueue();
-      this.uploader.addToQueue([file]);
-      this.uploader.queue[0].upload();
-    })
+    const file = $event.target.files[0];
+    if (file.size > 3000000) {// 3MB
+      return this.toastyService.error({ title: 'Error', msg: `The image was too big. <br\> Select an image smaller than 3MB.` });
+    }
+
+    this.uxService.getImageEditor({
+      file: file,
+      width: 500,
+      height: 500,
+      entity: { type: 'employee', id: this.employee.id },
+      folder: 'profile',
+      cancel: true
+    }, this.viewContainerRef).subscribe(doc => {
+      this.isUploadingImage = false;
+      this.employee.profile.pic.url = doc.url;
+      $event.target.value = null;
+
+    }, error => {
+      this.isUploadingImage = false;
+      $event.target.value = null;
+    });
   }
 }
