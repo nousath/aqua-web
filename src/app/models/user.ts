@@ -1,4 +1,5 @@
 import { Organization } from './organization';
+import { Role } from './ems/role';
 
 export class User {
   id: string = null;
@@ -9,5 +10,6 @@ export class User {
   code = '';
   status = '';
   phone = '';
+  roles: Role[];
   organization: Organization = new Organization()
 }

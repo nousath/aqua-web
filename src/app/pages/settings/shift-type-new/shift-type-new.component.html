@@ -1,9 +1,17 @@
-<div class="row page_header">
-  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
-    <h5><b>{{shiftId ? 'Edit': 'New'}} Shift Type</b></h5>
-  </div>
+<div class="tool-bar controls-row">
+  <h5>{{ isNew ? 'New': 'Edit'}} Shift</h5>
+  <span class="spacer"></span>
+  <a md-icon-button *ngIf="!isNew" (click)="backClicked()">
+    <md-icon>close</md-icon>
+  </a>
+  <ng-container *ngIf="isNew">
+    <button md-button (click)="backClicked()">Cancel</button>
+    <button md-raised-button [disabled]="shiftType?.isProcessing || shiftType.properties.name" color="primary" (click)="save()">Next
+    </button>
+  </ng-container>
 </div>
-<md-spinner class="custom_spinner" *ngIf="shifType?.isProcessing" mode="indeterminate"></md-spinner>
+
+<md-spinner class="custom_spinner" *ngIf="shiftType?.isProcessing" mode="indeterminate"></md-spinner>
 
 <div class="row">
   <md-card>
@@ -17,14 +25,14 @@
             </td>
             <td class="valueWidth">
               <input type="text" class="form-control" [maxlength]="validatorService.textLength" name="shiftName"
-                [(ngModel)]="shifType.properties.name" required [disabled]="shifType?.properties?.name?.toLowerCase() === 'general'">
+                [(ngModel)]="shiftType.properties.name" required [disabled]="shiftType?.properties?.name?.toLowerCase() === 'general'">
             </td>
             <td class="labelWidth">
               <label>Code<span class="asterisk">*</span></label>
             </td>
             <td class="valueWidth">
               <input type="text" class="form-control" [maxlength]="validatorService.textLength" name="shiftcode"
-                [(ngModel)]="shifType.properties.code" required [disabled]="shifType?.properties?.code?.toLowerCase() === 'gen'">
+                [(ngModel)]="shiftType.properties.code" required [disabled]="shiftType?.properties?.code?.toLowerCase() === 'gen'">
             </td>
           </tr>
           <tr>
@@ -32,14 +40,15 @@
               <label>Start Time<span class="asterisk">*</span></label>
             </td>
             <td>
-              <input type="time" class="form-control" name="startTime" [(ngModel)]="shifType.properties.startTime"
+              <input type="time" class="form-control" name="startTime" [(ngModel)]="shiftType.properties.startTime"
                 required>
             </td>
             <td>
               <label>End Time<span class="asterisk">*</span></label>
             </td>
             <td>
-              <input type="time" class="form-control" name="endTime" [(ngModel)]="shifType.properties.endTime" required>
+              <input type="time" class="form-control" name="endTime" [(ngModel)]="shiftType.properties.endTime"
+                required>
             </td>
           </tr>
           <tr>
@@ -47,14 +56,14 @@
               <label>Department</label>
             </td>
             <td>
-              <select class="form-control" [(ngModel)]="shifType.properties.department" [ngModelOptions]="{standalone: true}">
+              <select class="form-control" [(ngModel)]="shiftType.properties.department" [ngModelOptions]="{standalone: true}">
                 <option [ngValue]="null">Select an option</option>
                 <option *ngFor="let item of departments" [value]="item.name">{{item.name}}</option>
               </select>
             </td>
             <td><label>Break Time<span class="asterisk">*</span></label></td>
             <td>
-              <input type="text" class="form-control" [maxlength]='2' name="breakTime" [(ngModel)]="shifType.properties.breakTime"
+              <input type="text" class="form-control" [maxlength]='2' name="breakTime" [(ngModel)]="shiftType.properties.breakTime"
                 required>
             </td>
 
@@ -69,34 +78,34 @@
             <td colspan="2">
               <div class="graceLable">
                 <label>Early<span class="asterisk">*</span></label>
-                <input type="text" class="form-control graceInput" [maxlength]='2' name="earlyIn" [(ngModel)]="shifType?.properties.grace?.checkIn.early"
+                <input type="text" class="form-control graceInput" [maxlength]='2' name="earlyIn" [(ngModel)]="shiftType?.properties.grace?.checkIn.early"
                   required>
               </div>
               <div class="graceLable">
                 <label>Late<span class="asterisk">*</span></label><input type="text" class="form-control graceInput"
-                  [maxlength]='2' name="lateIn" [(ngModel)]="shifType?.properties.grace?.checkIn.late" required>
+                  [maxlength]='2' name="lateIn" [(ngModel)]="shiftType?.properties.grace?.checkIn.late" required>
               </div>
             </td>
             <td colspan="2">
               <div class="graceLable">
                 <label>Early<span class="asterisk">*</span></label>
-                <input type="text" class="form-control graceInput" [maxlength]='2' name="earlyOut" [(ngModel)]="shifType?.properties.grace?.checkOut.early"
+                <input type="text" class="form-control graceInput" [maxlength]='2' name="earlyOut" [(ngModel)]="shiftType?.properties.grace?.checkOut.early"
                   required>
               </div>
               <div class="graceLable">
                 <label>Late<span class="asterisk">*</span></label>
-                <input type="text" class="form-control graceInput" [maxlength]='2' name="lateOut" [(ngModel)]="shifType?.properties.grace?.checkOut.late"
+                <input type="text" class="form-control graceInput" [maxlength]='2' name="lateOut" [(ngModel)]="shiftType?.properties.grace?.checkOut.late"
                   required>
               </div>
             </td>
 
             <!-- <td><label>Early<span class="asterisk">*</span></label>
-      
-                <input type="text" class="form-control" [maxlength]='2' name="graceIn" [(ngModel)]="shifType.properties.graceIn"
+
+                <input type="text" class="form-control" [maxlength]='2' name="graceIn" [(ngModel)]="shiftType.properties.graceIn"
                   required>
               </td>
               <td ><label>Late<span class="asterisk">*</span></label>
-                <input type="text" class="form-control" [maxlength]='2' name="graceOut" [(ngModel)]="shifType.properties.graceOut"
+                <input type="text" class="form-control" [maxlength]='2' name="graceOut" [(ngModel)]="shiftType.properties.graceOut"
                   required>
               </td> -->
           </tr>
@@ -116,7 +125,7 @@
               <label>Monday<span class="asterisk">*</span></label>
             </td>
             <td>
-              <select class="form-control" name="monday" [(ngModel)]="shifType.properties.monday" required>
+              <select class="form-control" name="monday" [(ngModel)]="shiftType.properties.monday" required>
                 <option [ngValue]="null">select an option</option>
                 <option value="off">Off</option>
                 <option value="full">Full</option>
@@ -135,7 +144,7 @@
               <label>Tuesday<span class="asterisk">*</span></label>
             </td>
             <td>
-              <select class="form-control" name="tuesday" [(ngModel)]="shifType.properties.tuesday" required>
+              <select class="form-control" name="tuesday" [(ngModel)]="shiftType.properties.tuesday" required>
                 <option [ngValue]="null">select an option</option>
                 <option value="off">Off</option>
                 <option value="full">Full</option>
@@ -151,7 +160,7 @@
               <label>Wednesday<span class="asterisk">*</span></label>
             </td>
             <td>
-              <select class="form-control" name="Wednesday" [(ngModel)]="shifType.properties.wednesday" required>
+              <select class="form-control" name="Wednesday" [(ngModel)]="shiftType.properties.wednesday" required>
                 <option [ngValue]="null">select an option</option>
                 <option value="off">Off</option>
                 <option value="full">Full</option>
@@ -169,7 +178,7 @@
               <label>Thursday<span class="asterisk">*</span></label>
             </td>
             <td>
-              <select class="form-control" name="thrusday" [(ngModel)]="shifType.properties.thursday" required>
+              <select class="form-control" name="thrusday" [(ngModel)]="shiftType.properties.thursday" required>
                 <option [ngValue]="null">select an option</option>
                 <option value="off">Off</option>
                 <option value="full">Full</option>
@@ -185,7 +194,7 @@
               <label>Friday<span class="asterisk">*</span></label>
             </td>
             <td>
-              <select class="form-control" name="friday" [(ngModel)]="shifType.properties.friday" required>
+              <select class="form-control" name="friday" [(ngModel)]="shiftType.properties.friday" required>
                 <option [ngValue]="null">select an option</option>
                 <option value="off">Off</option>
                 <option value="full">Full</option>
@@ -201,7 +210,7 @@
               <label>Saturday<span class="asterisk">*</span></label>
             </td>
             <td>
-              <select class="form-control" name="saturday" [(ngModel)]="shifType.properties.saturday" required>
+              <select class="form-control" name="saturday" [(ngModel)]="shiftType.properties.saturday" required>
                 <option [ngValue]="null">select an option</option>
                 <option value="off">Off</option>
                 <option value="full">Full</option>
@@ -217,7 +226,7 @@
               <label>Sunday<span class="asterisk">*</span></label>
             </td>
             <td>
-              <select class="form-control" name="sunday" [(ngModel)]="shifType.properties.sunday" required>
+              <select class="form-control" name="sunday" [(ngModel)]="shiftType.properties.sunday" required>
                 <option [ngValue]="null">select an option</option>
                 <option value="off">Off</option>
                 <option value="full">Full</option>
@@ -228,17 +237,21 @@
             <td></td>
             <td></td>
           </tr>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td class="rightBtn">
-              <button md-raised-button type="submit" [disabled]="shifType?.isProcessing" color="primary" (click)="save(shiftForm.valid)">Save</button>
-              <button md-raised-button [disabled]="shifType?.isProcessing" [routerLink]="['/pages/settings/shifts']">Cancel</button>
-            </td>
-          </tr>
         </table>
       </form>
     </div>
   </md-card>
+
+  <div class="controls-row footer">
+    <span class="spacer"></span>
+    <ng-container *ngIf="isNew">
+      <button md-button (click)="backClicked()">Cancel</button>
+      <button md-raised-button [disabled]="shiftType?.isProcessing || !shiftType.properties.name" color="primary"
+        (click)="save()">Next</button>
+    </ng-container>
+    <ng-container *ngIf="!isNew">
+      <button md-raised-button [disabled]="shiftType?.isProcessing || !shiftType.properties.name" color="primary"
+        (click)="save()">Save</button>
+    </ng-container>
+  </div>
 </div>

@@ -25,7 +25,7 @@ export class ChannelTypesComponent implements OnInit {
   constructor(private amsCommunicationAppService: AmsCommunicationAppsService,
     private toastyService: ToastyService,
     private route: Router,
-    ) {
+  ) {
 
     this.emailChannelTypes = new Page({
       api: amsCommunicationAppService.channelType,
@@ -55,7 +55,7 @@ export class ChannelTypesComponent implements OnInit {
   }
 
   getSMSChannelTypes() {
-   this.smsChannelTypes
+    this.smsChannelTypes
       .fetch()
       .catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
@@ -73,7 +73,7 @@ export class ChannelTypesComponent implements OnInit {
   }
 
   add(item) {
-    this.route.navigate([`/pages/settings/channelTypes`, item.id]);
+    this.route.navigate([`/settings/channelTypes`, item.id]);
   }
 
   ngOnInit() {

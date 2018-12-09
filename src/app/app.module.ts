@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PagesComponent } from './pages/pages.component';
 import { LoginComponent } from './pages/login/login.component';
 import { LoginGuard, UserGuard } from './guards';
 import { OrgLoginComponent } from './pages/org-login/org-login.component';
@@ -28,7 +27,6 @@ import { CopyContentComponent } from './dialogs/copy-content/copy-content.compon
 @NgModule({
   declarations: [
     AppComponent,
-    PagesComponent,
     LoginComponent,
     OrgLoginComponent,
     AppDownloadComponent,
@@ -39,7 +37,7 @@ import { CopyContentComponent } from './dialogs/copy-content/copy-content.compon
     LeaveConfirmDialogComponent,
     LeaveReasonDialogComponent,
     AddShiftDialogComponent,
-    CopyContentComponent,
+    CopyContentComponent
   ],
   imports: [
     BrowserModule,

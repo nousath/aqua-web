@@ -4,6 +4,7 @@ import { ShiftType } from '../shift-type';
 import { Designation } from '../designation';
 import { Department } from '../department';
 import { Doc } from '../doc.model';
+import { Role } from './role';
 
 
 
@@ -31,11 +32,6 @@ export class Address {
   pinCode = '';
 }
 
-export class Role {
-  id: string;
-  key: string;
-  permissions: string[];
-}
 
 export class CustomFields {
   dom: Date;

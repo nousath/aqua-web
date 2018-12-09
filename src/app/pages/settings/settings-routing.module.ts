@@ -18,8 +18,7 @@ const routes: Routes = [
     path: '', component: SettingsComponent, children: [
       { path: '', redirectTo: 'shifts', pathMatch: 'full' },
       { path: 'shifts', component: ShiftsComponent },
-      { path: 'shifts/new', component: ShiftTypeNewComponent },
-      { path: 'shifts/edit/:id', component: ShiftTypeNewComponent },
+      { path: 'shifts/:id', component: ShiftTypeNewComponent },
       { path: 'devices', component: DevicesComponent },
       { path: 'deviceLogs', component: DeviceLogsComponent },
       { path: 'holidays', component: HolidaysComponent },

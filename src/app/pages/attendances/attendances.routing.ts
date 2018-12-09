@@ -11,8 +11,7 @@ import { ManageLeavesComponent } from './manage-leaves/manage-leaves.component';
 import { AttendanceLogsComponent } from './attendance-logs/attendance-logs.component';
 import { ReportsComponent } from './reports/reports.component';
 import { TeamsComponent } from './teams/teams.component';
-import { AdminGuard } from '../../guards/admin.guard';
-import { SubAdminGuard } from '../../guards/subadmin.gaurd';
+
 
 const routes: Routes = [
   {
@@ -20,28 +19,30 @@ const routes: Routes = [
       { path: '', redirectTo: 'daily', pathMatch: 'full' },
       { path: 'monthly', component: MonthlyComponent },
       { path: 'daily', component: DailyComponent },
-      { path: 'daily/report', component: ReportsComponent },
+
 
       { path: 'reports', component: ReportsComponent },
 
       { path: 'daily/:empId', component: AttendanceDetailsComponent },
+      { path: 'monthly/:empId', component: AttendanceDetailsComponent },
+      { path: 'leaves/:empId', component: AttendanceDetailsComponent },
+      { path: 'leave-balances/:empId', component: AttendanceDetailsComponent },
+
 
       { path: 'teams/:empId', component: TeamsComponent },
       { path: 'daily/teams/:empId', component: TeamsComponent },
       { path: 'daily/teams/:empId', component: TeamsComponent },
 
 
-      { path: 'monthly/:empId', component: AttendanceDetailsComponent },
-      { path: 'leaves/:empId', component: AttendanceDetailsComponent },
-      { path: 'daily/:empId/apply-leave', component: ApplyLeaveComponent },
       { path: 'daily/:empId/attendance-logs/:ofDate', component: AttendanceLogsComponent },
+
+      { path: 'daily/:empId/apply-leave', component: ApplyLeaveComponent },
       { path: 'monthly/:empId/apply-leave', component: ApplyLeaveComponent },
       { path: 'leaves/:empId/apply-leave', component: ApplyLeaveComponent },
       { path: 'leaves/new/apply', component: ApplyLeaveComponent },
 
       { path: 'leaves', component: LeavesComponent },
       { path: 'leave-balances', component: LeaveBalancesComponent },
-      { path: 'leave-balances/:empId', component: AttendanceDetailsComponent },
       { path: 'manage-leaves', component: ManageLeavesComponent },
     ]
   }

@@ -23,6 +23,7 @@ import { AmsShiftService } from '../../../services/ams/ams-shift.service';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { EmsEmployeeService } from '../../../services';
 import { ResetPasswordDialogComponent } from '../../../dialogs/reset-password-dialog/reset-password-dialog.component';
+import { EmsAuthService } from '../../../services/ems/ems-auth.service';
 declare var $: any;
 
 
@@ -34,11 +35,11 @@ declare var $: any;
 })
 export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
 
+  empId: string;
   subscription: Subscription;
   employee: Model<Employee>;
   user: string;
   shifTypes: Page<ShiftType>;
-  empId: string;
   ofDate: any;
   isProcessingAttendance = false;
   isDownloading = false;
@@ -57,11 +58,13 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
   date: any;
   today = new Date(moment().startOf('day').toDate()).toISOString();
 
-  constructor(private amsEmployeeService: AmsEmployeeService,
+  constructor(
+    private amsEmployeeService: AmsEmployeeService,
     private emsEmployeeService: EmsEmployeeService,
     private amsLeaveService: AmsLeaveService,
     private amsShiftService: AmsShiftService,
     private amsAttendanceService: AmsAttendanceService,
+    private auth: EmsAuthService,
     private toastyService: ToastyService,
     private activatedRoute: ActivatedRoute,
     private store: LocalStorageService,
@@ -101,29 +104,28 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
       }]
     });
 
-    this.user = localStorage.getItem('userType');
-
     this.shifTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
-    this.subscription = activatedRoute.params.subscribe(
-      params => {
-        this.empId = params['empId'];
-        this.leavesSubmiited.filters.properties['employeeId'].value = this.empId;
-        this.leaveBalances.filters.properties['id'].value = this.empId;
-        this.fetchSubmittedLeaveBalance();
-        this.fetchLeavesBalances();
-        this.getAttendance(this.selectedDate);
-        this.employee.fetch(this.empId).then(
-          data => {
-            this.checkCurrentAblity();
-            if (!this.employee.properties.shiftType)
-              this.employee.properties.shiftType = new ShiftType();
-          }
-        ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
-
+    this.subscription = activatedRoute.params.subscribe(params => {
+      if (params['empId']) {
+        this.setEmployee(params['empId'])
       }
-    );
-    const current_date = new Date();
+    });
+  }
 
+  setEmployee(id) {
+    this.empId = id;
+    this.leavesSubmiited.filters.properties['employeeId'].value = this.empId;
+    this.leaveBalances.filters.properties['id'].value = this.empId;
+    this.fetchSubmittedLeaveBalance();
+    this.fetchLeavesBalances();
+    this.getAttendance(this.selectedDate);
+    this.employee.fetch(this.empId).then(
+      data => {
+        this.checkCurrentAblity();
+        if (!this.employee.properties.shiftType)
+          this.employee.properties.shiftType = new ShiftType();
+      }
+    ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
   changeShift(shiftTypeId: string) {
@@ -296,7 +298,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
 
   updateDayEvent(item: DayEvent) {
     if (item.ofDate < new Date().toISOString()) {
-      this.router.navigate([`/pages/attendances/daily/${this.empId}/attendance-logs/${item.ofDate}`])
+      this.router.navigate([`/attendances/daily/${this.empId}/attendance-logs/${item.ofDate}`])
     }
   }
   openCalnder() {
@@ -320,7 +322,11 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
     });
   };
 
-  ngOnInit() { }
+  ngOnInit() {
+    if (!this.empId) {
+      this.empId = this.auth.getCurrentUser().id
+    }
+  }
 
   ngAfterViewInit() {
     $('#monthSelector').datepicker({

@@ -97,32 +97,7 @@ body::-webkit-scrollbar-thumb {
     box-shadow: none;
 }
 
-.fixedSideNav {
-    top: 77px;
-    bottom: 0px;
-    position: fixed;
-    background-color: #3f4766;
-    width: 16%;
-    padding-bottom: 2%;
-    left: 0;
-    overflow-y: auto;
-}
 
-.fixedSideNav::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    background-color: #3f4766;
-    border-radius: 15px;
-}
-
-.fixedSideNav::-webkit-scrollbar {
-    width: 8px;
-    background-color: #3f4766;
-}
-
-.fixedSideNav::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 4px 1px rgb(245, 245, 245);
-}
 
 .calendar {
     background-image: url(assets/images/calendar-with-spring-binder-and-date-blocks.png);
@@ -144,6 +119,8 @@ body::-webkit-scrollbar-thumb {
 .tool-bar {
   margin-top: 10px;
   margin-bottom: 5px;
+  margin-right: -15px;
+  margin-left: -15px;
 }
 
 .page_header {
@@ -233,20 +210,6 @@ pagination-controls {
     border-color: #ccc !important;
 }
 
-.logo_container {
-    background: #444c6f;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 16%;
-    z-index: 2;
-}
-
-.logo {
-    width: 69%;
-    margin-bottom: 6%;
-    margin-top: 5%;
-}
 
 .dialog_Header {
     background-color: #bfbdbd!important;

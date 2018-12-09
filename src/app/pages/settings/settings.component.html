@@ -7,22 +7,22 @@
                 <br>
             </div>
             <md-divider></md-divider>
-            <a md-list-item [routerLink]="['/pages/settings/shifts']" routerLinkActive="activeTab" #rla1="routerLinkActive">
+            <a md-list-item [routerLink]="['/settings/shifts']" routerLinkActive="activeTab" #rla1="routerLinkActive">
                 <h5>Shifts</h5>
             </a>
-            <a md-list-item [routerLink]="['/pages/settings/holidays']" routerLinkActive="activeTab" #rla2="routerLinkActive">
+            <a md-list-item [routerLink]="['/settings/holidays']" routerLinkActive="activeTab" #rla2="routerLinkActive">
                 <h5>Holidays</h5>
             </a>
-            <a md-list-item [routerLink]="['/pages/settings/alerts']" routerLinkActive="activeTab" #rla3="routerLinkActive">
+            <a md-list-item [routerLink]="['/settings/alerts']" routerLinkActive="activeTab" #rla3="routerLinkActive">
                 <h5>Alerts</h5>
             </a>
-            <a md-list-item [routerLink]="['/pages/settings/devices']" routerLinkActive="activeTab" #rla4="routerLinkActive">
+            <a md-list-item [routerLink]="['/settings/devices']" routerLinkActive="activeTab" #rla4="routerLinkActive">
                 <h5>Devices</h5>
             </a>
-            <a md-list-item [routerLink]="['/pages/settings/deviceLogs']" routerLinkActive="activeTab" #rla5="routerLinkActive">
+            <a md-list-item [routerLink]="['/settings/deviceLogs']" routerLinkActive="activeTab" #rla5="routerLinkActive">
                 <h5 angulartics2On="click" angularticsEvent="devicesLogsClick" angularticsCategory="devicesLogs">Devices Logs</h5>
             </a>
-            <a md-list-item routerLink="/pages/settings/channelTypes" routerLinkActive="activeTab">
+            <a md-list-item routerLink="/settings/channelTypes" routerLinkActive="activeTab">
                 <h5>Communication Apps</h5>
             </a>
         </md-nav-list>
@@ -32,5 +32,5 @@
     </div>
 </div> -->
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 </div>

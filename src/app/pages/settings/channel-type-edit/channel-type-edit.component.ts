@@ -51,7 +51,7 @@ export class ChannelTypeEditComponent implements OnInit {
 
     this.amsCommunicationAppService.channel.simplePost(this.channel)
       .then(data => {
-        this.router.navigateByUrl('/pages/settings/channelTypes');
+        this.router.navigateByUrl('/settings/channelTypes');
         console.log(data);
       })
       .catch(err => {
@@ -72,7 +72,7 @@ export class ChannelTypeEditComponent implements OnInit {
 
     this.amsCommunicationAppService.channel.update(this.channel.id, this.channel)
       .then(data => {
-        this.router.navigateByUrl('/pages/settings/channelTypes');
+        this.router.navigateByUrl('/settings/channelTypes');
         this.toastyService.info({ title: 'Information', msg: 'Saved Successfully' });
       })
       .catch(err => {

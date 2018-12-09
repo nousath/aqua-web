@@ -1,7 +1,5 @@
 <div class="tool-bar controls-row">
-  <h5>
-    <b>{{employee?.id ? 'Employee Details' : 'New Employee' }}</b>
-  </h5>
+  <h5>{{employee?.id ? 'Employee Details' : 'New Employee' }}</h5>
   <span class="spacer"></span>
   <a md-icon-button *ngIf="!isNew" (click)="backClicked()">
     <md-icon>close</md-icon>

@@ -3,24 +3,25 @@ import { Router, Route } from '@angular/router';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 import { LocalStorageService } from '../services/local-storage.service';
+import { EmsAuthService } from '../services';
 
 @Injectable()
 export class LoginGuard implements CanActivate {
 
-  constructor(private router: Router, private store: LocalStorageService) { }
+  constructor(private auth: EmsAuthService) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
 
-    const orgCode = route.queryParams['org-code'];
-    let roleKey = route.queryParams['role-key'];
-    if (orgCode && roleKey) {
-      this.store.clear();
+    if (!this.auth.getCurrentKey()) {
+      return true
     }
-    roleKey = this.store.getItem('roleKey');
-    if (roleKey) {
-      this.router.navigate(['/pages']);
-      return false;
+
+    const currentUser = this.auth.getCurrentUser();
+    if (!currentUser) {
+      return true
     }
-    return true;
+
+    this.auth.goHome();
+    return false
   }
 }

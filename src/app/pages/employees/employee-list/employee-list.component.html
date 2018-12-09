@@ -1,38 +1,32 @@
-<div class="row page_header">
-  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-    <h5>
-      <b>Employees</b>
-    </h5>
+<div class="row tool-bar controls-row">
+  <h5>Employees</h5>
+  <span class="spacer"></span>
+  <div class="input-group">
+    <span class="input-group-addon">Status:</span>
+    <select class="form-control" [(ngModel)]="statusFilter" (change)="fetchByStatus()">
+      <option [value]="'new'">New</option>
+      <option [value]="'active'">Active</option>
+      <option [value]="'in-active'">Deactivated</option>
+      <option [value]="'archived'">Archived</option>
+    </select>
   </div>
-  <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 controls-row">
-    <span class="spacer"></span>
-    <div class="input-group">
-      <span class="input-group-addon">Status:</span>
-      <select class="form-control" [(ngModel)]="statusFilter" (change)="fetchByStatus()">
-        <option [value]="'new'">New</option>
-        <option [value]="'active'">Active</option>
-        <option [value]="'in-active'">Deactivated</option>
-        <option [value]="'archived'">Archived</option>
-      </select>
-    </div>
-    <button md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'">
-      <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
+  <button md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'">
+    <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
+  </button>
+  <button [matMenuTriggerFor]="moreMenu" md-icon-button>
+    <md-icon>more_vert</md-icon>
+  </button>
+  <md-menu #moreMenu="mdMenu">
+    <button md-menu-item [routerLink]="['new']" mdTooltip="New Employee" [mdTooltipPosition]="'above'">
+      <md-icon>add_circle_outline</md-icon> New Employee
     </button>
-    <button [matMenuTriggerFor]="moreMenu" md-icon-button>
-      <md-icon>more_vert</md-icon>
+    <button md-menu-item (click)="downloadlink()">
+      <md-icon>cloud_download</md-icon> Export
     </button>
-    <md-menu #moreMenu="mdMenu">
-      <button md-menu-item [routerLink]="['new']" mdTooltip="New Employee" [mdTooltipPosition]="'above'">
-        <md-icon>add_circle_outline</md-icon> New Employee
-      </button>
-      <button md-menu-item (click)="downloadlink()">
-        <md-icon>cloud_download</md-icon> Export
-      </button>
-      <button md-menu-item (click)="import()" mdTooltip="Upload">
-        <md-icon>cloud_upload</md-icon> Import
-      </button>
-    </md-menu>
-  </div>
+    <button md-menu-item (click)="import()" mdTooltip="Upload">
+      <md-icon>cloud_upload</md-icon> Import
+    </button>
+  </md-menu>
 </div>
 <aqua-employees-filter *ngIf="isFilter" [fields]="filterFields" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter>
 <md-spinner class="custom_spinner" *ngIf="employees?.isLoading || uploader.isUploading || employee?.isProcessing" mode="indeterminate"></md-spinner>
@@ -66,7 +60,8 @@
               <img *ngIf="!item?.profile?.pic?.url" class="img-circle profile_pic" alt="img" src="assets/images/blank.png">
             </td>
             <td>
-              <a [routerLink]="[item.code]">{{item?.profile?.firstName || '-'}} {{item?.profile?.lastName || '-'}}</a>
+              <a [routerLink]="[item.code]">{{item?.profile?.firstName || '-'}}
+                {{item?.profile?.lastName || '-'}}</a>
               <br>
 
             </td>

@@ -55,7 +55,7 @@ export class AlterEditComponent implements OnInit {
     this.subscription = activatedRoute.params.subscribe(
       params => {
 
-        this.alert.fetch( params['id']).then(
+        this.alert.fetch(params['id']).then(
           data => {
             // _.each(this.alert.properties.alertType.trigger.parameters, (i: AlertParameter) => {
             //   i.type = i.type.toLowerCase();
@@ -71,7 +71,7 @@ export class AlterEditComponent implements OnInit {
   }
 
   configure() {
-    this.angulartics2.eventTrack.next({ action: 'alertClick', properties: { category: 'alertConfigurations' }});
+    this.angulartics2.eventTrack.next({ action: 'alertClick', properties: { category: 'alertConfigurations' } });
     const trigger: any = {};
     _.each(this.alert.properties.alertType.trigger.parameters, (i: AlertParameter) => {
       trigger[i.name] = i.value
@@ -79,7 +79,7 @@ export class AlterEditComponent implements OnInit {
     this.alert.properties.config.trigger = trigger;
     this.alert.save().then(
       data => {
-        this.router.navigate([`/pages/settings/alerts`]);
+        this.router.navigate([`/settings/alerts`]);
       }
     ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
 

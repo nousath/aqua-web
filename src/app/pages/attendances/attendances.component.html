@@ -7,19 +7,19 @@
                 <br>
             </div>
             <md-divider></md-divider>
-            <a md-list-item [routerLink]="['/pages/attendances/daily']" routerLinkActive="activeTab" #rla2="routerLinkActive">
+            <a md-list-item [routerLink]="['/attendances/daily']" routerLinkActive="activeTab" #rla2="routerLinkActive">
                 <h5>Daily Attendance</h5>
             </a>
-            <a md-list-item [routerLink]="['/pages/attendances/monthly']" routerLinkActive="activeTab" #rla1="routerLinkActive">
+            <a md-list-item [routerLink]="['/attendances/monthly']" routerLinkActive="activeTab" #rla1="routerLinkActive">
                 <h5>Monthly Attendance</h5>
             </a>
-            <a md-list-item [routerLink]="['/pages/attendances/leaves']" routerLinkActive="activeTab" #rla3="routerLinkActive">
+            <a md-list-item [routerLink]="['/attendances/leaves']" routerLinkActive="activeTab" #rla3="routerLinkActive">
                 <h5>All Leaves</h5>
             </a>
-            <a md-list-item [routerLink]="['/pages/attendances/leave-balances']" routerLinkActive="activeTab" #rla4="routerLinkActive">
+            <a md-list-item [routerLink]="['/attendances/leave-balances']" routerLinkActive="activeTab" #rla4="routerLinkActive">
                 <h5 angulartics2On="click" angularticsEvent="leaveBalanceClick" angularticsCategory="leaveBalance" >Leave Balance</h5>
             </a>
-            <a md-list-item [routerLink]="['/pages/attendances/manage-leaves']" routerLinkActive="activeTab" #rla5="routerLinkActive">
+            <a md-list-item [routerLink]="['/attendances/manage-leaves']" routerLinkActive="activeTab" #rla5="routerLinkActive">
                 <h5>Manage Leaves</h5>
             </a>
         </md-nav-list>
@@ -29,5 +29,5 @@
     </div>
 </div> -->
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 </div>

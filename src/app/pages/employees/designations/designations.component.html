@@ -1,47 +1,22 @@
-<div class="row page_header">
-  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-    <h5>
-      <b>Designations</b>
-    </h5>
-  </div>
-  <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-    <span class="spacer"></span>
-    <div style="float: right">
-      <button [matMenuTriggerFor]="moreMenu" md-icon-button>
-        <md-icon>more_vert</md-icon>
-      </button>
-      <md-menu #moreMenu="mdMenu">
-        <button md-menu-item [disabled]="designations?.isLoading   || designation.isProcessing  " mdTooltip="Add"
-          [mdTooltipPosition]="'above'" (click)="toggleDesignation(true)">
-          <md-icon>add_circle_outline</md-icon> New Designation
-        </button>
-        <button md-menu-item (click)="import()" mdTooltip="Uploader" [mdTooltipPosition]="'above'" angulartics2On="click"
-          angularticsEvent="excelUploadClick" angularticsCategory="designation ">
-          <md-icon>cloud_upload</md-icon> Import
-        </button>
-      </md-menu>
-    </div>
-    <div style="float: right">
-      <button md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'">
-        <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
-      </button>
-    </div>
-    <!-- <div *ngIf="!isUpload" class="headerBtns"> -->
-    <!--<button [disabled]="designations?.isLoading   || designation.isProcessing  " md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>-->
-    <!-- <button md-icon-button [disabled]="designations?.isLoading   || designation.isProcessing  " mdTooltip="Add" class="marginLetf"
-                [mdTooltipPosition]="'above'" (click)="toggleDesignation(true)">
-                <md-icon>add_circle_outline</md-icon>
-            </button>
-        </div>
-        <div *ngIf="!isUpload" style="float: right">
-            <a class="exl" md-icon-button (click)="import()" mdTooltip="Uploader" [mdTooltipPosition]="'above'" angulartics2On="click"
-                angularticsEvent="excelUploadClick" angularticsCategory="designation " [angularticsProperties]="{label: 'Fall Campaign'}">
-                <md-icon>cloud_upload</md-icon>
-            </a>
-        </div> -->
-
-
-  </div>
+<div class="tool-bar controls-row">
+  <h5>Designations</h5>
+  <span class="spacer"></span>
+  <button md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" [mdTooltipPosition]="'above'">
+    <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
+  </button>
+  <button [matMenuTriggerFor]="moreMenu" md-icon-button>
+    <md-icon>more_vert</md-icon>
+  </button>
+  <md-menu #moreMenu="mdMenu">
+    <button md-menu-item [disabled]="designations?.isLoading   || designation.isProcessing  " mdTooltip="Add"
+      [mdTooltipPosition]="'above'" (click)="toggleDesignation(true)">
+      <md-icon>add_circle_outline</md-icon> New Designation
+    </button>
+    <button md-menu-item (click)="import()" mdTooltip="Uploader" [mdTooltipPosition]="'above'" angulartics2On="click"
+      angularticsEvent="excelUploadClick" angularticsCategory="designation ">
+      <md-icon>cloud_upload</md-icon> Import
+    </button>
+  </md-menu>
 </div>
 <aqua-employees-filter *ngIf="isFilter" [fields]="filterFields" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter>
 <md-spinner class="custom_spinner" *ngIf="designations?.isLoading   || designation.isProcessing  " mode="indeterminate"></md-spinner>

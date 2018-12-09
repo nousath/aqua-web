@@ -22,12 +22,10 @@ class Sections {
 })
 export class NavigationBarComponent implements OnInit {
 
-  @Input() userType = '';
-  @Input() sectionEmployee = '';
-  @Input() isShowEmployeeTab = true
   @Output() isSelected: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  currentUser: Employee = new Employee();
+  @Input()
+  currentUser: Employee;
   orgCode = '';
   userId = '';
   sections: Sections = new Sections();
@@ -49,11 +47,8 @@ export class NavigationBarComponent implements OnInit {
         window.scroll(0, 0);
       });
   }
-
   selectedTab() {
-    const abc = true;
-    // this.isSelected = true;
-    this.isSelected.emit(abc);
+    this.isSelected.emit(true);
   }
 
   ngOnInit() {

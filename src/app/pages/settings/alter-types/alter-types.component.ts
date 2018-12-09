@@ -45,7 +45,7 @@ export class AlterTypesComponent implements OnInit {
     this.amsAlertService.subscribe.update(alertTypeId, null).then(
       data => {
         this.isSubscribing = false;
-        this.router.navigate([`/pages/settings/alerts/${data['id']}`]);
+        this.router.navigate([`/settings/alerts/${data['id']}`]);
       }
     ).catch(err => {
       this.isSubscribing = false;

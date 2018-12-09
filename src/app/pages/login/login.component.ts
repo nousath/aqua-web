@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Model } from '../../common/contracts/model';
-import { User } from '../../models';
+import { User, Employee } from '../../models';
 import { EmsEmployeeService } from '../../services/ems';
 import { ToastyService } from 'ng2-toasty';
 import { AmsEmployeeService } from '../../services/ams';
@@ -53,24 +53,20 @@ export class LoginComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
 
-  constructor(private activatedRoute: ActivatedRoute,
-    private emsEmployeeService: EmsEmployeeService,
-    private amsEmployeeService: AmsEmployeeService,
+  constructor(
+    activatedRoute: ActivatedRoute,
     // private emsOrganizationService: EmsOrganizationService,
     private emsAuthService: EmsAuthService,
     public validatorService: ValidatorService,
-    private store: LocalStorageService,
     private router: Router,
     private toastyService: ToastyService) {
 
     this.subscription = activatedRoute.queryParams.subscribe(queryParams => {
       const roleKey: string = queryParams['role-key'];
-      let orgCode: string = queryParams['org-code'];
-      if (roleKey && orgCode) {
-        orgCode = orgCode.toLowerCase();
-        this.store.setItem('roleKey', roleKey);
-        this.store.setItem('orgCode', orgCode);
-        return this.loginToAms();
+      const orgCode: string = queryParams['org-code'];
+      if (roleKey) {
+        this.isLoggingIn = true;
+        this.emsAuthService.loginUsingKey(roleKey).subscribe(this.loginHandler, this.errorHandler)
       }
     });
 
@@ -88,61 +84,20 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   login() {
-    if (!this.user.properties.email || !this.user.properties.password) {
-      return this.user.properties.email ? this.user.properties.password ? null : this.toastyService.info({ title: 'Info', msg: 'Please enter Password' }) : this.toastyService.info({ title: 'Info', msg: 'Please enter Username' });
+    if (!this.user.properties.email) {
+      return this.toastyService.info({ title: 'Info', msg: 'Please enter Email' });
+    }
+
+    if (!this.user.properties.password) {
+      return this.toastyService.info({ title: 'Info', msg: 'Please enter Password' })
     }
     this.isLoggingIn = true;
-    this.user.create().then(
-      (data: any) => {
-        // if (emsUser.status.toLowerCase() === 'verified') {
-        //   this.section = 'COMPLETE';
-        //   return this.isLoggingIn = false;
-        // }
-        this.setUser(data)
-        // this.store.setItem('external-token', emsUser.token); // for ems its aceess-token
-        // this.store.setItem('orgCode', emsUser.organization.code);
-        // this.store.setItem('emsUserId', emsUser.id);
-        this.isLoggingIn = false
-        this.loginToAms();
-      }
-    ).catch(err => { this.isLoggingIn = false; this.toastyService.error({ title: 'Error', msg: err }); });
-  }
 
-  setUser(data) {
-    const roles: any[] = data.roles;
-    const role = roles.find(item => !!item.organization)
-    this.store.setItem('external-token', data.token); // for ems its aceess-token
-    this.store.setItem('roleKey', role.key); // for ems its aceess-token
-    this.store.setItem('orgCode', role.organization.code);
+    this.emsAuthService.login(this.user.properties)
+      .subscribe(this.loginHandler, this.errorHandler)
   }
 
 
-  loginToAms() {
-    const tempData: any = { 'device': { 'id': 'string' } };
-    this.isLoggingIn = true;
-    this.amsEmployeeService.employees.get('my').then(
-      (amsUser) => {
-        this.isLoggingIn = false;
-        // if (amsUser.userType === 'normal') {
-        //   this.router.navigate(['/download']);
-        //   this.router.navigate(['/pages/attendances/daily', amsUser.id]);
-        //   return this.toastyService.info({ title: 'Info', msg: 'You are not authorized to use this application. Please contact the system administrator if you need to access this application' })
-        // }
-        this.store.setItem('ams_token', amsUser.token);
-        this.store.setItem('userId', amsUser.id);
-        this.store.setObject('user', amsUser);
-        this.store.setItem('userType', amsUser.userType);
-        this.store.setItem('orgCode', amsUser.organization.code.toLowerCase());
-        if (amsUser.userType === 'superadmin')
-          return this.router.navigate(['/pages']);
-        if (amsUser.userType === 'normal' || 'admin')
-          return this.router.navigate(['/pages/attendances/daily', amsUser.id]);
-        // if (amsUser.userType == 'admin')
-        //   return this.router.navigate(['/pages/attendances/daily',amsUser.id]);
-
-      }
-    ).catch(err => { this.isLoggingIn = false; this.toastyService.error({ title: 'Error', msg: err }); });
-  }
 
   signUp() {
     if (!this.signupEmail) {
@@ -211,34 +166,19 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
     this.isLoggingIn = true;
     this.profileModel.organization.id = this.profileModel.organization.id === 'new' ? null : this.profileModel.organization.id;
-    this.emsAuthService.completeSignup.create(this.profileModel, this.profileModel.id).then(
-      data => {
-        this.store.setItem('external-token', data.token); // for ems its aceess-token
-        this.store.setItem('orgCode', data.organization.code);
-        this.isLoggingIn = false;
-        this.loginToAms();
-      }
-    ).catch(err => { this.isLoggingIn = false; this.toastyService.error({ title: 'Error', msg: err }); });
+    this.emsAuthService.completeSignup(this.profileModel)
+      .subscribe(this.loginHandler, this.errorHandler)
   }
 
   resetPassword(password2: string) {
     if (password2 !== this.profileModel.password) {
       return this.toastyService.error({ title: 'Error', msg: 'Password and Confirm Password should be same' });
     }
-    const resetPassModel = {
-      activationCode: this.verifyOTP.concatChar(),
-      password: this.profileModel.password
-    };
+
     this.isLoggingIn = true;
-    this.emsAuthService.resetPassword.create(resetPassModel, `${this.profileModel.id}`).then(
-      data => {
 
-        this.setUser(data)
-        this.isLoggingIn = false;
-        this.loginToAms();
-      }
-    ).catch(err => { this.isLoggingIn = false; this.toastyService.error({ title: 'Error', msg: err }); });
-
+    this.emsAuthService.resetPassword(this.profileModel.id, this.verifyOTP.concatChar(), this.profileModel.password)
+      .subscribe(this.loginHandler, this.errorHandler)
   }
 
   forgotpass() {
@@ -251,21 +191,20 @@ export class LoginComponent implements OnInit, OnDestroy {
       email: this.signupEmail
     };
     this.isLoggingIn = true;
-    this.emsAuthService.forgotPassword.create(resend).then(
-      data => {
-        this.isLoggingIn = false;
-        // this.section = 'COMPLETE';
-        this.profileModel.id = data.id;
-
-
-      }
-    ).catch(err => { this.isLoggingIn = false; this.toastyService.error({ title: 'Error', msg: err }); });
+    this.emsAuthService.forgotPassword.create(resend).then(data => {
+      this.isLoggingIn = false;
+      this.profileModel.id = data.id;
+    }
+    ).catch(this.errorHandler);
   }
 
   switch(section: 'SIGNIN' | 'SIGNUP' | 'OTP' | 'COMPLETE' | 'FORGOTPASSWORD' | 'RESETPASSWORD' = 'SIGNIN') {
     this.section = section;
   }
 
+  private errorHandler = err => { this.isLoggingIn = false; this.toastyService.error({ title: 'Error', msg: err }); }
+
+  private loginHandler = employee => { this.isLoggingIn = false; this.emsAuthService.goHome(); }
   ngOnInit() {
   }
   ngOnDestroy() {

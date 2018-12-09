@@ -1,111 +1,111 @@
-<div class="nav_container">
-  <md-nav-list *ngIf="userType === 'superadmin'" dense class="fixedSideNav">
-    <div class="logo_container text-center">
-      <img class="logo" src="assets/images/splash_logo.png" width="100%">
-      <br>
-    </div>
-    <p class="subListHeader" (click)="sections.select('employee')">Master
+<div class="nav-container">
+  <div class="logo-container">
+    <img class="logo" src="assets/images/splash_logo.png">
+    <br>
+  </div>
+  <md-nav-list *ngIf="currentUser.userType === 'superadmin'" dense>
+    <p class="list-header" (click)="sections.select('employee')">Master
       <i *ngIf="!sections.employee" class="material-icons leftIcon">keyboard_arrow_right</i>
       <i *ngIf="sections.employee" class="material-icons leftIcon">keyboard_arrow_down</i>
     </p>
-    <div *ngIf="sections.employee">
-      <a *ngIf="isShowEmployeeTab" md-list-item (click)="selectedTab()" [routerLink]="['/pages/employees/list']" routerLinkActive="activeTab"
-        #rla1="routerLinkActive">
-        <h5>Employee</h5>
+    <div class="list-items" *ngIf="sections.employee">
+      <a md-list-item (click)="selectedTab()" [routerLink]="['/employees']" routerLinkActive="active-link" #rla1="routerLinkActive">
+        <h5>Employees</h5>
       </a>
-      <a *ngIf="isShowEmployeeTab" md-list-item (click)="selectedTab()" [routerLink]="['/pages/employees/designations']" routerLinkActive="activeTab"
+      <a md-list-item (click)="selectedTab()" [routerLink]="['/employees/designations']" routerLinkActive="active-link"
         #rla2="routerLinkActive">
         <h5>Designations</h5>
       </a>
-      <a *ngIf="isShowEmployeeTab" md-list-item (click)="selectedTab()" [routerLink]="['/pages/employees/departments']" routerLinkActive="activeTab"
+      <a md-list-item (click)="selectedTab()" [routerLink]="['/employees/departments']" routerLinkActive="active-link"
         #rla15="routerLinkActive">
-        <h5>Departments </h5>
+        <h5>Departments</h5>
       </a>
-      <a md-list-item (click)="selectedTab()" [routerLink]="['/pages/attendances/leave-balances']" routerLinkActive="activeTab"
+      <a md-list-item (click)="selectedTab()" [routerLink]="['/attendances/leave-balances']" routerLinkActive="active-link"
         #rla6="routerLinkActive">
-        <h5 angulartics2On="click" angularticsEvent="leaveBalanceClick" angularticsCategory="leaveBalance">Leave Balances</h5>
+        <h5 angulartics2On="click" angularticsEvent="leaveBalanceClick" angularticsCategory="leaveBalance">Leave
+          Balances</h5>
       </a>
-      <a md-list-item (click)="selectedTab()" [routerLink]="['/pages/attendances/manage-leaves']" routerLinkActive="activeTab"
+      <a md-list-item (click)="selectedTab()" [routerLink]="['/attendances/manage-leaves']" routerLinkActive="active-link"
         #rla7="routerLinkActive">
         <h5>Leave Rules</h5>
       </a>
-      <a md-list-item (click)="selectedTab()" [routerLink]="['/pages/settings/shifts']" routerLinkActive="activeTab" #rla8="routerLinkActive">
+      <a md-list-item (click)="selectedTab()" [routerLink]="['/settings/shifts']" routerLinkActive="active-link" #rla8="routerLinkActive">
         <h5>Shifts</h5>
       </a>
-      <a md-list-item (click)="selectedTab()" [routerLink]="['/pages/subAdmin/shifts']" routerLinkActive="activeTab" #rla9="routerLinkActive">
+      <a md-list-item (click)="selectedTab()" [routerLink]="['/subAdmin/shifts']" routerLinkActive="active-link" #rla9="routerLinkActive">
         <h5>Roster Shift</h5>
       </a>
-      <a md-list-item (click)="selectedTab()" [routerLink]="['/pages/settings/holidays']" routerLinkActive="activeTab" #rla10="routerLinkActive">
+      <a md-list-item (click)="selectedTab()" [routerLink]="['/settings/holidays']" routerLinkActive="active-link"
+        #rla10="routerLinkActive">
         <h5>Holidays</h5>
       </a>
     </div>
-    <p class="subListHeader" (click)="sections.select('attendance')">Attendance
+    <p class="list-header" (click)="sections.select('attendance')">Attendance
       <i *ngIf="!sections.attendance" class="material-icons leftIcon">keyboard_arrow_right</i>
       <i *ngIf="sections.attendance" class="material-icons leftIcon">keyboard_arrow_down</i>
     </p>
-    <div *ngIf="sections.attendance">
-      <a md-list-item (click)="selectedTab()" [routerLink]="['/pages/attendances/daily']" routerLinkActive="activeTab" #rla3="routerLinkActive">
+    <div class="list-items" *ngIf="sections.attendance">
+      <a md-list-item (click)="selectedTab()" [routerLink]="['/attendances/daily']" routerLinkActive="active-link"
+        #rla3="routerLinkActive">
         <h5>Daily Attendance</h5>
       </a>
-      <a md-list-item (click)="selectedTab()" [routerLink]="['/pages/attendances/monthly']" routerLinkActive="activeTab" #rla4="routerLinkActive">
+      <a md-list-item (click)="selectedTab()" [routerLink]="['/attendances/monthly']" routerLinkActive="active-link"
+        #rla4="routerLinkActive">
         <h5>Monthly Attendance</h5>
       </a>
-      <a md-list-item (click)="selectedTab()" [routerLink]="['/pages/attendances/reports']" routerLinkActive="activeTab" #rla4="routerLinkActive">
+      <a md-list-item (click)="selectedTab()" [routerLink]="['/attendances/reports']" routerLinkActive="active-link"
+        #rla4="routerLinkActive">
         <h5>Reports</h5>
       </a>
-      <a md-list-item (click)="selectedTab()" [routerLink]="['/pages/attendances/leaves']" routerLinkActive="activeTab" #rla5="routerLinkActive">
+      <a md-list-item (click)="selectedTab()" [routerLink]="['/attendances/leaves']" routerLinkActive="active-link"
+        #rla5="routerLinkActive">
         <h5>Leaves(all)</h5>
       </a>
     </div>
-    <p class="subListHeader" (click)="sections.select('settings')">Settings
+    <p class="list-header" (click)="sections.select('settings')">Settings
       <i *ngIf="!sections.settings" class="material-icons leftIcon">keyboard_arrow_right</i>
       <i *ngIf="sections.settings" class="material-icons leftIcon">keyboard_arrow_down</i>
     </p>
-    <div *ngIf="sections.settings">
-      <!-- <a md-list-item (click)="selectedTab()" [routerLink]="['/pages/settings/roster']" routerLinkActive="activeTab" #rla15="routerLinkActive">
+    <div class="list-items" *ngIf="sections.settings">
+      <!-- <a md-list-item (click)="selectedTab()" [routerLink]="['/settings/roster']" routerLinkActive="active-link" #rla15="routerLinkActive">
                 </a> -->
-      <a md-list-item (click)="selectedTab()" [routerLink]="['/pages/settings/alerts']" routerLinkActive="activeTab" #rla11="routerLinkActive">
+      <a md-list-item (click)="selectedTab()" [routerLink]="['/settings/alerts']" routerLinkActive="active-link" #rla11="routerLinkActive">
         <h5>Alerts</h5>
       </a>
-      <a md-list-item (click)="selectedTab()" [routerLink]="['/pages/settings/devices']" routerLinkActive="activeTab" #rla12="routerLinkActive">
+      <a md-list-item (click)="selectedTab()" [routerLink]="['/settings/devices']" routerLinkActive="active-link"
+        #rla12="routerLinkActive">
         <h5>Devices</h5>
       </a>
-      <a md-list-item (click)="selectedTab()" [routerLink]="['/pages/settings/deviceLogs']" routerLinkActive="activeTab" #rla13="routerLinkActive">
+      <a md-list-item (click)="selectedTab()" [routerLink]="['/settings/deviceLogs']" routerLinkActive="active-link"
+        #rla13="routerLinkActive">
         <h5 angulartics2On="click" angularticsEvent="devicesLogsClick" angularticsCategory="devicesLogs">Devices Logs</h5>
       </a>
-      <a md-list-item (click)="selectedTab()" routerLink="/pages/settings/channelTypes" routerLinkActive="activeTab" #rla14="routerLinkActive">
+      <a md-list-item (click)="selectedTab()" routerLink="/settings/channelTypes" routerLinkActive="active-link" #rla14="routerLinkActive">
         <h5>Communication Apps</h5>
       </a>
-      <a md-list-item (click)="selectedTab()" routerLink="/pages/settings/reportFormat" routerLinkActive="activeTab" #rla14="routerLinkActive">
+      <a md-list-item (click)="selectedTab()" routerLink="/settings/reportFormat" routerLinkActive="active-link" #rla14="routerLinkActive">
         <h5>Report Format</h5>
       </a>
     </div>
   </md-nav-list>
-  <md-nav-list *ngIf="userType === 'admin'" dense class="fixedSideNav">
-    <div class="logo_container text-center">
-      <img class="logo" src="assets/images/splash_logo.png">
-      <br>
-    </div>
-    <a md-list-item (click)="selectedTab()" [routerLink]="['/pages/attendances/daily',userId]" routerLinkActive="activeTab" #rla9="routerLinkActive">
-      <h5>My Attendance</h5>
+  <md-nav-list *ngIf="currentUser.userType === 'admin'" dense>
+    <a md-list-item (click)="selectedTab()" [routerLink]="['/home']" routerLinkActive="active-link" #rla9="routerLinkActive">
+      <h5>Home</h5>
     </a>
-    <a md-list-item (click)="selectedTab()" [routerLink]="['/pages/attendances/teams',userId]" routerLinkActive="activeTab" #rla3="routerLinkActive">
+    <a md-list-item (click)="selectedTab()" [routerLink]="['/attendances/teams',userId]" routerLinkActive="active-link"
+      #rla3="routerLinkActive">
       <h5>Team Attendance</h5>
     </a>
-    <a md-list-item (click)="selectedTab()" [routerLink]="['/pages/attendances/leaves']" routerLinkActive="activeTab" #rla3="routerLinkActive">
-      <h5>All Leave</h5>
+    <a md-list-item (click)="selectedTab()" [routerLink]="['/attendances/leaves']" routerLinkActive="active-link" #rla3="routerLinkActive">
+      <h5>All Leaves</h5>
     </a>
-    <a md-list-item (click)="selectedTab()" [routerLink]="['/pages/subAdmin/shifts']" routerLinkActive="activeTab" #rla9="routerLinkActive">
+    <a md-list-item (click)="selectedTab()" [routerLink]="['/subAdmin/shifts']" routerLinkActive="active-link" #rla9="routerLinkActive">
       <h5>Roster Shift</h5>
     </a>
   </md-nav-list>
-  <md-nav-list *ngIf="userType == 'normal'" dense class="fixedSideNav">
-    <div class="logo_container text-center">
-      <img class="logo" src="assets/images/splash_logo.png">
-      <br>
-    </div>
-    <a md-list-item (click)="selectedTab()" [routerLink]="['/pages/attendances/daily',userId]" routerLinkActive="activeTab" #rla3="routerLinkActive">
-      <h5>My Attendance</h5>
+  <md-nav-list *ngIf="currentUser.userType == 'normal'" dense>
+    <a md-list-item (click)="selectedTab()" [routerLink]="['/home']" routerLinkActive="active-link" #rla3="routerLinkActive">
+      <h5>Home</h5>
     </a>
   </md-nav-list>
 

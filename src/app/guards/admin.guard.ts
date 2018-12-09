@@ -1,33 +1,30 @@
 import { Injectable } from '@angular/core';
-import { Router, Route } from '@angular/router';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
-import { LocalStorageService } from '../services/local-storage.service';
-import { Employee } from '../models/employee';
+import { EmsAuthService } from '../services/ems/ems-auth.service';
 
 @Injectable()
 export class AdminGuard implements CanActivate {
 
-  constructor(private router: Router, private store: LocalStorageService) {
-  }
+  constructor(private auth: EmsAuthService) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
-    const roleKey = this.store.getItem('roleKey')
-    if (!roleKey) {
+
+    if (!this.auth.getCurrentKey()) {
+      this.auth.goHome();
       return false
     }
 
-    const currentUser: Employee = this.store.getObject('user') as Employee;
-    if (currentUser.userType === 'superadmin' || currentUser.userType === 'admin' || currentUser.userType === 'normal') {
+    const currentUser = this.auth.getCurrentUser();
+    if (!currentUser) {
+      this.auth.goHome();
+      return false
+    }
+    if (currentUser.userType === 'superadmin' || currentUser.userType === 'admin') {
       return true;
     }
-    this.router.navigate(['/pages/subAdmin']);
+
+    this.auth.goHome();
     return false;
   }
-  // if (currentUser.userType == 'admin') {
-  //   this.router.navigate([`/pages/daily/${currentUser.id}`]);
-  //   return false;
-  // }
-
-  // return false;
 }

@@ -229,7 +229,7 @@ export class DailyComponent {
   }
   updateDayEvent(empId: string) {
     // if (item.ofDate < new Date().toISOString()) {
-    this.router.navigate([`/pages/attendances/daily/${empId}/attendance-logs/${this.ofDate}`])
+    this.router.navigate([`/attendances/daily/${empId}/attendance-logs/${this.ofDate}`])
     // }
   }
 

@@ -1,52 +1,25 @@
-<div class="row page_header">
-  <div class="col-xs-3 col-sm-3 col-md-3 col-md-3">
-    <h5>
-      <b>Departments</b>
-    </h5>
-  </div>
-
-  <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-    <span class="spacer"></span>
-    <div style="float: right">
-      <button [matMenuTriggerFor]="moreMenu" md-icon-button>
-        <md-icon>more_vert</md-icon>
-      </button>
-      <md-menu #moreMenu="mdMenu">
-        <button md-menu-item [disabled]=" departments?.isLoading   ||  department.isProcessing  " mdTooltip="Add"
-          [mdTooltipPosition]="'above'" (click)="toggleDepartment(true)">
-          <md-icon>add_circle_outline</md-icon> New Department
-        </button>
-        <button md-menu-item (click)="import()" mdTooltip="Upload" [mdTooltipPosition]="'above'" angulartics2On="click"
-          angularticsEvent="excelUploadClick" angularticsCategory="designation ">
-          <md-icon>cloud_upload</md-icon> Import
-        </button>
-      </md-menu>
-    </div>
-    <div style="float: right">
-      <button md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'">
-        <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
-      </button>
-    </div>
-  </div>
-  <!-- <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-        <div *ngIf="isUpload">
-            <span style="float: left">
-                <b>Excel Upload</b>
-            </span>&nbsp;&nbsp;
-            <input class="file" id="uploader" type="file" ng2FileSelect [uploader]="uploader" angulartics2On="click" angularticsEvent="chooseFileClick"
-                angularticsCategory="employee" [angularticsProperties]="{label: 'Fall Campaign'}" style="float: left" />
-            <button md-icon-button class="uploadBtn" (click)="item.upload()">
-                <md-icon>cloud_upload</md-icon>
-            </button>
-            <button md-icon-button class="uploadBtn" (click)="excel()">
-                <md-icon>highlight_off</md-icon>
-            </button>
-        </div>
-    </div> -->
+<div class="tool-bar controls-row">
+  <h5>Departments</h5>
+  <span class="spacer"></span>
+  <button md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'">
+    <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
+  </button>
+  <button [matMenuTriggerFor]="moreMenu" md-icon-button>
+    <md-icon>more_vert</md-icon>
+  </button>
+  <md-menu #moreMenu="mdMenu">
+    <button md-menu-item [disabled]=" departments?.isLoading   ||  department.isProcessing  " mdTooltip="Add"
+      [mdTooltipPosition]="'above'" (click)="toggleDepartment(true)">
+      <md-icon>add_circle_outline</md-icon> New Department
+    </button>
+    <button md-menu-item (click)="import()" mdTooltip="Upload" [mdTooltipPosition]="'above'" angulartics2On="click"
+      angularticsEvent="excelUploadClick" angularticsCategory="designation ">
+      <md-icon>cloud_upload</md-icon> Import
+    </button>
+  </md-menu>
 </div>
 <aqua-employees-filter *ngIf="isFilter" [fields]="filterFields" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter>
 <md-spinner class="custom_spinner" *ngIf=" departments?.isLoading   ||  department.isProcessing  " mode="indeterminate"></md-spinner>
-
 
 <div class="row" *ngIf="isNew">
   <md-card class="card">

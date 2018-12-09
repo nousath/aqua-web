@@ -1,109 +1,107 @@
-<div class="row page_header">
-    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-        <a *ngIf="userType === 'superadmin'" md-raised-button class="reply" color="primary" (click)="backClicked()">
-            <md-icon>reply</md-icon>Leaves(all)
-        </a>
-    </div>
-    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 text-center">
-        <h5>
-            <b>New Leave</b>
-        </h5>
-    </div>
+<div class="tool-bar controls-row">
+  <h5>New Leave</h5>
+  <span class="spacer"></span>
+  <a md-icon-button *ngIf="!isNew" (click)="backClicked()">
+    <md-icon>close</md-icon>
+  </a>
 </div>
 <md-spinner class="custom_spinner" *ngIf="isProcessing" mode="indeterminate"></md-spinner>
 <div class="row">
-    <md-card class="">
-        <div class="table-responsive">
-            <table class="table table-condensed" *ngIf="employeeSelector">
-                <thead class="primary_thead">
-                    <tr>
-                        <th colspan="4" class="text-center">Select Employee</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="lableWidth">
-                            <label>Name:
-                                    <span class="asterisk">*</span>
-                                </label>
-                        </td>
-                        <td class="valueWidth">
-                            <input ngui-auto-complete [min-chars]="1" placeholder="Employee search by name or code" [(ngModel)]="employee" (valueChanged)="onSelectEmp($event)" [source]="empSource.bind(this)" [value-formatter]="empFormatter" [list-formatter]="empListFormatter" class="form-control search"
-                                name="roleId" required />
-                        </td>
-                        <td class="lableWidth">
-                            <label>Code:</label>
-                        </td>
-                        <td class="valueWidth">
-                            <input type="text" [value]="employee?.code" class="form-control" readonly>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label>Designation:</label>
-                        </td>
-                        <td>
-                            <input type="text" [value]="employee?.designation" class="form-control" readonly>
-                        </td>
-                        <td>
-                            <!--<label>Code:<span class="asterisk">*</span></label>-->
-                        </td>
-                        <td>
-                            <!--<input type="text" [(ngModel)]="leave.properties..employee.code" [maxlength]="validatorService.textLength" class="form-control" name="code" required>-->
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="table table-condensed" *ngIf="!employeeSelector">
-                <thead class="primary_thead">
-                    <tr>
-                        <th colspan="4" class="text-center">Select Employee</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="lableWidth">
-                            <label>Name:</label>
-                        </td>
-                        <td class="valueWidth">
-                            <input type="text" [value]="employee?.name" class="form-control" readonly>
-                        </td>
-                        <td class="lableWidth">
-                            <label>Code:</label>
-                        </td>
-                        <td class="valueWidth">
-                            <input type="text" [value]="employee?.code" class="form-control" readonly>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label>Designation:</label>
-                        </td>
-                        <td>
-                            <input type="text" [value]="employee?.designation" class="form-control" readonly>
-                        </td>
-                        <td>
-                            <!--<label>Code:<span class="asterisk">*</span></label>-->
-                        </td>
-                        <td>
-                            <!--<input type="text" [(ngModel)]="leave.properties..employee.code" [maxlength]="validatorService.textLength" class="form-control" name="code" required>-->
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div *ngIf="leaveBalances && leaveBalances.length" class="rows">
-                <label>Select Leave</label>
-                <aqua-apply-leave-type *ngFor="let item of leaveBalances;let idx = index" [balance]="item" [employee]="employee" (onChange)="onLeaveCreate($event, idx)"></aqua-apply-leave-type>
-                <div>
-                    <label>Reason: <span class="asterisk">*</span></label>
-                    <textarea type="text" [(ngModel)]="reason" [maxlength]="validatorService.textLength" class="form-control" name="reason" required></textarea>
-                </div>
-                <div class="controls-row footer">
-                    <span class="spacer"></span>
-                    <button md-button [disabled]="isProcessing" (click)="reset()">Reset</button>
-                    <button md-raised-button color="primary" [disabled]="isProcessing" (click)="applyLeave()">Apply</button>
-                </div>
-            </div>
+  <md-card class="">
+    <div class="table-responsive">
+      <table class="table table-condensed" *ngIf="employeeSelector">
+        <thead class="primary_thead">
+          <tr>
+            <th colspan="4" class="text-center">Select Employee</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="lableWidth">
+              <label>Name:
+                <span class="asterisk">*</span>
+              </label>
+            </td>
+            <td class="valueWidth">
+              <input ngui-auto-complete [min-chars]="1" placeholder="Employee search by name or code" [(ngModel)]="employee"
+                (valueChanged)="onSelectEmp($event)" [source]="empSource.bind(this)" [value-formatter]="empFormatter"
+                [list-formatter]="empListFormatter" class="form-control search" name="roleId" required />
+            </td>
+            <td class="lableWidth">
+              <label>Code:</label>
+            </td>
+            <td class="valueWidth">
+              <input type="text" [value]="employee?.code" class="form-control" readonly>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label>Designation:</label>
+            </td>
+            <td>
+              <input type="text" [value]="employee?.designation" class="form-control" readonly>
+            </td>
+            <td>
+              <!--<label>Code:<span class="asterisk">*</span></label>-->
+            </td>
+            <td>
+              <!--<input type="text" [(ngModel)]="leave.properties..employee.code" [maxlength]="validatorService.textLength" class="form-control" name="code" required>-->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="table table-condensed" *ngIf="!employeeSelector">
+        <thead class="primary_thead">
+          <tr>
+            <th colspan="4" class="text-center">Select Employee</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="lableWidth">
+              <label>Name:</label>
+            </td>
+            <td class="valueWidth">
+              <input type="text" [value]="employee?.name" class="form-control" readonly>
+            </td>
+            <td class="lableWidth">
+              <label>Code:</label>
+            </td>
+            <td class="valueWidth">
+              <input type="text" [value]="employee?.code" class="form-control" readonly>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label>Designation:</label>
+            </td>
+            <td>
+              <input type="text" [value]="employee?.designation" class="form-control" readonly>
+            </td>
+            <td>
+              <!--<label>Code:<span class="asterisk">*</span></label>-->
+            </td>
+            <td>
+              <!--<input type="text" [(ngModel)]="leave.properties..employee.code" [maxlength]="validatorService.textLength" class="form-control" name="code" required>-->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div *ngIf="leaveBalances && leaveBalances.length" class="rows">
+        <label>Select Leave</label>
+        <aqua-apply-leave-type *ngFor="let item of leaveBalances;let idx = index" [balance]="item" [employee]="employee"
+          (onChange)="onLeaveCreate($event, idx)"></aqua-apply-leave-type>
+        <div>
+          <label>Reason: <span class="asterisk">*</span></label>
+          <textarea type="text" [(ngModel)]="reason" [maxlength]="validatorService.textLength" class="form-control"
+            name="reason" required></textarea>
         </div>
-    </md-card>
+        <div class="controls-row footer">
+          <span class="spacer"></span>
+          <button md-button [disabled]="isProcessing" (click)="reset()">Reset</button>
+          <button md-raised-button color="primary" [disabled]="isProcessing" (click)="applyLeave()">Apply</button>
+        </div>
+      </div>
+    </div>
+  </md-card>
 </div>
