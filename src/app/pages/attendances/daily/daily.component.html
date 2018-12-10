@@ -64,7 +64,7 @@
                         <th class="text-center tdWidth">Out 2</th>
                         <th class="text-center tdWidth">In 3</th>
                         <th class="text-center tdWidth">Check Out</th>
-                        <th class="tdWidth">Team</th>
+                        <!-- <th class="tdWidth">Team</th> -->
                         <!-- <th class="tdWidth">Action</th> -->
                     </tr>
                 </thead>
@@ -111,11 +111,11 @@
                             </ng-container>
                             <span class="cta" *ngIf="!item.checkOut && item.checkOutStatus && this.isPast && item.status === 'present'">Missed Check Out</span>
                         </td>
-                        <td class="tdWidth">
+                        <!-- <td class="tdWidth">
                             <a [routerLink]="['teams',item.employee.id]" *ngIf="item.employee.hasTeam">
                                 <img src="assets/images/team.png" width="30px;">
                             </a>
-                        </td>
+                        </td> -->
                         <!-- <td class="tdWidth">
                             <button [matMenuTriggerFor]="moreMenu" md-icon-button *ngIf="item.needsAction && !(item.shift.status === 'weekOff' || item.shift.status === 'holiday')">
                                 <md-icon>more_vert</md-icon>
