@@ -7,11 +7,11 @@ export const environment = {
   production: false,
   silent: false,
   apiUrls: {
-    ems: 'http://ems.aquateams.com',
-    ams: 'http://ams.aquateams.com',
-    drive: 'http://docs-api.mindfulsas.com',
-    website: 'http://aquahrms.m-sas.com',
-    register: 'http://ams-getting-started.m-sas.com'
+    ems: 'http://ems-api-dev.m-sas.com',
+    ams: 'http://ams-api-dev.m-sas.com',
+    drive: 'http://docs-api-dev.m-sas.com',
+    website: 'http://aqua-dev.m-sas.com',
+    register: 'http://register-atc-qa.m-sas.com'
   },
   name: 'dev'
 };
