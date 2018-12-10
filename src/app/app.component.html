@@ -1,8 +1,9 @@
 <ng2-toasty></ng2-toasty>
 <div class="container">
   <md-sidenav-container class="nav-container">
+
     <md-sidenav #sidenav [mode]="sideNavMode" [opened]="sideNavOpened">
-      <aqua-navigation-bar *ngIf="currentUser" [currentUser]="currentUser"></aqua-navigation-bar>
+      <aqua-navigation-bar [currentUser]="currentUser"></aqua-navigation-bar>
     </md-sidenav>
     <md-toolbar class="header" color="primary" *ngIf="currentUser">
       <span md-icon-button *ngIf="!sidenav.opened" (click)="sidenav.open()">
@@ -18,7 +19,8 @@
         <md-icon class="example-icon">exit_to_app</md-icon>
       </button>
     </md-toolbar>
-    <div class="body">
+
+    <div [class.body]="currentUser">
       <router-outlet></router-outlet>
     </div>
   </md-sidenav-container>

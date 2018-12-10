@@ -109,6 +109,7 @@ export class EmsAuthService {
   logout(): Observable<Employee> {
     this.store.clear();
     this._currentUserSubject.next(null);
+    this.router.navigate(['/login']);
     return this.currentUserChanges
   }
 

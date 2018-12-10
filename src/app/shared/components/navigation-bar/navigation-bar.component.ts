@@ -32,6 +32,7 @@ export class NavigationBarComponent implements OnInit {
 
   @Input()
   currentUser: Employee;
+
   orgCode = '';
   userId = '';
   sections: Sections = new Sections();
