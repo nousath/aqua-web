@@ -36,38 +36,45 @@ export class EmsAuthService {
     this.forgotPassword = new GenericApi<any>('users/resend', http, baseApi);
   }
 
-  login(user: User): Observable<Employee> {
-    (new GenericApi<User>('users', this.http, 'ems')).create(user, 'signIn').then((data: User) => {
-      const roles: any[] = data.roles;
-      const role = roles.find(item => !!item.organization); // TODO: need role selector
-      this.store.setItem('roleKey', role.key);
-      this.store.setItem('orgCode', role.organization.code);
+  private setRole(user: User) {
+    const roles: any[] = user.roles;
+    const role = roles.find(item => !!item.organization && !!item.employee); // TODO: need role selector
+    this.store.setItem('roleKey', role.key);
+    this.store.setItem('orgCode', role.organization.code);
 
+    return role;
+  }
+
+  login(user: User): Observable<Employee> {
+
+    const subject = new Subject<Employee>();
+    (new GenericApi<User>('users', this.http, 'ems')).create(user, 'signIn').then((data: User) => {
+      this.setRole(data);
       (new GenericApi<Employee>('employees', this.http, 'ams')).get('my').then(employee => {
         this.store.setObject('currentUser', employee);
+        subject.next(employee)
         this._currentUserSubject.next(employee)
-      }).catch(err => this._currentUserSubject.error(err));
-    }).catch(err => this._currentUserSubject.error(err));
+      }).catch(err => subject.error(err));
+    }).catch(err => subject.error(err));
 
-    return this.currentUserChanges
+    return subject
   }
 
   loginUsingKey(key): Observable<Employee> {
 
     this.store.setItem('roleKey', key);
-    (new GenericApi<User>('users', this.http, 'ems')).get('my').then((data: User) => {
-      const roles: any[] = data.roles;
-      const role = roles.find(item => !!item.organization); // TODO: need role selector
-      this.store.setItem('roleKey', role.key);
-      this.store.setItem('orgCode', role.organization.code);
+    const subject = new Subject<Employee>();
 
+    (new GenericApi<User>('users', this.http, 'ems')).get('my').then((data: User) => {
+      this.setRole(data);
       (new GenericApi<Employee>('employees', this.http, 'ams')).get('my').then(employee => {
         this.store.setObject('currentUser', employee);
+        subject.next(employee);
         this._currentUserSubject.next(employee)
-      }).catch(err => this._currentUserSubject.error(err));
-    }).catch(err => this._currentUserSubject.error(err));
+      }).catch(err => subject.error(err));
+    }).catch(err => subject.error(err));
 
-    return this.currentUserChanges
+    return subject
   }
 
   resetPassword(id: string, otp: string, password: string): Observable<Employee> {
@@ -75,35 +82,33 @@ export class EmsAuthService {
       activationCode: otp,
       password: password
     };
-    (new GenericApi<any>('users/setPassword', this.http, 'ems')).create(resetPassModel, `${id}`).then((data: User) => {
-      const roles: any[] = data.roles;
-      const role = roles.find(item => !!item.organization); // TODO: need role selector
-      this.store.setItem('roleKey', role.key);
-      this.store.setItem('orgCode', role.organization.code);
 
+    const subject = new Subject<Employee>();
+    (new GenericApi<any>('users/setPassword', this.http, 'ems')).create(resetPassModel, `${id}`).then((data: User) => {
+      this.setRole(data);
       (new GenericApi<Employee>('employees', this.http, 'ams')).get('my').then(employee => {
         this.store.setObject('currentUser', employee);
+        subject.next(employee)
         this._currentUserSubject.next(employee)
-      }).catch(err => this._currentUserSubject.error(err));
-    }).catch(err => this._currentUserSubject.error(err));
+      }).catch(err => subject.error(err));
+    }).catch(err => subject.error(err));
 
-    return this.currentUserChanges
+    return subject
   }
 
   completeSignup(profileModel: EmsEmployee): Observable<Employee> {
-    (new GenericApi<any>('authorizations/completeSignup', this.http, 'ems')).create(profileModel, profileModel.id).then((data: User) => {
-      const roles: any[] = data.roles;
-      const role = roles.find(item => !!item.organization); // TODO: need role selector
-      this.store.setItem('roleKey', role.key);
-      this.store.setItem('orgCode', role.organization.code);
 
+    const subject = new Subject<Employee>();
+    (new GenericApi<any>('authorizations/completeSignup', this.http, 'ems')).create(profileModel, profileModel.id).then((data: User) => {
+      this.setRole(data);
       (new GenericApi<Employee>('employees', this.http, 'ams')).get('my').then(employee => {
         this.store.setObject('currentUser', employee);
+        subject.next(employee)
         this._currentUserSubject.next(employee)
-      }).catch(err => this._currentUserSubject.error(err));
-    }).catch(err => this._currentUserSubject.error(err));
+      }).catch(err => subject.error(err));
+    }).catch(err => subject.error(err));
 
-    return this.currentUserChanges
+    return subject
   }
 
   logout(): Observable<Employee> {
