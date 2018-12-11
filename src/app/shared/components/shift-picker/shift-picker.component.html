@@ -42,7 +42,7 @@
     <button md-menu-item [disabled]="leave || isProcessing || !compOffBalance" (click)="setCompOff()">Comp Off</button>
     <button md-menu-item [mdMenuTriggerFor]="offOptions">Weekly Off</button>
     <button md-menu-item [mdMenuTriggerFor]="leaveOptions" [disabled]="isProcessing">Apply Leave</button>
-    <button md-menu-item [mdMenuTriggerFor]="shiftOptions" [disabled]="isDynamic || isBeforeToday" (click)="stopPropagation($event)">Shifts</button>
+    <button md-menu-item [mdMenuTriggerFor]="shiftOptions" [disabled]="isDynamic" (click)="stopPropagation($event)">Shifts</button>
   </md-menu>
   <md-menu #offOptions="mdMenu" class="off" xPosition="after" [overlapTrigger]="false">
     <button md-menu-item [disabled]="isPast" (click)="setWeeklyOff()">
@@ -69,7 +69,7 @@
   </md-menu>
   <md-menu #shiftOptions="mdMenu" class="shifts" xPosition="after" [overlapTrigger]="false">
     <button md-menu-item (click)="resetShift()">Remove</button>
-    <button *ngIf="attendance" md-menu-item (click)="extendCurrentShift()" [disabled]="attendance.isContinue || !isRunning">Extend</button>
+    <button *ngIf="attendance" md-menu-item (click)="extendCurrentShift()" [disabled]="attendance.isContinue">Extend</button>
     <button *ngIf="attendance" md-menu-item (click)="toggleContinue()" [disabled]="!isRunning">
       <span *ngIf="!attendance.isContinue">Continue</span>
       <span *ngIf="attendance.isContinue">Discontinue</span>
