@@ -93,7 +93,7 @@ export class DesignationsComponent implements OnInit {
     }
   }
 
-  remove(id: number) {
+  remove(id: string) {
     this.designation.properties.id = id;
     this.designation.remove().then(data => {
       this.fetchDesignation()

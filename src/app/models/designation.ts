@@ -1,6 +1,6 @@
 export class Designation {
   name = '';
   code = '';
-  id: number = null;
+  id = '';
   isEdit = false;
 }
