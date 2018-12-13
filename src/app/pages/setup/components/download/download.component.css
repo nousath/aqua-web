@@ -1,0 +1,21 @@
+.upper {
+    background-color: #3f4766;
+    color: white;
+    padding: 2% 2%;
+}
+
+.upper img {
+    width: 18%;
+}
+
+.lower {
+    background-color: white;
+    padding: 2% 2%;
+}
+
+.links {}
+
+.links img {
+    width: 18%;
+    margin: 3% 6%;
+}

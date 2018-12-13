@@ -16,7 +16,7 @@ export class UserGuard implements CanActivate {
       return false
     }
 
-    const currentUser = this.auth.getCurrentUser();
+    const currentUser = this.auth.currentEmployee();
     if (!currentUser) {
       this.auth.goHome();
       return false

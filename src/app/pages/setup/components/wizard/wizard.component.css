@@ -1,0 +1,38 @@
+.box {
+    width: 65%;
+    margin: 0 auto;
+}
+
+.leftBox {
+    padding: 6% 0;
+    background-color: #3f4766;
+    color: white;
+    width: 113%;
+    text-align: center;
+    margin: 37% 0% 15% -6%;
+    height: 392px;
+}
+
+.logo {
+    width: 48%;
+    margin: 4% 0;
+}
+
+.rightBox {
+    padding: 1% 0;
+    margin-bottom: 3%;
+    height: 594px;
+    overflow-y: auto;
+}
+
+.des {
+    padding: 0 17%;
+}
+
+.dots {
+    margin: 1%;
+}
+
+.skipColor {
+    color: #00bbd3;
+}

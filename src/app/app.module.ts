@@ -22,12 +22,14 @@ import { LeaveReasonDialogComponent } from './dialogs/leave-reason-dialog/leave-
 import { AddShiftDialogComponent } from './dialogs/add-shift-dialog/add-shift-dialog.component';
 import { NavigationBarComponent } from './shared/components/navigation-bar/navigation-bar.component';
 import { CopyContentComponent } from './dialogs/copy-content/copy-content.component';
+import { SignupComponent } from './pages/signup/signup.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
+    SignupComponent,
     OrgLoginComponent,
     AppDownloadComponent,
     GkuAttendanceComponent,

@@ -89,6 +89,7 @@ import { DriveService } from './services/drive.service';
 import { ImageEditorComponent } from './components/image-editor/image-editor.component';
 import { UxService } from '../services/ux.service';
 import { ProcessingIndicatorComponent } from './components/processing-indicator/processing-indicator.component';
+import { PushEventService } from '../services/push-event.service';
 
 
 
@@ -167,7 +168,8 @@ export const MaterialModules = [
     AmsReportRequestService,
     DatesService,
     DriveService,
-    UxService
+    UxService,
+    PushEventService
   ],
   imports: [
     HttpModule,

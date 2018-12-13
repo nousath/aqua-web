@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core';
 export class ValidatorService {
 
   textLength = 100;
+  codeLength = 8;
   passwordMinLength = 6;
   passwordMaxLength = 12;
   portNumberLength = 6;

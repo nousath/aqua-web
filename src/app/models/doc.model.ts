@@ -4,6 +4,7 @@ export class Doc {
   type: string;
   url: string;
   thumbnail: string;
+  data: string;
 
   constructor(obj?: any) {
 
@@ -15,5 +16,7 @@ export class Doc {
     this.name = obj.name;
     this.type = obj.type;
     this.url = obj.url;
+    this.data = obj.thumbnail;
+    this.thumbnail = obj.thumbnail;
   }
 }

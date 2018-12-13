@@ -1,0 +1,34 @@
+<md-spinner class="custom_spinner" *ngIf="isDownloading" mode="indeterminate"></md-spinner>
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+        <h2><b>Install Sync Setup</b></h2>
+        <br>
+        <h4><span class="grey_color">This app will prompt you to downloading</span> <b>run the executable administrator</b></h4>
+        <br>
+        <br>
+        <a class="btn btn_dwnld" href="https://s3.ap-south-1.amazonaws.com/aqua-setups/AquaSync.msi"  angulartics2On="click" angularticsEvent="downloadClick" angularticsCategory="syncapp"><b>Download</b></a>
+        <br>
+        <br>
+        <h4 class="grey_color">This app will prompt you for api key following this api key</h4>
+        <div class="row">
+            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 ">
+                <input class="form-control" readonly id="activationKey" [value]="activationKey">
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <button class="btn keybtn" (click)="copyKey()"  angulartics2On="Click" angularticsEvent="copyApiClick" angularticsCategory="syncSetup"><b>Copy Api Key</b></button>
+            </div>
+        </div>
+        <br>
+        <br>
+        <p class="grey_color">
+            Once installed it will pull automatically sync the attendance logged in the configure devices. Please insure they are connected to LAN
+        </p>
+        <br>
+        <br>
+    </div>
+    <div class="row text-center">
+        <button class="btn btn_proceed" (click)="next()"  angulartics2On="Click" angularticsEvent="proceedClick" angularticsCategory="syncSetup"><b>PROCEED</b></button>
+        <br>
+        <br>
+    </div>
+</div>

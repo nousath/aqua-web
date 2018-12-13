@@ -66,7 +66,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.currentUser = this.auth.getCurrentUser();
+    this.currentUser = this.auth.currentEmployee();
     this.onResize(null);
   }
 

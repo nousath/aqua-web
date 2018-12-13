@@ -13,7 +13,7 @@ export class DashboardComponent implements OnInit {
   constructor(private auth: EmsAuthService) { }
 
   ngOnInit() {
-    this.employee = this.auth.getCurrentUser();
+    this.employee = this.auth.currentEmployee();
   }
 
 }

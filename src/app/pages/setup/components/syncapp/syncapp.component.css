@@ -1,0 +1,16 @@
+.btn_dwnld {
+    background: transparent;
+    border: 1px solid #00a8c6;
+    color: #00a8c6;
+    border-radius: 0;
+}
+
+#activationKey {}
+
+.keybtn {
+    background-color: #00bbd3;
+    color: white;
+    outline: none;
+    border: 1px solid #00bbd3;
+    border-radius: 0;
+}

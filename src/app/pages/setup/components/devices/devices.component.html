@@ -1,0 +1,96 @@
+<md-spinner class="custom_spinner" *ngIf="devices?.isLoading  || deviceTypes?.isLoading  || device?.isProcessing" mode="indeterminate"></md-spinner>
+<div *ngIf="section == 'main'" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+        <h2><b>Devices</b></h2>
+    </div>
+    <h4 *ngIf="devices?.items?.length > 0">Selected</h4>
+    <div class="" *ngIf="devices?.items?.length > 0">
+        <div class="containeree"  angulartics2On="Click" angularticsEvent="selecteddevicsClick" angularticsCategory="wizardDevics">
+            <div *ngFor="let item of devices.items" class="contents">
+                <i class="material-icons greenCheck">check_circle</i>
+                <p class="cardHerdr">{{item?.machine?.model}}</p>
+                <img *ngIf="item?.machine?.picUrl" alt="img" [src]="item?.machine?.picUrl" onError="this.src='assets/images/machine.png'">
+                <img *ngIf="!item?.machine?.picUrl" alt="img" src="assets/images/machine.png">
+                <p class="description">{{item?.machine?.manufacturer}}</p>
+                <p class="description">{{item?.category?.name}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="">
+        <h4>Popular</h4>
+        <div class="containeree">
+            <div *ngFor="let item of deviceTypes.items" class="contents">
+                <p class="cardHerdr">{{item?.machine?.model}}</p>
+                <img *ngIf="item?.machine?.picUrl" alt="img" [src]="item?.machine?.picUrl" onError="this.src='assets/images/machine.png'">
+                <img *ngIf="!item?.machine?.picUrl" alt="img" src="assets/images/machine.png">
+                <p class="description">{{item?.machine?.manufacturer}}</p>
+                <p class="description">{{item?.category?.name}}</p>
+                <div class="cardFooter">
+                    <button class="btn btn-xs add_import" (click)="switchSectrion('configure', item)">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row text-center">
+        <button class="btn btn_proceed" (click)="next()"><b>PROCEED</b></button>
+    </div>
+</div>
+<div *ngIf="section == 'configure'" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h3><b>Configure Device: {{device?.properties?.machine?.model}}</b></h3>
+        <button md-icon-button class="close_btn" (click)="switchSectrion('main')"><md-icon>close</md-icon></button>
+
+    </div>
+    <div class="row">
+        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2">
+            <img *ngIf="device?.properties?.machine?.picUrl" alt="img" [src]="device?.properties.machine?.picUrl" width="100%">
+            <img *ngIf="!device?.properties?.machine?.picUrl" alt="img" src="assets/images/machine.png" width="100%">
+        </div>
+        <div class="col-xs-8 col-sm-9 col-md-10 col-lg-10 grey_color">
+            <p *ngIf="device?.properties?.category?.name.toLowerCase() != 'wifi'">
+                WIP
+            </p>
+            <p *ngIf="device?.properties?.category?.name.toLowerCase() == 'wifi'">
+                A WiFi network makes use of radio waves to transmit information across a network. With wifi connectivity you are able to connect.
+            </p>
+        </div>
+    </div>
+    <form #deviceForm="ngForm">
+        <br>
+        <br>
+        <table class="table grey_color">
+            <tr *ngIf="device?.properties?.category?.name.toLowerCase() == 'wifi'">
+                <td>
+                    <label>BSSID<span class="asterisk">*</span></label>
+                </td>
+                <td>
+                    <input name="ipaddwwe" type="text" [pattern]="validatorService.onlyBssid" class="form-control" [(ngModel)]="device.properties.bssid" placeholder="bssid" [required]="device?.properties.category?.name.toLowerCase() == 'wifi'">
+                </td>
+            </tr>
+            <tr *ngIf="device?.properties?.category?.name.toLowerCase() != 'wifi'">
+                <td>
+                    <label>Port No<span class="asterisk">*</span></label>
+                </td>
+                <td>
+                    <input name="ipaddwwe" type="text" [maxlength]="validatorService.portNumberLength" [pattern]="validatorService.onlyNumber" class="form-control" [(ngModel)]="device.properties.port" placeholder="Port" [required]="device?.properties?.category?.name.toLowerCase() != 'wifi'">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>IP Address<span class="asterisk">*</span></label>
+                </td>
+
+                <td>
+                    <input name="portnumber" type="text" [pattern]="validatorService.ipAddressPattern" class="form-control" [(ngModel)]="device.properties.ip" placeholder="Ip" required>
+                </td>
+            </tr>
+            <tr class="text-center">
+                <td colspan="2">
+                    <br>
+                    <br>
+                    <button class="btn btn_proceed" [disabled]="deviceForm.invalid" (click)="saveDevice();"><b>Add</b></button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>

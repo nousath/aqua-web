@@ -16,7 +16,7 @@ export class LoginGuard implements CanActivate {
       return true
     }
 
-    const currentUser = this.auth.getCurrentUser();
+    const currentUser = this.auth.currentEmployee();
     if (!currentUser) {
       return true
     }

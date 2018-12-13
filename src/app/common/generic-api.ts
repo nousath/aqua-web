@@ -17,8 +17,8 @@ export class GenericApi<TModel> implements IApi<TModel> {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
-    const orgCode = window.localStorage.getItem('orgCode');
-    const roleKey = window.localStorage.getItem('roleKey');
+    const orgCode = window.localStorage.getItem('org-code') || window.localStorage.getItem('orgCode');
+    const roleKey = window.localStorage.getItem('role-key') || window.localStorage.getItem('roleKey');
 
     headers.append('x-tenant-code', 'aqua');
 
@@ -26,7 +26,15 @@ export class GenericApi<TModel> implements IApi<TModel> {
       headers.append('x-role-key', roleKey);
     }
 
-    headers.append('org-code', orgCode);
+    if (orgCode) {
+      headers.append('org-code', orgCode);
+    }
+
+    if (this.headers && this.headers.length) {
+      this.headers.forEach(item => {
+        headers.append(item.key, item.value)
+      })
+    }
 
     return headers;
   }
@@ -374,7 +382,10 @@ export class GenericApi<TModel> implements IApi<TModel> {
     private key: string,
     private http: Http,
     private apiName: 'ems' | 'ams', // ems or ams
-    private token?: string) {
+    private headers?: {
+      key: string,
+      value: string
+    }[]) {
     this.rootUrl = `${environment.apiUrls[apiName]}/api` || `${apiName}/api`;
   }
 }

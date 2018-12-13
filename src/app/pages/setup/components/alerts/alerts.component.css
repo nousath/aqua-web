@@ -1,0 +1,123 @@
+.close_btn {
+    position: absolute;
+    right: 0;
+    top: 17%;
+}
+
+.add_import {
+    background: transparent;
+    border: 1px solid #00a8c6;
+    color: #00a8c6;
+    border-radius: 0;
+    float: right;
+}
+
+.contents:hover .add_import {
+    background: #00a8c6;
+    border: 1px solid #00a8c6;
+    color: #ffffff;
+}
+
+.containeree {
+    width: 100%;
+    height: 201px;
+    /* display: inline-block; */
+    /* white-space: nowrap; */
+    overflow-x: hidden;
+    overflow-y: auto;
+    /* border: 1px solid #c1c1c1; */
+}
+
+.containeree1 {
+    width: 553px;
+    height: 500px;
+    /* display: inline-block; */
+    /* white-space: nowrap; */
+    overflow-x: hidden;
+    overflow-y: auto;
+    /* border: 1px solid #c1c1c1; */
+}
+
+.containeree::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #F5F5F5;
+    border-radius: 15px;
+}
+
+.containeree::-webkit-scrollbar {
+    width: 8px;
+    background-color: #F5F5F5;
+}
+
+.containeree::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 9px rgb(63, 71, 102);
+}
+
+
+/* .containeree::-webkit-scrollbar-button {
+    background-color: #13bfd2;
+} */
+
+.contents {
+    margin: 3px;
+    color: #3f4766;
+    width: 244px;
+    height: 200px;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    overflow-y: hidden;
+    border: 1px solid rgba(84, 79, 79, 0.03);
+    background-color: rgba(84, 79, 79, 0.03);
+    padding: 1%;
+    box-shadow: 0 0 2px 0px rgba(84, 79, 79, 0.03);
+    transition: background 1s;
+}
+
+.cardFooter {
+    width: 242px;
+    margin: 0px 0px 0px -8px;
+    padding: 2px;
+}
+
+.contents:hover {
+    background-color: rgba(84, 79, 79, 0.13);
+    /* color: white; */
+}
+
+.contents .description {
+    font-size: 70%;
+    color: grey;
+    margin: 0;
+    font-weight: 700;
+}
+
+.contents img {
+    width: 242px;
+    height: 84px;
+    margin: 26px 0px 2px -8px;
+    padding: 0px 63px;
+    background-color: rgba(183, 183, 183, 0.12);
+}
+
+.cardHerdr {
+    font-size: 88%;
+    font-weight: 700;
+    position: absolute;
+    width: 203px;
+}
+
+.greenCheck {
+    color: rgb(50, 186, 124);
+    float: right;
+}
+
+.example-radio-group {
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.fontCustom {
+    font-size: 84%;
+}

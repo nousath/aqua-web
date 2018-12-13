@@ -1,0 +1,271 @@
+<md-spinner class="custom_spinner" *ngIf="isProcessing" mode="indeterminate"></md-spinner>
+
+<!-- signin -->
+<div *ngIf="section == 'SIGNIN'" class="row signinBox text-center">
+    <!-- <div class="row signinBox text-center"> -->
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div class="otp_leftBox">
+            <div class="row">
+                <img src="assets/images/splash_logo.png" alt="logo">
+            </div>
+            <div class="row text-center">
+                <h3>Sign In</h3>
+                <br>
+                <br>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+        <div class="row sigin_rightBox borderBox">
+            <div class="row text-center">
+                <h2><b>Sign In</b></h2>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 setupForm">
+                <form #siginFrom="ngForm">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                        <input type="text " class="form-control txtBox" [(ngModel)]="user.properties.email" placeholder="Username" [maxlength]="validatorService.textLength" name="username">
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
+                        <input type="password" [maxlength]="validatorService.textLength" class="form-control txtBox " name="password" mdInput [(ngModel)]="user.properties.password" placeholder="Password">
+                    </div>
+                    <div class="row text-center form-group">
+
+                        <button type="submit" class="btn btn_proceed" [disabled]="isProcessing || siginFrom.invalid" (click)="login()" angulartics2On="click" angularticsEvent="LoginClick" angularticsCategory="signup" [angularticsProperties]="{label: user.properties.email}"><b>SIGN IN</b></button>
+                    </div>
+                </form>
+                <div class="row text-center">
+                    <button class="linksBtn" [disabled]="isProcessing" (click)="switch('FORGOTPASSWORD')" angulartics2On="click" angularticsEvent="ForgotPasswordClick" angularticsCategory="signup" [angularticsProperties]="{label: user.properties.email}">Forgot Password?</button>
+                </div>
+            </div>
+            <br>
+            <br>
+
+        </div>
+    </div>
+</div>
+
+<!-- forgotpass -->
+<div *ngIf="section == 'FORGOTPASSWORD'" class="row signinBox text-center">
+    <!-- <div class="row signinBox text-center"> -->
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div class="otp_leftBox">
+            <div class="row">
+                <img src="assets/images/splash_logo.png" alt="logo">
+            </div>
+            <div class="row text-center">
+                <h3>Forgot Password</h3>
+                <br>
+                <br>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+        <div class="row forgot_rightBox borderBox">
+            <div class="row text-center">
+                <h2><b>Forgot Password</b></h2>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 setupForm">
+                <form #forgotpassForm="ngForm">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                        <input type="text " class="form-control txtBox" #emailAddress="ngModel" email [(ngModel)]="signupEmail" placeholder="Email Address" [maxlength]="validatorService.textLength" name="forgotEmail">
+                    </div>
+                    <div class="row text-center">
+                        <br>
+                        <br>
+                        <br>
+                        <button type="submit" class="btn btn_proceed" [disabled]="isProcessing || forgotpassForm.invalid" (click)="forgotpass()" angulartics2On="click" angularticsEvent="SendVerificationCodeForForgotPassword" angularticsCategory="signup" [angularticsProperties]="{label: signupEmail}"><b>SEND CODE</b></button>
+                    </div>
+                </form>
+                <div class="row text-center">
+                    <br>
+                    <br>
+                    <br>
+                    <button class="linksBtn" [disabled]="isProcessing" (click)="switch('SIGNIN')">Cancel</button>
+                </div>
+            </div>
+            <br>
+            <br>
+
+        </div>
+    </div>
+</div>
+<!-- resetPass -->
+<!-- <div class="row signinBox text-center"> -->
+<div *ngIf="section == 'RESETPASSWORD'" class="row signinBox text-center">
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div class="otp_leftBox">
+            <div class="row">
+                <img src="assets/images/splash_logo.png" alt="logo">
+            </div>
+            <div class="row text-center">
+                <h3>Reset Password</h3>
+                <br>
+                <br>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+        <div class="row reset_rightBox borderBox">
+            <div class="row text-center">
+                <h2><b>Reset Password</b></h2>
+                <br>
+                <p><b>Enter the Verification Code send to</b></p>
+                <p><b>{{signupEmail}}</b></p>
+            </div>
+            <form #resetForm="ngForm">
+                <div class="row otp_inputBoxes">
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                        <input type="text" class="form-control otpTxt" #char1 (keyup)="focusToNext(char1, char2)" [minlength]="verifyOTP.minLength" [maxlength]="verifyOTP.maxLength" [(ngModel)]="verifyOTP.char_1" name="char_1" required>
+                    </div>
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                        <input type="text" class="form-control otpTxt" #char2 (keyup)="focusToNext(char2, char3)" [minlength]="verifyOTP.minLength" [maxlength]="verifyOTP.maxLength" [(ngModel)]="verifyOTP.char_2" name="char_2" required>
+                    </div>
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                        <input type="text" class="form-control otpTxt" #char3 (keyup)="focusToNext(char3, char4)" [minlength]="verifyOTP.minLength" [maxlength]="verifyOTP.maxLength" [(ngModel)]="verifyOTP.char_3" name="char_3" required>
+                    </div>
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                        <input type="text" class="form-control otpTxt" #char4 (keyup)="focusToNext(char4, char5)" [minlength]="verifyOTP.minLength" [maxlength]="verifyOTP.maxLength" [(ngModel)]="verifyOTP.char_4" name="char_4" required>
+                    </div>
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                        <input type="text" class="form-control otpTxt" #char5 (keyup)="focusToNext(char5, char6)" [minlength]="verifyOTP.minLength" [maxlength]="verifyOTP.maxLength" [(ngModel)]="verifyOTP.char_5" name="char_5" required>
+                    </div>
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                        <input type="text" class="form-control otpTxt" #char6 (keyup)="focusToNext(char6)" [minlength]="verifyOTP.minLength" [maxlength]="verifyOTP.maxLength" [(ngModel)]="verifyOTP.char_6" name="char_6" required>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 setupForm">
+                    <input type="password" class="form-control txtBox" [(ngModel)]="profileModel.password" placeholder="Password" [maxlength]="validatorService.textLength" name="empPassword" required>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 setupForm">
+                    <input type="password" class="form-control txtBox" #password2 ngModel placeholder="Confirm Password" [maxlength]="validatorService.textLength" name="empPassword2" required>
+                </div>
+                <br>
+                <div class="row text-center">
+                    <button type="submit" class="btn btn_proceed" [disabled]="isProcessing || resetForm.invalid" (click)="resetPassword(password2.value)" angulartics2On="click" angularticsEvent="ResetPasswordClick" angularticsCategory="signup" [angularticsProperties]="{label: signupEmail}"><b>PROCEED</b></button>
+                </div>
+            </form>
+            <div class="row text-center">
+                <button class="linksBtn" [disabled]="isProcessing" (click)="resendOTP()" angulartics2On="click" angularticsEvent="ResendVerificationCodeForForgotPassword" angularticsCategory="signup" [angularticsProperties]="{label: signupEmail}">Resend Code ?</button>                or
+                <button class="linksBtn" [disabled]="isProcessing" (click)="switch('SIGNIN')">Cancel</button>
+            </div>
+            <br>
+            <br>
+
+        </div>
+    </div>
+</div>
+
+<!-- <div class="row otp_signupBox text-center"> -->
+<div *ngIf="section == 'OTP'" class="row otp_signupBox text-center">
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div class="otp_leftBox">
+            <div class="row">
+                <img src="assets/images/splash_logo.png" alt="logo">
+            </div>
+            <div class="row text-center">
+                <h3>Verification Code</h3>
+                <br>
+                <br>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+        <div class="row otp_rightBox borderBox">
+            <div class="row text-center">
+                <h2><b>Verify Email</b></h2>
+                <br>
+                <p><b>Enter the Verification Code send to</b></p>
+                <p><b>{{signupEmail}}</b></p>
+            </div>
+            <form #OTPForm="ngForm">
+                <div class="row otp_inputBoxes">
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                        <input type="text" class="form-control otpTxt" #char1 (keyup)="focusToNext(char1, char2)" [minlength]="verifyOTP.minLength" [maxlength]="verifyOTP.maxLength" [(ngModel)]="verifyOTP.char_1" name="char_1" required>
+                    </div>
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                        <input type="text" class="form-control otpTxt" #char2 (keyup)="focusToNext(char2, char3)" [minlength]="verifyOTP.minLength" [maxlength]="verifyOTP.maxLength" [(ngModel)]="verifyOTP.char_2" name="char_2" required>
+                    </div>
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                        <input type="text" class="form-control otpTxt" #char3 (keyup)="focusToNext(char3, char4)" [minlength]="verifyOTP.minLength" [maxlength]="verifyOTP.maxLength" [(ngModel)]="verifyOTP.char_3" name="char_3" required>
+                    </div>
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                        <input type="text" class="form-control otpTxt" #char4 (keyup)="focusToNext(char4, char5)" [minlength]="verifyOTP.minLength" [maxlength]="verifyOTP.maxLength" [(ngModel)]="verifyOTP.char_4" name="char_4" required>
+                    </div>
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                        <input type="text" class="form-control otpTxt" #char5 (keyup)="focusToNext(char5, char6)" [minlength]="verifyOTP.minLength" [maxlength]="verifyOTP.maxLength" [(ngModel)]="verifyOTP.char_5" name="char_5" required>
+                    </div>
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                        <input type="text" class="form-control otpTxt" #char6 (keyup)="focusToNext(char6)" [minlength]="verifyOTP.minLength" [maxlength]="verifyOTP.maxLength" [(ngModel)]="verifyOTP.char_6" name="char_6" required>
+                    </div>
+                </div>
+                <br>
+                <div class="row text-center">
+                    <button type="submit" class="btn btn_proceed" [disabled]="isProcessing || OTPForm.invalid" (click)="validateOtp()" angulartics2On="click" angularticsEvent="verifyEmail" angularticsCategory="signup" [angularticsProperties]="{label: signupEmail}"><b>PROCEED</b></button>
+                </div>
+            </form>
+            <div class="row text-center">
+                <button class="linksBtn" [disabled]="isProcessing" (click)="resendOTP()" angulartics2On="click" angularticsEvent="ResendCodeForVerificationForSignup" angularticsCategory="signup" [angularticsProperties]="{label: signupEmail}">Resend Code ?</button>
+            </div>
+            <br>
+            <br>
+
+        </div>
+    </div>
+</div>
+
+<!-- <div class="row setup_signupBox text-center"> -->
+<div *ngIf="section == 'COMPLETE'" class="row setup_signupBox text-center">
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div class="otp_leftBox">
+            <div class="row">
+                <img src="assets/images/splash_logo.png" alt="logo">
+            </div>
+            <div class="row text-center">
+                <h3>Sign Up</h3>
+                <p>Step Ahead to enjoy AQUA Teams</p>
+                <p>A Complete HR Solutions</p>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+        <div class="row setup_rightBox borderBox">
+            <div class="row text-center">
+                <h2><b>Sign Up</b></h2>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 setupForm">
+                <form #setupProfileForm="ngForm">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <input type="text" placeholder="Give us your Name" name="empName" class="form-control" [(ngModel)]="profileModel.name" [maxlength]="validatorService.textLength" required>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <input type="text" placeholder="Your Employee Code" name="empCode" class="form-control" [(ngModel)]="profileModel.code" [maxlength]="validatorService.textLength" required>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <input type="password" placeholder="Set Password" name="pass1" class="form-control" [(ngModel)]="profileModel.password" [maxlength]="validatorService.textLength" required>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <input type="password" placeholder="Confirm Password" name="pass2" class="form-control" #password2 ngModel [maxlength]="validatorService.textLength" required>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <input type="text" placeholder="Give us the name of your Organization" name="orgName" class="form-control" [(ngModel)]="profileModel.organization.name" [maxlength]="validatorService.textLength" required>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <input type="text" placeholder="Set your Organization code.Like MSAS For Mindful System and Solution" name="orgCode" class="form-control" [(ngModel)]="profileModel.organization.code" [maxlength]="validatorService.textLength" required>
+                    </div>
+                </form>
+            </div>
+            <br>
+            <br>
+            <br>
+            <div class="row text-center">
+                <button type="submit" class="btn btn_proceed" [disabled]="isProcessing || setupProfileForm.invalid" (click)="setupProfile(password2.value)" angulartics2On="click" angularticsEvent="CompleteSignup" angularticsCategory="signup" [angularticsProperties]="{label: 'Orgcode '+profileModel.organization.code}"><b>PROCEED</b></button>
+            </div>
+            <br>
+        </div>
+    </div>
+</div>

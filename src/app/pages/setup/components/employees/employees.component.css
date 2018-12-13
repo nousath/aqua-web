@@ -1,0 +1,101 @@
+.importFromBox {
+    width: 27%;
+    float: left;
+    margin: 1%;
+    padding: 0.5%;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.63);
+}
+
+.importFromBox img {
+    width: 35%;
+    margin-left: 4%;
+}
+
+.importFromBox p {
+    font-size: small;
+}
+
+.close_btn {
+    position: absolute;
+    right: 0;
+    top: 17%;
+}
+
+.btn_import {
+    background: transparent;
+    border: 2px solid #00a8c6;
+    color: #00a8c6;
+    border-radius: 0;
+    float: right;
+}
+
+.excelbtn {
+    background: transparent;
+    border: 1px solid #00a8c6;
+    color: #00a8c6;
+    border-radius: 0;
+    margin: -3% 0% 9px 0px;
+}
+
+.custom_pagination {
+    float: right;
+    width: 82%;
+}
+
+.sampleDown {
+    color: #00bbd3;
+}
+
+td {
+    padding: 1px 8px !important;
+    border-top: none !important;
+}
+
+.customFont {
+    font-size: 76%;
+    font-weight: 700;
+    color: grey;
+}
+
+.scrollable {
+    padding: 1px 0%;
+    padding-bottom: 0px;
+    width: 100%;
+    margin: 0;
+    max-height: 150px;
+    margin-bottom: 1%;
+    margin-top: -21px;
+    overflow-y: auto;
+}
+
+.td_name {
+    width: 27% !important;
+}
+
+.td_Code {
+    width: 20% !important;
+}
+
+.td_action {
+    width: 10px !important;
+}
+
+.empSection {
+    border-top: 1px solid rgb(193, 193, 193);
+    border-bottom: 1px solid rgb(193, 193, 193);
+}
+
+.uploadLable {
+    overflow: hidden;
+    font-size: 74%;
+}
+
+#uploaderExcel {
+    visibility: hidden;
+}
+
+.note h6 {
+    font-size: 68%;
+    color: red;
+    font-style: italic;
+}

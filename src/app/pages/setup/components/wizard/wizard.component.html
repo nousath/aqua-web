@@ -1,0 +1,28 @@
+<div class="row box">
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div class="leftBox">
+            <div class="row">
+                <img class="logo" src="assets/images/splash_logo.png" alt="logo">
+            </div>
+            <div class="row text-center">
+                <h3>{{currentPage?.header}}</h3>
+                <h5 class="des">{{currentPage?.description}}</h5>
+                <h4><a class="skipColor" [routerLink]="[currentPage?.nextUrl]" angulartics2On="click" angularticsEvent="SkipClick" angularticsCategory="wizard" [angularticsProperties]="{label: currentPage?.nextUrl}">Skip</a>
+                </h4>
+                <div class="row">
+                    <span *ngFor="let dot of dots">
+                            <a [routerLink]="[dot?.url]" [mdTooltip]='dot.page' >
+                            <img *ngIf="currentPage?.page?.toLowerCase() != dot?.page?.toLowerCase()"  class="dots" [src]="dot?.imgUrl">
+                            <img *ngIf="currentPage?.page?.toLowerCase() == dot?.page?.toLowerCase()" class="dots" src="assets/images/dots/blue.png">
+                         </a>
+                        </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+        <div class="row rightBox borderBox">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

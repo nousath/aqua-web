@@ -1,0 +1,155 @@
+<md-spinner class="custom_spinner" *ngIf="employees?.isLoading || uploader.isUploading || employee?.isProcessing" mode="indeterminate"></md-spinner>
+<div *ngIf="section == 'main'" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <h2><b>Team</b></h2>
+    <div class="row empSection">
+      <table class="table grey_color">
+        <tr>
+          <th class="td_name">Name</th>
+          <th class="td_Code">Code</th>
+          <th>Email</th>
+          <!-- <th class="td_action"></th> -->
+        </tr>
+      </table>
+      <div class="row scrollable">
+        <table class="table grey_color">
+          <tr *ngFor="let emp of employees?.items | paginate: { id: 'foo',
+                                                        itemsPerPage: employees.pageSize,
+                                                        currentPage: employees.pageNo,
+                                                        totalItems: employees.totalRecords }">
+            <td class="td_name">
+              <span class="form-control customFont">{{emp?.profile.firstName}}</span>
+            </td>
+            <td class="td_name">
+              <span class="form-control customFont">{{emp?.profile.lastName}}</span>
+            </td>
+            <td class="td_Code">
+              <span class="form-control customFont">{{emp?.code}}</span>
+            </td>
+            <td>
+              <span class="form-control customFont">{{emp?.email}}</span>
+            </td>
+            <!-- <td class="td_action">
+                        </td> -->
+          </tr>
+        </table>
+      </div>
+      <table class="table grey_color">
+        <tr *ngFor="let emp of dummyEmps;let i = index">
+          <td class="td_name">
+            <input placeholder="Name" class="form-control customFont" type="text" [(ngModel)]="emp.profile.firstName"
+              [maxlength]="validatorService.textLength">
+          </td>
+          <td class="td_name">
+            <input placeholder="Name" class="form-control customFont" type="text" [(ngModel)]="emp.profile.lastName"
+              [maxlength]="validatorService.textLength">
+          </td>
+          <td class="td_Code">
+            <input placeholder="Code" class="form-control customFont" [(ngModel)]="emp.code" type="text" [maxlength]="validatorService.codeLength">
+          </td>
+          <td>
+            <input placeholder="Email" class="form-control customFont" [(ngModel)]="emp.email" type="email" [maxlength]="validatorService.textLength">
+          </td>
+          <td class="td_action">
+            <button md-icon-button class="button_align" (click)="addEmp(emp,i)">
+              <md-icon>check_circle</md-icon>
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="4" class="text-center">
+            <a *ngIf="this.dummyEmps.length == 0" (click)="addRow()">Add Row</a>
+            <div *ngIf="this.employees?.totalRecords > 10" class="custom_pagination">
+              <pagination-controls id="foo" (pageChange)="employees.pageNo = $event;fetchEmp();"></pagination-controls>
+              <div class="pageSize">
+                <label>Page Size:</label>
+                <select name="pageSize" [(ngModel)]="employees.pageSize" (change)="employees.pageNo = 1;fetchEmp();">
+                  <option value=5>5</option>
+                  <option value=10>10</option>
+                  <option value=20>20</option>
+                  <option value=50>50</option>
+                  <option value=100>100</option>
+                </select>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <h4>Import From</h4>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+    <div class="importFromBox">
+      <p><b>Excel Sheet</b></p>
+      <img src="assets/images/excel.png">
+      <p class="grey_color">Sync Employees from Excel Sheet</p>
+      <div class="">
+        <button class="btn btn-xs btn_import" (click)="switchSectrion('excel')" angulartics2On="Click" angularticsEvent="importExcelClick"
+          angularticsCategory="wizardEmployeesTeam">Import</button>
+      </div>
+    </div>
+    <!-- <div class="importFromBox">
+            <p><b>Edualaya</b></p>
+            <img src="assets/images/edualaya.png">
+            <p class="grey_color">Sync Employees from Edualaya</p>
+            <div class="">
+                <button class="btn_import">Import</button>
+            </div>
+        </div> -->
+  </div>
+  <br>
+  <div class="row text-center">
+    <button class="btn btn_proceed" (click)="next()"><b>PROCEED</b></button>
+  </div>
+</div>
+<div *ngIf="section == 'excel'" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <h2><b>Excel</b></h2>
+      <button md-icon-button class="close_btn" (click)="switchSectrion('main')">
+        <md-icon>close</md-icon>
+      </button>
+    </div>
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+      <img src="assets/images/excel.png" width="100%">
+    </div>
+    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 grey_color">
+      <p>
+        You can use Microsoft Excel to import data from a text file into a worksheet. The text import wizard examines
+        the text file that you are importing and helps you ensure that the data is imported in the way that you want.
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center">
+      <br>
+      <br>
+      <br>
+      <br>
+      <h4>Select File:</h4>
+
+    </div>
+    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 text-center">
+      <br>
+      <br>
+      <br>
+      <br>
+      <label for="uploaderExcel" class="uploadLable form-control">Browse- {{uploader?.queue[0]?.file?.name}}</label>
+      <input id="uploaderExcel" [hidden]="true" type="file" ng2FileSelect [uploader]="uploader">
+      <div class="row" *ngIf="uploader?.queue.length > 0">
+        <button class="btn excelbtn" (click)="uploader?.queue[0]?.upload()" [disabled]="uploader?.queue[0]?.isReady || uploader?.queue[0]?.isUploading || uploader?.queue[0]?.isSuccess"><b>Import</b></button>
+      </div>
+      <div class="row" *ngIf="uploader?.queue.length <= 0">
+        <button class="btn excelbtn" disabled><b>Import</b></button>
+      </div>
+      <div class="row">
+        <a class="sampleDown" href='assets/files/aqua-emp-format.xlsx'><b>Download Excel Sample Sheet Here</b></a>
+      </div>
+      <div class="row note">
+        <h6><b>Note: Name, Code & Email</b> are mandatory fields in excel.</h6>
+      </div>
+    </div>
+  </div>
+</div>

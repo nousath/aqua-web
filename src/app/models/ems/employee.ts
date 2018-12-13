@@ -16,10 +16,25 @@ export class Profile {
   fatherName = '';
   bloodGroup: 'A+' | 'B+' | 'O+' | 'AB+' | 'A-' | 'B-' | 'O-' | 'AB-' | null = null;
 
-  pic: Doc;
+  pic: Doc = new Doc();
 
-  constructor() {
-    this.pic = new Doc();
+  constructor(obj?: any) {
+
+    if (!obj) {
+      return;
+    }
+    this.firstName = obj.firstName;
+    this.lastName = obj.lastName;
+
+    if (obj.pic) {
+      this.pic = new Doc(obj.pic)
+    }
+
+    this.dob = obj.dob;
+    this.fatherName = obj.fatherName;
+    this.bloodGroup = obj.bloodGroup;
+    this.gender = obj.gender;
+
   }
 }
 
@@ -50,6 +65,7 @@ export class CustomFields {
 export class EmsEmployee {
   id = '';
   code = '';
+  timeStamp: Date;
 
   status = '';
   email = '';
@@ -83,12 +99,36 @@ export class EmsEmployee {
   reason = '';
   config: CustomFields;
 
-  constructor() {
+  // constructor() {
+  //   this.profile = this.profile || new Profile();
+  //   // this.designation = this.designation || new Designation();
+  //   // this.department = this.department || new Department();
+  //   this.address = this.address || new Address();
+  //   this.config = this.config || new CustomFields();
+  // }
+
+  constructor(obj?: any) {
+    if (!obj) {
+      return;
+    }
+
+    this.id = obj.id;
+    this.code = obj.code;
+
     this.profile = this.profile || new Profile();
     // this.designation = this.designation || new Designation();
     // this.department = this.department || new Department();
     this.address = this.address || new Address();
     this.config = this.config || new CustomFields();
+
+
+    this.designation = new Designation(obj.designation);
+    this.department = new Department(obj.department);
+    // this.division = new Division(obj.division);
+    this.status = obj.status;
+    this.timeStamp = obj.timeStamp;
+    this.profile = new Profile(obj.profile);
+
   }
 }
 

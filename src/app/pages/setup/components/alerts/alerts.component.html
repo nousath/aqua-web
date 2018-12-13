@@ -1,0 +1,207 @@
+<md-spinner class="custom_spinner" *ngIf="alerts?.isLoading
+ || isSubscribing
+ || alterTypes?.isLoading
+ || org?.isProcessing
+ || channel?.isProcessing
+ || channelTypes?.isLoading
+ || alert?.isProcessing" mode="indeterminate"></md-spinner>
+<div *ngIf="section == 'main'" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+        <h2><b>Alerts</b></h2>
+    </div>
+    <div class="" *ngIf="alerts?.items?.length > 0">
+        <h4>Selected</h4>
+        <div class="containeree" angulartics2On="click" angularticsEvent="selectedAlertsClick" angularticsCategory="wizardAlerts">
+            <div *ngFor="let item of alerts.items" class="contents">
+                <i class="material-icons greenCheck">check_circle</i>
+                <p class="cardHerdr">{{item?.alertType?.name}}</p>
+                <img *ngIf="item?.alertType?.picUrl" alt="img" [src]="item?.alertType?.picUrl" onError="this.src='assets/images/alert.png'">
+                <img *ngIf="!item?.alertType?.picUrl" alt="img" src="assets/images/alert.png">
+                <p class="description">{{item?.alertType?.description}}</p>
+                <p class="description"></p>
+                <div class="cardFooter">
+                    <button class="btn btn-xs add_import" (click)="fetchAlert(item.id)">Configure</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="">
+        <h4>Popular</h4>
+        <div class="containeree" angulartics2On="click" angularticsEvent="poplarAlertsClick" angularticsCategory="wizardAlerts">
+            <div *ngFor="let item of alterTypes.items" class="contents">
+                <p class="cardHerdr">{{item?.name}}</p>
+                <img *ngIf="item?.picUrl" alt="img" [src]="item?.picUrl" onError="this.src='assets/images/alert.png'">
+                <img *ngIf="!item?.picUrl" alt="img" src="assets/images/alert.png">
+                <p class="description">{{item?.description}}</p>
+                <p class="description">COST: {{item?.cost | currency:'USD':true}}</p>
+                <div class="cardFooter">
+                    <button class="btn btn-xs add_import" (click)="subscribe(item.id)">Subscribe</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row text-center">
+        <button class="btn btn_proceed" (click)="next()" angulartics2On="click" angularticsEvent="proceedClick" angularticsCategory="wizardAlerts"><b>PROCEED</b></button>
+    </div>
+</div>
+<div *ngIf="section == 'configure'" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fontCustom">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h3><b>Alert Configuration: {{alert?.properties?.alertType?.name}}</b></h3>
+        <button md-icon-button class="close_btn" (click)="switchSectrion('main')"><md-icon>close</md-icon></button>
+
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2">
+            <img *ngIf="alert?.properties?.alertType?.picUrl" alt="img" [src]="alert?.properties?.alertType?.picUrl" width="100%">
+            <img *ngIf="!alert?.properties?.alertType?.picUrl" alt="img" src="assets/images/machine.png" width="100%">
+        </div>
+        <div class="col-xs-8 col-sm-9 col-md-10 col-lg-10 grey_color">
+            <p>
+                {{alert?.properties?.alertType?.description}}
+            </p>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" *ngIf="alert?.properties?.alertType?.trigger?.parameters?.length > 0">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <h4><b>Trigger Configuration</b></h4>
+            </div>
+            <div *ngFor="let item of alert?.properties?.alertType?.trigger?.parameters">
+                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                    <h5><b>{{item?.title}}</b></h5>
+                    <p>{{item?.description}}</p>
+                </div>
+                <div *ngIf="item.type.toLowerCase() == 'number' && item.expectedValues.length == 0" class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <input type="number" class="form-control" [name]="item?.name" [maxlength]="validatorService.aletrNumberLength" [pattern]="validatorService.onlyNumber" [(ngModel)]="item.value">
+                </div>
+                <div *ngIf="item.type.toLowerCase() == 'string' && item.expectedValues.length == 0" class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <input type="text" class="form-control" [name]="item?.name" [(ngModel)]="item.value" [maxlength]="validatorService.textLength">
+                </div>
+                <div *ngIf="item.expectedValues.length != 0" class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <select class="form-control" [name]="item?.name" [(ngModel)]="item.value">
+                      <option [ngValue]="null"></option>
+                      <option *ngFor="let i of item.expectedValues" [value]="i">{{i}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <h4><b>Action Configuration</b></h4>
+            </div>
+            <div>
+                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                    <h5><b>Mode of Notification</b></h5>
+                    <p>The channel using which the supervisor will be notified</p>
+                </div>
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <!-- <table>
+                            <td style="padding-right: 10px;"><img src="assets/images/default-radio.png"></td>
+                            <td><span style="color:gray;"><h5><b>Push Notifications</b></h5></span></td>
+                        </table> -->
+                    <table>
+                        <td><img src="assets/images/default-radio.png"></td>
+                        <td><span style="color:gray;"><h5><b>Push Notifications</b></h5></span></td>
+                    </table>
+                    <md-radio-group class="example-radio-group" [(ngModel)]="alert.properties.config.processor['channel']" (change)="checkCommApp(this.alert.properties.config.processor['channel'])">
+                        <span *ngFor="let item of alert.properties?.alertType?.processor?.comApp">
+                                <md-radio-button *ngIf="item != 'push'" [value]="item">
+                                    {{item | titlecase}}
+                                </md-radio-button>
+                            </span>
+                    </md-radio-group>
+                    <!-- <md-radio-group [(ngModel)]="alert.properties.config.processor['channel']" (change)="checkCommApp(this.alert.properties.config.processor['channel'])">
+
+                            <md-radio-button value="email">
+                                Email
+                            </md-radio-button><br>
+                            <md-radio-button value="sms">
+                                SMS
+                            </md-radio-button><br>
+                            <md-radio-button value="chat">
+                                Chat Bot
+                            </md-radio-button>
+                        </md-radio-group> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row text-center">
+        <button class="btn btn_proceed" (click)="configure()"><b>Save</b></button>
+    </div>
+</div>
+
+<div *ngIf="section == 'channelType'" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+        <h2><b>Communication Apps</b></h2>
+        <button md-icon-button class="close_btn" (click)="switchSectrion('main')"><md-icon>close</md-icon></button>
+    </div>
+    <div class="">
+        <div class="containeree1">
+            <div *ngFor="let item of channelTypes.items" class="contents">
+                <p class="cardHerdr">{{item?.name | titlecase}}</p>
+                <img *ngIf="item?.picUrl" alt="img" [src]="item?.picUrl" onError="this.src='assets/images/communication.png'">
+                <img *ngIf="!item?.picUrl" alt="img" src="assets/images/communication.png">
+                <p class="description">{{item?.description}}</p>
+                <div class="cardFooter">
+                    <button class="btn btn-xs add_import" (click)="addChannelType(item)">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="section == 'addChannelType'" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h3><b>Channel Configuration: {{channel?.properties?.type?.name | titlecase}}</b></h3>
+        <button md-icon-button class="close_btn" (click)="switchSectrion('main')"><md-icon>close</md-icon></button>
+
+    </div>
+    <div class="row">
+        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2">
+            <img *ngIf="channel?.properties?.type?.picUrl" alt="img" [src]="channel?.properties?.type?.picUrl" onError="this.src='assets/images/communication.png'" width="100%">
+            <img *ngIf="!channel?.properties?.channelType?.picUrl" alt="img" src="assets/images/communication.png" width="100%">
+        </div>
+        <div class="col-xs-8 col-sm-9 col-md-10 col-lg-10 grey_color">
+            <p>
+                {{channel?.properties?.type.description}}
+            </p>
+        </div>
+    </div>
+    <div class="row" *ngIf="channel?.properties?.type?.parameters?.length > 0">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <h4><b>Configuration</b></h4>
+            </div>
+            <div *ngFor="let item of channel?.properties?.type?.parameters">
+                <div class="col-xs-7 col-sm-9 col-md-9 col-lg-9">
+                    <h5><b>{{item?.title}}</b></h5>
+                    <p>{{item?.description}}</p>
+                </div>
+                <div *ngIf="item.type.toLowerCase() == 'number' && item.expectedValues.length == 0" class="col-xs-5 col-sm-3 col-md-3 col-lg-3">
+                    <input type="number" class="form-control" [name]="item?.name" [maxlength]="validatorService.aletrNumberLength" [pattern]="validatorService.onlyNumber" [(ngModel)]="item.value">
+                </div>
+                <div *ngIf="item.type.toLowerCase() == 'string' && item.expectedValues.length == 0" class="col-xs-5 col-sm-3 col-md-3 col-lg-3">
+                    <input type="text" class="form-control" [name]="item?.name" [(ngModel)]="item.value" [maxlength]="validatorService.textLength">
+                </div>
+                <div *ngIf="item.expectedValues.length != 0" class="col-xs-5 col-sm-3 col-md-3 col-lg-3">
+                    <select class="form-control" [name]="item?.name" [(ngModel)]="item.value">
+                    <option [ngValue]="null"></option>
+                    <option *ngFor="let i of item.expectedValues" [value]="i">{{i}}</option>
+                  </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row text-center">
+        <br>
+        <br>
+        <br>
+        <button class="btn btn_proceed" [disabled]="channel?.isProcessing" (click)="configChannel()"><b>Save</b></button>
+    </div>
+</div>

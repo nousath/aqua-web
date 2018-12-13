@@ -8,6 +8,7 @@ import { Category, Device, DeviceLogs } from '../../models';
 export class AmsDeviceService {
 
   devices: IApi<Device>;
+  deviceTypes: IApi<Device>;
   categories: IApi<Category>;
   deviceLogs: IApi<DeviceLogs>;
 
@@ -16,6 +17,7 @@ export class AmsDeviceService {
 
     this.devices = new GenericApi<Device>('devices', http, baseApi);
     this.deviceLogs = new GenericApi<DeviceLogs>('deviceLogs', http, baseApi);
+    this.deviceTypes = new GenericApi<Device>('deviceTypes', http, baseApi);
     this.categories = new GenericApi<Category>('categories', http, baseApi);
   }
 
