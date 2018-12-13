@@ -70,7 +70,7 @@
               <span *ngIf="item?.designation"></span>{{(item?.designation?.code && item?.designation?.code !==
               'default')? item?.designation?.name : '--' }}
             </td>
-            <td><span>{{item?.custom?.biometricId || '--'}}</span></td>
+            <td><span>{{item?.config?.biometricCode || '--'}}</span></td>
 
             <td class="tdWidth text-center">
               <a md-icon-button class="button_align cursor" mdTooltip="Edit details" [mdTooltipPosition]="'above'"

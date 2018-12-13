@@ -66,12 +66,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.employee = new EmsEmployee();
     this.isProcessing = true;
-    emsDesignationService.designations.search().then(designations => {
-      this.designations = designations.items;
-    });
-    emsDepartmentService.departments.search().then(departments => {
-      this.departments = departments.items;
-    });
+
 
     activatedRoute.params.subscribe(params => {
       const empId = params['id'];
@@ -122,7 +117,21 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     if (employee.designation && employee.designation.code === 'default') {
       employee.designation = null;
     }
-    // employee.designation = employee.designation || new Designation();
+
+    this.emsDesignationService.designations.search().then(designations => {
+      this.designations = designations.items;
+      if (employee.designation) {
+        employee.designation = this.designations.find(item => item.id === employee.designation.id);
+      }
+    });
+    this.emsDepartmentService.departments.search().then(departments => {
+      this.departments = departments.items;
+      if (employee.department) {
+        employee.department = this.departments.find(item => item.id === employee.department.id);
+      }
+    });
+
+
     // employee.department = employee.department || new Department();
     employee.address = employee.address || new Address();
 
