@@ -19,31 +19,31 @@ export class AutoCompleteService {
     headers.append('Content-Type', 'application/json');
     headers.append('x-tenant-code', 'aqua');
 
-    const roleKey = window.localStorage.getItem('roleKey');
+    const roleKey = window.localStorage.getItem('role-key');
     if (roleKey) {
       headers.append('x-role-key', roleKey);
     }
-    const externalToken = this.store.getItem('external-token');
-    const amsToken = this.store.getItem('ams_token');
+    // const externalToken = this.store.getItem('external-token');
+    // const amsToken = this.store.getItem('ams_token');
     const orgCode = this.store.getItem('orgCode');
 
 
     // let externalToken = this.store.getItem('externalToken');
 
-    if (apiName === 'ams') {
-      if (amsToken)
-        headers.append('x-access-token', amsToken);
-      if (externalToken)
-        headers.append('external-token', externalToken);
-      // else if (emsToken)
-      //   headers.append('external-token', emsToken);
+    // if (apiName === 'ams') {
+    //   if (amsToken)
+    //     headers.append('x-access-token', amsToken);
+    //   if (externalToken)
+    //     headers.append('external-token', externalToken);
+    //   // else if (emsToken)
+    //   //   headers.append('external-token', emsToken);
 
-    } else if (apiName === 'ems') {
-      // if (externalToken)
-      //   headers.append('external-token', externalToken)
-      if (externalToken)
-        headers.append('x-access-token', externalToken);
-    }
+    // } else if (apiName === 'ems') {
+    //   // if (externalToken)
+    //   //   headers.append('external-token', externalToken)
+    //   if (externalToken)
+    //     headers.append('x-access-token', externalToken);
+    // }
 
 
     headers.append('org-code', orgCode || 'msas'); // TODO

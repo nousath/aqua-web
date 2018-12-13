@@ -227,11 +227,11 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   empFormatter(data: EmsEmployee): string {
-    return `${data.profile.firstName} ${data.profile.lastName}`.trim();
+    return `${data.profile.firstName} ${data.profile.lastName || ''}`.trim();
   }
 
   empListFormatter(data: EmsEmployee): string {
-    const name = `${data.profile.firstName} ${data.profile.lastName}`.trim();
+    const name = `${data.profile.firstName} ${data.profile.lastName || ''}`.trim();
     return `${data.code}:${name}`;
   }
 

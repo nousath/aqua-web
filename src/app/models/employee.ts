@@ -18,7 +18,7 @@ export class Employee {
   password = '';
   phone = '';
   biometricCode = '';
-  displayCode = '';
+  // displayCode = '';
   organization: Organization = new Organization();
   device: Device = new Device();
   shiftType: ShiftType = new ShiftType();

@@ -90,7 +90,7 @@
                     totalItems: effectiveShifts.totalRecords };">
               <td class="customStyle">{{item.employee.name || '--'}}
                 <br>
-                <span class="empCode">{{item.employee.displayCode || '--'}}</span>
+                <span class="empCode">{{item.employee.code || '--'}}</span>
               </td>
               <td>
                 <md-slide-toggle [checked]="item.employee.isDynamicShift" (change)="toggleDynamicShift(item.employee)"></md-slide-toggle>
