@@ -1,169 +1,185 @@
 <div class="row text-center header">
-    <h5 *ngIf="!device.id">
-        <b>New Device</b>
-    </h5>
-    <h5 *ngIf="device.id">
-        <b>Edit Device</b>
-    </h5>
+  <h5 *ngIf="!device.id">
+    <b>New Device</b>
+  </h5>
+  <h5 *ngIf="device.id">
+    <b>Edit Device</b>
+  </h5>
 </div>
 <br>
 <br>
 <md-dialog-content>
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <form #deviceForm="ngForm">
-            <table class="table table table-condensed table-bordered">
-                <tr>
-                    <td class="lable_w">
-                        <label>Category
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <form #deviceForm="ngForm">
+      <table class="table table table-condensed table-bordered">
+        <tr>
+          <td class="lable_w">
+            <label>Category
               <span class="asterisk">*</span>
             </label>
-                    </td>
-                    <td>
-                        <select name="cate" class="form-control" [(ngModel)]="device.category.id" (change)="selectCat(device.category.id)" placeholder="Category" required>
+          </td>
+          <td>
+            <select name="cate" class="form-control" [(ngModel)]="device.category.id" (change)="selectCat(device.category.id)"
+              placeholder="Category" required>
               <option *ngFor="let item of categories" [value]="item.id">
                 {{item?.name}}
               </option>
             </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="lable_w">
-                        <label>Name
+          </td>
+        </tr>
+        <tr>
+          <td class="lable_w">
+            <label>Name
               <span class="asterisk">*</span>
             </label>
-                    </td>
-                    <td>
-                        <input name="machineName" type="text" class="form-control" [(ngModel)]="device.name" placeholder="Machine Name" required>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>Type
+          </td>
+          <td>
+            <input name="machineName" type="text" class="form-control" [(ngModel)]="device.name" placeholder="Machine Name"
+              required>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label>Type
               <span class="asterisk">*</span>
             </label>
-                    </td>
-                    <select name="machineType" class="form-control" [(ngModel)]="device.type" placeholder="Type" required>
-            <option value ="master">Master</option>
-            <option value ="both">In/Out</option>
-            <option value ="in">In</option>
-            <option value ="out">Out</option>
+          </td>
+          <select name="machineType" class="form-control" [(ngModel)]="device.type" placeholder="Type" required>
+            <option value="master">Master</option>
+            <option value="parse">Dynamic</option>
+            <option value="both">In/Out</option>
+            <option value="in">In</option>
+            <option value="out">Out</option>
           </select>
-                </tr>
-                <tr>
-                    <td>
-                        <label>Brand
+          <span class="sub-text" *ngIf="device.type === 'parse'">system will try to interpret the punch as In or Out</span>
+          <span class="sub-text" *ngIf="device.type === 'both'">needs to select In/Out before punch </span>
+          <span class="sub-text" *ngIf="device.type === 'in'">all punches will be treated as In</span>
+          <span class="sub-text" *ngIf="device.type === 'out'">all punches will be treated as Out</span>
+          <span class="sub-text" *ngIf="device.type === 'master'">all punches will be ignored</span>
+        </tr>
+        <tr>
+          <td>
+            <label>Brand
               <span class="asterisk">*</span>
             </label>
-                    </td>
-                    <td>
-                        <select name="machine" class="form-control" [(ngModel)]="device.machine.id" (change)="selectMachine(device.machine.id)" placeholder="Machine" required>
+          </td>
+          <td>
+            <select name="machine" class="form-control" [(ngModel)]="device.machine.id" (change)="selectMachine(device.machine.id)"
+              placeholder="Machine" required>
               <option *ngFor="let item of machines" [value]="item.id">
                 {{item?.model}}
               </option>
             </select>
-                    </td>
-                </tr>
-                <!-- <tr class="text-center">
+          </td>
+        </tr>
+        <!-- <tr class="text-center">
                     <td colspan="2">
                         <img *ngIf="device?.machine?.picUrl" [src]="device?.machine?.picUrl" width="10%">
                         <span *ngIf="!device?.machine?.picUrl">no image !</span>
                         <p>Model - {{device?.machine?.manufacturer}}</p>
                     </td>
                 </tr> -->
-                <tr *ngIf="device?.category?.name.toLowerCase() == 'wifi'">
-                    <td>
-                        <label>BSSID
+        <tr *ngIf="device?.category?.name.toLowerCase() == 'wifi'">
+          <td>
+            <label>BSSID
               <span class="asterisk">*</span>
             </label>
-                    </td>
-                    <td>
-                        <input name="ipaddwwe" type="text" [pattern]="validatorService.onlyBssid" class="form-control" [(ngModel)]="device.bssid" placeholder="bssid" [required]="device?.category?.name.toLowerCase() == 'wifi'">
-                    </td>
-                </tr>
-                <tr *ngIf="device?.category?.name.toLowerCase() != 'wifi'">
-                    <td>
-                        <label>Port No
+          </td>
+          <td>
+            <input name="ipaddwwe" type="text" [pattern]="validatorService.onlyBssid" class="form-control" [(ngModel)]="device.bssid"
+              placeholder="bssid" [required]="device?.category?.name.toLowerCase() == 'wifi'">
+          </td>
+        </tr>
+        <tr *ngIf="device?.category?.name.toLowerCase() != 'wifi'">
+          <td>
+            <label>Port No
               <span class="asterisk">*</span>
             </label>
-                    </td>
-                    <td>
-                        <input name="ipaddwwe" type="text" [maxlength]="validatorService.portNumberLength" [pattern]="validatorService.onlyNumber" class="form-control" [(ngModel)]="device.port" placeholder="Port" [required]="device?.category?.name.toLowerCase() != 'wifi'">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>IP Address
+          </td>
+          <td>
+            <input name="ipaddwwe" type="text" [maxlength]="validatorService.portNumberLength" [pattern]="validatorService.onlyNumber"
+              class="form-control" [(ngModel)]="device.port" placeholder="Port" [required]="device?.category?.name.toLowerCase() != 'wifi'">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label>IP Address
               <span class="asterisk">*</span>
             </label>
-                    </td>
+          </td>
 
-                    <td>
-                        <input name="portnumber" type="text" [pattern]="validatorService.ipAddressPattern" class="form-control" [(ngModel)]="device.ip" placeholder="Ip" required>
-                    </td>
-                </tr>
-                <tr *ngIf="device?.category?.name.toLowerCase() == 'wifi'">
-                    <td>
-                        <label>Intervel</label>
-                    </td>
+          <td>
+            <input name="portnumber" type="text" [pattern]="validatorService.ipAddressPattern" class="form-control"
+              [(ngModel)]="device.ip" placeholder="Ip" required>
+          </td>
+        </tr>
+        <tr *ngIf="device?.category?.name.toLowerCase() == 'wifi'">
+          <td>
+            <label>Intervel</label>
+          </td>
 
-                    <td>
-                        <input class="form-control" type="number" name="intervalTime" [(ngModel)]="device.interval" placeholder="minute" required>
-                    </td>
-                </tr>
-            </table>
+          <td>
+            <input class="form-control" type="number" name="intervalTime" [(ngModel)]="device.interval" placeholder="minute"
+              required>
+          </td>
+        </tr>
+      </table>
 
-            <table *ngIf="device?.category?.name.toLowerCase() == 'biometric'">
-                <tr>
-                    <td class=s paceInBox>
-                        <label>Stop Machine</label>
-                    </td>
-                    <td>
-                        <md-slide-toggle ngDefaultControl (change)="onChange($event)" [checked]="isShowMuteOptions" ng-reflect-checked="device.id"></md-slide-toggle>
-                    </td>
-                </tr>
-            </table>
-            <table *ngIf="isShowMuteOptions">
-                <tr>
-                    <td>
-                        <label>Start Time</label>
-                    </td>
-                    <td>
-                        <label>End Time</label>
-                    </td>
-                    <td>
-                        <!-- <button (click)="addTimeSlice()">Add</button> -->
-                        <button md-icon-button (click)="addTimeSlice()" mdTooltip="Add" [mdTooltipPosition]="'above'">
+      <table *ngIf="device?.category?.name.toLowerCase() == 'biometric'">
+        <tr>
+          <td class=s paceInBox>
+            <label>Stop Machine</label>
+          </td>
+          <td>
+            <md-slide-toggle ngDefaultControl (change)="onChange($event)" [checked]="isShowMuteOptions"
+              ng-reflect-checked="device.id"></md-slide-toggle>
+          </td>
+        </tr>
+      </table>
+      <table *ngIf="isShowMuteOptions">
+        <tr>
+          <td>
+            <label>Start Time</label>
+          </td>
+          <td>
+            <label>End Time</label>
+          </td>
+          <td>
+            <!-- <button (click)="addTimeSlice()">Add</button> -->
+            <button md-icon-button (click)="addTimeSlice()" mdTooltip="Add" [mdTooltipPosition]="'above'">
               <md-icon>add_circle_outline</md-icon>
             </button>
-                    </td>
+          </td>
 
-                </tr>
-                <tr *ngFor="let item of device.mute;let in = index">
-                    <td>
-                        <input class="myFormControl" type="time" name="startTime_{{in}}" [ngModel]="item.start" (ngModelChange)="item.start = $event" required>
-                    </td>
-                    <td>
-                        <input class="myFormControl" type="time" name="endTime_{{in}}" [ngModel]="item.end" (ngModelChange)="item.end = $event" required>
-                    </td>
-                    <td>
-                        <!-- <button (click)="removeTimeSlice(item)">Remove</button> -->
-                        <button md-icon-button mdTooltip="Close" [mdTooltipPosition]="'above'" (click)="removeTimeSlice(item)">
+        </tr>
+        <tr *ngFor="let item of device.mute;let in = index">
+          <td>
+            <input class="myFormControl" type="time" name="startTime_{{in}}" [ngModel]="item.start" (ngModelChange)="item.start = $event"
+              required>
+          </td>
+          <td>
+            <input class="myFormControl" type="time" name="endTime_{{in}}" [ngModel]="item.end" (ngModelChange)="item.end = $event"
+              required>
+          </td>
+          <td>
+            <!-- <button (click)="removeTimeSlice(item)">Remove</button> -->
+            <button md-icon-button mdTooltip="Close" [mdTooltipPosition]="'above'" (click)="removeTimeSlice(item)">
               <md-icon>highlight_off</md-icon>
             </button>
-                    </td>
-                </tr>
-            </table>
+          </td>
+        </tr>
+      </table>
 
-            <div class="alignButton">
-                <button md-raised-button color="primary" (click)="save()">Save</button>
-                <button md-raised-button class="btn_grey" md-dialog-close>Cancel</button>
-            </div>
-
-
+      <div class="alignButton">
+        <button md-raised-button color="primary" (click)="save()">Save</button>
+        <button md-raised-button class="btn_grey" md-dialog-close>Cancel</button>
+      </div>
 
 
-        </form>
-    </div>
+
+
+    </form>
+  </div>
 
 
 </md-dialog-content>

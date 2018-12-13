@@ -71,8 +71,8 @@ export class EmsEmployee {
   email = '';
   phone = '';
 
-  profile: Profile;
-  address: Address;
+  profile: Profile = new Profile();
+  address: Address = new Address();
 
   supervisor: EmsEmployee;
   designation: Designation;
@@ -97,7 +97,7 @@ export class EmsEmployee {
   doj: Date;
   dol: Date;
   reason = '';
-  config: CustomFields;
+  config: CustomFields = new CustomFields();
 
   // constructor() {
   //   this.profile = this.profile || new Profile();
