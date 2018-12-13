@@ -70,9 +70,22 @@ export class ShiftTypeNewComponent implements OnInit {
     });
   }
 
-  save(isFormValid: boolean) {
-    if (!isFormValid) {
-      return this.toastyService.info({ title: 'Info', msg: 'Please fill all mandatory fields' })
+  save() {
+
+    if (!this.shiftType.properties.name) {
+      return this.toastyService.info({ title: 'Info', msg: 'Name is required' })
+    }
+
+    if (!this.shiftType.properties.code) {
+      return this.toastyService.info({ title: 'Info', msg: 'Code is required' })
+    }
+
+    if (!this.shiftType.properties.startTime) {
+      return this.toastyService.info({ title: 'Info', msg: 'Start Time is required' })
+    }
+
+    if (!this.shiftType.properties.endTime) {
+      return this.toastyService.info({ title: 'Info', msg: 'End Time is required' })
     }
 
     const startTime: string[] = this.shiftType.properties.startTime.split(':');
