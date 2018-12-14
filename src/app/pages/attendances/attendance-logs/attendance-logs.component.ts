@@ -14,13 +14,11 @@ import { AmsAttendanceService } from '../../../services/ams/ams-attendance.servi
 import { AmsTimelogsService } from '../../../services/ams/ams-timelogs.service';
 import { AmsEmployeeService } from '../../../services/ams/ams-employee.service';
 import { Angulartics2 } from 'angulartics2';
-import { IGetParams } from '../../../common/contracts/api/get-params.interface';
-import 'rxjs';
 import { Http } from '@angular/http';
 import { Location } from '@angular/common';
-import { AddAttendanceLogsComponent } from '../../../shared/components/add-attendance-logs/add-attendance-logs.component';
 import { MdDialogRef, MdDialog } from '@angular/material';
 import { BulkTimeLogsDialogComponent } from '../../../shared/components/bulk-time-logs-dialog/bulk-time-logs-dialog.component';
+import { EmsAuthService } from '../../../services/ems/ems-auth.service';
 
 
 @Component({
@@ -57,6 +55,8 @@ export class AttendanceLogsComponent implements OnInit {
     type: ''
   }];
 
+  isProcessing = false;
+
   constructor(private activatedRoute: ActivatedRoute,
     private toastyService: ToastyService,
     private amsAttendanceService: AmsAttendanceService,
@@ -65,6 +65,7 @@ export class AttendanceLogsComponent implements OnInit {
     private angulartics2: Angulartics2,
     private http: Http,
     private amsEmployeeService: AmsEmployeeService,
+    private auth: EmsAuthService,
     public _location: Location,
     public dialog: MdDialog) {
     this.employee = new Model({
@@ -110,25 +111,20 @@ export class AttendanceLogsComponent implements OnInit {
     }];
 
 
-    this.subscription = this.activatedRoute.params.subscribe(
-      params => {
-        this.empId = params['empId'];
-        this.ofDate = params['ofDate'];
-        this.attendances.filters.properties['employee'].value = this.empId;
-        this.attendances.filters.properties['ofDate'].value = new Date(this.ofDate).toISOString();
-        this.logs.filters.properties['fromDate'].value = new Date(this.ofDate).toISOString();
-        this.logs.filters.properties['employeeId'].value = this.empId;
-        this.employee.fetch(this.empId).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
-        this.getAttendance();
+    this.subscription = this.activatedRoute.params.subscribe(params => {
+      this.empId = params['empId'];
+      this.ofDate = params['ofDate'];
+      this.attendances.filters.properties['employee'].value = this.empId;
+      this.attendances.filters.properties['ofDate'].value = new Date(this.ofDate).toISOString();
+      this.logs.filters.properties['fromDate'].value = new Date(this.ofDate).toISOString();
+      this.logs.filters.properties['employeeId'].value = this.empId;
+      this.employee.fetch(this.empId).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+      this.getAttendance();
 
+      this.checkTime = new Date(this.ofDate);
+    })
 
-
-        this.checkTime = new Date(this.ofDate);
-
-
-      }
-    )
-    this.userType = localStorage.getItem('userType')
+    this.userType = this.auth.currentEmployee().userType;
 
   }
 
@@ -144,6 +140,7 @@ export class AttendanceLogsComponent implements OnInit {
 
   getAttendance() {
 
+    this.isProcessing = true;
 
     this.amsAttendanceService.attendance.get(`${new Date(this.ofDate).toISOString()}?employeeId=${this.empId}`).then(item => {
       this.attendance = item;
@@ -174,7 +171,7 @@ export class AttendanceLogsComponent implements OnInit {
       this.timeLogsLength = this.attendance.timeLogs.length;
 
       if (this.attendance && this.attendance.timeLogs && this.timeLogsLength !== 0 && this.attendance.isContinue) {
-            this.logsSource = true;
+        this.logsSource = true;
       }
       if (shiftSpan) {
         this.extraShiftCount = (workSpan / shiftSpan) - 1
@@ -185,8 +182,12 @@ export class AttendanceLogsComponent implements OnInit {
           this.extraShiftCount = parseInt(this.extraShiftCount.toFixed(0))
         }
       }
-    }).catch();
-  this.logsSource = false;
+
+      this.isProcessing = false;
+    }).catch(() => {
+      this.isProcessing = false;
+    });
+    this.logsSource = false;
   }
 
   getLogs() {
@@ -259,8 +260,16 @@ export class AttendanceLogsComponent implements OnInit {
   }
 
   showNextDate() {
-    this.ofDate = moment(this.ofDate).add(1, 'd').toDate();
-    this.getAttendance();
+
+    const nextDate = moment(this.ofDate).add(1, 'd').toDate();
+
+    if (nextDate < new Date()) {
+      this.ofDate = nextDate;
+      this.getAttendance();
+    } else {
+      this.toastyService.info({ title: 'Max Date', msg: `You cannot browse to future date` })
+    }
+
   }
 
   showPreviousDate() {

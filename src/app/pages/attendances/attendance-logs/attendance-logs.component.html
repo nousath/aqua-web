@@ -1,27 +1,22 @@
-<div class="row page_header">
-  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-    <a md-raised-button class="reply" color="primary" (click)="backClicked()">
-      <md-icon>reply</md-icon> Back
-    </a>
-    <h5>
-      <b>Time Logs</b>
-    </h5>
-  </div>
-  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-    <h5>
-      <button md-icon-button (click)="showPreviousDate()">
-        <md-icon>arrow_back</md-icon>
-      </button>
-      {{ofDate | date}}
-      <button md-icon-button (click)="showNextDate()">
-        <md-icon>arrow_forward</md-icon>
-      </button>
-    </h5>
-  </div>
+<div class="tool-bar controls-row">
+  <h5>Time Logs</h5>
+  <span class="spacer"></span>
+  <h5>
+    <button md-icon-button (click)="showPreviousDate()">
+      <md-icon>arrow_back</md-icon>
+    </button>
+    {{ofDate | date}}
+    <button md-icon-button (click)="showNextDate()">
+      <md-icon>arrow_forward</md-icon>
+    </button>
+  </h5>
+  <span class="spacer"></span>
+  <a md-icon-button (click)="backClicked()">
+    <md-icon>close</md-icon>
+  </a>
 </div>
-<md-spinner class="custom_spinner" *ngIf="employee?.isProcessing || logs?.isLoading || attendances?.isLoading || timeLog?.isProcessing"
+<md-spinner class="custom_spinner" *ngIf="employee?.isProcessing || logs?.isLoading || attendances?.isLoading || timeLog?.isProcessing || isProcessing"
   mode="indeterminate"></md-spinner>
-<br>
 <div class="row">
   <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
     <md-card>
@@ -40,6 +35,11 @@
         <br>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <table class="table">
+            <tr>
+              <td> Status : </td>
+              <td> {{attendance?.status| titlecase}}
+              </td>
+            </tr>
             <tr>
               <td> Shift : </td>
               <td> {{ (attendance?.shift?.shiftType?.name || employee?.properties?.shiftType?.name)| titlecase}}
