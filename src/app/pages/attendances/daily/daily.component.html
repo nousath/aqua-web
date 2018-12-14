@@ -58,8 +58,7 @@
             <th class="text-center tdWidth">Out 2</th>
             <th class="text-center tdWidth">In 3</th>
             <th class="text-center tdWidth">Check Out</th>
-            <!-- <th class="tdWidth">Team</th> -->
-            <!-- <th class="tdWidth">Action</th> -->
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -69,14 +68,14 @@
                                                       totalItems: dailyAttendnace.totalRecords };"
             class="capitalize">
             <td>
-              <a (click)="updateDayEvent(item.employee.id)">{{item.employee.name || '--'}}</a>
+              <a [routerLink]="['/', 'employees', item.employee.code]">{{item.employee.name || '--'}}</a>
               <br>
-              <span class="sub-text">{{item.employee.code || '--'}}</span>
+              <span class="sub-text">{{item.employee.code || ''}}</span>
             </td>
             <td class="tdWidth">{{item.employee.designation || '--'}}</td>
-            <td class="tdWidth">{{item.shift.shiftType.name}}</td>
+            <td class="tdWidth" (click)="updateDayEvent(item.employee.id)">{{item.shift.shiftType.name}}</td>
             <!-- <td class="tdWidth">{{item?.attendance?.hoursWorked || '--'}}</td> -->
-            <td class="tdWidth">
+            <td class="tdWidth" (click)="updateDayEvent(item.employee.id)">
               <ng-template #elsePart>
                 <div [class.cta]="item.status === 'absent'">{{item.status | titlecase}}</div>
                 <aqua-shift-count *ngIf="this.isPast && item.status !== 'absent'" [count]="item.count"></aqua-shift-count>
@@ -85,7 +84,7 @@
                 | titlecase}}</span>
             </td>
             <!-- <td class="tdWidth">{{item?.department || '--'}}</td> -->
-            <td class=" tdWidth">
+            <td class=" tdWidth" (click)="updateDayEvent(item.employee.id)">
               <ng-container *ngIf="item.checkIn">
                 <div>{{item.checkIn | date:'shortTime'}}</div>
                 <span class="sub-text" *ngIf="item.checkInStatus && (item.checkInStatus === 'late')">Came Late</span>
@@ -94,11 +93,15 @@
               </ng-container>
               <span class="cta" *ngIf="item.status=== 'present' && !item.checkIn && item.checkInStatus">Missed Check In</span>
             </td>
-            <td class="tdWidth"><span *ngIf="item.out1">{{item.out1 | date:'shortTime'}}</span></td>
-            <td class="tdWidth"><span *ngIf="item.in2">{{item.in2 | date:'shortTime'}}</span></td>
-            <td class="tdWidth"><span *ngIf="item.out2">{{item.out2 | date:'shortTime'}}</span></td>
-            <td class="tdWidth"><span *ngIf="item.in3">{{item.in3 | date:'shortTime'}}</span></td>
-            <td class=" tdWidth">
+            <td class="tdWidth"><span *ngIf="item.out1" (click)="updateDayEvent(item.employee.id)">{{item.out1 |
+                date:'shortTime'}}</span></td>
+            <td class="tdWidth"><span *ngIf="item.in2" (click)="updateDayEvent(item.employee.id)">{{item.in2 |
+                date:'shortTime'}}</span></td>
+            <td class="tdWidth"><span *ngIf="item.out2" (click)="updateDayEvent(item.employee.id)">{{item.out2 |
+                date:'shortTime'}}</span></td>
+            <td class="tdWidth"><span *ngIf="item.in3" (click)="updateDayEvent(item.employee.id)">{{item.in3 |
+                date:'shortTime'}}</span></td>
+            <td class=" tdWidth" (click)="updateDayEvent(item.employee.id)">
               <div *ngIf="item.checkOut">{{item.checkOut | date:'shortTime'}}</div>
               <ng-container *ngIf="this.isPast && item.checkOut ">
                 <span class="sub-text" *ngIf="item.checkOutStatus && this.isPast && item.status === 'late'">Went Late</span>
@@ -108,6 +111,7 @@
               <span class="cta" *ngIf="!item.checkOut && item.checkOutStatus && this.isPast && item.status === 'present'">Missed
                 Check Out</span>
             </td>
+            <td><button md-icon-button (click)="updateDayEvent(item.employee.id)"><i class="fa fa-chevron-right"></i></button></td>
             <!-- <td class="tdWidth">
                             <a [routerLink]="['teams',item.employee.id]" *ngIf="item.employee.hasTeam">
                                 <img src="assets/images/team.png" width="30px;">
