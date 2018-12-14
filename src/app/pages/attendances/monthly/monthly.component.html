@@ -1,49 +1,30 @@
-<div class="row page_header">
-  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-    <h5>
-      <b>Monthly Attendance</b>
-    </h5>
+<div class="tool-bar controls-row">
+  <h5>Monthly Attendance</h5>
+  <span class="spacer"></span>
+  <div class="input-group">
+    <span class="input-group-addon" id="basic-addon1">Month</span>
+    <input id="monthSelector" type="text" class="form-control input-sm calendar no-spin">
   </div>
-  <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 controls-row">
-    <span class="spacer"></span>
-    <div class="input-group">
-      <span class="input-group-addon" id="basic-addon1">Month</span>
-      <input id="monthSelector" type="text" class="form-control input-sm calendar no-spin">
-    </div>
-    <button [disabled]="monthlyAttendnace?.isLoading" md-icon-button mdTooltip="Filters" [mdTooltipPosition]="'above'"
-      (click)="isFilter = !isFilter">
-      <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
-    </button>
-    <button (click)="downloadlink()" md-icon-button>
-      <md-icon>cloud_download</md-icon>
-    </button>
+  <button md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'">
+    <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
+  </button>
 
-    <button (click)="regenerate()" [mdTooltipPosition]="'above'" mdTooltip="Regenerate" md-icon-button>
-      <md-icon>build</md-icon>
+  <button [matMenuTriggerFor]="moreMenu" md-icon-button>
+    <md-icon>more_vert</md-icon>
+  </button>
+  <md-menu #moreMenu="mdMenu">
+    <button md-menu-item (click)="regenerate()" [mdTooltipPosition]="'above'" mdTooltip="Regenerate">
+      <md-icon>build</md-icon> Regenerate
     </button>
-    <!-- <button [disabled]="monthlyAttendnace?.isLoading || isDownloading || employee?.isProcessing" [mdMenuTriggerFor]="appMenu"
-                md-icon-button>
-                <md-icon>cloud_download</md-icon>
-            </button> -->
-    <!-- <md-menu #appMenu="mdMenu">
-                <button md-menu-item [matMenuTriggerFor]="appSubMenu1">Extra hours - after Shift end time</button>
-                <button md-menu-item [matMenuTriggerFor]="appSubMenu2">Extra hours - after Shift hours</button>
-                <button md-menu-item [matMenuTriggerFor]="appSubMenu3">Monthly Attendance</button>
-            </md-menu>
-            <md-menu #appSubMenu1="mdMenu">
-                <button md-menu-item (click)="download(true, false, 'Extra hours - after Shift end time')">Excel</button>
-                <button *ngIf="org ==='sh'" md-menu-item (click)="downloadPdf('attendance3')">PDF</button>
-            </md-menu>
-            <md-menu #appSubMenu2="mdMenu">
-                <button md-menu-item (click)="download(false, true, 'Extra hours - after Shift hours')">Excel</button>
-                <button *ngIf="org ==='sh'" md-menu-item (click)="downloadPdf('attendance2')">PDF</button>
-            </md-menu>
-            <md-menu #appSubMenu3="mdMenu">
-                <button md-menu-item (click)="download(false, false, 'Day Attendance')">Excel</button>
-                <button *ngIf="org ==='sh'" md-menu-item (click)="downloadPdf('attendance')">PDF</button>
-            </md-menu> -->
-  </div>
+    <button md-menu-item [matMenuTriggerFor]="downloadMenu">
+      <md-icon>cloud_download</md-icon> Download
+    </button>
+    <md-menu #downloadMenu="mdMenu">
+      <button md-menu-item (click)="downloadlink()">Report</button>
+    </md-menu>
+  </md-menu>
 </div>
+
 <md-spinner class="custom_spinner" *ngIf="monthlyAttendnace?.isLoading" mode="indeterminate"></md-spinner>
 <aqua-employees-filter *ngIf="isFilter" [fields]="filterFields" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter>
 <div class="row">
@@ -58,7 +39,7 @@
             <th class="tdWidth">Present Days</th>
             <th class="tdWidth">Absent Days</th>
             <th class="tdWidth">Leave Balance</th>
-            <!-- <th></th> -->
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -70,15 +51,17 @@
             <td>
               <img *ngIf="item?.picUrl" class="img-circle profile_pic" alt="img" [src]="item?.picUrl" onError="this.src='/assets/images/blank.png'">
               <img *ngIf="!item?.picUrl" class="img-circle profile_pic" alt="img" src="assets/images/blank.png"> &nbsp;
-              <a [routerLink]="[item.id]">{{item?.name || '--'}}</a>
+              <a [routerLink]="[ '/', 'employees', item?.code]">{{item?.name || '--'}}</a>
               <br>
-              <span class='sub-text' style='margin-left: 20%;'>{{item?.code || '--'}}</span>
+              <span class='sub-text' style='margin-left: 20%;'>{{item?.code || ''}}</span>
             </td>
             <td class="tdWidth">{{item?.designation || '--'}}</td>
             <td class="tdWidth">{{item?.shiftType?.name || '--'}}</td>
             <td class="tdWidth">{{item?.presentDays || '--'}}</td>
             <td class="tdWidth">{{item?.absentDays || '--'}}</td>
             <td class="tdWidth">{{item?.totalLeaveBalance | number:'1.0-2'}}</td>
+            <td><button md-icon-button [routerLink]="[item.id]"><i class="fa fa-chevron-right"></i></button></td>
+
           </tr>
         </tbody>
       </table>
