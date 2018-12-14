@@ -5,10 +5,10 @@
     </h5>
   </div>
   <br>
-  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <br>Code:&nbsp;
-    <input name="biometricCode" type="number" class="form-control small right" [(ngModel)]="employee.biometricCode"
-      (change)="setBiometricCode()">
+  <div class="from-group">
+    <label>Biometric Code:</label>
+    <input name="biometricCode" type="number" class="form-control small right" [ngModel]="employee.biometricCode"
+      (change)="setBiometricCode($event)">
   </div>
   <div>
     <table class="table table-condensed table-responsive">

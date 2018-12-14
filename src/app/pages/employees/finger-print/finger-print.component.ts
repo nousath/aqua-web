@@ -65,9 +65,17 @@ export class FingerPrintComponent implements OnInit {
 
   }
 
-  setBiometricCode() {
+  setBiometricCode($event) {
+    const oldValue = this.employee.biometricCode;
+    this.employee.biometricCode = $event.target.value;
+    this.isLoading = true;
     this.amsEmployeeService.employees.update(this.employee.id, this.employee).then(() => {
+      this.isLoading = false;
       this.toastyService.success(`${this.employee.biometricCode} is now biometric code of employee ${this.employee.name}`);
+    }).catch(err => {
+      this.isLoading = false;
+      this.toastyService.error(err);
+      this.employee.biometricCode = oldValue;
     })
   }
 
