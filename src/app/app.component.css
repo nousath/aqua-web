@@ -41,10 +41,12 @@ md-toolbar.header {
   margin-top: 60px;
   height: 93vh;
   background: #efefef;
-  padding: 0 10px;
   /*width: 100%;*/
   /*overflow-x: hidden;*/
   overflow-y: scroll;
+  padding-left: 25px;
+  padding-right: 25px;
+
 }
 
 @media only screen and (max-width:600px) {

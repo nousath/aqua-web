@@ -56,8 +56,8 @@
             class="capitalize">
 
             <td>
-              <img *ngIf="item?.profile?.pic?.url" class="img-circle profile_pic" alt="img" [src]="item?.profile?.pic?.url">
-              <img *ngIf="!item?.profile?.pic?.url" class="img-circle profile_pic" alt="img" src="assets/images/blank.png">
+              <img *ngIf="item?.profile?.pic?.url" class="img-circle img-profile" alt="img" [src]="item?.profile?.pic?.url">
+              <img *ngIf="!item?.profile?.pic?.url" class="img-circle img-profile" alt="img" src="assets/images/blank.png">
             </td>
             <td>
               <a [routerLink]="[item.code]">{{item?.profile?.firstName || '-'}}

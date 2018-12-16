@@ -49,8 +49,8 @@
                                                       totalItems: monthlyAttendnace.totalRecords };"
             class="capitalize">
             <td>
-              <img *ngIf="item?.picUrl" class="img-circle profile_pic" alt="img" [src]="item?.picUrl" onError="this.src='/assets/images/blank.png'">
-              <img *ngIf="!item?.picUrl" class="img-circle profile_pic" alt="img" src="assets/images/blank.png"> &nbsp;
+              <img *ngIf="item?.picUrl" class="img-circle img-profile" alt="img" [src]="item?.picUrl" onError="this.src='/assets/images/blank.png'">
+              <img *ngIf="!item?.picUrl" class="img-circle img-profile" alt="img" src="assets/images/blank.png"> &nbsp;
               <a [routerLink]="[ '/', 'employees', item?.code]">{{item?.name || '--'}}</a>
               <br>
               <span class='sub-text' style='margin-left: 20%;'>{{item?.code || ''}}</span>

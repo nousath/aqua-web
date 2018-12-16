@@ -37,11 +37,6 @@
     display: none !important;
 }
 
-.profile_pic {
-    width: 33px;
-    height: 33px;
-}
-
 .activeTab {
     border-bottom: 2px solid yellow;
 }
@@ -66,10 +61,6 @@
     .calender {
         margin-top: 2%;
         width: 100%;
-    }
-    .profile_pic {
-        width: 20px;
-        height: 20px;
     }
 }
 
