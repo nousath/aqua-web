@@ -11,20 +11,11 @@ export class UserGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
 
-    if (!this.auth.getCurrentKey()) {
+    const role = this.auth.currentRole();
+    if (!role || !role.employee) {
       this.auth.goHome();
       return false
     }
-
-    const currentUser = this.auth.currentEmployee();
-    if (!currentUser) {
-      this.auth.goHome();
-      return false
-    }
-
-    // if (user) {
-    //   ga('set', '&uid', `${user.name} ${user.email}`)
-    // }
     return true;
   }
 }

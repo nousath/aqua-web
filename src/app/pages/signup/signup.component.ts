@@ -92,24 +92,24 @@ export class SignupComponent implements OnInit {
   };
 
   login() {
-    if (!this.user.properties.email || !this.user.properties.password) {
-      return this.user.properties.email ? this.user.properties.password ? null : this.toastyService.info({ title: 'Info', msg: 'Please enter Password' }) : this.toastyService.info({ title: 'Info', msg: 'Please enter Username' });
-    }
-    this.isProcessing = true;
-    this.emsAuthService.login(this.user.properties).subscribe(() => {
-      const emsUser = this.emsAuthService.currentUser();
-      if (emsUser.status.toLowerCase() === 'verified') {
-        this.section = 'COMPLETE';
-        return this.isProcessing = false;
-      }
-    }, err => { this.isProcessing = false; this.toastyService.error({ title: 'Error', msg: err }) });
-    this.user.create().then((emsUser: User) => {
-      if (emsUser.status.toLowerCase() === 'verified') {
-        this.section = 'COMPLETE';
-        return this.isProcessing = false;
-      }
-    }
-    ).catch(err => { this.isProcessing = false; this.toastyService.error({ title: 'Error', msg: err }) });
+    // if (!this.user.properties.email || !this.user.properties.password) {
+    //   return this.user.properties.email ? this.user.properties.password ? null : this.toastyService.info({ title: 'Info', msg: 'Please enter Password' }) : this.toastyService.info({ title: 'Info', msg: 'Please enter Username' });
+    // }
+    // this.isProcessing = true;
+    // this.emsAuthService.login(this.user.properties).subscribe(() => {
+    //   const emsUser = this.emsAuthService.currentUser();
+    //   if (emsUser.status.toLowerCase() === 'verified') {
+    //     this.section = 'COMPLETE';
+    //     return this.isProcessing = false;
+    //   }
+    // }, err => { this.isProcessing = false; this.toastyService.error({ title: 'Error', msg: err }) });
+    // this.user.create().then((emsUser: User) => {
+    //   if (emsUser.status.toLowerCase() === 'verified') {
+    //     this.section = 'COMPLETE';
+    //     return this.isProcessing = false;
+    //   }
+    // }
+    // ).catch(err => { this.isProcessing = false; this.toastyService.error({ title: 'Error', msg: err }) });
   }
 
   signUp() {
@@ -166,23 +166,23 @@ export class SignupComponent implements OnInit {
   // }
 
   setupProfile(password2: string) {
-    if (password2 !== this.profileModel.password) {
-      return this.toastyService.error({ title: 'Error', msg: 'Password and Confirm Password should be same' })
-    }
-    this.isProcessing = true;
-    this.profileModel.organization.id = this.profileModel.organization.id === 'new' ? null : this.profileModel.organization.id;
-    this.emsAuthService.completeSignup(this.profileModel).subscribe(data => {
-      this.isProcessing = false;
-    }, err => { this.isProcessing = false; this.toastyService.error({ title: 'Error', msg: err }) });
+    // if (password2 !== this.profileModel.password) {
+    //   return this.toastyService.error({ title: 'Error', msg: 'Password and Confirm Password should be same' })
+    // }
+    // this.isProcessing = true;
+    // this.profileModel.organization.id = this.profileModel.organization.id === 'new' ? null : this.profileModel.organization.id;
+    // this.emsAuthService.completeSignup(this.profileModel).subscribe(data => {
+    //   this.isProcessing = false;
+    // }, err => { this.isProcessing = false; this.toastyService.error({ title: 'Error', msg: err }) });
   };
 
   resetPassword(password2: string) {
-    if (password2 !== this.profileModel.password) {
-      return this.toastyService.error({ title: 'Error', msg: 'Password and Confirm Password should be same' })
-    }
-    this.isProcessing = true;
-    this.emsAuthService.resetPassword(this.profileModel.id, this.verifyOTP.concatChar(), this.profileModel.password).subscribe(
-      this.loginHandler, this.errorHandler)
+    // if (password2 !== this.profileModel.password) {
+    //   return this.toastyService.error({ title: 'Error', msg: 'Password and Confirm Password should be same' })
+    // }
+    // this.isProcessing = true;
+    // this.emsAuthService.setPassword(this.profileModel.id, this.verifyOTP.concatChar(), this.profileModel.password).subscribe(
+    //   this.loginHandler, this.errorHandler)
 
   };
 

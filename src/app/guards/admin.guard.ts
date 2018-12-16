@@ -10,17 +10,13 @@ export class AdminGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
 
-    if (!this.auth.getCurrentKey()) {
+    const role = this.auth.currentRole();
+    if (!role || !role.employee) {
       this.auth.goHome();
       return false
     }
 
-    const currentUser = this.auth.currentEmployee();
-    if (!currentUser) {
-      this.auth.goHome();
-      return false
-    }
-    if (currentUser.userType === 'superadmin' || currentUser.userType === 'admin') {
+    if (role.employee.type === 'superadmin' || role.employee.type === 'admin') {
       return true;
     }
 

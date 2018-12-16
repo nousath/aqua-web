@@ -463,6 +463,11 @@ pagination-controls {
     padding-top: 5px;
 }
 
+.form-group .sub-text {
+  position: relative;
+  top: -15px
+}
+
 .sub-text {
     white-space: pre-line;
     font-size: 12px;

@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Router, Route } from '@angular/router';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
-import { LocalStorageService } from '../services/local-storage.service';
-import { EmsAuthService } from '../services';
+import { EmsAuthService } from '../services/ems/ems-auth.service';
 
 @Injectable()
-export class LoginGuard implements CanActivate {
+export class OwnerGuard implements CanActivate {
 
   constructor(private auth: EmsAuthService) { }
 
@@ -14,10 +12,15 @@ export class LoginGuard implements CanActivate {
 
     const role = this.auth.currentRole();
     if (!role || !role.employee) {
-      return true
+      this.auth.goHome();
+      return false
+    }
+
+    if (role.employee.type === 'superadmin' || this.auth.hasPermission('organization.superadmin')) {
+      return true;
     }
 
     this.auth.goHome();
-    return false
+    return false;
   }
 }

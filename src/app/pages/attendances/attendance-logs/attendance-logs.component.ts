@@ -124,7 +124,7 @@ export class AttendanceLogsComponent implements OnInit {
       this.checkTime = new Date(this.ofDate);
     })
 
-    this.userType = this.auth.currentEmployee().userType;
+    this.userType = this.auth.currentRole().employee.type;
 
   }
 

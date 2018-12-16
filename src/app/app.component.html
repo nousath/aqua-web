@@ -3,24 +3,25 @@
   <md-sidenav-container class="nav-container">
 
     <md-sidenav #sidenav [mode]="sideNavMode" [opened]="sideNavOpened">
-      <aqua-navigation-bar [currentUser]="currentUser"></aqua-navigation-bar>
+      <aqua-navigation-bar></aqua-navigation-bar>
     </md-sidenav>
-    <md-toolbar class="header" color="primary" *ngIf="currentUser">
+    <md-toolbar class="header" color="primary" *ngIf="currentRole && currentRole.employee">
       <span md-icon-button *ngIf="!sidenav.opened" (click)="sidenav.open()">
         <md-icon>menu</md-icon>
       </span>
       <span class="example-spacer"></span>
-      <div class="org-name" *ngIf="currentUser && currentUser.organization && currentUser.organization">
-        {{currentUser.organization.name}}
+      <div class="org-name" *ngIf="currentRole && currentRole.organization && currentRole.organization">
+        {{currentRole.organization.name}}
       </div>
       <span class="example-spacer"></span>
       <button md-button (click)="logout()" mdTooltip="Logout" [mdTooltipPosition]="'below'">
-        {{currentUser?.name}}
+        {{currentRole?.employee?.profile?.firstName}}
+        {{currentRole?.employee?.profile.lastName}}
         <md-icon class="example-icon">exit_to_app</md-icon>
       </button>
     </md-toolbar>
 
-    <div [class.body]="currentUser">
+    <div [class.body]="currentRole">
       <router-outlet></router-outlet>
     </div>
   </md-sidenav-container>

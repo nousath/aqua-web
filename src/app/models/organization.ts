@@ -1,4 +1,5 @@
 import { ChannelType } from './channel-type';
+import { Role } from './ems/role';
 
 export class Organization {
   id = '';

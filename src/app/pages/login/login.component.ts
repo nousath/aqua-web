@@ -14,23 +14,6 @@ import { Subscription } from 'rxjs/Rx';
 import { environment } from '../../../environments/environment';
 declare var $: any;
 
-
-class VerifyOTP {
-  char_1 = '';
-  char_2 = '';
-  char_3 = '';
-  char_4 = '';
-  char_5 = '';
-  char_6 = '';
-  maxLength = 1;
-  minLength = 1;
-  concatChar(): string {
-    return `${this.char_1}${this.char_2}${this.char_3}${this.char_4}${this.char_5}${this.char_6}`;
-  }
-}
-
-enum FormSections { SIGNIN, SIGNUP, OTP, COMPLETE }
-
 @Component({
   selector: 'aqua-login',
   templateUrl: './login.component.html',
@@ -38,27 +21,49 @@ enum FormSections { SIGNIN, SIGNUP, OTP, COMPLETE }
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
-  webSiteUrl: string = environment.apiUrls.website;
-  registerUrl: string = environment.apiUrls.register;
+  otp = {
+    char_1: '',
+    char_2: '',
+    char_3: '',
+    char_4: '',
+    char_5: '',
+    char_6: ''
+  };
 
-  user: Model<User>;
-  otpModel: EmsEmployee;
-  signupEmail = '';
+  user: User = new User();
   isLoggingIn = false;
-  section: 'SIGNIN' | 'SIGNUP' | 'OTP' | 'COMPLETE' | 'FORGOTPASSWORD' | 'RESETPASSWORD' = 'SIGNIN';
-  verifyOTP: VerifyOTP = new VerifyOTP();
-  // organizations: Page<Organization>;
+  section: 'SIGNIN' | 'SIGNUP-START' | 'SIGNUP-OTP' | 'SIGNUP-PASSWORD' | 'SIGNUP-EMPLOYMENT' | 'PASSWORD-FORGOT' | 'PASSWORD-OTP' | 'PASSWORD-RESET' = 'SIGNIN';
+  organization: Organization = new Organization();
   newOrg = false;
-  profileModel: EmsEmployee = new EmsEmployee();
+  employee: EmsEmployee = new EmsEmployee();
   subscription: Subscription;
 
+  orgSelector = true;
+  createNewOrg = false;
+
+  organizationTypes = [{
+    text: 'Manufacturing',
+    value: 'manufacturing'
+  }, {
+    text: 'Health Care',
+    value: 'health-care'
+  }, {
+    text: 'Education',
+    value: 'education'
+  }, {
+    text: 'BPO',
+    value: 'bpo'
+  }, {
+    text: 'Services',
+    value: 'services'
+  }];
 
   constructor(
     activatedRoute: ActivatedRoute,
-    // private emsOrganizationService: EmsOrganizationService,
-    private emsAuthService: EmsAuthService,
+    private emsOrganizationService: EmsOrganizationService,
+    private auth: EmsAuthService,
     public validatorService: ValidatorService,
-    private router: Router,
+    private store: LocalStorageService,
     private toastyService: ToastyService) {
 
     this.subscription = activatedRoute.queryParams.subscribe(queryParams => {
@@ -66,149 +71,132 @@ export class LoginComponent implements OnInit, OnDestroy {
       const orgCode: string = queryParams['org-code'];
       if (roleKey) {
         this.isLoggingIn = true;
-        this.emsAuthService.loginUsingKey(roleKey).subscribe(this.loginHandler, this.errorHandler)
+        this.auth.loginUsingKey(roleKey).subscribe(this.loginHandler, this.errorHandler)
+      }
+
+      if (orgCode) {
+        this.checkOrgCode(orgCode)
       }
     });
 
+    const user = this.auth.currentUser();
+    if (user) {
+      this.user = user;
+    }
 
-    this.user = new Model({
-      api: emsAuthService.signin,
-      properties: new User()
-    });
+    const role = this.auth.currentRole();
 
-    // this.organizations = new Page({
-    //   api: emsOrganizationService.organizations,
-    // });
-    // this.organizations.fetch().catch(err => toastyService.error({ title: 'Error', msg: err }));
-
+    if (user && (!role || !role.organization)) {
+      this.section = 'SIGNUP-EMPLOYMENT'
+    }
   }
 
   login() {
-    if (!this.user.properties.email) {
+    this.store.clear();
+    if (!this.user.email) {
       return this.toastyService.info({ title: 'Info', msg: 'Please enter Email' });
     }
 
-    if (!this.user.properties.password) {
+    if (!this.user.password) {
       return this.toastyService.info({ title: 'Info', msg: 'Please enter Password' })
     }
     this.isLoggingIn = true;
-
-    this.emsAuthService.login(this.user.properties)
+    this.auth.login(this.user.email, this.user.password)
       .subscribe(this.loginHandler, this.errorHandler)
   }
 
-
-
-  signUp() {
-    if (!this.signupEmail) {
+  sendOTP(flow: string) {
+    if (!this.user.email) {
       return this.toastyService.info({ title: 'Info', msg: 'Please enter Email' });
     }
 
-    // window.location.href = `${this.registerUrl}/#/signup/${this.signupEmail}`;
-    const win = window.open(`${this.registerUrl}/#/signup/${this.signupEmail}`, '_blank');
-    if (win) {
-      // Browser has allowed it to be opened
-      win.focus();
-    } else {
-      // Browser has blocked it
-      alert('Please allow popups for this website');
-    }
-    // this.isLoggingIn = true;
-    // let model: any = {
-    //   email: this.signupEmail
-    // }
-    // this.emsAuthService.signup.create(model).then(
-    //   data => {
-    //     this.isLoggingIn = false;
-    //     if (data.status.toLowerCase() == 'verified') {
-    //       this.section = 'COMPLETE';
-    //       this.profileModel.id = data.id;
-    //     } else {
-    //       this.section = 'OTP';
-    //       this.otpModel = data;
-    //     }
-    //   }
-    // ).catch(err => { this.isLoggingIn = false; this.toastyService.error({ title: 'Error', msg: err }) });
-
-  }
-
-  validateOtp() {
-    const otp: any = {
-      activationCode: this.verifyOTP.concatChar()
-    };
-    this.isLoggingIn = true;
-    this.emsAuthService.verify.create(otp, `${this.otpModel.id}`).then(
-      data => {
-        this.section = 'COMPLETE';
-        this.isLoggingIn = false;
-        this.profileModel.id = data.id;
-      }
-    ).catch(err => { this.isLoggingIn = false; this.toastyService.error({ title: 'Error', msg: err }); });
-  }
-
-  onSelectOrg() {
-    this.newOrg = this.profileModel.organization.id === 'new' ? true : false;
-  }
-
-  // focusToNext(currentEle, nextEle) {
-  //   let currentElement = document.getElementById('currentEle');
-  //   // $(".optboxFocus").keyup(function () {
-  //   //   if (this.value.length == this.maxLength) {
-  //   //     $(this).next('.optboxFocus').focus();
-  //   //   }
-  //   // });
-  //   console.log(currentEle, nextEle)
-  // };
-
-  setupProfile(password2: string) {
-    if (password2 !== this.profileModel.password) {
-      return this.toastyService.error({ title: 'Error', msg: 'Password and Confirm Password should be same' });
-    }
-    this.isLoggingIn = true;
-    this.profileModel.organization.id = this.profileModel.organization.id === 'new' ? null : this.profileModel.organization.id;
-    this.emsAuthService.completeSignup(this.profileModel)
-      .subscribe(this.loginHandler, this.errorHandler)
-  }
-
-  resetPassword(password2: string) {
-    if (password2 !== this.profileModel.password) {
-      return this.toastyService.error({ title: 'Error', msg: 'Password and Confirm Password should be same' });
-    }
-
     this.isLoggingIn = true;
 
-    this.emsAuthService.resetPassword(this.profileModel.id, this.verifyOTP.concatChar(), this.profileModel.password)
-      .subscribe(this.loginHandler, this.errorHandler)
-  }
-
-  forgotpass() {
-    this.section = 'RESETPASSWORD';
-    this.resendOTP();
-  }
-
-  resendOTP() {
-    const resend: any = {
-      email: this.signupEmail
-    };
-    this.isLoggingIn = true;
-    this.emsAuthService.forgotPassword.create(resend).then(data => {
+    this.auth.sendOTP(this.user.email).subscribe(data => {
       this.isLoggingIn = false;
-      this.profileModel.id = data.id;
+      switch (flow) {
+        case 'SIGNUP-START':
+        case 'SIGNUP-OTP':
+          this.section = 'SIGNUP-OTP';
+          break;
+
+        case 'PASSWORD-FORGOT':
+        case 'PASSWORD-RESET':
+          this.section = 'PASSWORD-RESET';
+          break;
+      }
+
+    }, this.errorHandler);
+  }
+
+  setPassword(flow: string, password2: string) {
+    if (password2 !== this.user.password) {
+      return this.toastyService.error({ title: 'Error', msg: 'Password and Confirm Password should be same' });
     }
-    ).catch(this.errorHandler);
+
+    const otp = `${this.otp.char_1}${this.otp.char_2}${this.otp.char_3}${this.otp.char_4}${this.otp.char_5}${this.otp.char_6}`;
+
+    this.isLoggingIn = true;
+    this.auth.setPassword(this.user.email, otp, this.user.password).subscribe(data => {
+      this.isLoggingIn = false;
+      switch (flow) {
+        case 'SIGNUP-OTP':
+          this.section = 'SIGNUP-EMPLOYMENT';
+          break;
+
+        case 'PASSWORD-RESET':
+          this.loginHandler();
+          break;
+      }
+    }, this.errorHandler);
   }
 
-  switch(section: 'SIGNIN' | 'SIGNUP' | 'OTP' | 'COMPLETE' | 'FORGOTPASSWORD' | 'RESETPASSWORD' = 'SIGNIN') {
-    this.section = section;
+  checkOrgCode(code: string) {
+    this.emsOrganizationService.organizations.get(`${code}/summary`).then(org => {
+      if (org) {
+        this.organization = org;
+      } else {
+        this.organization = new Organization();
+        this.organization.id = 'new';
+        this.organization.code = code;
+      }
+    }).catch(err => {
+      this.organization = new Organization()
+    })
   }
 
-  private errorHandler = err => { this.isLoggingIn = false; this.toastyService.error({ title: 'Error', msg: err }); }
+  setupProfile() {
+    this.isLoggingIn = true;
+    this.organization.id = this.organization.id === 'new' ? undefined : this.organization.id;
+    // this.employee.organization = this.organization;
+    this.auth.join(this.employee, this.organization).subscribe((role) => {
+      this.isLoggingIn = false;
+      this.store.setItem('setup', 'employees')
+      this.auth.goHome();
+    }, this.errorHandler)
+  }
 
-  private loginHandler = employee => { this.isLoggingIn = false; this.emsAuthService.goHome(); }
+  private errorHandler = (err) => {
+    this.isLoggingIn = false;
+    this.toastyService.error({ title: 'Error', msg: err });
+  }
+
+  private loginHandler = () => {
+    this.isLoggingIn = false;
+    this.auth.goHome();
+  }
+
   ngOnInit() {
   }
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 
+  focusToNext(e: HTMLInputElement, nextEle?: HTMLInputElement) {
+    if (e.value && nextEle && e.maxLength === e.value.length) {
+      nextEle.select();
+      nextEle.focus();
+    }
+  }
 }

@@ -3,7 +3,8 @@ import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { Employee } from '../../../models/employee';
 import { AmsEmployeeService } from '../../../services/index';
-import { LocalStorageService } from '../../../services/local-storage.service';
+import { Role } from '../../../models/ems/role';
+import { EmsAuthService } from '../../../services/ems/ems-auth.service';
 
 
 class Sections {
@@ -30,29 +31,29 @@ export class NavigationBarComponent implements OnInit {
 
   @Output() isSelected: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  @Input()
-  currentUser: Employee;
+  currentRole: Role;
 
   orgCode = '';
   userId = '';
   sections: Sections = new Sections();
   subscription: Subscription;
-  selectedEmp: Employee = new Employee();
   isSyncing = false;
   employeeSearch = true;
 
 
   constructor(private router: Router,
-    private store: LocalStorageService,
-    private amsEmployeeService: AmsEmployeeService,
+    private auth: EmsAuthService
   ) {
-    this.userId = store.getItem('userId');
 
     this.subscription = router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe((event: NavigationEnd) => {
         window.scroll(0, 0);
       });
+
+    this.auth.roleChanges.subscribe(role => {
+      this.currentRole = role;
+    })
   }
   selectedTab() {
     this.isSelected.emit(true);

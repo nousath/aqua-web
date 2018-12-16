@@ -57,6 +57,8 @@ export class TeamsComponent implements OnInit {
   tagTypes: Page<TagType>;
   tags: Tags = new Tags();
   date: Date = null
+  isDownloading = false;
+
 
   constructor(private amsEmployeeService: AmsEmployeeService,
     private amsShiftService: AmsShiftService,
@@ -183,7 +185,6 @@ export class TeamsComponent implements OnInit {
       this.dailyAttendnace.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
-  isDownloading = false;
   download(byShiftEnd: boolean, byShiftLength: boolean, reportName: string) {
     this.isDownloading = true;
     const serverPageInput: ServerPageInput = new ServerPageInput();

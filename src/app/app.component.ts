@@ -8,6 +8,7 @@ import { Employee } from './models';
 import { MdSidenav } from '@angular/material';
 import { EmsAuthService } from './services/ems/ems-auth.service';
 import { inherits } from 'util';
+import { Role } from './models/ems/role';
 
 @Component({
   selector: 'aqua-root',
@@ -19,7 +20,7 @@ export class AppComponent implements OnInit {
   title = 'aqua';
   envName: string;
 
-  currentUser: Employee;
+  currentRole: Role;
 
   sideNavMode = 'side';
 
@@ -42,8 +43,8 @@ export class AppComponent implements OnInit {
     if (environment.name && environment.name !== 'prod') {
       this.envName = environment.name;
     }
-    this.auth.currentUserChanges.subscribe(user => {
-      this.currentUser = user;
+    this.auth.roleChanges.subscribe(role => {
+      this.currentRole = role;
       this.onResize(null)
     })
   }
@@ -51,7 +52,7 @@ export class AppComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   onResize(event) {
 
-    if (!this.currentUser) {
+    if (!this.currentRole || !this.currentRole.employee) {
       this.sideNavOpened = false;
     } else {
       if (window.innerWidth > 800) {
@@ -66,7 +67,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.currentUser = this.auth.currentEmployee();
+    this.currentRole = this.auth.currentRole();
     this.onResize(null);
   }
 

@@ -1,1 +1,4 @@
-<aqua-teams [empId]="employee.id"></aqua-teams>
+<md-spinner class="custom_spinner" *ngIf="isProcessing" mode="indeterminate"></md-spinner>
+<ng-container *ngIf="employee">
+  <aqua-teams [empId]="employee.id"></aqua-teams>
+</ng-container>

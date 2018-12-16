@@ -3,7 +3,7 @@ import { IApi } from '../../common/contracts/api/api.interface';
 import { Http } from '@angular/http';
 import { GenericApi } from '../../common/generic-api';
 import { Observable } from 'rxjs/Observable';
-import { Employee } from '../../models';
+import { Employee, Organization } from '../../models';
 import { LocalStorageService } from '../local-storage.service';
 import { EmsEmployee } from '../../models/ems/employee';
 import { User } from '../../models/user';
@@ -19,13 +19,15 @@ export class EmsAuthService {
 
   private _roleSubject = new Subject<Role>();
 
-  private _currentUserSubject = new Subject<Employee>()
+  private _currentUserSubject = new Subject<User>()
 
   roleChanges = this._roleSubject.asObservable();
-  currentUserChanges = this._currentUserSubject.asObservable();
 
-  userChanges = this.currentUserChanges
+  userChanges = this._currentUserSubject.asObservable();
 
+  private users: IApi<User>;
+  private roles: IApi<Role>;
+  // private organizations: IApi<Organization>;
   auth: IApi<any>;
   signup: IApi<any>;
   verify: IApi<any>;
@@ -37,6 +39,10 @@ export class EmsAuthService {
     private router: Router
   ) {
     const baseApi = 'ems';
+    this.users = new GenericApi<any>('users', http, baseApi);
+    this.roles = new GenericApi<Role>('roles', http, baseApi);
+    // this.organizations = new GenericApi<Organization>('organizations', http, baseApi);
+
     this.auth = new GenericApi<any>('users/signIn', http, baseApi);
     this.signin = new GenericApi<any>('users/signIn', http, baseApi);
     this.signup = new GenericApi<any>('authorizations/signUp', http, baseApi);
@@ -115,103 +121,174 @@ export class EmsAuthService {
     return role;
   }
 
-  newUser(user: Employee) {
+  newUser(user: User) {
     this._currentUserSubject.next(user);
   }
 
-  login(credentials: User): Observable<Employee> {
-
-    const subject = new Subject<Employee>();
-    (new GenericApi<User>('users', this.http, 'ems')).create(credentials, 'signIn').then((data: User) => {
+  login(email: string, password: string): Observable<Role> {
+    const subject = new Subject<Role>();
+    this.users.simplePost({
+      email: email,
+      password: password
+    }, 'signIn').then((data: User) => {
       this._setUser(new User(data));
-      (new GenericApi<Employee>('employees', this.http, 'ams')).get('my').then(employee => {
-        this.store.setObject('employee', employee);
-        subject.next(employee)
-        this._currentUserSubject.next(employee)
-      }).catch(err => subject.error(err));
+      const role = this.currentRole();
+      subject.next(role);
+    }).catch(err => subject.error(err));
+    return subject
+  }
+
+  setPassword(email: string, otp: string, password: string): Observable<Role> {
+    const subject = new Subject<Role>();
+    this.users.simplePost({
+      email: email,
+      activationCode: otp,
+      password: password
+    }, 'setPassword').then((data: User) => {
+      this._setUser(new User(data));
+      const role = this.currentRole();
+      subject.next(role);
     }).catch(err => subject.error(err));
 
     return subject
   }
 
-  loginUsingKey(key): Observable<Employee> {
+  sendOTP(email: string): Observable<User> {
+    const subject = new Subject<User>();
+    this.users.simplePost({
+      email: email
+    }).then(data => {
+      this._setUser(new User(data));
+      subject.next(data);
+    }).catch(err => subject.error(err));
+    return subject
+  }
+
+  // verifyOTP(email: string, otp: string): Observable<User> {
+  //   const subject = new Subject<User>();
+  //   this.users.simplePost({
+  //     email: email,
+  //     activationCode: otp
+  //   }).then((data: User) => {
+  //     const user = new User(data)
+  //     this._setUser(user);
+  //     subject.next(user)
+  //   }).catch(err => subject.error(err));
+
+  //   return subject
+  // }
+
+  loginUsingKey(key): Observable<Role> {
 
     this.store.setItem('roleKey', key);
-    const subject = new Subject<Employee>();
+    const subject = new Subject<Role>();
 
     (new GenericApi<User>('users', this.http, 'ems')).get('my').then((data: User) => {
       this._setUser(new User(data));
-      (new GenericApi<Employee>('employees', this.http, 'ams')).get('my').then(employee => {
-        this.store.setObject('employee', employee);
-        subject.next(employee);
-        this._currentUserSubject.next(employee)
-      }).catch(err => subject.error(err));
+      const role = this.currentRole();
+      subject.next(role);
     }).catch(err => subject.error(err));
 
     return subject
   }
 
-  resetPassword(id: string, otp: string, password: string): Observable<Employee> {
-    const resetPassModel = {
-      activationCode: otp,
-      password: password
-    };
 
-    const subject = new Subject<Employee>();
-    (new GenericApi<any>('users/setPassword', this.http, 'ems')).create(resetPassModel, `${id}`).then((data: User) => {
-      this._setUser(new User(data));
+  join(employee: EmsEmployee, organization: Organization): Observable<Role> {
 
-      (new GenericApi<Employee>('employees', this.http, 'ams')).get('my').then(employee => {
-        this.store.setObject('employee', employee);
-        subject.next(employee)
-        this._currentUserSubject.next(employee)
-      }).catch(err => subject.error(err));
+    const subject = new Subject<Role>();
+    const role = new Role();
+    if (!organization.id) {
+      employee.type = 'superadmin'
+    }
+    role.organization = organization;
+    role.employee = employee;
+
+    this.roles.create(role).then(newRole => {
+      const user = this.currentUser();
+      user.roles.push(newRole);
+      this._user = user;
+      this.store.setObject('user', this._user);
+      this._setRole(newRole);
+      subject.next(newRole);
     }).catch(err => subject.error(err));
 
-    return subject
+    return subject.asObservable()
   }
+  // completeSignup(profileModel: EmsEmployee): Observable<Employee> {
 
-  completeSignup(profileModel: EmsEmployee): Observable<Employee> {
+  //   const subject = new Subject<Employee>();
+  //   (new GenericApi<any>('authorizations/completeSignup', this.http, 'ems')).create(profileModel, profileModel.id).then((data: User) => {
+  //     this._setUser(new User(data));
 
-    const subject = new Subject<Employee>();
-    (new GenericApi<any>('authorizations/completeSignup', this.http, 'ems')).create(profileModel, profileModel.id).then((data: User) => {
-      this._setUser(new User(data));
+  //     (new GenericApi<Employee>('employees', this.http, 'ams')).get('my').then(employee => {
+  //       this.store.setObject('employee', employee);
+  //       subject.next(employee)
+  //       this._currentUserSubject.next(employee)
+  //     }).catch(err => subject.error(err));
+  //   }).catch(err => subject.error(err));
 
-      (new GenericApi<Employee>('employees', this.http, 'ams')).get('my').then(employee => {
-        this.store.setObject('employee', employee);
-        subject.next(employee)
-        this._currentUserSubject.next(employee)
-      }).catch(err => subject.error(err));
-    }).catch(err => subject.error(err));
+  //   return subject
+  // }
 
-    return subject
-  }
-
-  logout(): Observable<Employee> {
+  logout(): Observable<User> {
     this.store.clear();
+    this._role = null;
+    this._user = null;
     this._currentUserSubject.next(null);
+    this._roleSubject.next(null);
     this.router.navigate(['/login']);
-    return this.currentUserChanges
+    return this.userChanges
   }
 
   goHome() {
-    const employee = this.currentEmployee();
+    const role = this.currentRole();
 
-    if (!employee) {
+    if (!role || !role.employee) {
       return this.router.navigate(['/login']);
     }
 
-    switch (employee.userType) {
+    switch (role.employee.type) {
       case 'superadmin':
-        return this.router.navigate(['/attendances']);
-
+        const setup = this.store.getItem('setup')
+        if (setup) {
+          this.goToSetup(setup);
+        } else {
+          this.router.navigate(['/attendances']);
+        }
+        break
       case 'admin':
-        return this.router.navigate(['/attendances/daily', employee.id]);
-
+        this.router.navigate(['/home/team']);
+        break;
       case 'normal':
-        return this.router.navigate(['/home']);
+        this.router.navigate(['/home']);
+        break;
     }
   }
+
+  goToSetup(step) {
+    switch (step) {
+      case 'employees':
+        this.router.navigate(['/wizard/devices']);
+        break;
+      case 'devices':
+        this.router.navigate(['/wizard/syncapp']);
+        break;
+      case 'syncapp':
+        this.router.navigate(['/wizard/alerts']);
+        break;
+      case 'alerts':
+        this.router.navigate(['/wizard/complete']);
+        break;
+      case 'complete':
+        this.store.removeItem('setup')
+        this.router.navigate(['/attendances']);
+        break;
+      default:
+        this.router.navigate(['/pages']);
+        break;
+    }
+  }
+
 
   refreshUser() {
     const currentUser = this.currentUser();
@@ -263,9 +340,9 @@ export class EmsAuthService {
 
 
 
-  currentEmployee(): Employee {
-    return this.store.getObject('employee') as Employee;
-  }
+  // currentEmployee(): Employee {
+  //   return this.store.getObject('employee') as Employee;
+  // }
 
   getCurrentKey(): string {
     return this.store.getItem('role-key');

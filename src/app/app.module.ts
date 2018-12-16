@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
-import { LoginGuard, UserGuard } from './guards';
+import { LoginGuard, UserGuard, OwnerGuard } from './guards';
 import { OrgLoginComponent } from './pages/org-login/org-login.component';
 import { AppDownloadComponent } from './pages/app-download/app-download.component';
 import { BrowserModule } from '@angular/platform-browser';
@@ -49,7 +49,7 @@ import { SignupComponent } from './pages/signup/signup.component';
     AppRoutingModule
   ],
   providers: [
-    LoginGuard, UserGuard, AdminGuard, EmsDepartmentService
+    LoginGuard, UserGuard, AdminGuard, OwnerGuard, EmsDepartmentService
   ],
   entryComponents: [
     ResetPasswordDialogComponent,

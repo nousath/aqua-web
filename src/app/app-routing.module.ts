@@ -5,6 +5,7 @@ import { LoginGuard, UserGuard } from './guards';
 import { AppDownloadComponent } from './pages/app-download/app-download.component';
 import { AdminGuard } from './guards/admin.guard';
 import { SystemUsageComponent } from './pages/system-usage/system-usage.component';
+import { OwnerGuard } from './guards/owner.guard';
 
 // main routes
 const routes: Routes = [
@@ -14,7 +15,7 @@ const routes: Routes = [
   { path: 'attendances', loadChildren: 'app/pages/attendances/attendances.module#AttendancesModule', canActivate: [UserGuard, AdminGuard] },
   { path: 'settings', loadChildren: 'app/pages/settings/settings.module#SettingsModule', canActivate: [AdminGuard] },
   { path: 'subAdmin', loadChildren: 'app/pages/sub-admin/sub-admin.module#SubAdminModule', canActivate: [AdminGuard] },
-  { path: 'setup', loadChildren: 'app/pages/setup/setup.module#SetupModule', canActivate: [AdminGuard] },
+  { path: 'setup', loadChildren: 'app/pages/setup/setup.module#SetupModule', canActivate: [OwnerGuard] },
 
   { path: 'system/usage', component: SystemUsageComponent },
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },

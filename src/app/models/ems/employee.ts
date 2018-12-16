@@ -81,8 +81,7 @@ export class EmsEmployee {
 
   role: Role;
 
-  password = '';
-  type: 'admin' | 'superadmin' | 'normal' = 'normal';
+  type: 'admin' | 'superadmin' | 'normal';
 
   // device: Device = new Device();
   // shiftType: ShiftType = new ShiftType();
@@ -126,6 +125,7 @@ export class EmsEmployee {
     this.department = new Department(obj.department);
     // this.division = new Division(obj.division);
     this.status = obj.status;
+    this.type = obj.type;
     this.timeStamp = obj.timeStamp;
     this.profile = new Profile(obj.profile);
 

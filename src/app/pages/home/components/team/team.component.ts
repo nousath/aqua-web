@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Employee } from '../../../../models';
 import { EmsAuthService } from '../../../../services/ems/ems-auth.service';
+import { AmsEmployeeService } from '../../../../services';
 
 @Component({
   selector: 'aqua-team',
@@ -10,10 +11,18 @@ import { EmsAuthService } from '../../../../services/ems/ems-auth.service';
 export class TeamComponent implements OnInit {
 
   employee: Employee;
-  constructor(private auth: EmsAuthService) { }
+  isProcessing = false;
+  constructor(
+    private auth: EmsAuthService,
+    private employeeService: AmsEmployeeService) { }
 
   ngOnInit() {
-    this.employee = this.auth.currentEmployee();
+    this.isProcessing = true;
+    this.employeeService.employees.get('my').then(employee => {
+      this.employee = employee
+      this.isProcessing = false;
+
+    })
   }
 
 }
