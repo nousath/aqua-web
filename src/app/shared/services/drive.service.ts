@@ -20,13 +20,13 @@ export class DriveService {
     folder = folder || 'misc'
 
     const url = `${this.rootUrl}/${entity.type}/${entity.id}/files?folder-name=${folder}`;
+    const orgCode = window.localStorage.getItem('org-code') || window.localStorage.getItem('orgCode');
+    const roleKey = window.localStorage.getItem('role-key') || window.localStorage.getItem('roleKey');
 
     const headers = [{ name: 'x-tenant-code', value: 'aqua' }];
-    const roleKey = window.localStorage.getItem('roleKey');
     if (roleKey) {
       headers.push({ name: 'x-role-key', value: roleKey });
     }
-    const orgCode = window.localStorage.getItem('orgCode');
     if (orgCode) {
       headers.push({ name: 'x-org-code', value: orgCode });
     }
