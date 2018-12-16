@@ -5,8 +5,8 @@
   </div>
   <md-nav-list dense>
     <p class="list-header" (click)="sections.select('home')">Home
-      <i *ngIf="!sections.employee" class="material-icons leftIcon">keyboard_arrow_right</i>
-      <i *ngIf="sections.employee" class="material-icons leftIcon">keyboard_arrow_down</i>
+      <i *ngIf="!sections.home" class="material-icons leftIcon">keyboard_arrow_right</i>
+      <i *ngIf="sections.home" class="material-icons leftIcon">keyboard_arrow_down</i>
     </p>
     <div class="list-items" *ngIf="sections.home">
       <a [routerLink]="['/home/my']" md-list-item (click)="selectedTab()" routerLinkActive="active-link" #rla9="routerLinkActive">
