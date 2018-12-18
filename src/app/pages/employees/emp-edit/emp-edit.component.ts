@@ -125,6 +125,8 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
       employee.department = null;
     }
 
+    employee.config = employee.config || new CustomFields();
+
     if (employee.config.contractor) {
       employee.config.contractor = null;
     }
