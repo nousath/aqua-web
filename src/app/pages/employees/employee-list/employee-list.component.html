@@ -6,7 +6,7 @@
     <select class="form-control" [(ngModel)]="statusFilter" (change)="fetchByStatus()">
       <option [value]="'new'">New</option>
       <option [value]="'active'">Active</option>
-      <option [value]="'in-active'">Deactivated</option>
+      <option [value]="'inactive'">Deactivated</option>
       <option [value]="'archived'">Archived</option>
     </select>
   </div>
