@@ -11,14 +11,15 @@
 </div> -->
   <table style="float: left; width: 100%;">
     <tr>
-      <th>Reason of Releiving
+      <th>Reason of Relieving
         <input list="reason" name="reason" class="form-control" [(ngModel)]="employee.reason">
       </th>
       <td>
         <datalist id="reason">
-          <option value="Resign"></option>
-          <option value="Death"></option>
-          <option value="Terminate"></option>
+          <option value="resign">Resign</option>
+          <option value="terminate">Terminate</option>
+          <option value="absconding">Absconding</option>
+          <option value="death">Death</option>
         </datalist>
       </td>
     </tr>
