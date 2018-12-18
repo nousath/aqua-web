@@ -127,13 +127,10 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
 
     employee.config = employee.config || new CustomFields();
 
-    if (employee.config.contractor) {
-      employee.config.contractor = null;
-    }
-
     if (employee.designation && employee.designation.code === 'default') {
       employee.designation = null;
     }
+
     this.emsDesignationService.designations.search().then(designations => {
       this.designations = designations.items;
       if (employee.designation) {
