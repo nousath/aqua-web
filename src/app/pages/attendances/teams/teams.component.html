@@ -128,14 +128,12 @@
         <thead class="primary_thead">
           <tr>
             <th class="td">Name</th>
-            <th class="tdWidth">Code</th>
             <th class="tdWidth">Designation</th>
-            <!-- <th class="tdWidth">Department</th> -->
-            <!-- <th class="tdWidth">Shift</th> -->
+            <th class="tdWidth">Shift</th>
             <th class="tdWidth">Status</th>
             <th class="tdWidth">Check In</th>
             <th class="tdWidth">Check Out</th>
-            <th class="tdWidth">Team</th>
+            <!-- <th class="tdWidth">Team</th> -->
           </tr>
         </thead>
         <tbody>
@@ -144,34 +142,36 @@
                     currentPage: dailyAttendnace.pageNo,
                     totalItems: dailyAttendnace.totalRecords };"
             class="capitalize">
-            <td>
-              <img *ngIf="item?.picUrl" class="img-circle img-profile" alt="img" [src]="item?.picUrl" onError="this.src='/assets/images/blank.png'">
-              <img *ngIf="!item?.picUrl" class="img-circle img-profile" alt="img" src="assets/images/blank.png">
-              &nbsp;
-              <a (click)="mypage(item.id)">{{item?.name || '--'}}</a>
+            <td class="cols">
+              <div>
+                <img *ngIf="item?.picUrl" class="img-circle img-profile" alt="img" [src]="item?.picUrl" onError="this.src='/assets/images/blank.png'">
+                <img *ngIf="!item?.picUrl" class="img-circle img-profile" alt="img" src="assets/images/blank.png">
+              </div>
+              <div>
+                {{item?.name || '--'}}
+                <p class="sub-text">{{item?.code || ''}}</p>
+              </div>
+
             </td>
-            <td class="tdWidth">{{item?.code || '--'}}</td>
             <td class="tdWidth">{{item?.designation || '--'}}</td>
-            <!-- <td class="tdWidth">{{item?.shiftType?.name || '--'}}</td> -->
+            <td class="tdWidth">{{item?.attendance?.shift?.shiftType?.name || '--'}}</td>
             <td class="tdWidth">
               <ng-template #elsePart>
-                <span>{{item?.attendance?.status?.toLowerCase() == 'checkedin' ? 'Present' :
-                  item?.attendance?.status}}</span>
+                <div [class.cta]="item?.attendance?.status === 'absent'">{{item?.attendance?.status | titlecase}}</div>
+                <aqua-shift-count *ngIf="item && item.attendance  && item.attendance.isPast && item.attendance.status !== 'absent'"
+                  [count]="item?.attendance?.count"></aqua-shift-count>
               </ng-template>
-              <span *ngIf="item?.attendance?.status == 'absent' && (item?.attendance?.shift?.status === 'weekOff' || item?.attendance?.shift?.status === 'holiday'); else elsePart">{{item?.attendance?.shift?.status
+              <span *ngIf="item && item.attendance && item.attendance.status == 'absent' && (item.attendance.shift.status === 'weekOff' || item.attendance.shift.status === 'holiday'); else elsePart">{{item?.attendance?.shift?.status
                 | titlecase}}</span>
             </td>
-
-            <!-- <td class="tdWidth">{{item?.department || '--'}}</td> -->
-
             <td class="tdWidth">{{(item?.attendance?.checkIn | date:'shortTime') || '--'}}</td>
             <td class="tdWidth">{{(item?.attendance?.checkOut | date:'shortTime') || '--'}}</td>
-            <td class="tdWidth">
+            <!-- <td class="tdWidth">
               <a (click)="myTeam(item.id)" *ngIf="item?.team?.total != 0">
                 <img src="assets/images/team.png" width="30px;">
               </a>
               <span *ngIf="item?.team?.total == 0">--</span>
-            </td>
+            </td> -->
           </tr>
         </tbody>
       </table>
