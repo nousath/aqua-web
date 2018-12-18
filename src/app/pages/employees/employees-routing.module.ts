@@ -5,6 +5,7 @@ import { EmployeeListComponent } from './employee-list/employee-list.component';
 import { EmpEditComponent } from './emp-edit/emp-edit.component';
 import { DesignationsComponent } from './designations/designations.component';
 import { DepartmentsComponent } from './departments/departments.component';
+import { ContractorsComponent } from './contractors/contractors.component';
 
 
 const routes: Routes = [
@@ -13,6 +14,7 @@ const routes: Routes = [
       { path: '', component: EmployeeListComponent, pathMatch: 'full' },
       { path: 'designations', component: DesignationsComponent },
       { path: 'departments', component: DepartmentsComponent },
+      { path: 'contractors', component: ContractorsComponent },
       { path: ':id', component: EmpEditComponent },
     ]
   }

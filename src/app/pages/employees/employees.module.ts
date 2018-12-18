@@ -13,6 +13,7 @@ import { FingerPrintComponent } from './finger-print/finger-print.component';
 import { RelievingDialogComponent } from '../../dialogs/relieving-dialog/relieving-dialog.component';
 import { EmpShiftComponent } from './emp-shift/emp-shift.component';
 import { EmpLeavesComponent } from './emp-leaves/emp-leaves.component';
+import { ContractorsComponent } from './contractors/contractors.component';
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import { EmpLeavesComponent } from './emp-leaves/emp-leaves.component';
     FingerPrintComponent,
     RelievingDialogComponent,
     EmpLeavesComponent,
-    EmpShiftComponent
+    EmpShiftComponent,
+    ContractorsComponent
     // ResetPasswordDialogComponent
   ],
   entryComponents: [
@@ -44,7 +46,8 @@ import { EmpLeavesComponent } from './emp-leaves/emp-leaves.component';
     EmpEditComponent,
     DesignationsComponent,
     ConfirmDialogComponent,
-    DepartmentsComponent
+    DepartmentsComponent,
+    ContractorsComponent
     // ResetPasswordDialogComponent
   ]
 })

@@ -95,7 +95,7 @@ export class EmployeeListComponent implements OnInit {
         'designations',
         'departments',
         'biometricId',
-        // 'supervisor',
+        'supervisor',
         'userTypes',
         'employeeTypes',
         'terminationReason',
@@ -129,7 +129,7 @@ export class EmployeeListComponent implements OnInit {
     filters['biometricId']['value'] = values.employee && values.employee.biometricId ? values.employee.biometricId : '';
     filters['departments']['value'] = values.employee && values.employee.departments ? values.employee.departments.map(item => item.id) : '';
     filters['designations']['value'] = values.employee && values.employee.designations ? values.employee.designations.map(item => item.id) : '';
-    // filters['supervisor']['value'] = values.employee.supervisor ? values.employee.supervisor.code : '';
+    filters['supervisor']['value'] = values.employee && values.employee.supervisor ? values.employee.supervisor.id : '';
     filters['contractors']['value'] = values.employee && values.employee.contractors ? values.employee.contractors.map(item => item.name) : '';
     filters['userTypes']['value'] = values.employee && values.employee.userTypes ? values.employee.userTypes.map(item => item.name) : '';
     filters['employeeTypes']['value'] = values.employee && values.employee.employeeTypes ? values.employee.employeeTypes.map(item => item.code) : '';
@@ -139,22 +139,22 @@ export class EmployeeListComponent implements OnInit {
   }
 
   fetchByStatus() {
-    this.employees.filters.properties['status'].value = this.statusFilter ? this.statusFilter : 'activate';
+    this.employees.filters.properties['status'].value = this.statusFilter ? this.statusFilter : 'active';
     switch (this.statusFilter) {
-      case 'activate':
+      case 'active':
         this.filterFields = [
           'name',
           'code',
           'biometricId',
           'designations',
           'departments',
-          // 'supervisor',
+          'supervisor',
           'employeeTypes',
           'userTypes',
           'contractors'
         ];
         break;
-      case 'deactivate':
+      case 'in-active':
         this.filterFields = [
           'name',
           'code',
@@ -162,10 +162,11 @@ export class EmployeeListComponent implements OnInit {
           'terminationReason',
           'designations',
           'departments',
-          // 'supervisor',
+          'supervisor',
+          'contractors'
         ];
         break;
-      case 'archive':
+      case 'archived':
         this.filterFields = [
           'name',
           'code',

@@ -3,10 +3,11 @@ import { ValidatorService, AmsShiftService, AutoCompleteService } from '../../..
 import { ShiftType } from '../../../models/shift-type';
 import { TagType } from '../../../models/tag';
 import { AmsTagService } from '../../../services/ams/ams-tag.service';
-import { Designation, Employee } from '../../../models';
+import { Designation, Employee, Contractor } from '../../../models';
 import { EmsDesignationService } from '../../../services/ems/ems-designation.service';
 import { Department } from '../../../models/department';
 import { EmsDepartmentService } from '../../../services/ems/ems-department.service';
+import { EmsContractorService } from '../../../services/ems/ems-contractor.service';
 import { ServerPageInput } from '../../../common/contracts/api/page-input';
 import * as moment from 'moment';
 import { Observable } from 'rxjs/Observable';
@@ -23,7 +24,8 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
   departmentId: number;
   designations: Designation[];
   designationsId: number;
-
+  contractors: Contractor[];
+  contractorId: number;
   shiftTypes: ShiftType[];
   tagTypes: TagType[];
 
@@ -129,6 +131,7 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
   dropdownSettings = {};
 
   constructor(
+    private emsContractorService: EmsContractorService,
     private emsDepartmentService: EmsDepartmentService,
     private emsDesignationService: EmsDesignationService,
     private autoCompleteService: AutoCompleteService,
@@ -242,11 +245,14 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
       this.show.checkOut = moment(this.fromDate).isBefore(new Date(), 'd');
     }
 
-    if (this.show.contractors || this.show.userTypes) {
+    if (this.show.userTypes) {
       this.getTags();
     }
     if (this.show.departments) {
       this.getDepartments();
+    }
+    if (this.show.contractors) {
+      this.getContractors();
     }
     if (this.show.designations) {
       this.getDesignations();
@@ -320,6 +326,23 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
       })
     });
   }
+  private getContractors() {
+    const contractorFilter = new ServerPageInput();
+    // deptFilter.query = {
+    //   divisionId: 1
+    // }
+    this.emsContractorService.contractors.search(contractorFilter).then(page => {
+      this.contractors = page.items;
+      this.contractorList = [];
+      this.contractors.forEach(item => {
+        const obj = {
+          id: item.id,
+          itemName: item.name,
+        };
+        this.contractorList.push(obj);
+      })
+    });
+  }
 
   private getTags() {
     this.tagService.tagTypes.search().then(page => {
@@ -336,14 +359,14 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
               });
             });
             break;
-          case 'contractor':
-            item.tags.forEach(obj => {
-              this.contractorList.push({
-                id: obj.id,
-                itemName: obj.name,
-              });
-            });
-            break;
+          // case 'contractor':
+          //   item.tags.forEach(obj => {
+          //     this.contractorList.push({
+          //       id: obj.id,
+          //       itemName: obj.name,
+          //     });
+          //   });
+          //   break;
         }
       });
     })
@@ -482,14 +505,20 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
     if (this.selectedDepartment && this.selectedDepartment.length) {
       params.employee = params.employee || {}
       params.employee.departments = this.selectedDepartment.map(item => ({ id: item.id, name: item.itemName }))
-      values.departmentIds = this.selectedDepartment.map(item => item.id)
+      values.departmentIds = this.selectedDepartment.map(item => ({ id: item.id, name: item.itemName }))
       values.departmentNames = this.selectedDepartment.map(item => item.itemName)
+    }
+    if (this.selectedContractor && this.selectedContractor.length) {
+      params.employee = params.employee || {}
+      params.employee.constructors = this.selectedContractor.map(item => ({ id: item.id, name: item.itemName }))
+      values.contractorIds = this.selectedContractor.map(item => item.id)
+      values.constructorNames = this.selectedContractor.map(item => item.itemName)
     }
 
     if (this.selectedDesignation && this.selectedDesignation.length) {
       params.employee = params.employee || {}
       params.employee.designations = this.selectedDesignation.map(item => ({ id: item.id, name: item.itemName }))
-      values.designationIds = this.selectedDesignation.map(item => item.id)
+      values.designationIds = this.selectedDesignation.map(item => ({ id: item.id, name: item.itemName }))
       values.designationNames = this.selectedDesignation.map(item => item.itemName)
     }
 

@@ -34,6 +34,10 @@
         (click)="selectedTab()" routerLinkActive="active-link" #rla15="routerLinkActive">
         <h5>Departments</h5>
       </a>
+      <a [routerLink]="['/employees/contractors']" *ngIf="currentRole?.employee.type === 'superadmin'" md-list-item
+        (click)="selectedTab()" routerLinkActive="active-link" #rla15="routerLinkActive">
+        <h5>Contractors</h5>
+      </a>
       <a [routerLink]="['/attendances/leave-balances']" *ngIf="currentRole?.employee?.type === 'superadmin'"
         md-list-item (click)="selectedTab()" routerLinkActive="active-link" #rla6="routerLinkActive">
         <h5>Leave Balances</h5>

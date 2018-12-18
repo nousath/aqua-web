@@ -3,6 +3,7 @@ import { Device } from '../device';
 import { ShiftType } from '../shift-type';
 import { Designation } from '../designation';
 import { Department } from '../department';
+import { Contractor } from '../contractor';
 import { Doc } from '../doc.model';
 import { Role } from './role';
 
@@ -51,7 +52,7 @@ export class Address {
 export class CustomFields {
   dom: Date;
   biometricId: string;
-  contractor: string;
+  contractor: Contractor;
   employmentType: string;
   accountNo: string;
   accountHolder: string;
