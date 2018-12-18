@@ -82,7 +82,7 @@ export class EmsEmployee {
 
   role: Role;
 
-  type: 'admin' | 'superadmin' | 'normal';
+  type: 'owner' | 'admin' | 'superadmin' | 'normal';
 
   // device: Device = new Device();
   // shiftType: ShiftType = new ShiftType();

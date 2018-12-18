@@ -67,13 +67,13 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // this.initUploader()
     emsDesignationService.designations.search().then(designations => {
-         this.designations = designations.items;
-       });
-       emsDepartmentService.departments.search().then(departments => {
-         this.departments = departments.items;
-       });
+      this.designations = designations.items;
+    });
+    emsDepartmentService.departments.search().then(departments => {
+      this.departments = departments.items;
+    });
     emsContractorService.contractors.search().then(contractors => {
-        this.contractors = contractors.items;
+      this.contractors = contractors.items;
     });
     this.employee = new EmsEmployee();
     this.isProcessing = true;
@@ -103,6 +103,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     this.isNew = id === 'new';
     if (this.isNew) {
       this.employee = new EmsEmployee();
+      this.employee.type = 'normal';
       this.isProcessing = false;
 
     } else {
