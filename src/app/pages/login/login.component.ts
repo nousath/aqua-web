@@ -65,7 +65,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     public validatorService: ValidatorService,
     private store: LocalStorageService,
     private toastyService: ToastyService) {
-
+    store.clear();
     this.subscription = activatedRoute.queryParams.subscribe(queryParams => {
       const roleKey: string = queryParams['role-key'];
       const orgCode: string = queryParams['org-code'];
