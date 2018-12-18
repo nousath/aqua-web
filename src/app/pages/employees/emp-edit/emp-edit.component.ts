@@ -66,7 +66,15 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
   ) {
 
     // this.initUploader()
-
+    emsDesignationService.designations.search().then(designations => {
+         this.designations = designations.items;
+       });
+       emsDepartmentService.departments.search().then(departments => {
+         this.departments = departments.items;
+       });
+    emsContractorService.contractors.search().then(contractors => {
+        this.contractors = contractors.items;
+    });
     this.employee = new EmsEmployee();
     this.isProcessing = true;
 
@@ -112,19 +120,17 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.uploader.setOptions({ url: `/ems/api/employees/image/${employee.id}` });
 
     employee.profile = employee.profile || new Profile();
-
     if (employee.department && employee.department.code === 'default') {
       employee.department = null;
     }
 
-    if (employee.config.contractor && employee.config.contractor.code === 'default') {
+    if (employee.config.contractor) {
       employee.config.contractor = null;
     }
 
     if (employee.designation && employee.designation.code === 'default') {
       employee.designation = null;
     }
-
     this.emsDesignationService.designations.search().then(designations => {
       this.designations = designations.items;
       if (employee.designation) {
