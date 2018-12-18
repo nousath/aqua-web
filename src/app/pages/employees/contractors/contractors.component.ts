@@ -8,7 +8,7 @@ import * as _ from 'lodash';
 import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-dialog.component';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { LocalStorageService } from '../../../services/local-storage.service';
-import { Contractor } from '../../../models/Contractor';
+import { Contractor } from '../../../models/contractor';
 import { FileUploader } from 'ng2-file-upload';
 import { FileUploaderDialogComponent } from '../../../shared/components/file-uploader-dialog/file-uploader-dialog.component';
 
