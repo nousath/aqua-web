@@ -198,7 +198,7 @@ export class EmployeeListComponent implements OnInit {
         const empl: any = {
           id: empId,
           dol: new Date().toISOString(),
-          status: 'deactivate',
+          status: 'inactive',
           reason: emp.reason
         }
 
