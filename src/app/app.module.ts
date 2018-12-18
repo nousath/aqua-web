@@ -15,8 +15,7 @@ import { AdminGuard } from './guards/admin.guard';
 import { GkuAttendanceComponent } from './pages/gku-attendance/gku-attendance.component';
 import { SystemUsageComponent } from './pages/system-usage/system-usage.component';
 import { ResetPasswordDialogComponent } from './dialogs/reset-password-dialog/reset-password-dialog.component';
-import { DepartmentsComponent } from './pages/employees/departments/departments.component';
-import { EmsDepartmentService } from './services';
+import { EmsDepartmentService, EmsContractorService } from './services';
 import { LeaveConfirmDialogComponent } from './dialogs/leave-confirm-dialog/leave-confirm-dialog.component';
 import { LeaveReasonDialogComponent } from './dialogs/leave-reason-dialog/leave-reason-dialog.component';
 import { AddShiftDialogComponent } from './dialogs/add-shift-dialog/add-shift-dialog.component';
@@ -49,7 +48,7 @@ import { SignupComponent } from './pages/signup/signup.component';
     AppRoutingModule
   ],
   providers: [
-    LoginGuard, UserGuard, AdminGuard, OwnerGuard, EmsDepartmentService
+    LoginGuard, UserGuard, AdminGuard, OwnerGuard, EmsDepartmentService, EmsContractorService
   ],
   entryComponents: [
     ResetPasswordDialogComponent,
