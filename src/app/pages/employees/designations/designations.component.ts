@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Page } from '../../../common/contracts/page';
 import { Designation } from '../../../models';
 import { Model } from '../../../common/contracts/model';
@@ -11,6 +11,7 @@ import { MdDialog, MdDialogRef } from '@angular/material';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { FileUploader } from 'ng2-file-upload';
 import { FileUploaderDialogComponent } from '../../../shared/components/file-uploader-dialog/file-uploader-dialog.component';
+import { ServerPageInput } from '../../../common/contracts/api';
 
 @Component({
   selector: 'aqua-designations',
@@ -21,15 +22,21 @@ export class DesignationsComponent implements OnInit {
 
   designations: Page<Designation>
   designation: Model<Designation>
+  designationA: Designation[];
+  designationsId: number;
+  selectedDesignation = [];
+  designationList = [];
   isNew = false;
   uploader: FileUploader;
   isUpload = false;
   isFilter = false;
   filterFields = [
-    'designations'
+    'name',
   ]
 
-
+  @Output()
+  onChange: EventEmitter<any> = new EventEmitter();
+  dropdownSettings = {};
   constructor(private emsDesignationService: EmsDesignationService,
     public validatorService: ValidatorService,
     private store: LocalStorageService,
@@ -40,7 +47,8 @@ export class DesignationsComponent implements OnInit {
       api: emsDesignationService.designations,
       filters: [
         'ofDate',
-        'designations'
+        'name',
+        'code'
       ]
     });
 
@@ -50,6 +58,19 @@ export class DesignationsComponent implements OnInit {
     });
 
     this.fetchDesignation();
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'name',
+      text: '',
+      selectAllText: 'All',
+      unSelectAllText: 'All',
+      enableSearchFilter: true,
+      classes: 'myclass',
+      displayAllSelectedText: true,
+      maxHeight: 200,
+      badgeShowLimit: 1
+    };
   }
 
   fetchDesignation() {
@@ -62,17 +83,32 @@ export class DesignationsComponent implements OnInit {
     ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
-  applyFilters(result) {
-    const filters = this.designations.filters.properties;
-
-    const values = result.params;
-
-    filters['designations']['value'] = values.employee.designations ? values.employee.designations.map(item => item.name) : '';
-    this.fetchDesignation();
+  private getDesignations() {
+    const designationFilter = new ServerPageInput();
+    this.emsDesignationService.designations.search(designationFilter).then(page => {
+      this.designationA = page.items;
+      this.designationList = [];
+      this.designationA.forEach(item => {
+        const obj = {
+          id: item.id,
+          itemName: item.name,
+          itemCode: item.code
+        };
+        this.designationList.push(obj);
+      })
+    });
   }
 
+  onItemSelect(item: any) {
+  }
+  OnItemDeSelect(item: any) {
+  }
+  onSelectAll(items: any) {
+  }
+  onDeSelectAll(items: any) {
+  }
   reset() {
-
+    this.selectedDesignation = [];
   }
 
   toggleDesignation(isOpen?: boolean) {
@@ -148,6 +184,24 @@ export class DesignationsComponent implements OnInit {
 
 
   ngOnInit() {
+    this.getDesignations();
   }
 
+  applyFilters(values) {
+    const filters = this.designations.filters.properties;
+
+    filters['name']['value'] = values.name ? values.name.map(item => item) : '';
+    this.fetchDesignation();
+  }
+
+  apply() {
+
+    const params: any = {}
+    if (this.selectedDesignation && this.selectedDesignation.length) {
+      params.name = this.selectedDesignation.map(item => item.itemName)
+      params.id = this.selectedDesignation.map(item => item.id)
+      params.code = this.selectedDesignation.map(item => item.itemCode)
+    }
+    this.applyFilters(params)
+  }
 }

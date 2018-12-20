@@ -18,7 +18,28 @@
     </button>
   </md-menu>
 </div>
-<aqua-employees-filter *ngIf="isFilter" [fields]="filterFields" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter>
+<md-card class="filters" *ngIf="isFilter">
+    <div class="flex-row three">
+    <div class="form-group" *ngIf="departmentList.length >1">
+      <label>Department</label>
+      <angular2-multiselect [data]="departmentList" class="form-control" [(ngModel)]="selectedDepartment" [settings]="dropdownSettings"
+        (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+        (onDeSelectAll)="onDeSelectAll($event)" [ngModelOptions]="{standalone: true}"></angular2-multiselect>
+    </div>
+    </div>
+    <md-card-footer>
+      <div class="flex-row">
+        <div class="spacer"></div>
+        <div class="form-group">
+          <button md-button mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()">Reset</button>
+          <button md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="apply()">Apply</button>
+        </div>
+      </div>
+    </md-card-footer>
+  </md-card>
+  
+
+<!-- <aqua-employees-filter *ngIf="isFilter" [fields]="filterFields" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter> -->
 <md-spinner class="custom_spinner" *ngIf=" departments?.isLoading   ||  department.isProcessing  " mode="indeterminate"></md-spinner>
 
 <div class="row" *ngIf="isNew">
@@ -122,3 +143,4 @@
     </div>
   </md-card>
 </div>
+
