@@ -357,7 +357,7 @@
     <md-card>
       <div class="dialog_Header text-center">
         <h5>
-          <b>Bank Details</b>
+          <b>Account Details</b>
         </h5>
       </div>
       <br>
@@ -408,6 +408,32 @@
           <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
             <input name="accountHolder" type="text" class="form-control" [maxlength]="validatorService.textLength"
               [(ngModel)]="employee.config.accountHolder">
+          </div>
+        </div>
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>UAN:</b>
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <input name="uan" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.config.uan">
+          </div>
+        </div>
+      </div>
+      <div class=" form-group row">
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>ESI:</b>
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <input name="esi" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.config.esi">
+          </div>
+        </div>
+        <div class="fields">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <b>PF:</b>
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <input name="pf" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="employee.config.pf">
           </div>
         </div>
       </div>
