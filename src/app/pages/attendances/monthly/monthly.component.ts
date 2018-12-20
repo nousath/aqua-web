@@ -10,6 +10,7 @@ import { ValidatorService } from '../../../services/validator.service';
 import { Model } from '../../../common/contracts/model';
 import { Router, ExtraOptions, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
+import { EmsAuthService } from '../../../services';
 declare var $: any;
 
 @Component({
@@ -41,6 +42,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
   constructor(
     private amsAttendanceService: AmsAttendanceService,
     public validatorService: ValidatorService,
+    public auth: EmsAuthService,
     private router: Router,
     private toastyService: ToastyService) {
 

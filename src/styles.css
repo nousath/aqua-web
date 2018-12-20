@@ -558,11 +558,13 @@ button.phantom {
 
 .img-profile {
   width: 33px;
+  margin-right: 10px;
   /* height: 33px; */
 }
 @media only screen and (max-width:539px) {
   .img-profile {
       width: 20px;
+      margin-right: 5px;
       /* height: 20px; */
   }
 }

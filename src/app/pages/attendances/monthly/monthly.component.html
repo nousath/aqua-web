@@ -49,19 +49,25 @@
                                                       totalItems: monthlyAttendnace.totalRecords };"
             class="capitalize">
             <td>
-              <img *ngIf="item?.picUrl" class="img-circle img-profile" alt="img" [src]="item?.picUrl" onError="this.src='/assets/images/blank.png'">
-              <img *ngIf="!item?.picUrl" class="img-circle img-profile" alt="img" src="assets/images/blank.png"> &nbsp;
-              <a [routerLink]="[ '/', 'employees', item?.code]">{{item?.name || '--'}}</a>
-              <br>
-              <span class='sub-text' style='margin-left: 20%;'>{{item?.code || ''}}</span>
+              <div class="cols">
+                <div>
+                  <img *ngIf="item?.picUrl" class="img-circle img-profile" alt="img" [src]="item?.picUrl" onError="this.src='/assets/images/blank.png'">
+                  <img *ngIf="!item?.picUrl" class="img-circle img-profile" alt="img" src="assets/images/blank.png">
+                </div>
+                <div>
+                  <a *ngIf="auth.hasPermission('superadmin')" [routerLink]="[ '/', 'employees', item?.code]">{{item?.name
+                    || '--'}}</a>
+                  <span *ngIf="!auth.hasPermission('superadmin')">{{item?.name || '--'}}</span>
+                  <p class="sub-text">{{item?.code || ''}}</p>
+                </div>
+              </div>
             </td>
             <td class="tdWidth">{{item?.designation || '--'}}</td>
             <td class="tdWidth">{{item?.shiftType?.name || '--'}}</td>
             <td class="tdWidth">{{item?.presentDays || '--'}}</td>
             <td class="tdWidth">{{item?.absentDays || '--'}}</td>
             <td class="tdWidth">{{item?.totalLeaveBalance | number:'1.0-2'}}</td>
-            <td><button md-icon-button [routerLink]="[item.id]"><i class="fa fa-chevron-right"></i></button></td>
-
+            <td><button class="subtle" md-icon-button [routerLink]="[item.id]"><i class="fa fa-chevron-right"></i></button></td>
           </tr>
         </tbody>
       </table>
