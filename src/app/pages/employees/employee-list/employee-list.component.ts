@@ -154,7 +154,7 @@ export class EmployeeListComponent implements OnInit {
           'contractors'
         ];
         break;
-      case 'in-active':
+      case 'inactive':
         this.filterFields = [
           'name',
           'code',

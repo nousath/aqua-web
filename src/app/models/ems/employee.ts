@@ -59,7 +59,9 @@ export class CustomFields {
   ifsc: string;
   bank: string;
   branch: string;
-
+  esi: string;
+  pf: string;
+  uan: string;
   aadhaar: string;
   pan: string;
 }

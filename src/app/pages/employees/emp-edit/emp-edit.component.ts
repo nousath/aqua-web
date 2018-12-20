@@ -118,14 +118,9 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
 
   initEmployee(employee: EmsEmployee) {
     // this.uploader.setOptions({ url: `/ems/api/employees/image/${employee.id}` });
-
     employee.profile = employee.profile || new Profile();
     if (employee.department && employee.department.code === 'default') {
       employee.department = null;
-    }
-
-    if (employee.config.contractor) {
-      employee.config.contractor = null;
     }
 
     if (employee.designation && employee.designation.code === 'default') {
@@ -143,10 +138,15 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
         employee.department = this.departments.find(item => item.id === employee.department.id);
       }
     });
+
     this.emsContractorService.contractors.search().then(contractors => {
       this.contractors = contractors.items;
       if (employee.config.contractor) {
-        employee.config.contractor = this.contractors.find(item => item.id === employee.config.contractor.id);
+        if (employee.config.contractor.code) {
+        employee.config.contractor = this.contractors.find(item => item.code === employee.config.contractor.code);
+      } else if (employee.config.contractor.name) {
+        employee.config.contractor = this.contractors.find(item => item.name === employee.config.contractor.name);
+      }
       }
     });
 
@@ -155,7 +155,6 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     employee.address = employee.address || new Address();
 
     employee.config = employee.config || new CustomFields();
-
     if (employee.profile.dob) { $('#dateSelector').datepicker('setDate', employee.profile.dob); }
     if (employee.config.dom) { $('#membershipDate').datepicker('setDate', employee.config.dom); }
     if (employee.doj) { $('#joiningDate').datepicker('setDate', employee.doj); }
