@@ -66,7 +66,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
     private amsLeaveService: AmsLeaveService,
     private amsShiftService: AmsShiftService,
     private amsAttendanceService: AmsAttendanceService,
-    private auth: EmsAuthService,
+    public auth: EmsAuthService,
     private toastyService: ToastyService,
     private activatedRoute: ActivatedRoute,
     private store: LocalStorageService,

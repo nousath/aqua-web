@@ -148,7 +148,7 @@
                 <img *ngIf="!item?.picUrl" class="img-circle img-profile" alt="img" src="assets/images/blank.png">
               </div>
               <div>
-                {{item?.name || '--'}}
+                <a [routerLink]="['/attendances/monthly', item.id]">{{item?.name || '--'}}</a>
                 <p class="sub-text">{{item?.code || ''}}</p>
               </div>
 

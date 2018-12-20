@@ -97,6 +97,9 @@ export class EmsAuthService {
       this.store.removeItem('role-key');
       // this.store.removeItem('roleKey'); // obsolete
     }
+    if (role.employee) {
+      role.permissions.push(role.employee.type)
+    }
     this._roleSubject.next(this._role);
     return role;
   }
@@ -109,16 +112,6 @@ export class EmsAuthService {
     this._setRole(role);
     // this._currentUserSubject.next(this._user);
     return user;
-  }
-
-  private setRole(user: User) {
-    const roles: any[] = user.roles;
-    const role = roles.find(item => !!item.organization && !!item.employee); // TODO: need role selector
-    this.store.setItem('roleKey', role.key);
-    this.store.setItem('orgCode', role.organization.code);
-    this.store.setObject('currentRole', role);
-
-    return role;
   }
 
   newUser(user: User) {
@@ -352,15 +345,24 @@ export class EmsAuthService {
   //   return this.store.getObject('currentRole') as Role;
   // }
 
-  hasPermission(permission: string): Boolean {
+  hasPermission(permissions: string | string[]): Boolean {
     const currentRole = this.currentRole();
 
     if (!currentRole) { return false; }
 
     if (!currentRole.permissions.length) { return false; }
 
-    const value = currentRole.permissions.find(item => item.toLowerCase() === permission.toLowerCase())
+    if (typeof permissions === 'string') {
+      return !!currentRole.permissions.find(item => item.toLowerCase() === permissions.toLowerCase())
+    }
 
-    return !!value;
+    for (const permission of permissions) {
+      const value = currentRole.permissions.find(item => item.toLowerCase() === permission.toLowerCase())
+      if (value) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

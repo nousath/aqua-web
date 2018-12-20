@@ -1,49 +1,21 @@
-<div class="row page_header">
-  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-    <a *ngIf="user == 'superadmin'" md-raised-button class="reply" color="primary" (click)="backClicked()">
-      <md-icon>reply</md-icon>List
-    </a>
-    <h5 [ngSwitch]="user">
-      <b *ngSwitchCase="'normal'">My Attendance</b>
-      <b *ngSwitchCase="'admin'">My Attendance</b>
-      <b *ngSwitchCase="'superadmin'">Details</b>
-    </h5>
+<div class="tool-bar controls-row">
+  <h5>Attendance Details</h5>
+  <span class="spacer"></span>
+  <div class="input-group">
+    <span class="input-group-addon" id="basic-addon1">Select Month</span>
+    <input id="monthSelector" type="text" class="form-control input-sm calendar no-spin">
   </div>
-  <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-    <div class="headerInpts">
-      <div class="input-group">
-        <span class="input-group-addon" id="basic-addon1">Select Month</span>
-        <input id="monthSelector" type="text" class="form-control input-sm calendar no-spin">
-      </div>
-    </div>
-
-
-    <div class="headerBtns" *ngIf="user == 'superadmin'">
-      &nbsp;&nbsp;&nbsp;
-      <button (click)="regenerate()" [mdTooltipPosition]="'above'" mdTooltip="Regenerate" md-icon-button>
-        <md-icon>build</md-icon>
-      </button>
-      <!-- <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading || isProcessingAttendance" [mdMenuTriggerFor]="appMenu" md-icon-button>
-                <md-icon>cloud_download</md-icon>
-            </button>
-            <md-menu #appMenu="mdMenu">
-                <button md-menu-item (click)="download(true,false,'Extra hours - after Shift end time')">Extra hours - after Shift end time</button>
-                <button md-menu-item (click)="download(false,true,'Extra hours - after Shift hours')">Extra hours - after Shift hours</button>
-                <button md-menu-item (click)="download(false,false,'Day Attendance')">Day's Attendance</button>
-            </md-menu>
-        <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading || isProcessingAttendance" md-icon-button mdTooltip="Download Attendance extraHours" [mdTooltipPosition]="'above'" (click)="download(true)"><md-icon>cloud_download</md-icon></button>
-            <button [disabled]="employee?.isProcessing || attendance?.isProcessing || isDownloading  || isProcessingAttendance" md-icon-button mdTooltip="Download Attendance" [mdTooltipPosition]="'above'" (click)="download(false)" angulartics2On="click" angularticsEvent="dialyAttendnaceDownloadClick"
-                angularticsCategory="dialyAttendance" [angularticsProperties]="{label: 'Fall Campaign'}"><md-icon >cloud_download</md-icon></button> -->
-    </div>
-
-  </div>
-
+  <span class="spacer"></span>
+  <a md-icon-button *ngIf="auth.hasPermission(['superadmin', 'admin'])" (click)="backClicked()">
+    <md-icon>close</md-icon>
+  </a>
 </div>
+
 <md-spinner class="custom_spinner" *ngIf="employee?.isProcessing || attendance?.isProcessing || isDownloading || leaveBalances?.isLoading || leavesSubmiited?.isLoading || isProcessingAttendance || isUpdatingLeaveStatus"
   mode="indeterminate"></md-spinner>
 <br>
 <div class="row">
-  <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 profile-card nameFormat">
+  <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 profile-card nameFormat cards-col">
     <md-card>
       <div class="row">
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 capitalize">
@@ -106,36 +78,30 @@
                             </td>
                         </tr> -->
           </table>
-
-          <table *ngIf="user == 'superadmin'" class="table">
-            <tr>
-              <th>Choose Ability</th>
-            </tr>
-            <tr>
-              <td>
-                <md-radio-group class="example-radio-group" [(ngModel)]="this.employee.properties['currentAblitiy']"
-                  (change)="selectAbility(this.employee.properties['currentAblitiy'])">
-                  <md-radio-button class="example-radio-button" [value]="'maualAttendance'">
-                    Manual CheckIn/CheckOut
-                  </md-radio-button>
-                  <md-radio-button class="example-radio-button" [value]="'manualByBeacon'">
-                    Manual By Beacon
-                  </md-radio-button>
-                  <md-radio-button class="example-radio-button" [value]="'manualByGeoFencing'">
-                    Manual By Geo Fencing
-                  </md-radio-button>
-                  <md-radio-button class="example-radio-button" [value]="'manualByWifi'">
-                    Manual By Wifi
-                  </md-radio-button>
-                  <md-radio-button class="example-radio-button" [value]="'none'">
-                    None
-                  </md-radio-button>
-                </md-radio-group>
-              </td>
-            </tr>
-          </table>
         </div>
       </div>
+    </md-card>
+    <md-card *ngIf="auth.hasPermission('superadmin')">
+      <md-card-header>
+        CheckIn/Checkout
+      </md-card-header>
+      <md-radio-group class="example-radio-group" [(ngModel)]="this.employee.properties['currentAblitiy']" (change)="selectAbility(this.employee.properties['currentAblitiy'])">
+        <md-radio-button class="example-radio-button" [value]="'none'">
+          Biometric Only
+        </md-radio-button>
+        <md-radio-button class="example-radio-button" [value]="'manualByBeacon'">
+          By Beacon
+        </md-radio-button>
+        <md-radio-button class="example-radio-button" [value]="'manualByGeoFencing'">
+          By Geo Fencing
+        </md-radio-button>
+        <md-radio-button class="example-radio-button" [value]="'manualByWifi'">
+          By Wifi
+        </md-radio-button>
+        <md-radio-button class="example-radio-button" [value]="'maualAttendance'">
+          By App
+        </md-radio-button>
+      </md-radio-group>
     </md-card>
   </div>
 
@@ -154,12 +120,15 @@
     </md-card>
     <br>
     <md-card>
-      <div class="row" angulartics2On="click" angularticsEvent="dailyTimeLogClick" angularticsCategory="dailyTimelog"
-        [angularticsProperties]="{label: 'Fall Campaign'}">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 calHeader text-center cursor" (click)="openCalnder()">
-          <h5>
-            <b>{{selectedDate | date:'MMMM y'}}</b>
-          </h5>
+      <div class="row">
+        <div class="controls-row calHeader">
+          <span class="spacer"></span>
+          <h5 (click)="openCalnder()">{{selectedDate | date:'MMMM y'}}</h5>
+          <span class="spacer"></span>
+          <button *ngIf="auth.hasPermission('superadmin')" (click)="regenerate()" [mdTooltipPosition]="'above'"
+            mdTooltip="Regenerate" md-icon-button>
+            <md-icon>build</md-icon>
+          </button>
         </div>
         <br>
         <div class="calBox dayName" *ngFor="let item of days">{{item}}</div>
@@ -263,7 +232,7 @@
             <th>Type</th>
             <th>Reason</th>
             <th>Status</th>
-            <th class="text-center" *ngIf="isShowLeaveAction && user == 'superadmin || admin'">Action</th>
+            <th class="text-center" *ngIf="isShowLeaveAction && auth.hasPermission( ['superadmin', 'admin'])">Action</th>
           </tr>
           <tr *ngFor="let item of leavesSubmiited.items  | paginate: { id: 'leaveBalanceBar',
                                                       itemsPerPage: leavesSubmiited.pageSize,
@@ -274,7 +243,7 @@
             <td>{{item?.leaveType?.name}}</td>
             <td>{{item?.reason}}</td>
             <td>{{item?.status}}</td>
-            <td class="text-center" *ngIf="isShowLeaveAction && user == 'superadmin || admin'">
+            <td class="text-center" *ngIf="isShowLeaveAction && auth.hasPermission( ['superadmin', 'admin'])">
               <!--<button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status == 'approved'
                                       || item?.status == 'submitted'" (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
                                 <md-icon>highlight_off</md-icon>
