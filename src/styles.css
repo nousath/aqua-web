@@ -199,6 +199,17 @@ pagination-controls {
     text-align: right;
     padding-right: 3%;
 }
+button.subtle {
+  color: #eee;
+}
+
+button.subtle:hover {
+  color: #999;
+}
+
+button.phantom {
+  opacity: 0;
+}
 
 .asterisk {
     color: red;
@@ -310,7 +321,7 @@ pagination-controls {
 }
 
 .form-control.small.right {
-  width: 64%;
+  width: 50%;
   float: right;
 }
 

@@ -38,7 +38,7 @@
 
 </div>
 
-<md-spinner class="custom_spinner" *ngIf="dailyAttendnace?.isLoading" mode="indeterminate"></md-spinner>
+<md-spinner class="custom_spinner" *ngIf="attendancePage?.isLoading" mode="indeterminate"></md-spinner>
 <aqua-employees-filter *ngIf="isFilter" [fields]="filterFields" [fromDate]="ofDate" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter>
 
 <div class="row">
@@ -63,9 +63,9 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of attendances | paginate: { id: 'foo',
-                                                      itemsPerPage: dailyAttendnace.pageSize,
-                                                      currentPage: dailyAttendnace.pageNo,
-                                                      totalItems: dailyAttendnace.totalRecords };"
+                                                      itemsPerPage: attendancePage.pageSize,
+                                                      currentPage: attendancePage.pageNo,
+                                                      totalItems: attendancePage.totalRecords };"
             class="capitalize">
             <td>
               <a [routerLink]="['/', 'employees', item.employee.code]">{{item.employee.name || '--'}}</a>
@@ -138,11 +138,11 @@
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <div class="custom_pagination">
-        <pagination-controls id="foo" (pageChange)="dailyAttendnace.pageNo = $event;getAttendance();"></pagination-controls>
-        <label class="full">Total Records: {{dailyAttendnace.totalRecords}}</label>
+        <pagination-controls id="foo" (pageChange)="attendancePage.pageNo = $event;getAttendance();"></pagination-controls>
+        <label class="full">Total Records: {{attendancePage.totalRecords}}</label>
         <div class="pageSize">
           <label>Page Size:</label>
-          <select name="pageSize" [(ngModel)]="dailyAttendnace.pageSize" (change)="dailyAttendnace.pageNo = 1;getAttendance();">
+          <select name="pageSize" [(ngModel)]="attendancePage.pageSize" (change)="attendancePage.pageNo = 1;getAttendance();">
             <option value="10">10</option>
             <option value="50">50</option>
             <option value="100">100</option>

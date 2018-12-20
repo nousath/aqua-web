@@ -36,7 +36,7 @@ export class DailyComponent {
 
   isPast = false;
 
-  dailyAttendnace: Page<Attendance>;
+  attendancePage: Page<Attendance>;
   isFilter = false;
   isUpload = false;
   uploader: FileUploader;
@@ -75,7 +75,7 @@ export class DailyComponent {
     public dialog: MdDialog) {
 
 
-    this.dailyAttendnace = new Page({
+    this.attendancePage = new Page({
       api: amsAttendanceService.dailyAttendances,
       location: location,
       filters: ['ofDate', 'name', 'code', 'designations', 'departments', 'supervisorId', 'contractors', 'userTypes', 'tagIds',
@@ -88,7 +88,7 @@ export class DailyComponent {
   }
 
   applyFilters(result) {
-    const filters = this.dailyAttendnace.filters.properties;
+    const filters = this.attendancePage.filters.properties;
 
     const values = result.values;
 
@@ -124,19 +124,21 @@ export class DailyComponent {
   }
 
   reset() {
-    this.dailyAttendnace.filters.reset();
+    this.attendancePage.filters.reset();
     $('#dateSelector').datepicker('setDate', this.ofDate);
-    this.dailyAttendnace.filters.properties['ofDate']['value'] = moment(this.ofDate).toISOString();
+    this.attendancePage.filters.properties['ofDate']['value'] = moment(this.ofDate).toISOString();
     this.getAttendance();
   }
 
   getAttendance() {
     this.attendances = [];
-    this.dailyAttendnace.fetch().then(page => {
+    this.attendancePage.fetch().then(page => {
       if (!page || !page.items) { return; }
       this.isPast = moment(this.ofDate).isBefore(new Date(), 'day');
       page.items.forEach(pageItem => {
         const existingAttendance = this.attendances.find(item => item.employee.code === pageItem.employee.code);
+
+
         pageItem.timeLogs.forEach(timeLog => {
           const displayTime = timeLog.time
           if (timeLog.type === 'checkOut' && (
@@ -216,7 +218,7 @@ export class DailyComponent {
         return this.toastyService.info({ title: 'Info', msg: 'Date should be less than or equal to current date' })
       }
 
-      this.dailyAttendnace.filters.properties['ofDate']['value'] = moment(e.date).toISOString()
+      this.attendancePage.filters.properties['ofDate']['value'] = moment(e.date).toISOString()
       this.ofDate = moment(e.date).startOf('day').toDate()
 
       setTimeout(() => this.getAttendance(), 1)
@@ -235,7 +237,7 @@ export class DailyComponent {
 
   resetLogs() {
     const model = {
-      date: this.dailyAttendnace.filters.properties['ofDate']['value'] || moment().toISOString()
+      date: this.attendancePage.filters.properties['ofDate']['value'] || moment().toISOString()
     }
     this.amsTimelogsService.timeLogs.simplePost(model, 'regenerate').then(() => {
       this.toastyService.info({ title: 'Info', msg: 'Kindly reload after some time' })
@@ -244,7 +246,7 @@ export class DailyComponent {
   regenerate() {
     const model = {
       period: 'day',
-      date: this.dailyAttendnace.filters.properties['ofDate']['value'] || moment().toISOString()
+      date: this.attendancePage.filters.properties['ofDate']['value'] || moment().toISOString()
     }
     this.amsAttendanceService.attendance.simplePost(model, 'regenerate').then(() => {
       this.toastyService.info({ title: 'Info', msg: 'Kindly reload after some time' })
