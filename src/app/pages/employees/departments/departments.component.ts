@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Page } from '../../../common/contracts/page';
 import { Model } from '../../../common/contracts/model';
 import { ValidatorService } from '../../../services';
@@ -11,6 +11,7 @@ import { LocalStorageService } from '../../../services/local-storage.service';
 import { Department } from '../../../models/department';
 import { FileUploader } from 'ng2-file-upload';
 import { FileUploaderDialogComponent } from '../../../shared/components/file-uploader-dialog/file-uploader-dialog.component';
+import { ServerPageInput } from '../../../common/contracts/api';
 
 @Component({
   selector: 'aqua-departments',
@@ -20,13 +21,18 @@ import { FileUploaderDialogComponent } from '../../../shared/components/file-upl
 export class DepartmentsComponent implements OnInit {
   departments: Page<Department>
   department: Model<Department>
+  dept: Department[];
+  selectedDepartment = [];
+  departmentId: number;
   isNew = false;
   uploader: FileUploader;
   isUpload = false;
   isFilter = false;
-  filterFields = [
-    'departments'
-  ]
+  departmentList = [];
+
+  @Output()
+  onChange: EventEmitter<any> = new EventEmitter();
+  dropdownSettings = {};
 
   constructor(private emsDepartmentService: EmsDepartmentService,
     public validatorService: ValidatorService,
@@ -41,7 +47,7 @@ export class DepartmentsComponent implements OnInit {
         value: 1,
       },
         'ofDate',
-        'departments']
+        'name']
     });
 
     this.department = new Model({
@@ -50,6 +56,19 @@ export class DepartmentsComponent implements OnInit {
     });
 
     this.fetchDepartment();
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'name',
+      text: '',
+      selectAllText: 'All',
+      unSelectAllText: 'All',
+      enableSearchFilter: true,
+      classes: 'myclass',
+      displayAllSelectedText: true,
+      maxHeight: 200,
+      badgeShowLimit: 1
+    };
   }
 
   fetchDepartment() {
@@ -61,17 +80,47 @@ export class DepartmentsComponent implements OnInit {
       }
     ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
-
-  applyFilters(result) {
+  applyFilters(values) {
     const filters = this.departments.filters.properties;
-
-    const values = result.params;
-    filters['departments']['value'] = values.employee.departments ? values.employee.departments.map(item => item.name) : '';
+    filters['name']['value'] = values.name ? values.name.map(item => item) : '';
     this.fetchDepartment();
   }
-
+  apply() {
+    const params: any = {}
+    if (this.selectedDepartment && this.selectedDepartment.length) {
+      params.name = this.selectedDepartment.map(item => item.itemName)
+      params.id = this.selectedDepartment.map(item => item.id)
+      params.code = this.selectedDepartment.map(item => item.itemCode)
+    }
+    this.applyFilters(params)
+  }
+  private getDepartments() {
+    const deptFilter = new ServerPageInput();
+    deptFilter.query = {
+      divisionId: 1
+    }
+    this.emsDepartmentService.departments.search(deptFilter).then(page => {
+      this.dept = page.items;
+      this.departmentList = [];
+      this.dept.forEach(item => {
+        const obj = {
+          id: item.id,
+          itemName: item.name,
+        };
+        this.departmentList.push(obj);
+      })
+    });
+  }
+  onItemSelect(item: any) {
+  }
+  OnItemDeSelect(item: any) {
+  }
+  onSelectAll(items: any) {
+  }
+  onDeSelectAll(items: any) {
+  }
   reset() {
-
+    this.selectedDepartment = [];
   }
   toggleDepartment(isOpen?: boolean) {
     this.isNew = isOpen ? true : false;
@@ -129,6 +178,7 @@ export class DepartmentsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getDepartments();
   }
 
   import() {

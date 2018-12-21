@@ -11,6 +11,7 @@ import { LocalStorageService } from '../../../services/local-storage.service';
 import { Contractor } from '../../../models/contractor';
 import { FileUploader } from 'ng2-file-upload';
 import { FileUploaderDialogComponent } from '../../../shared/components/file-uploader-dialog/file-uploader-dialog.component';
+import { ServerPageInput } from '../../../common/contracts/api';
 
 @Component({
   selector: 'aqua-contractors',
@@ -20,14 +21,18 @@ import { FileUploaderDialogComponent } from '../../../shared/components/file-upl
 export class ContractorsComponent implements OnInit {
   contractors: Page<Contractor>
   contractor: Model<Contractor>
+  contractorA: Contractor[];
+  selectedContractor = [];
+  contractorId: number;
   isNew = false;
   uploader: FileUploader;
   isUpload = false;
   isFilter = false;
+  contractorList = [];
   filterFields = [
-    'contractors'
+    'name'
   ]
-
+  dropdownSettings = {};
   constructor(private emsContractorService: EmsContractorService,
     public validatorService: ValidatorService,
     private store: LocalStorageService,
@@ -42,7 +47,7 @@ export class ContractorsComponent implements OnInit {
         //   value: 1,
         // },
         'ofDate',
-        'contractors']
+        'name']
     });
 
     this.contractor = new Model({
@@ -51,6 +56,19 @@ export class ContractorsComponent implements OnInit {
     });
 
     this.fetchContractor();
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'name',
+      text: '',
+      selectAllText: 'All',
+      unSelectAllText: 'All',
+      enableSearchFilter: true,
+      classes: 'myclass',
+      displayAllSelectedText: true,
+      maxHeight: 200,
+      badgeShowLimit: 1
+    };
   }
 
   fetchContractor() {
@@ -63,16 +81,48 @@ export class ContractorsComponent implements OnInit {
     ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
-  applyFilters(result) {
+  applyFilters(values) {
     const filters = this.contractors.filters.properties;
-
-    const values = result.params;
-    filters['contractors']['value'] = values.employee.contractors ? values.employee.contractors.map(item => item.name) : '';
+    filters['name']['value'] = values.name ? values.name.map(item => item) : '';
     this.fetchContractor();
   }
+  apply() {
+    const params: any = {}
+    if (this.selectedContractor && this.selectedContractor.length) {
+      params.name = this.selectedContractor.map(item => item.itemName)
+      params.id = this.selectedContractor.map(item => item.id)
+      params.code = this.selectedContractor.map(item => item.itemCode)
+    }
+    this.applyFilters(params)
+  }
+  private getContractors() {
+    const contractorFilter = new ServerPageInput();
+    // deptFilter.query = {
+    //   divisionId: 1
+    // }
+    this.emsContractorService.contractors.search(contractorFilter).then(page => {
+      this.contractorA = page.items;
+      this.contractorList = [];
+      this.contractorA.forEach(item => {
+        const obj = {
+          id: item.id,
+          itemName: item.name,
+        };
+        this.contractorList.push(obj);
+      })
+    });
+  }
 
+  onItemSelect(item: any) {
+  }
+  OnItemDeSelect(item: any) {
+  }
+  onSelectAll(items: any) {
+  }
+  onDeSelectAll(items: any) {
+  }
   reset() {
-
+    this.selectedContractor = [];
   }
   toggleContractor(isOpen?: boolean) {
     this.isNew = isOpen ? true : false;
@@ -141,5 +191,6 @@ export class ContractorsComponent implements OnInit {
     }];
   }
   ngOnInit() {
+    this.getContractors();
   }
 }
