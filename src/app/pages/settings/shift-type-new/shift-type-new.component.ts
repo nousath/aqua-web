@@ -24,7 +24,7 @@ export class ShiftTypeNewComponent implements OnInit {
   departments: Department[];
   departmentId: number;
 
-  colors = ['#000000', '#3333ff', '#4da6ff', '#669900', '#00cc99', '#cccc00', '#cc9900', '#ff9900', '#ff66ff', '#ff3300', '#993300'];
+  colors = ['#000000', '#3333ff', '#4da6ff', '#669900', '#00cc99', '#cc9900', '#ff9900', '#ff66ff', '#ff3300', '#993300'];
 
   isNew = false;
 
