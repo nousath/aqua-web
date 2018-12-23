@@ -44,50 +44,43 @@
       <div class="form-control btn-group btn-group-sm">
         <!-- <div class="btn-group btn-group-sm"> -->
         <button type="button" class="btn btn-sm btn-default" (click)="toggleDay('sunday')" [ngClass]="{
-          'off':!shiftType.properties.sunday,
-          'off' :shiftType.properties.sunday?.toLowerCase() === 'off',
+          'off' :shiftType.properties.sunday?.toLowerCase() === 'off' || !shiftType.properties.sunday,
           'full':shiftType.properties.sunday?.toLowerCase() === 'full',
           'half':shiftType.properties.sunday?.toLowerCase() === 'half',
           'alt': shiftType.properties.sunday?.toLowerCase() === 'alternate'}"
           [mdTooltip]="shiftType.properties.sunday?.toUpperCase()" [mdTooltipPosition]="'above'">Sun</button>
         <button type="button" class="btn btn-sm btn-default" (click)="toggleDay('monday')" [ngClass]="{
-          'off':!shiftType.properties.monday,
-          'off' :shiftType.properties.monday?.toLowerCase() === 'off',
+          'off' :shiftType.properties.monday?.toLowerCase() === 'off' || !shiftType.properties.monday,
           'full':shiftType.properties.monday?.toLowerCase() === 'full',
           'half':shiftType.properties.monday?.toLowerCase() === 'half',
           'alt': shiftType.properties.monday?.toLowerCase() === 'alternate'}"
           [mdTooltip]="shiftType.properties.monday?.toUpperCase()" [mdTooltipPosition]="'above'">Mon</button>
         <button type="button" class="btn btn-sm btn-default" (click)="toggleDay('tuesday')" [ngClass]="{
-          'off':!shiftType.properties.tuesday,
-          'off' :shiftType.properties.tuesday?.toLowerCase() === 'off',
+          'off' :shiftType.properties.tuesday?.toLowerCase() === 'off' || !shiftType.properties.tuesday,
           'full':shiftType.properties.tuesday?.toLowerCase() === 'full',
           'half':shiftType.properties.tuesday?.toLowerCase() === 'half',
           'alt': shiftType.properties.tuesday?.toLowerCase() === 'alternate'}"
           [mdTooltip]="shiftType.properties.tuesday?.toUpperCase()" [mdTooltipPosition]="'above'">Tue</button>
         <button type="button" class="btn btn-sm btn-default" (click)="toggleDay('wednesday')" [ngClass]="{
-          'off':!shiftType.properties.wednesday,
-          'off' :shiftType.properties.wednesday?.toLowerCase() === 'off',
+          'off' :shiftType.properties.wednesday?.toLowerCase() === 'off' || !shiftType.properties.wednesday,
           'full':shiftType.properties.wednesday?.toLowerCase() === 'full',
           'half':shiftType.properties.wednesday?.toLowerCase() === 'half',
           'alt': shiftType.properties.wednesday?.toLowerCase() === 'alternate'}"
           [mdTooltip]="shiftType.properties.wednesday?.toUpperCase()" [mdTooltipPosition]="'above'">Wed</button>
         <button type="button" class="btn btn-sm btn-default" (click)="toggleDay('thursday')" [ngClass]="{
-          'off':!shiftType.properties.thursday,
-          'off' :shiftType.properties.thursday?.toLowerCase() === 'off',
+          'off' :shiftType.properties.thursday?.toLowerCase() === 'off' || !shiftType.properties.thursday,
           'full':shiftType.properties.thursday?.toLowerCase() === 'full',
           'half':shiftType.properties.thursday?.toLowerCase() === 'half',
           'alt': shiftType.properties.thursday?.toLowerCase() === 'alternate'}"
-          [mdTooltip]="shiftType.properties.thursday?.toUpperCase()" [mdTooltipPosition]="'above'">Tue</button>
+          [mdTooltip]="shiftType.properties.thursday?.toUpperCase()" [mdTooltipPosition]="'above'">Thu</button>
         <button type="button" class="btn btn-sm btn-default" (click)="toggleDay('friday')" [ngClass]="{
-          'off':!shiftType.properties.friday,
-          'off' :shiftType.properties.friday?.toLowerCase() === 'off',
+          'off' :shiftType.properties.friday?.toLowerCase() === 'off' || !shiftType.properties.friday,
           'full':shiftType.properties.friday?.toLowerCase() === 'full',
           'half':shiftType.properties.friday?.toLowerCase() === 'half',
           'alt': shiftType.properties.friday?.toLowerCase() === 'alternate'}"
           [mdTooltip]="shiftType.properties.friday?.toUpperCase()" [mdTooltipPosition]="'above'">Fri</button>
         <button type="button" class="btn btn-sm btn-default" (click)="toggleDay('saturday')" [ngClass]="{
-            'off':!shiftType.properties.saturday,
-            'off' :shiftType.properties.saturday?.toLowerCase() === 'off',
+            'off' :shiftType.properties.saturday?.toLowerCase() === 'off' || !shiftType.properties.saturday,
             'full':shiftType.properties.saturday?.toLowerCase() === 'full',
             'half':shiftType.properties.saturday?.toLowerCase() === 'half',
             'alt': shiftType.properties.saturday?.toLowerCase() === 'alternate'}"

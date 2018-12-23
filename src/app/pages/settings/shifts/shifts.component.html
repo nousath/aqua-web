@@ -38,50 +38,43 @@
             <div class="btn-group btn-group-sm" [routerLink]="[item.id]">
               <!-- <div class="btn-group btn-group-sm"> -->
               <button type="button" class="btn btn-sm btn-default" [ngClass]="{
-                    'off':!item?.sunday,
-                    'off' :item?.sunday?.toLowerCase() === 'off',
+                    'off' :item?.sunday?.toLowerCase() === 'off' || !item?.sunday,
                     'full':item?.sunday?.toLowerCase() === 'full',
                     'half':item?.sunday?.toLowerCase() === 'half',
                     'alt': item?.sunday?.toLowerCase() === 'alternate'}"
                 [mdTooltip]="item?.sunday?.toUpperCase()" [mdTooltipPosition]="'above'">Sun</button>
               <button type="button" class="btn btn-sm btn-default" [ngClass]="{
-                    'off':!item?.monday,
-                    'off' :item?.monday?.toLowerCase() === 'off',
+                    'off' :item?.monday?.toLowerCase() === 'off' || !item?.monday,
                     'full':item?.monday?.toLowerCase() === 'full',
                     'half':item?.monday?.toLowerCase() === 'half',
                     'alt': item?.monday?.toLowerCase() === 'alternate'}"
                 [mdTooltip]="item?.monday?.toUpperCase()" [mdTooltipPosition]="'above'">Mon</button>
               <button type="button" class="btn btn-sm btn-default" [ngClass]="{
-                    'off':!item?.tuesday,
-                    'off' :item?.tuesday?.toLowerCase() === 'off',
+                    'off' :item?.tuesday?.toLowerCase() === 'off' || !item?.tuesday,
                     'full':item?.tuesday?.toLowerCase() === 'full',
                     'half':item?.tuesday?.toLowerCase() === 'half',
                     'alt': item?.tuesday?.toLowerCase() === 'alternate'}"
                 [mdTooltip]="item?.tuesday?.toUpperCase()" [mdTooltipPosition]="'above'">Tue</button>
               <button type="button" class="btn btn-sm btn-default" (click)="toggleDay('wednesday')" [ngClass]="{
-                    'off':!item?.wednesday,
-                    'off' :item?.wednesday?.toLowerCase() === 'off',
+                    'off' :item?.wednesday?.toLowerCase() === 'off' || !item?.wednesday,
                     'full':item?.wednesday?.toLowerCase() === 'full',
                     'half':item?.wednesday?.toLowerCase() === 'half',
                     'alt': item?.wednesday?.toLowerCase() === 'alternate'}"
                 [mdTooltip]="item?.wednesday?.toUpperCase()" [mdTooltipPosition]="'above'">Wed</button>
               <button type="button" class="btn btn-sm btn-default" [ngClass]="{
-                    'off':!item?.thursday,
-                    'off' :item?.thursday?.toLowerCase() === 'off',
+                    'off' :item?.thursday?.toLowerCase() === 'off' || !item?.thursday,
                     'full':item?.thursday?.toLowerCase() === 'full',
                     'half':item?.thursday?.toLowerCase() === 'half',
                     'alt': item?.thursday?.toLowerCase() === 'alternate'}"
-                [mdTooltip]="item?.thursday?.toUpperCase()" [mdTooltipPosition]="'above'">Tue</button>
+                [mdTooltip]="item?.thursday?.toUpperCase()" [mdTooltipPosition]="'above'">Thu</button>
               <button type="button" class="btn btn-sm btn-default" [ngClass]="{
-                    'off':!item?.friday,
-                    'off' :item?.friday?.toLowerCase() === 'off',
+                    'off' :item?.friday?.toLowerCase() === 'off' || !item?.friday,
                     'full':item?.friday?.toLowerCase() === 'full',
                     'half':item?.friday?.toLowerCase() === 'half',
                     'alt': item?.friday?.toLowerCase() === 'alternate'}"
                 [mdTooltip]="item?.friday?.toUpperCase()" [mdTooltipPosition]="'above'">Fri</button>
               <button type="button" class="btn btn-sm btn-default" [ngClass]="{
-                      'off':!item?.saturday,
-                      'off' :item?.saturday?.toLowerCase() === 'off',
+                      'off' :item?.saturday?.toLowerCase() === 'off' || !item?.saturday,
                       'full':item?.saturday?.toLowerCase() === 'full',
                       'half':item?.saturday?.toLowerCase() === 'half',
                       'alt': item?.saturday?.toLowerCase() === 'alternate'}"
