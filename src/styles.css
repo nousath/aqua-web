@@ -7,6 +7,10 @@ body {
     overflow-y: scroll;
 }
 
+h4 {
+  text-align: center;
+}
+
 body::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     background-color: #3f4766;
@@ -116,11 +120,29 @@ body::-webkit-scrollbar-thumb {
     color: white !important;
 }
 
+.btn-primary {
+  color: #fff;
+  background-color: #00A8c6;
+  border-color: #00A8c6;
+}
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: #00A8c6;
+  border-color: #00A8c6;
+}
+
+.btn-primary.focus, .btn-primary:focus {
+  color: #fff;
+  background-color: #00A8c6;
+  border-color: #00A8c6;
+}
+
 .tool-bar {
   margin-top: 10px;
   margin-bottom: 5px;
-  margin-right: -15px;
-  margin-left: -15px;
+  /* margin-right: -15px;
+  margin-left: -15px; */
 }
 
 .page_header {
@@ -474,6 +496,10 @@ button.phantom {
     padding-top: 5px;
 }
 
+.flex-row>.form-group {
+  padding: 0 5px;
+}
+
 .form-group .sub-text {
   position: relative;
   top: -15px
@@ -567,4 +593,69 @@ button.phantom {
       margin-right: 5px;
       /* height: 20px; */
   }
+}
+
+.popup .backdrop {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+  z-index: 4000;
+}
+
+.popup .outer {
+  overflow: auto;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 4200;
+  top: 0;
+  left: 0;
+}
+
+.popup .content {
+  background: #fff;
+  top: 10%;
+  padding: 20px;
+  width: 440px;
+  position: relative;
+  z-index: 10000000;
+  margin: 20px auto;
+  left: 0;
+}
+
+.popup .content.wide {
+  width: 80%;
+  max-width: 800px;
+}
+
+.popup .content.narrow {
+  width: 50%;
+  max-width: 500px;
+}
+
+@media only screen and (max-width:539px) {
+  .popup .content.wide,
+  .popup .content.narrow {
+    width: 90%;
+  }
+}
+
+.btn.alt {
+  background: linear-gradient(to right, #0CF 0%,#0CF  25%, #FFF 26%, #FFF 50%, #0CF  51%,#0CF  75%, #FFF  76%);
+}
+.btn.half {
+  background: linear-gradient(to right, #0CF  0%, #0CF  50%, #FFF 51%);
+}
+.btn.full {
+  background: #0CF ;
+}
+.btn.off {
+  background: #FFF
+}
+.btn-toggle {
+  margin-left: 10px;
+  outline: none;
 }

@@ -9,15 +9,30 @@
 .rightBtn {
     float: right;
 }
-.graceWidth {
-    width: 25%
+
+h5 {
+  text-align: center;
 }
-.graceLable {
-    width:50%;
-  float:left;
-  padding-left: 5%
+
+
+.form-control.btn-group {
+  padding: 1px;
+  height: auto;
 }
-.graceInput {
-    width:97%;
-    padding: 5px;
+
+.form-control.btn-group>.btn {
+  border-radius: 5px;
+  width: 40px;
+  margin-left: 1px;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+  outline: none;
+}
+
+.form-control.color-picker.btn-group>.btn {
+  border-radius: 20px;
+  width: 26px;
+  height: 26px;
+  margin: 2px;
+  border: 1px solid;
+
 }

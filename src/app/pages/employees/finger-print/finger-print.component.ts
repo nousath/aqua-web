@@ -55,8 +55,9 @@ export class FingerPrintComponent implements OnInit {
     const promise = biometric.id ?
       this.amsDeviceService.biometrics.update(biometric.id, biometric) :
       this.amsDeviceService.biometrics.create(biometric);
-    promise.then(() => {
+    promise.then((updated) => {
       this.isLoading = false;
+      biometric.id = updated.id;
       if (status !== 'deleted') {
         this.canEnable = true;
       } else {
@@ -106,7 +107,7 @@ export class FingerPrintComponent implements OnInit {
           if (!fingerPrint) {
             fingerPrint = new Biometric();
             fingerPrint.device = device;
-            fingerPrint.code = this.employee.code;
+            fingerPrint.code = this.employee.biometricCode;
             fingerPrint.user = this.employee
           }
 

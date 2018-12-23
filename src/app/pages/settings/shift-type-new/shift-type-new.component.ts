@@ -24,6 +24,8 @@ export class ShiftTypeNewComponent implements OnInit {
   departments: Department[];
   departmentId: number;
 
+  colors = ['#000000', '#3333ff', '#4da6ff', '#669900', '#00cc99', '#cccc00', '#cc9900', '#ff9900', '#ff66ff', '#ff3300', '#993300'];
+
   isNew = false;
 
   constructor(private amsShiftService: AmsShiftService,
@@ -70,6 +72,37 @@ export class ShiftTypeNewComponent implements OnInit {
     });
   }
 
+  toggleDynamic() {
+    this.shiftType.properties.isDynamic = !this.shiftType.properties.isDynamic;
+  }
+
+  toggleDay(day: string) {
+
+    const value: string = this.shiftType.properties[day]
+    if (!value) {
+      this.shiftType.properties[day] = 'full';
+      return;
+    }
+    switch (value) {
+      case 'off':
+        this.shiftType.properties[day] = 'full';
+        break;
+      case 'full':
+        this.shiftType.properties[day] = 'half';
+        break;
+      case 'half':
+        this.shiftType.properties[day] = 'alternate';
+        break
+      case 'alternate':
+        this.shiftType.properties[day] = 'off';
+        break;
+    }
+  }
+
+  setColor(color: string) {
+    this.shiftType.properties.color = color
+  }
+
   save() {
 
     if (!this.shiftType.properties.name) {
@@ -102,6 +135,14 @@ export class ShiftTypeNewComponent implements OnInit {
 
   backClicked() {
     this._location.back();
+  }
+
+  remove() {
+    this.shiftType.remove()
+      .then(() => {
+        this.toastyService.info({ title: 'Info', msg: 'shift removed' })
+      })
+      .catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
   ngOnInit() {

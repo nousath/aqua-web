@@ -16,7 +16,7 @@ import { Model } from '../../../common/contracts/model';
 export class ShiftsComponent implements OnInit {
 
   shifType: Model<ShiftType>;
-  shifTypes: Page<ShiftType>;
+  shiftTypes: Page<ShiftType>;
 
   constructor(private amsShiftService: AmsShiftService,
     private toastyService: ToastyService,
@@ -35,14 +35,14 @@ export class ShiftsComponent implements OnInit {
       properties: new ShiftType()
     });
 
-    this.shifTypes = new Page({
+    this.shiftTypes = new Page({
       api: amsShiftService.shiftTypes
     });
-    this.fetchShifTypes();
+    this.fetchshiftTypes();
   }
 
-  fetchShifTypes() {
-    this.shifTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+  fetchshiftTypes() {
+    this.shiftTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
   ngOnInit() {

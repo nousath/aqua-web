@@ -1,92 +1,89 @@
-<div class="row page_header">
-    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <h5><b>Leave Rules</b></h5>
-    </div>
-    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-        <div class="headerBtns">
-            <button [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" md-icon-button mdTooltip="Add New" [mdTooltipPosition]="'above'" (click)="toggleNew()"><md-icon>add_circle_outline</md-icon></button>
-        </div>
-
-    </div>
+<div class="tool-bar controls-row">
+  <h5>Leave Rules</h5>
+  <span class="spacer"></span>
+  <button [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" md-icon-button mdTooltip="Add New"
+    [mdTooltipPosition]="'above'" (click)="toggleNew()">
+    <md-icon>add_circle_outline</md-icon>
+  </button>
 </div>
 <md-spinner class="custom_spinner" *ngIf="leaveTypes?.isLoading  || leaveType?.isProcessing" mode="indeterminate"></md-spinner>
 
-<div class="row">
-    <aqua-leave-type *ngIf="isNew || isEdit" [leave]="leaveTypeModel"></aqua-leave-type>
-</div>
+<aqua-leave-type *ngIf="isNew || isEdit" [leave]="leaveTypeModel"></aqua-leave-type>
 
-<div class="row">
-    <md-card class="card">
-        <div class="">
-            <table class="table table-condensed table-bordered">
-                <thead class="primary_thead bordered-thead">
-                    <tr>
+<md-card class="card">
+  <div class="">
+    <table class="table table-condensed table-hover">
+      <thead class="primary_thead">
+        <tr>
+          <th colspan="3" class="text-center">Details</th>
+          <th colspan="3" class="text-center">Grant Rules</th>
+          <th colspan="3" class="text-center">Limit Rules</th>
+          <th></th>
+        </tr>
+        <tr>
+          <th>Code</th>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Min Per Day</th>
+          <th>Period</th>
+          <th>Credit</th>
+          <th>Is Unlimited</th>
+          <th>Monthly</th>
+          <th>Yearly Carry Forward</th>
+          <th class="actionBtnss"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of leaveTypes.items | paginate: { id: 'foo',
+                                                    itemsPerPage: leaveTypes.pageSize,
+                                                    currentPage: leaveTypes.pageNo,
+                                                    totalItems: leaveTypes.totalRecords };let i = index"
+          class="capitalize">
 
-                        <th colspan="3" class="text-center">Details</th>
-                        <th colspan="3" class="text-center">Grant Rules</th>
-                        <th colspan="3" class="text-center">Limit Rules</th>
-                        <th></th>
-                    </tr>
-                    <tr>
-                        <th>Code</th>
-                        <th>Name</th>
-                        <th>Category</th>
-                        <th>Min Per Day</th>
-                        <th>Period</th>
-                        <th>Credit</th>
-                        <th>Is Unlimited</th>
-                        <th>Monthly</th>
-                        <th>Yearly Carry Forward</th>
-                        <th class="actionBtnss"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of leaveTypes.items | paginate: { id: 'foo',
-                                                      itemsPerPage: leaveTypes.pageSize,
-                                                      currentPage: leaveTypes.pageNo,
-                                                      totalItems: leaveTypes.totalRecords };let i = index" class="capitalize">
+          <td>{{item?.code}}</td>
+          <td>{{item?.name}}</td>
+          <td>{{item?.category}}</td>
+          <td>{{item?.unitsPerDay === 1 ? 'Full': item?.unitsPerDay === 2? 'Half':'One Third'}}</td>
+          <td>{{item?.periodicity?.type || 'Manual'}}</td>
+          <td>{{item?.periodicity?.value || '--'}}</td>
+          <td>{{item?.unlimited === false ? 'No': 'Yes'}}</td>
+          <td>{{item?.monthlyLimit || 'No'}}</td>
+          <td>{{item?.carryForward || 'All'}}</td>
+          <td>
+            <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit"
+              [mdTooltipPosition]="'above'" (click)="isEdit = true;leaveTypeModel = item;">
+              <md-icon>edit</md-icon>
+            </button>
+            <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Delete"
+              [mdTooltipPosition]="'above'" (click)="remove(item)">
+              <md-icon>delete</md-icon>
+            </button>
+            <button *ngIf="item?.isEdit" [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" md-icon-button
+              class="button_align cursor " (click)="saveLeaveType(item)" mdTooltip="Save" [mdTooltipPosition]="'above'">
+              <md-icon>save</md-icon>
+            </button>
+            <button *ngIf="item?.isEdit" [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" md-icon-button
+              class="button_align cursor" (click)="toggleLeaveType(item, false)" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
+              <md-icon>undo</md-icon>
+            </button>
+          </td>
+        </tr>
 
-                        <td>{{item?.code}}</td>
-                        <td>{{item?.name}}</td>
-                        <td>{{item?.category}}</td>
-                        <td>{{item?.unitsPerDay === 1 ? 'Full': item?.unitsPerDay === 2? 'Half':'One Third'}}</td>
-                        <td>{{item?.periodicity?.type || 'Manual'}}</td>
-                        <td>{{item?.periodicity?.value || '--'}}</td>
-                        <td>{{item?.unlimited === false ? 'No': 'Yes'}}</td>
-                        <td>{{item?.monthlyLimit || 'No'}}</td>
-                        <td>{{item?.carryForward || 'All'}}</td>
-                        <td>
-                            <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="isEdit = true;leaveTypeModel = item;">
-                                <md-icon>edit</md-icon>
-                            </button>
-                            <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Delete" [mdTooltipPosition]="'above'" (click)="remove(item)">
-                                <md-icon>delete</md-icon>
-                            </button>
-                            <button *ngIf="item?.isEdit" [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" md-icon-button class="button_align cursor " (click)="saveLeaveType(item)" mdTooltip="Save" [mdTooltipPosition]="'above'">
-                                <md-icon>save</md-icon>
-                            </button>
-                            <button *ngIf="item?.isEdit" [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" md-icon-button class="button_align cursor" (click)="toggleLeaveType(item, false)" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
-                                <md-icon>undo</md-icon>
-                            </button>
-                        </td>
-                    </tr>
-
-                </tbody>
-            </table>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="custom_pagination">
-                <pagination-controls id="foo" (pageChange)="leaveTypes.pageNo = $event;fetchLeaveTypes();"></pagination-controls>
-                <div class="pageSize">
-                    <label>Page Size:</label>
-                    <select name="pageSize" [(ngModel)]="leaveTypes.pageSize" (change)="leaveTypes.pageNo = 1;fetchLeaveTypes();">
-                      <option value=10>10</option>
-                      <option value=20>20</option>
-                      <option value=50>50</option>
-                      <option value=100>100</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-    </md-card>
-</div>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="custom_pagination">
+      <pagination-controls id="foo" (pageChange)="leaveTypes.pageNo = $event;fetchLeaveTypes();"></pagination-controls>
+      <div class="pageSize">
+        <label>Page Size:</label>
+        <select name="pageSize" [(ngModel)]="leaveTypes.pageSize" (change)="leaveTypes.pageNo = 1;fetchLeaveTypes();">
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</md-card>

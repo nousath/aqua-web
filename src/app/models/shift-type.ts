@@ -7,15 +7,17 @@ export class ShiftType {
   endTime = '';
   grace: Grace = new Grace();
   department = '';
-  breakTime = '';
+  breakTime = 30;
+  isDynamic = false;
+  color: string;
 
-  monday: 'off' | 'full' | 'half' | 'alternate' | null = null;
-  tuesday: 'off' | 'full' | 'half' | 'alternate' | null = null;
-  wednesday: 'off' | 'full' | 'half' | 'alternate' | null = null;
-  thursday: 'off' | 'full' | 'half' | 'alternate' | null = null;
-  friday: 'off' | 'full' | 'half' | 'alternate' | null = null;
-  saturday: 'off' | 'full' | 'half' | 'alternate' | null = null;
-  sunday: 'off' | 'full' | 'half' | 'alternate' | null = null;
+  monday: 'off' | 'full' | 'half' | 'alternate' | null = 'full';
+  tuesday: 'off' | 'full' | 'half' | 'alternate' | null = 'full';
+  wednesday: 'off' | 'full' | 'half' | 'alternate' | null = 'full';
+  thursday: 'off' | 'full' | 'half' | 'alternate' | null = 'full';
+  friday: 'off' | 'full' | 'half' | 'alternate' | null = 'full';
+  saturday: 'off' | 'full' | 'half' | 'alternate' | null = 'off';
+  sunday: 'off' | 'full' | 'half' | 'alternate' | null = 'off';
   changeType: 'now' | 'later' = 'now';
   status = '';
 
@@ -27,11 +29,11 @@ class Grace {
   checkOut: CheckOut = new CheckOut();
 }
 class CheckIn {
-  early: '';
-  late: '';
+  early = 30;
+  late = 30;
 }
 
 class CheckOut {
-  early: '';
-  late: '';
+  early = 0;
+  late = 30;
 }

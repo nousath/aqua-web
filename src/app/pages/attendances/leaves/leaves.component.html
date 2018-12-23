@@ -1,135 +1,136 @@
-<div class="row page_header">
-    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <h5><b>All Leaves</b></h5>
+<div class="tool-bar controls-row">
+  <h5>Leaves</h5>
+  <span class="spacer"></span>
+
+  <!--
+    <div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">Select Month</span>
+        <input id="monthSelector" type="text" class="form-control input-sm calendar no-spin">
     </div>
-    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-        <!-- <div class="headerInpts">
-            <div class="input-group">
-                <span class="input-group-addon" id="basic-addon1">Select Month</span>
-                <input id="monthSelector" type="text" class="form-control input-sm calendar no-spin">
-            </div>
-        </div> -->
-        <div class="headerBtns">
-            <button [disabled]="leaves?.isLoading  || isUpdatingLeaveStatus" md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
-            <a *ngIf="userType == 'superadmin'" md-icon-button [routerLink]="['new/apply']" mdTooltip="New Leave" [mdTooltipPosition]="'above'">
-                <md-icon>add_circle_outline</md-icon>
-            </a>
-            <button *ngIf="userType === 'superadmin'" md-icon-button (click)="import()">
-                <md-icon>cloud_upload</md-icon>
-              </button>
-        </div>
-       
-    </div>
+  -->
+  <button [disabled]="leaves?.isLoading  || isUpdatingLeaveStatus" md-icon-button (click)="isFilter = !isFilter"
+    mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
+  <a *ngIf="userType == 'superadmin'" md-icon-button [routerLink]="['new/apply']" mdTooltip="New Leave"
+    [mdTooltipPosition]="'above'">
+    <md-icon>add_circle_outline</md-icon>
+  </a>
+  <button *ngIf="userType === 'superadmin'" md-icon-button (click)="import()">
+    <md-icon>cloud_upload</md-icon>
+  </button>
 </div>
+
 <md-spinner class="custom_spinner" *ngIf="leaves?.isLoading || isUpdatingLeaveStatus" mode="indeterminate"></md-spinner>
 
-
-<div class="row" *ngIf="isFilter">
-    <md-card class="card">
-        <div class="row text-center headr_bar">
-            <h5><b>Filters</b></h5>
-            <div class="actionBtns">
-                <button md-icon-button mdTooltip="Close" [mdTooltipPosition]="'above'" (click)="isFilter = !isFilter"><md-icon >highlight_off</md-icon></button>
-            </div>
+<md-card *ngIf="isFilter" class="card">
+  <div class="row text-center headr_bar">
+    <h5><b>Filters</b></h5>
+    <div class="actionBtns">
+      <button md-icon-button mdTooltip="Close" [mdTooltipPosition]="'above'" (click)="isFilter = !isFilter">
+        <md-icon>highlight_off</md-icon>
+      </button>
+    </div>
+  </div>
+  <br>
+  <div class="row filerRow">
+    <form>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-group">
+        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+          <label for="email">Employee Name</label>
         </div>
-        <br>
-        <div class="row filerRow">
-            <form>
-                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-group">
-                    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-                        <label for="email">Employee Name</label>
-                    </div>
-                    <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                        <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="leaves?.isLoading  || isUpdatingLeaveStatus" [(ngModel)]="leaves.filters.properties['name']['value']" name="Name">
-                    </div>
-                </div>
-                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-group">
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        <label>Status</label>
-                    </div>
-                    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                        <select class="form-control" [disabled]="leaves?.isLoading  || isUpdatingLeaveStatus" [(ngModel)]="leaves.filters.properties['status']['value']" name="shift">
-                     <option  value="approved">Approved</option>
-                     <option  value="submitted">Submitted</option>
-                     <option  value="cancelled">Cancelled</option>
-                     <option  value="rejected">Rejected</option>
-                  </select>
-                    </div>
-                </div>
-                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                    <div class=" input-group">
-                        <span class="input-group-addon" id="basic-addon1">Select Month</span>
-                        <input id="monthSelector" type="text" class="form-control input-sm calendar no-spin">
-                    </div>
-                </div>
-                <div class="col-xs-8 col-sm-4 col-md-8 col-lg-8"></div>
-                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 button_align form-group text-center">
-                    <button [disabled]="leaves?.isLoading || isUpdatingLeaveStatus" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="fetchLeaves(leaves.filters.properties['date']['value'])">Apply</button>
-                    <button [disabled]="leaves?.isLoading || isUpdatingLeaveStatus" md-raised-button class="btn_grey" mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()">Reset</button>
-                </div>
-
-            </form>
+        <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+          <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="leaves?.isLoading  || isUpdatingLeaveStatus"
+            [(ngModel)]="leaves.filters.properties['name']['value']" name="Name">
         </div>
-    </md-card>
-</div>
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-group">
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+          <label>Status</label>
+        </div>
+        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+          <select class="form-control" [disabled]="leaves?.isLoading  || isUpdatingLeaveStatus" [(ngModel)]="leaves.filters.properties['status']['value']"
+            name="shift">
+            <option value="approved">Approved</option>
+            <option value="submitted">Submitted</option>
+            <option value="cancelled">Cancelled</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div class=" input-group">
+          <span class="input-group-addon" id="basic-addon1">Select Month</span>
+          <input id="monthSelector" type="text" class="form-control input-sm calendar no-spin">
+        </div>
+      </div>
+      <div class="col-xs-8 col-sm-4 col-md-8 col-lg-8"></div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 button_align form-group text-center">
+        <button [disabled]="leaves?.isLoading || isUpdatingLeaveStatus" md-raised-button color="primary" mdTooltip="Apply"
+          [mdTooltipPosition]="'above'" (click)="fetchLeaves(leaves.filters.properties['date']['value'])">Apply</button>
+        <button [disabled]="leaves?.isLoading || isUpdatingLeaveStatus" md-raised-button class="btn_grey" mdTooltip="Reset"
+          [mdTooltipPosition]="'above'" (click)="reset()">Reset</button>
+      </div>
 
-<div class="row">
-    <md-card class="card">
-        <div class="">
-            <table class="table table-condensed table-hover">
-                <thead class="primary_thead">
-                    <tr>
-                        <th class="selector"><input type="checkbox" [(ngModel)]="check" (click)="All()"> </th>
-                        <th class="tdWidth">Employee</th>
-                        <th class="tdWidth">Date</th>
-                        <th class="tdWidth">Type</th>
-                        <th class="tdWidth">Count</th>
-                        <th class="tdWidth">Status</th>
-                        <th class="tdWidth">Reason/Comment</th>
-                        <th class="tdWidth text-center">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of leaves.items | paginate: { id: 'leavs',
+    </form>
+  </div>
+</md-card>
+
+<md-card class="card">
+  <div class="">
+    <table class="table table-condensed table-hover">
+      <thead class="primary_thead">
+        <tr>
+          <th class="selector"><input type="checkbox" [(ngModel)]="check" (click)="All()"> </th>
+          <th class="tdWidth">Employee</th>
+          <th class="tdWidth">Date</th>
+          <th class="tdWidth">Type</th>
+          <th class="tdWidth">Count</th>
+          <th class="tdWidth">Status</th>
+          <th class="tdWidth">Reason/Comment</th>
+          <th class="tdWidth text-center">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of leaves.items | paginate: { id: 'leavs',
                                                       itemsPerPage: leaves.pageSize,
                                                       currentPage: leaves.pageNo,
-                                                      totalItems: leaves.totalRecords };" class="capitalize">
+                                                      totalItems: leaves.totalRecords };"
+          class="capitalize">
 
-                        <td class="selector"><input type="checkbox" [checked]="check" (change)="allLeaves(item)" *ngIf="item?.status == 'submitted'"></td>
-                        <td class="tdWidth">
-                            <a [routerLink]="[item.employee.id]">{{item.employee.name || '--'}}</a>
-                            <br>
-                            <span class="sub-text">{{item.employee.code || '--'}}</span>
-                        </td>
-                        <td class="tdWidth">
-                            {{item?.date | date}}
-                            <ng-container *ngIf="item.start">
-                                <span class="badge" *ngIf="item.start.first && !item.start.second">F</span>
-                                <span class="badge" *ngIf="!item.start.first && item.start.second">S</span>
-                            </ng-container>
-                            <ng-container *ngIf="item.toDate && item.toDate !== item.date">
-                                <br>
-                                <span class="sub-text text-center">to</span>
-                                <br> {{item?.toDate | date}}
-                                <ng-container *ngIf="item.end">
-                                    <span class="badge" *ngIf="item.end.first && !item.end.second">F</span>
-                                    <span class="badge" *ngIf="!item.end.first && item.end.second">S</span>
-                                </ng-container>
-                            </ng-container>
+          <td class="selector"><input type="checkbox" [checked]="check" (change)="allLeaves(item)" *ngIf="item?.status == 'submitted'"></td>
+          <td class="tdWidth">
+            <a [routerLink]="[item.employee.id]">{{item.employee.name || '--'}}</a>
+            <br>
+            <span class="sub-text">{{item.employee.code || '--'}}</span>
+          </td>
+          <td class="tdWidth">
+            {{item?.date | date}}
+            <ng-container *ngIf="item.start">
+              <span class="badge" *ngIf="item.start.first && !item.start.second">F</span>
+              <span class="badge" *ngIf="!item.start.first && item.start.second">S</span>
+            </ng-container>
+            <ng-container *ngIf="item.toDate && item.toDate !== item.date">
+              <br>
+              <span class="sub-text text-center">to</span>
+              <br> {{item?.toDate | date}}
+              <ng-container *ngIf="item.end">
+                <span class="badge" *ngIf="item.end.first && !item.end.second">F</span>
+                <span class="badge" *ngIf="!item.end.first && item.end.second">S</span>
+              </ng-container>
+            </ng-container>
 
-                        </td>
-                        <td class="tdWidth">{{item?.leaveType?.name}}</td>
-                        <td class="tdWidth">{{item?.days}}</td>
-                        <td class="tdWidth">{{item?.status}}</td>
-                        <td class="tdWidth">
-                            {{item?.reason}}
-                            <ng-container *ngIf="item?.comment">
-                                <br>
-                                <span class="sub-text">{{item?.comment}}</span>
-                            </ng-container>
-                        </td>
-                        <td class="tdWidth text-center">
-                            <!--<button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status?.toLowerCase() == 'approved'
+          </td>
+          <td class="tdWidth">{{item?.leaveType?.name}}</td>
+          <td class="tdWidth">{{item?.days}}</td>
+          <td class="tdWidth">{{item?.status}}</td>
+          <td class="tdWidth">
+            {{item?.reason}}
+            <ng-container *ngIf="item?.comment">
+              <br>
+              <span class="sub-text">{{item?.comment}}</span>
+            </ng-container>
+          </td>
+          <td class="tdWidth text-center">
+            <!--<button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status?.toLowerCase() == 'approved'
                                       || item?.status?.toLowerCase() == 'submitted'" (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
                                 <md-icon>highlight_off</md-icon>
                             </button>
@@ -138,36 +139,40 @@
                                       || item?.status?.toLowerCase() == 'cancelled'" (click)="accept_reject_leave(item, 'approved')" mdTooltip="Approve" [mdTooltipPosition]="'above'">
                                 <md-icon>check_cirle</md-icon>
                             </button>-->
-                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status?.toLowerCase() == 'submitted'" (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
-                                <md-icon>highlight_off</md-icon>
-                            </button>
-                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status?.toLowerCase() == 'submitted'" (click)="accept_reject_leave(item, 'approved')" mdTooltip="Approve" [mdTooltipPosition]="'above'">
-                                <md-icon>check_cirle</md-icon>
-                            </button>
-                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status?.toLowerCase() == 'approved'" (click)="accept_reject_leave(item, 'cancelled')" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
-                              <md-icon>close</md-icon>
-                          </button>
-                        </td>
-                    </tr>
+            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status?.toLowerCase() == 'submitted'"
+              (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
+              <md-icon>highlight_off</md-icon>
+            </button>
+            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status?.toLowerCase() == 'submitted'"
+              (click)="accept_reject_leave(item, 'approved')" mdTooltip="Approve" [mdTooltipPosition]="'above'">
+              <md-icon>check_cirle</md-icon>
+            </button>
+            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status?.toLowerCase() == 'approved'"
+              (click)="accept_reject_leave(item, 'cancelled')" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
+              <md-icon>close</md-icon>
+            </button>
+          </td>
+        </tr>
 
-                </tbody>
-            </table>
-            <button *ngIf="leaves.items.length" [disabled]="leaves?.isLoading || isUpdatingLeaveStatus" md-raised-button color="primary" mdTooltip="Approve" [mdTooltipPosition]="'above'" (click)="approveLeaves('approved')" style="float: right;">Approve</button>
-            <button *ngIf="leaves.items.length" [disabled]="leaves?.isLoading || isUpdatingLeaveStatus" md-raised-button color="btn_grey" mdTooltip="Reject" [mdTooltipPosition]="'above'" (click)="approveLeaves('rejected')" style="float: right;">Reject</button>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="custom_pagination">
-                <pagination-controls id="leavs" (pageChange)="leaves.pageNo = $event;fetch();"></pagination-controls>
-                <div class="pageSize">
-                    <label>Page Size:</label>
-                    <select name="pageSize" [(ngModel)]="leaves.pageSize" (change)="leaves.pageNo = 1;fetch();">
-                      <option value=10>10</option>
-                      <option value=20>20</option>
-                      <option value=50>50</option>
-                      <option value=100>100</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-    </md-card>
-</div>
+      </tbody>
+    </table>
+    <button *ngIf="leaves.items.length" [disabled]="leaves?.isLoading || isUpdatingLeaveStatus" md-raised-button color="primary"
+      mdTooltip="Approve" [mdTooltipPosition]="'above'" (click)="approveLeaves('approved')" style="float: right;">Approve</button>
+    <button *ngIf="leaves.items.length" [disabled]="leaves?.isLoading || isUpdatingLeaveStatus" md-raised-button color="btn_grey"
+      mdTooltip="Reject" [mdTooltipPosition]="'above'" (click)="approveLeaves('rejected')" style="float: right;">Reject</button>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="custom_pagination">
+      <pagination-controls id="leavs" (pageChange)="leaves.pageNo = $event;fetch();"></pagination-controls>
+      <div class="pageSize">
+        <label>Page Size:</label>
+        <select name="pageSize" [(ngModel)]="leaves.pageSize" (change)="leaves.pageNo = 1;fetch();">
+          <option value=10>10</option>
+          <option value=20>20</option>
+          <option value=50>50</option>
+          <option value=100>100</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</md-card>
