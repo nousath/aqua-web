@@ -8,11 +8,11 @@ import { LeaveActionDialogComponent } from '../../../dialogs/leave-action-dialog
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { Filter } from '../../../common/contracts/filters';
 import * as _ from 'lodash';
-import { LocalStorageService } from '../../../services/local-storage.service';
 import { Angulartics2 } from 'angulartics2';
 import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-dialog.component';
 import { LeaveConfirmDialogComponent } from '../../../dialogs/leave-confirm-dialog/leave-confirm-dialog.component';
 import { FileUploaderDialogComponent } from '../../../shared/components/file-uploader-dialog/file-uploader-dialog.component';
+import { EmsAuthService } from '../../../services';
 declare var $: any;
 
 @Component({
@@ -39,95 +39,50 @@ export class LeavesComponent implements OnInit, AfterViewInit {
   constructor(public validatorService: ValidatorService,
     private amsLeaveService: AmsLeaveService,
     public dialog: MdDialog,
-    private store: LocalStorageService,
+    public auth: EmsAuthService,
     private toastyService: ToastyService,
     private angulartics2: Angulartics2) {
 
-    this.userType = store.getItem('userType');
+    let filters = []
+    if (this.auth.hasPermission(['admin', 'superadmin'])) {
+      filters = [{
+        field: 'name',
+        value: null
+      }, {
+        field: 'status',
+        value: null
+      }, {
+        field: 'date',
+        value: null
+      }];
+    }
 
-    if (this.userType === 'admin') {
-      this.leaves = new Page({
-        api: amsLeaveService.teamLeaves,
-        filters: [{
-          field: 'name',
-          value: null
-        }, {
-          field: 'status',
-          value: null
-        }, {
-          field: 'date',
-          value: null
-        }]
-      });
-    }
-    if (this.userType === 'superadmin') {
-      this.leaves = new Page({
-        api: amsLeaveService.allLeavesOfOrg,
-        filters: [{
-          field: 'name',
-          value: null
-        }, {
-          field: 'status',
-          value: null
-        }, {
-          field: 'date',
-          value: null
-        }]
-      });
-    }
-    this.checkFiltersInStore();
+    this.leaves = new Page({
+      api: amsLeaveService.teamLeaves,
+      filters: filters
+    });
+    this.fetchLeaves();
   }
   fetch() {
     this.check = false;
-    console.log(this.Selected)
     this.Selected = [];
     this.fetchLeaves();
   }
 
   fetchLeaves(date?: Date) {
-
-    this.setFiltersToStore();
-
-    this.leaves.fetch().then(
-      data => {
-        const i: any = this.leaves.items.find((item: Leave) => {
-          return item.status.toLowerCase() === 'submitted'
-        });
-        if (i)
-          this.isShowLeaveAction = true;
-
-      }
-    ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+    this.leaves.fetch().then(data => {
+      const i: any = this.leaves.items.find((item: Leave) => {
+        return item.status.toLowerCase() === 'submitted'
+      });
+      if (i)
+        this.isShowLeaveAction = true;
+    }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
   reset() {
     this.leaves.filters.reset();
-    this.store.removeItem('leaves-filters')
     this.fetchLeaves();
   }
-
-  checkFiltersInStore() {
-    const filters: any = this.store.getObject('leaves-filters');
-    if (filters) {
-      this.isFilter = true;
-      this.leaves.filters.properties['status']['value'] = filters['status'] || null;
-      this.leaves.filters.properties['name']['value'] = filters['name'] || null;
-    }
-    this.fetchLeaves();
-  }
-
-  setFiltersToStore() {
-    const queryParams: any = {};
-    _.each(this.leaves.filters.properties, (filter: Filter, key: any, obj: any) => {
-      if (filter.value) {
-        queryParams[key] = filter.value;
-      }
-    })
-    if (queryParams) {
-      this.store.setObject('leaves-filters', queryParams);
-    }
-  }
-
 
   setDate(date: Date, days: number): Date {
     if (days && days < 1) {
@@ -142,12 +97,10 @@ export class LeavesComponent implements OnInit, AfterViewInit {
 
   updateStatus(leave: Leave) {
     this.isUpdatingLeaveStatus = true;
-    this.amsLeaveService.leaves.update(leave.id, leave, null, `${leave.id}/action`).then(
-      data => {
-        this.isUpdatingLeaveStatus = false;
-        this.fetchLeaves();
-      }
-    ).catch(err => {
+    this.amsLeaveService.leaves.update(leave.id, leave, null, `${leave.id}/action`).then(data => {
+      this.isUpdatingLeaveStatus = false;
+      this.fetchLeaves();
+    }).catch(err => {
       this.isUpdatingLeaveStatus = false;
       this.toastyService.error({ title: 'Error', msg: err });
     });
@@ -155,12 +108,9 @@ export class LeavesComponent implements OnInit, AfterViewInit {
   allLeaves(item: string) {
     if (this.Selected.includes(item)) {
       const i = this.Selected.indexOf(item)
-      console.log(i)
       this.Selected.splice(i, 1);
-      console.log(this.Selected)
     } else {
       this.Selected.push(item);
-      console.log(this.Selected)
     }
   }
   addLeaves(item: string) {
@@ -170,7 +120,6 @@ export class LeavesComponent implements OnInit, AfterViewInit {
       this.Selected.push(item);
       console.log(this.Selected)
     }
-
   }
 
   approveLeaves(status: string) {
@@ -220,7 +169,6 @@ export class LeavesComponent implements OnInit, AfterViewInit {
           leave.comment = reason;
           leave.status = status;
           this.updateStatus(leave)
-
         }
       });
     }
@@ -244,7 +192,7 @@ export class LeavesComponent implements OnInit, AfterViewInit {
     // $("#monthSelector").datepicker("setDate", null);
   }
   selectAll() {
-      this.select = !this.select;
+    this.select = !this.select;
   }
 
   ngOnInit() {
@@ -279,10 +227,10 @@ export class LeavesComponent implements OnInit, AfterViewInit {
       mapper: 'default',
       url_csv: 'assets/formats/leaves.csv',
       url_xlsx: 'assets/formats/leaves.xlsx'
-    // }, {
-    //   name: 'EXCEL',
-    //   mapper: 'default',
-    //   url: 'assets/formats/leaves.csv'
+      // }, {
+      //   name: 'EXCEL',
+      //   mapper: 'default',
+      //   url: 'assets/formats/leaves.csv'
     }];
 
     // component.mappers = [{
