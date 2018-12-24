@@ -22,10 +22,10 @@ export class AmsShiftService {
 
   shiftColour = function (shiftType: ShiftType) {
     if (shiftType && shiftType.id) {
-      return shiftType.color || '#4da6ff'
+      return shiftType.color || '#000000'
     }
 
-    return '#4da6ff'
+    return '#000000'
   }
 
 }
