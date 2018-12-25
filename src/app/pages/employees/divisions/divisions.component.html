@@ -27,12 +27,12 @@
 </div>
 <md-card class="filters" *ngIf="isFilter">
   <div class="flex-row three">
-  <div class="form-group">
-    <label for="name">Division</label>
-    <input class="form-control" ngui-auto-complete [min-chars]="1" placeholder="Division search" [(ngModel)]="selectedDivision"
-      (valueChanged)="onSelectDivision($event)" [source]="divisionSource.bind(this)" [value-formatter]="divisionFormatter"
-      [list-formatter]="divisionListFormatter" />
-  </div>
+    <div class="form-group">
+      <label for="name">Division</label>
+      <input class="form-control" ngui-auto-complete [min-chars]="1" placeholder="Division search" [(ngModel)]="selectedDivision"
+        (valueChanged)="onSelectDivision($event)" [source]="divisionSource.bind(this)" [value-formatter]="divisionFormatter"
+        [list-formatter]="divisionListFormatter" />
+    </div>
   </div>
   <md-card-footer>
     <div class="flex-row">
@@ -47,164 +47,112 @@
 
 <!-- <aqua-employees-filter *ngIf="isFilter" [fields]="filterFields" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter> -->
 <md-spinner class="custom_spinner" *ngIf="divisions?.isLoading   || division.isProcessing  " mode="indeterminate"></md-spinner>
-<div class="row" *ngIf="isNew">
-  <md-card>
-      <div class="dialog_Header text-center">
-          <h5>
-              <b>New Division</b>
-          </h5>
-        </div>
-        <br>
-        <br class="fieldsGap">
-        <div class=" form-group row">
-            <div class="fields">
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                <b>Name</b>
-    
-              </div>
-              <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                  <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="divisions?.isLoading   || division?.isProcessing  "
-                  [(ngModel)]="division.properties.name" name="Name" required>
-              </div>
-            </div>
-            <div class="fields">
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                <b>Code</b>
-              </div>
-              <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                  <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="divisions?.isLoading   || division?.isProcessing  "
-                  [(ngModel)]="division.properties.code" name="Code" (change)="nameChange()">
-              </div>
-            </div>
-          </div>   
-  </md-card>
-  <md-card>
-      <div class="dialog_Header text-center">
-        <h5>
-          <b>Address</b>
-        </h5>
+<div class="popup" *ngIf="isNew">
+  <div class="backdrop"></div>
+  <div class="outer">
+    <div class="content narrow">
+      <h4>Division</h4>
+      <div class="form-group">
+        <label>Name:</label>
+        <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="divisions?.isLoading   || division?.isProcessing  "
+          [(ngModel)]="division.properties.name" name="Name" required>
       </div>
-      <br>
-      <div class=" form-group row">
-        <div class="fields">
-          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-            <b>Line 1:</b>
-
-          </div>
-          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-            <input name="line1" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="division.properties.address.line1">
-          </div>
-        </div>
-        <div class="fields">
-          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-            <b>Line 2:</b>
-          </div>
-          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-            <input name="line2" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="division.properties.address.line2">
-          </div>
-        </div>
+      <div class="form-group">
+        <label>Code:</label>
+        <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="divisions?.isLoading   || division?.isProcessing  "
+          [(ngModel)]="division.properties.code" name="Code" (change)="nameChange()">
       </div>
-      <div class=" form-group row">
-        <div class="fields">
-          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-            <b>City:</b>
-
-          </div>
-          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+      <div class="section">
+        <h5>Address</h5>
+        <div class=" form-group">
+          <label>Line 1:</label>
+          <input name="line1" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="division.properties.address.line1">
+        </div>
+        <div class=" form-group">
+          <label>Line 2:</label>
+          <input name="line2" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="division.properties.address.line2">
+        </div>
+        <div class="flex-row two">
+          <div class=" form-group">
+            <label>City:</label>
             <input name="city" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="division.properties.address.city">
           </div>
-        </div>
-        <div class="fields">
-          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-            <b>District:</b>
-          </div>
-          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+          <div class=" form-group">
+            <label>District:</label>
             <input name="district" type="text" class="form-control" [maxlength]="validatorService.textLength"
               [(ngModel)]="division.properties.address.district">
           </div>
-        </div>
-      </div>
-      <div class=" form-group row">
-        <div class="fields">
-          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-            <b>State:</b>
-
-          </div>
-          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+          <div class=" form-group">
+            <label>State:</label>
             <input name="state" type="text" class="form-control" [maxlength]="validatorService.textLength" [(ngModel)]="division.properties.address.state">
           </div>
-        </div>
-        <div class="fields">
-          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-            <b>Pin Code:</b>
-          </div>
-          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+          <div class=" form-group">
+            <label>Pin Code:</label>
             <input name="pincode" #pincode="ngModel" type="text" class="form-control" [maxlength]="validatorService.pinCodeLength"
               [minlength]="validatorService.pinCodeLength" [pattern]="validatorService.onlyNumber" [(ngModel)]="division.properties.address.pinCode">
             <span class="asterisk" *ngIf="pincode.invalid">Enter 6 digit valid pin code</span>
           </div>
         </div>
       </div>
-    </md-card>
-    <div class="controls-row footer">
+      <div class="controls-row footer">
         <span class="spacer"></span>
-        <button [disabled]="divisions?.isLoading   || division?.isProcessing  " type="submit" md-raised-button
-          color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="save();">Save</button>&nbsp;&nbsp;
-        <button [disabled]="divisions?.isLoading   || division?.isProcessing  " md-raised-button class="btn_grey"
-          mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="toggleDivision(true)">Reset</button>
+        <button [disabled]="divisions?.isLoading   || division?.isProcessing  " md-button mdTooltip="Reset"
+          [mdTooltipPosition]="'above'" (click)="toggleDivision(false)">Cancel</button>
+        <button [disabled]="divisions?.isLoading   || division?.isProcessing  " type="submit" md-raised-button color="primary"
+          mdTooltip="Save" [mdTooltipPosition]="'above'" (click)="save();">Save</button>
       </div>
+    </div>
+  </div>
 </div>
 
 
-<div class="row">
-  <md-card class="card">
-    <div class="row text-center noData" *ngIf="divisions?.items?.length == 0">
-      <h5>
-        <b>No data to display !</b>
-      </h5>
-    </div>
-    <div class="table-responsive" *ngIf="divisions?.items?.length > 0">
-      <table class="table table-condensed table-hover">
-        <thead class="primary_thead">
-          <tr>
-            <th>Code</th>
-            <th class="tdWidth">Name</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of divisions.items;let i = index" class="capitalize">
-            <td>
-              <input [maxlength]="validatorService.textLength" type="text" [name]="'code_'+i" [disabled]="divisions.isLoading || division.isProcessing"
-                readonly class="number form-control input-xs" [(ngModel)]="item.code">
-            </td>
-            <td class="col-md-6">
-              <input [maxlength]="validatorService.textLength" type="text" [name]="'name_'+i" [readOnly]="divisions.isLoading || division.isProcessing || !item?.isEdit"
-                class="number form-control input-xs" [(ngModel)]="item.name">
-            </td>
 
-            <td class="btnClmWidth">
-              <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit"
-                [mdTooltipPosition]="'above'" (click)="edit(item, true)">
-                <md-icon>edit</md-icon>
-              </button>
-              <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit"
-                [mdTooltipPosition]="'above'" (click)="removeConfirm(item)">
-                <md-icon>delete</md-icon>
-              </button>
-              <button *ngIf="item?.isEdit" [disabled]="divisions.isLoading || division.isProcessing"
-                md-icon-button class="button_align cursor " (click)="save(item)" mdTooltip="Save" [mdTooltipPosition]="'above'">
-                <md-icon>save</md-icon>
-              </button>
-              <button *ngIf="item?.isEdit" [disabled]="divisions.isLoading || division.isProcessing"
-                md-icon-button class="button_align cursor" (click)="edit(item, false)" mdTooltip="Cancel"
-                [mdTooltipPosition]="'above'">
-                <md-icon>undo</md-icon>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </md-card>
-</div>
+<md-card class="card">
+  <div class="row text-center noData" *ngIf="divisions?.items?.length == 0">
+    <h5>
+      <b>No data to display !</b>
+    </h5>
+  </div>
+  <div class="table-responsive" *ngIf="divisions?.items?.length > 0">
+    <table class="table table-condensed table-hover">
+      <thead class="primary_thead">
+        <tr>
+          <th>Code</th>
+          <th class="tdWidth">Name</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of divisions.items;let i = index" class="capitalize">
+          <td>
+            <input [maxlength]="validatorService.textLength" type="text" [name]="'code_'+i" [disabled]="divisions.isLoading || division.isProcessing"
+              readonly class="number form-control input-xs" [(ngModel)]="item.code">
+          </td>
+          <td class="col-md-6">
+            <input [maxlength]="validatorService.textLength" type="text" [name]="'name_'+i" [readOnly]="divisions.isLoading || division.isProcessing || !item?.isEdit"
+              class="number form-control input-xs" [(ngModel)]="item.name">
+          </td>
+
+          <td class="btnClmWidth">
+            <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit"
+              [mdTooltipPosition]="'above'" (click)="edit(item, true)">
+              <md-icon>edit</md-icon>
+            </button>
+            <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit"
+              [mdTooltipPosition]="'above'" (click)="removeConfirm(item)">
+              <md-icon>delete</md-icon>
+            </button>
+            <button *ngIf="item?.isEdit" [disabled]="divisions.isLoading || division.isProcessing" md-icon-button class="button_align cursor "
+              (click)="save(item)" mdTooltip="Save" [mdTooltipPosition]="'above'">
+              <md-icon>save</md-icon>
+            </button>
+            <button *ngIf="item?.isEdit" [disabled]="divisions.isLoading || division.isProcessing" md-icon-button class="button_align cursor"
+              (click)="edit(item, false)" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
+              <md-icon>undo</md-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</md-card>

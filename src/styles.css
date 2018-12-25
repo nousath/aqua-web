@@ -388,6 +388,10 @@ button.phantom {
     flex-basis: 100%;
 }
 
+.flex-row.two>div {
+    flex-basis: 100%;
+}
+
 @media (max-width: 400px) {
     .flex-row {
         flex-wrap: wrap;
@@ -399,6 +403,9 @@ button.phantom {
         flex-basis: 100%;
     }
     .flex-row.three>div {
+        flex-basis: 100%;
+    }
+    .flex-row.two>div {
         flex-basis: 100%;
     }
 }
@@ -416,6 +423,9 @@ button.phantom {
     .flex-row.three>div {
         flex-basis: 100%;
     }
+    .flex-row.two>div {
+        flex-basis: 100%;
+    }
 }
 
 @media screen and (min-width:800px) {
@@ -430,6 +440,9 @@ button.phantom {
     }
     .flex-row.three>div {
         flex-basis: 33%;
+    }
+    .flex-row.two>div {
+        flex-basis: 50%;
     }
     .flex-row .left {
         flex-basis: 33%;
@@ -518,6 +531,15 @@ button.phantom {
 .mini-control .mat-button-toggle-label-content {
     line-height: 25px;
     font-size: smaller;
+}
+
+
+.section>h5 {
+    text-align: center;
+    width: 100%;
+    color: #ccc;
+    padding-bottom: 4px;
+    margin: 7px 10px;
 }
 
 .footer {
