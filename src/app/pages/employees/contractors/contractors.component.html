@@ -1,38 +1,38 @@
 <div class="tool-bar controls-row">
-  <h5>Contractors</h5>
-  <span class="spacer"></span>
-  <div class="input-group">
-    <span class="input-group-addon">Status:</span>
-    <select class="form-control" [(ngModel)]="statusFilter" (change)="fetchByStatus()">
-      <option [value]="'active'">Active</option>
-      <option [value]="'inactive'">Deactivated</option>
-    </select>
-  </div>
-  <button md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'">
-    <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
-  </button>
-  <button [matMenuTriggerFor]="moreMenu" md-icon-button>
-    <md-icon>more_vert</md-icon>
-  </button>
-  <md-menu #moreMenu="mdMenu">
-    <button md-menu-item [disabled]=" contractors?.isLoading   ||  contractor.isProcessing  " mdTooltip="Add"
-      [mdTooltipPosition]="'above'" (click)="toggleContractor(true)">
-      <md-icon>add_circle_outline</md-icon> New Contractor
-    </button>
-    <button md-menu-item (click)="import()" mdTooltip="Upload" [mdTooltipPosition]="'above'" angulartics2On="click"
-      angularticsEvent="excelUploadClick" angularticsCategory="designation ">
-      <md-icon>cloud_upload</md-icon> Import
-    </button>
-  </md-menu>
-</div>
-<md-card class="filters" *ngIf="isFilter">
-    <div class="flex-row three">
-    <div class="form-group">
-      <label for="name">Contractor</label>
-      <input class="form-control" ngui-auto-complete [min-chars]="1" placeholder="Contractor search" [(ngModel)]="selectedContractor"
-        (valueChanged)="onSelectCont($event)" [source]="contSource.bind(this)" [value-formatter]="contFormatter"
-        [list-formatter]="contListFormatter" />
+    <h5>Contractors</h5>
+    <span class="spacer"></span>
+    <div class="input-group">
+      <span class="input-group-addon">Status:</span>
+      <select class="form-control" [(ngModel)]="statusFilter" (change)="fetchByStatus()">
+        <option [value]="'active'">Active</option>
+        <option [value]="'inactive'">Deactivated</option>
+      </select>
     </div>
+    <button md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" [mdTooltipPosition]="'above'">
+      <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
+    </button>
+    <button [matMenuTriggerFor]="moreMenu" md-icon-button>
+      <md-icon>more_vert</md-icon>
+    </button>
+    <md-menu #moreMenu="mdMenu">
+      <button md-menu-item [disabled]="contractors?.isLoading   || contractor.isProcessing  " mdTooltip="Add"
+        [mdTooltipPosition]="'above'" (click)="toggleContractor(true)">
+        <md-icon>add_circle_outline</md-icon> New Contractor
+      </button>
+      <button md-menu-item (click)="import()" mdTooltip="Uploader" [mdTooltipPosition]="'above'" angulartics2On="click"
+        angularticsEvent="excelUploadClick" angularticsCategory="contractor ">
+        <md-icon>cloud_upload</md-icon> Import
+      </button>
+    </md-menu>
+  </div>
+  <md-card class="filters" *ngIf="isFilter">
+    <div class="flex-row three">
+      <div class="form-group">
+        <label for="name">Contractor</label>
+        <input class="form-control" ngui-auto-complete [min-chars]="1" placeholder="Contractor search" [(ngModel)]="selectedContractor"
+          (valueChanged)="onSelectCont($event)" [source]="contSource.bind(this)" [value-formatter]="contFormatter"
+          [list-formatter]="contListFormatter" />
+      </div>
     </div>
     <md-card-footer>
       <div class="flex-row">
@@ -44,66 +44,44 @@
       </div>
     </md-card-footer>
   </md-card>
-<!-- <aqua-employees-filter *ngIf="isFilter" [fields]="filterFields" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter> -->
-<md-spinner class="custom_spinner" *ngIf=" contractors?.isLoading   ||  contractor.isProcessing  " mode="indeterminate"></md-spinner>
-
-<div class="row" *ngIf="isNew">
-  <md-card class="card">
-    <div class="row text-center headr_bar">
-      <h5>
-        <b>New Contractor</b>
-      </h5>
-      <div class="actionBtns">
-        <button md-icon-button mdTooltip="Close" [mdTooltipPosition]="'above'" (click)="toggleContractor()">
-          <md-icon>highlight_off</md-icon>
-        </button>
+  
+  <!-- <aqua-employees-filter *ngIf="isFilter" [fields]="filterFields" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter> -->
+  <md-spinner class="custom_spinner" *ngIf="contractors?.isLoading   || contractor.isProcessing  " mode="indeterminate"></md-spinner>
+  <div class="popup" *ngIf="isNew">
+    <div class="backdrop"></div>
+    <div class="outer">
+      <div class="content narrow">
+        <h4>Contractor</h4>
+        <div class="form-group">
+          <label>Name:</label>
+          <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="contractors?.isLoading   || contractor?.isProcessing  "
+            [(ngModel)]="contractor.properties.name" name="Name" required>
+        </div>
+        <div class="form-group">
+          <label>Code:</label>
+          <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="contractors?.isLoading   || contractor?.isProcessing  "
+            [(ngModel)]="contractor.properties.code" name="Code" (change)="nameChange()">
+        </div>
+        <div class="controls-row footer">
+          <span class="spacer"></span>
+          <button [disabled]="contractors?.isLoading   || contractor?.isProcessing  " md-button mdTooltip="Reset"
+            [mdTooltipPosition]="'above'" (click)="toggleContractor(false)">Cancel</button>
+          <button [disabled]="contractors?.isLoading   || contractor?.isProcessing  " type="submit" md-raised-button color="primary"
+            mdTooltip="Save" [mdTooltipPosition]="'above'" (click)="save();">Save</button>
+        </div>
       </div>
     </div>
-    <br>
-    <form class="row">
-      <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5  form-group">
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-          <label for="email">Name
-            <span class="asterisk">*</span>
-          </label>
-        </div>
-        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-          <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]=" contractors?.isLoading   ||  contractor?.isProcessing  "
-            [(ngModel)]=" contractor.properties.name" name="Name" required (change)="nameChange()">
-        </div>
-      </div>
-
-      <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5  form-group">
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-          <label for="email">Code
-          </label>
-        </div>
-        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-          <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]=" contractors?.isLoading   ||  contractor?.isProcessing  "
-            [(ngModel)]=" contractor.properties.code" name="Code" (change)="nameChange()">
-        </div>
-      </div>
-
-      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 button_align form-group text-center" style="float:right">
-        <button [disabled]=" contractors?.isLoading   ||  contractor?.isProcessing  " type="submit" md-raised-button
-          color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="save();">Save</button>&nbsp;&nbsp;
-        <button [disabled]=" contractors?.isLoading   ||  contractor?.isProcessing  " md-raised-button class="btn_grey"
-          mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="toggleContractor(true)">Reset</button>
-      </div>
-
-    </form>
-  </md-card>
-</div>
-
-
-<div class="row">
+  </div>
+  
+  
+  
   <md-card class="card">
-    <div class="row text-center noData" *ngIf=" contractors?.items?.length == 0">
+    <div class="row text-center noData" *ngIf="contractors?.items?.length == 0">
       <h5>
         <b>No data to display !</b>
       </h5>
     </div>
-    <div class="table-responsive" *ngIf=" contractors?.items?.length > 0">
+    <div class="table-responsive" *ngIf="contractors?.items?.length > 0">
       <table class="table table-condensed table-hover">
         <thead class="primary_thead">
           <tr>
@@ -113,32 +91,31 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of  contractors.items;let i = index" class="capitalize">
+          <tr *ngFor="let item of contractors.items;let i = index" class="capitalize">
             <td>
-              <input [maxlength]="validatorService.textLength" type="text" [name]="'code_'+i" [readOnly]=" contractors.isLoading ||  contractor.isProcessing || !item?.isEdit"
-                class="number form-control input-xs" [(ngModel)]="item.code">
+              <input [maxlength]="validatorService.textLength" type="text" [name]="'code_'+i" [disabled]="contractors.isLoading || contractor.isProcessing"
+                readonly class="number form-control input-xs" [(ngModel)]="item.code">
             </td>
             <td class="col-md-6">
-              <input [maxlength]="validatorService.textLength" type="text" [name]="'name_'+i" [readOnly]=" contractors.isLoading ||  contractor.isProcessing || !item?.isEdit"
+              <input [maxlength]="validatorService.textLength" type="text" [name]="'name_'+i" [readOnly]="contractors.isLoading || contractor.isProcessing || !item?.isEdit"
                 class="number form-control input-xs" [(ngModel)]="item.name">
             </td>
-
+  
             <td class="btnClmWidth">
               <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit"
                 [mdTooltipPosition]="'above'" (click)="edit(item, true)">
                 <md-icon>edit</md-icon>
               </button>
-              <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Delete"
+              <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit"
                 [mdTooltipPosition]="'above'" (click)="removeConfirm(item)">
                 <md-icon>delete</md-icon>
               </button>
-              <button *ngIf="item?.isEdit" [disabled]=" contractors.isLoading ||  contractor.isProcessing"
-                md-icon-button class="button_align cursor " (click)="save(item)" mdTooltip="Save" [mdTooltipPosition]="'above'">
+              <button *ngIf="item?.isEdit" [disabled]="contractors.isLoading || contractor.isProcessing" md-icon-button class="button_align cursor "
+                (click)="save(item)" mdTooltip="Save" [mdTooltipPosition]="'above'">
                 <md-icon>save</md-icon>
               </button>
-              <button *ngIf="item?.isEdit" [disabled]=" contractors.isLoading ||  contractor.isProcessing"
-                md-icon-button class="button_align cursor" (click)="edit(item, false)" mdTooltip="Cancel"
-                [mdTooltipPosition]="'above'">
+              <button *ngIf="item?.isEdit" [disabled]="contractors.isLoading || contractor.isProcessing" md-icon-button class="button_align cursor"
+                (click)="edit(item, false)" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
                 <md-icon>undo</md-icon>
               </button>
             </td>
@@ -147,4 +124,4 @@
       </table>
     </div>
   </md-card>
-</div>
+  

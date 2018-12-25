@@ -1,100 +1,80 @@
 <div class="tool-bar controls-row">
-  <h5>Designations</h5>
-  <span class="spacer"></span>
-  <div class="input-group">
-    <span class="input-group-addon">Status:</span>
-    <select class="form-control" [(ngModel)]="statusFilter" (change)="fetchByStatus()">
-      <option [value]="'active'">Active</option>
-      <option [value]="'inactive'">Deactivated</option>
-    </select>
-  </div>
-  <button md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" [mdTooltipPosition]="'above'">
-    <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
-  </button>
-  <button [matMenuTriggerFor]="moreMenu" md-icon-button>
-    <md-icon>more_vert</md-icon>
-  </button>
-  <md-menu #moreMenu="mdMenu">
-    <button md-menu-item [disabled]="designations?.isLoading   || designation.isProcessing  " mdTooltip="Add"
-      [mdTooltipPosition]="'above'" (click)="toggleDesignation(true)">
-      <md-icon>add_circle_outline</md-icon> New Designation
+    <h5>Designations</h5>
+    <span class="spacer"></span>
+    <div class="input-group">
+      <span class="input-group-addon">Status:</span>
+      <select class="form-control" [(ngModel)]="statusFilter" (change)="fetchByStatus()">
+        <option [value]="'active'">Active</option>
+        <option [value]="'inactive'">Deactivated</option>
+      </select>
+    </div>
+    <button md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" [mdTooltipPosition]="'above'">
+      <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
     </button>
-    <button md-menu-item (click)="import()" mdTooltip="Uploader" [mdTooltipPosition]="'above'" angulartics2On="click"
-      angularticsEvent="excelUploadClick" angularticsCategory="designation ">
-      <md-icon>cloud_upload</md-icon> Import
+    <button [matMenuTriggerFor]="moreMenu" md-icon-button>
+      <md-icon>more_vert</md-icon>
     </button>
-  </md-menu>
-</div>
-<md-card class="filters" *ngIf="isFilter">
-  <div class="flex-row three">
-  <div class="form-group">
-    <label for="name">Designation</label>
-    <input class="form-control" ngui-auto-complete [min-chars]="1" placeholder="Designation search" [(ngModel)]="selectedDesignation"
-      (valueChanged)="onSelectDesignation($event)" [source]="designationSource.bind(this)" [value-formatter]="designationFormatter"
-      [list-formatter]="designationListFormatter" />
+    <md-menu #moreMenu="mdMenu">
+      <button md-menu-item [disabled]="designations?.isLoading   || designation.isProcessing  " mdTooltip="Add"
+        [mdTooltipPosition]="'above'" (click)="toggleDesignation(true)">
+        <md-icon>add_circle_outline</md-icon> New Designation
+      </button>
+      <button md-menu-item (click)="import()" mdTooltip="Uploader" [mdTooltipPosition]="'above'" angulartics2On="click"
+        angularticsEvent="excelUploadClick" angularticsCategory="designation ">
+        <md-icon>cloud_upload</md-icon> Import
+      </button>
+    </md-menu>
   </div>
-  </div>
-  <md-card-footer>
-    <div class="flex-row">
-      <div class="spacer"></div>
+  <md-card class="filters" *ngIf="isFilter">
+    <div class="flex-row three">
       <div class="form-group">
-        <button md-button mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()">Reset</button>
-        <button md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="apply()">Apply</button>
+        <label for="name">Designation</label>
+        <input class="form-control" ngui-auto-complete [min-chars]="1" placeholder="Designation search" [(ngModel)]="selectedDesignation"
+          (valueChanged)="onSelectDesignation($event)" [source]="designationSource.bind(this)" [value-formatter]="designationFormatter"
+          [list-formatter]="designationListFormatter" />
       </div>
     </div>
-  </md-card-footer>
-</md-card>
-<!-- <aqua-employees-filter *ngIf="isFilter" [fields]="filterFields" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter> -->
-<md-spinner class="custom_spinner" *ngIf="designations?.isLoading   || designation.isProcessing  " mode="indeterminate"></md-spinner>
-<div class="row" *ngIf="isNew">
-  <md-card class="card">
-    <div class="row text-center headr_bar">
-      <h5>
-        <b>New Designation</b>
-      </h5>
-      <div class="actionBtns">
-        <button md-icon-button mdTooltip="Close" [mdTooltipPosition]="'above'" (click)="toggleDesignation()">
-          <md-icon>highlight_off</md-icon>
-        </button>
-      </div>
-    </div>
-    <br>
-    <form class="row">
-      <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5  form-group">
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-          <label for="email">Name
-            <span class="asterisk">*</span>
-          </label>
+    <md-card-footer>
+      <div class="flex-row">
+        <div class="spacer"></div>
+        <div class="form-group">
+          <button md-button mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()">Reset</button>
+          <button md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="apply()">Apply</button>
         </div>
-        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+      </div>
+    </md-card-footer>
+  </md-card>
+  
+  <!-- <aqua-employees-filter *ngIf="isFilter" [fields]="filterFields" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter> -->
+  <md-spinner class="custom_spinner" *ngIf="designations?.isLoading   || designation.isProcessing  " mode="indeterminate"></md-spinner>
+  <div class="popup" *ngIf="isNew">
+    <div class="backdrop"></div>
+    <div class="outer">
+      <div class="content narrow">
+        <h4>Designation</h4>
+        <div class="form-group">
+          <label>Name:</label>
           <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="designations?.isLoading   || designation?.isProcessing  "
             [(ngModel)]="designation.properties.name" name="Name" required>
         </div>
-      </div>
-
-      <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5  form-group">
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-          <label for="email">Code
-          </label>
-        </div>
-        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+        <div class="form-group">
+          <label>Code:</label>
           <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="designations?.isLoading   || designation?.isProcessing  "
             [(ngModel)]="designation.properties.code" name="Code" (change)="nameChange()">
         </div>
+        <div class="controls-row footer">
+          <span class="spacer"></span>
+          <button [disabled]="designations?.isLoading   || designation?.isProcessing  " md-button mdTooltip="Reset"
+            [mdTooltipPosition]="'above'" (click)="toggleDesignation(false)">Cancel</button>
+          <button [disabled]="designations?.isLoading   || designation?.isProcessing  " type="submit" md-raised-button color="primary"
+            mdTooltip="Save" [mdTooltipPosition]="'above'" (click)="save();">Save</button>
+        </div>
       </div>
-      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 button_align form-group text-center" style="float:right">
-        <button [disabled]="designations?.isLoading   || designation?.isProcessing  " type="submit" md-raised-button
-          color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="save();">Save</button>&nbsp;&nbsp;
-        <button [disabled]="designations?.isLoading   || designation?.isProcessing  " md-raised-button class="btn_grey"
-          mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="toggleDesignation(true)">Reset</button>
-      </div>
-
-    </form>
-  </md-card>
-</div>
-
-
-<div class="row">
+    </div>
+  </div>
+  
+  
+  
   <md-card class="card">
     <div class="row text-center noData" *ngIf="designations?.items?.length == 0">
       <h5>
@@ -120,7 +100,7 @@
               <input [maxlength]="validatorService.textLength" type="text" [name]="'name_'+i" [readOnly]="designations.isLoading || designation.isProcessing || !item?.isEdit"
                 class="number form-control input-xs" [(ngModel)]="item.name">
             </td>
-
+  
             <td class="btnClmWidth">
               <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit"
                 [mdTooltipPosition]="'above'" (click)="edit(item, true)">
@@ -130,13 +110,12 @@
                 [mdTooltipPosition]="'above'" (click)="removeConfirm(item)">
                 <md-icon>delete</md-icon>
               </button>
-              <button *ngIf="item?.isEdit" [disabled]="designations.isLoading || designation.isProcessing"
-                md-icon-button class="button_align cursor " (click)="save(item)" mdTooltip="Save" [mdTooltipPosition]="'above'">
+              <button *ngIf="item?.isEdit" [disabled]="designations.isLoading || designation.isProcessing" md-icon-button class="button_align cursor "
+                (click)="save(item)" mdTooltip="Save" [mdTooltipPosition]="'above'">
                 <md-icon>save</md-icon>
               </button>
-              <button *ngIf="item?.isEdit" [disabled]="designations.isLoading || designation.isProcessing"
-                md-icon-button class="button_align cursor" (click)="edit(item, false)" mdTooltip="Cancel"
-                [mdTooltipPosition]="'above'">
+              <button *ngIf="item?.isEdit" [disabled]="designations.isLoading || designation.isProcessing" md-icon-button class="button_align cursor"
+                (click)="edit(item, false)" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
                 <md-icon>undo</md-icon>
               </button>
             </td>
@@ -145,4 +124,4 @@
       </table>
     </div>
   </md-card>
-</div>
+  
