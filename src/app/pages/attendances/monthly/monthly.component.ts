@@ -33,7 +33,8 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
     'supervisor',
     'departments',
     'userTypes',
-    'contractors'
+    'contractors',
+    'divisions'
   ]
 
   isDownloading = false;
@@ -48,7 +49,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
 
     this.monthlyAttendnace = new Page({
       api: amsAttendanceService.monthlyAttendances,
-      filters: ['ofDate', 'name', 'code', 'designations', 'departments', 'supervisorId', 'userTypes', 'tagIds', 'contractors']
+      filters: ['ofDate', 'name', 'code', 'designations', 'departments', 'supervisorId', 'userTypes', 'tagIds', 'contractors', 'divisions']
     });
   }
 
@@ -71,6 +72,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
     filters['supervisorId']['value'] = values.supervisorId;
     filters['userTypes']['value'] = values.userTypeIds;
     filters['contractors']['value'] = values.contractors;
+    filters['divisions']['value'] = values.divisions;
     filters['tagIds']['value'] = values.tagIds;
 
     this.getAttendance();

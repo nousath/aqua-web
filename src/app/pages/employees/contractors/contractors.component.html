@@ -1,6 +1,13 @@
 <div class="tool-bar controls-row">
   <h5>Contractors</h5>
   <span class="spacer"></span>
+  <div class="input-group">
+    <span class="input-group-addon">Status:</span>
+    <select class="form-control" [(ngModel)]="statusFilter" (change)="fetchByStatus()">
+      <option [value]="'active'">Active</option>
+      <option [value]="'inactive'">Deactivated</option>
+    </select>
+  </div>
   <button md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'">
     <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
   </button>
@@ -20,11 +27,11 @@
 </div>
 <md-card class="filters" *ngIf="isFilter">
     <div class="flex-row three">
-    <div class="form-group" *ngIf="contractorList.length >1">
-      <label>Department</label>
-      <angular2-multiselect [data]="contractorList" class="form-control" [(ngModel)]="selectedContractor" [settings]="dropdownSettings"
-        (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
-        (onDeSelectAll)="onDeSelectAll($event)" [ngModelOptions]="{standalone: true}"></angular2-multiselect>
+    <div class="form-group">
+      <label for="name">Contractor</label>
+      <input class="form-control" ngui-auto-complete [min-chars]="1" placeholder="Contractor search" [(ngModel)]="selectedContractor"
+        (valueChanged)="onSelectCont($event)" [source]="contSource.bind(this)" [value-formatter]="contFormatter"
+        [list-formatter]="contListFormatter" />
     </div>
     </div>
     <md-card-footer>

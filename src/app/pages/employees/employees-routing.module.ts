@@ -6,6 +6,7 @@ import { EmpEditComponent } from './emp-edit/emp-edit.component';
 import { DesignationsComponent } from './designations/designations.component';
 import { DepartmentsComponent } from './departments/departments.component';
 import { ContractorsComponent } from './contractors/contractors.component';
+import { DivisionsComponent } from './divisions/divisions.component';
 
 
 const routes: Routes = [
@@ -15,6 +16,7 @@ const routes: Routes = [
       { path: 'designations', component: DesignationsComponent },
       { path: 'departments', component: DepartmentsComponent },
       { path: 'contractors', component: ContractorsComponent },
+      { path: 'divisions', component: DivisionsComponent },
       { path: ':id', component: EmpEditComponent },
     ]
   }

@@ -1,9 +1,8 @@
 import { Organization } from '../organization';
-import { Device } from '../device';
-import { ShiftType } from '../shift-type';
 import { Designation } from '../designation';
 import { Department } from '../department';
 import { Contractor } from '../contractor';
+import { Division } from '../division';
 import { Doc } from '../doc.model';
 import { Role } from './role';
 
@@ -53,6 +52,7 @@ export class CustomFields {
   dom: Date;
   biometricId: string;
   contractor: Contractor;
+  division: Division;
   employmentType: string;
   accountNo: string;
   accountHolder: string;

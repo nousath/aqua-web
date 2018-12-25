@@ -1,6 +1,5 @@
 export class Contractor {
-  id: string;
-
+  id: number = null;
   name = '';
   code = '';
   isEdit = false;

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Page } from '../../../common/contracts/page';
 import { Model } from '../../../common/contracts/model';
-import { ValidatorService } from '../../../services';
+import { ValidatorService, AutoCompleteService } from '../../../services';
 import { EmsContractorService } from '../../../services/ems/ems-contractor.service';
 import { ToastyService } from 'ng2-toasty';
 import * as _ from 'lodash';
@@ -12,6 +12,7 @@ import { Contractor } from '../../../models/contractor';
 import { FileUploader } from 'ng2-file-upload';
 import { FileUploaderDialogComponent } from '../../../shared/components/file-uploader-dialog/file-uploader-dialog.component';
 import { ServerPageInput } from '../../../common/contracts/api';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'aqua-contractors',
@@ -22,19 +23,23 @@ export class ContractorsComponent implements OnInit {
   contractors: Page<Contractor>
   contractor: Model<Contractor>
   contractorA: Contractor[];
-  selectedContractor = [];
+  selectedContractor: Contractor;
   contractorId: number;
   isNew = false;
   uploader: FileUploader;
   isUpload = false;
   isFilter = false;
   contractorList = [];
+  statusFilter = 'active';
   filterFields = [
-    'name'
+    'name',
+    'code',
+    'status'
   ]
   dropdownSettings = {};
   constructor(private emsContractorService: EmsContractorService,
     public validatorService: ValidatorService,
+    private autoCompleteService: AutoCompleteService,
     private store: LocalStorageService,
     private toastyService: ToastyService,
     public dialog: MdDialog) {
@@ -47,7 +52,9 @@ export class ContractorsComponent implements OnInit {
         //   value: 1,
         // },
         'ofDate',
-        'name']
+        'name',
+        'code',
+      'status']
     });
 
     this.contractor = new Model({
@@ -56,21 +63,19 @@ export class ContractorsComponent implements OnInit {
     });
 
     this.fetchContractor();
-    this.dropdownSettings = {
-      singleSelection: false,
-      idField: 'id',
-      textField: 'name',
-      text: '',
-      selectAllText: 'All',
-      unSelectAllText: 'All',
-      enableSearchFilter: true,
-      classes: 'myclass',
-      displayAllSelectedText: true,
-      maxHeight: 200,
-      badgeShowLimit: 1
-    };
   }
-
+  onSelectCont(cont: Contractor) {
+    this.selectedContractor = cont
+  }
+  contSource(keyword: string): Observable<Contractor[]> {
+    return this.autoCompleteService.searchByKey<Contractor>('name', keyword, 'ems', 'contractors');
+  }
+  contFormatter(data: Contractor): string {
+    return data.name;
+  }
+  contListFormatter(data: Contractor): string {
+    return `${data.name} (${data.code})`;
+  }
   fetchContractor() {
     this.contractors.fetch().then(
       data => {
@@ -80,18 +85,24 @@ export class ContractorsComponent implements OnInit {
       }
     ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
-
-  applyFilters(values) {
+  fetchByStatus() {
+    this.apply()
+  }
+  applyFilters(params) {
     const filters = this.contractors.filters.properties;
-    filters['name']['value'] = values.name ? values.name.map(item => item) : '';
+    const values = params.contractor
+    filters['status'].value = this.statusFilter ? this.statusFilter : 'active';
+    filters['name']['value'] = values && values.name ? values.name : '';
     this.fetchContractor();
   }
   apply() {
     const params: any = {}
-    if (this.selectedContractor && this.selectedContractor.length) {
-      params.name = this.selectedContractor.map(item => item.itemName)
-      params.id = this.selectedContractor.map(item => item.id)
-      params.code = this.selectedContractor.map(item => item.itemCode)
+    if (this.selectedContractor) {
+      params.contractor = {
+        id: this.selectedContractor.id,
+        code: this.selectedContractor.code,
+        name: this.selectedContractor.name
+      }
     }
     this.applyFilters(params)
   }
@@ -113,16 +124,9 @@ export class ContractorsComponent implements OnInit {
     });
   }
 
-  onItemSelect(item: any) {
-  }
-  OnItemDeSelect(item: any) {
-  }
-  onSelectAll(items: any) {
-  }
-  onDeSelectAll(items: any) {
-  }
+
   reset() {
-    this.selectedContractor = [];
+    this.selectedContractor = null;
   }
   toggleContractor(isOpen?: boolean) {
     this.isNew = isOpen ? true : false;
@@ -142,7 +146,7 @@ export class ContractorsComponent implements OnInit {
     }
   }
 
-  remove(id: string) {
+  remove(id: number) {
     this.contractor.properties.id = id;
     this.contractor.remove().then(data => {
       this.fetchContractor()

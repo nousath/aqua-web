@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Page } from '../../../common/contracts/page';
 import { Model } from '../../../common/contracts/model';
-import { ValidatorService } from '../../../services';
+import { ValidatorService, AutoCompleteService } from '../../../services';
 import { EmsDepartmentService } from '../../../services/ems/ems-department.service';
 import { ToastyService } from 'ng2-toasty';
 import * as _ from 'lodash';
@@ -12,6 +12,7 @@ import { Department } from '../../../models/department';
 import { FileUploader } from 'ng2-file-upload';
 import { FileUploaderDialogComponent } from '../../../shared/components/file-uploader-dialog/file-uploader-dialog.component';
 import { ServerPageInput } from '../../../common/contracts/api';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'aqua-departments',
@@ -22,13 +23,18 @@ export class DepartmentsComponent implements OnInit {
   departments: Page<Department>
   department: Model<Department>
   dept: Department[];
-  selectedDepartment = [];
   departmentId: number;
+  selectedDepartment: Department;
   isNew = false;
   uploader: FileUploader;
   isUpload = false;
   isFilter = false;
   departmentList = [];
+  statusFilter = 'active';
+  filterFields = [
+    'name',
+    'status'
+  ]
 
   @Output()
   onChange: EventEmitter<any> = new EventEmitter();
@@ -37,6 +43,7 @@ export class DepartmentsComponent implements OnInit {
   constructor(private emsDepartmentService: EmsDepartmentService,
     public validatorService: ValidatorService,
     private store: LocalStorageService,
+    private autoCompleteService: AutoCompleteService,
     private toastyService: ToastyService,
     public dialog: MdDialog) {
 
@@ -47,7 +54,8 @@ export class DepartmentsComponent implements OnInit {
         value: 1,
       },
         'ofDate',
-        'name']
+        'name',
+      'status']
     });
 
     this.department = new Model({
@@ -56,19 +64,18 @@ export class DepartmentsComponent implements OnInit {
     });
 
     this.fetchDepartment();
-    this.dropdownSettings = {
-      singleSelection: false,
-      idField: 'id',
-      textField: 'name',
-      text: '',
-      selectAllText: 'All',
-      unSelectAllText: 'All',
-      enableSearchFilter: true,
-      classes: 'myclass',
-      displayAllSelectedText: true,
-      maxHeight: 200,
-      badgeShowLimit: 1
-    };
+  }
+  onSelectDept(cont: Department) {
+    this.selectedDepartment = cont
+  }
+  deptSource(keyword: string): Observable<Department[]> {
+    return this.autoCompleteService.searchByKey<Department>('name', keyword, 'ems', 'departments');
+  }
+  deptFormatter(data: Department): string {
+    return data.name;
+  }
+  deptListFormatter(data: Department): string {
+    return `${data.name} (${data.code})`;
   }
 
   fetchDepartment() {
@@ -80,17 +87,24 @@ export class DepartmentsComponent implements OnInit {
       }
     ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
-  applyFilters(values) {
+  fetchByStatus() {
+    this.apply()
+  }
+  applyFilters(params) {
     const filters = this.departments.filters.properties;
-    filters['name']['value'] = values.name ? values.name.map(item => item) : '';
+    const values = params.department
+    filters['status'].value = this.statusFilter ? this.statusFilter : 'active';
+    filters['name']['value'] = values && values.name ? values.name : '';
     this.fetchDepartment();
   }
   apply() {
     const params: any = {}
-    if (this.selectedDepartment && this.selectedDepartment.length) {
-      params.name = this.selectedDepartment.map(item => item.itemName)
-      params.id = this.selectedDepartment.map(item => item.id)
-      params.code = this.selectedDepartment.map(item => item.itemCode)
+    if (this.selectedDepartment) {
+      params.department = {
+        id: this.selectedDepartment.id,
+        code: this.selectedDepartment.code,
+        name: this.selectedDepartment.name
+      }
     }
     this.applyFilters(params)
   }
@@ -111,16 +125,8 @@ export class DepartmentsComponent implements OnInit {
       })
     });
   }
-  onItemSelect(item: any) {
-  }
-  OnItemDeSelect(item: any) {
-  }
-  onSelectAll(items: any) {
-  }
-  onDeSelectAll(items: any) {
-  }
   reset() {
-    this.selectedDepartment = [];
+    this.selectedDepartment = null;
   }
   toggleDepartment(isOpen?: boolean) {
     this.isNew = isOpen ? true : false;

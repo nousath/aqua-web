@@ -69,13 +69,13 @@
         (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
         (onDeSelectAll)="onDeSelectAll($event)" [ngModelOptions]="{standalone: true}"></angular2-multiselect>
     </div>
-    <div class="form-group" *ngIf="designationList.length >1 && show.designations">
+    <div class="form-group" *ngIf="designationList.length <1 && show.designations">
       <label>Designation</label>
       <angular2-multiselect [data]="designationList" class="form-control" [(ngModel)]="selectedDesignation" [settings]="dropdownSettings"
         (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
         (onDeSelectAll)="onDeSelectAll($event)" [ngModelOptions]="{standalone: true}"></angular2-multiselect>
     </div>
-    <div class="form-group" *ngIf="departmentList.length >1 && show.departments">
+    <div class="form-group" *ngIf="departmentList.length <1 && show.departments">
       <label>Department</label>
       <angular2-multiselect [data]="departmentList" class="form-control" [(ngModel)]="selectedDepartment" [settings]="dropdownSettings"
         (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
@@ -90,7 +90,7 @@
     <!-- </div> -->
     <!-- <label class="section">Attendance Filters</label>
 <div class="flex-row five"> -->
-    <div class="form-group" *ngIf="shiftTypesList.length >1 && show.shiftTypes">
+    <div class="form-group" *ngIf="shiftTypesList.length <1 && show.shiftTypes">
       <label for="pwd">Shift</label>
       <angular2-multiselect [data]="shiftTypesList" class="form-control" [(ngModel)]="selectedShiftType" [settings]="dropdownSettings"
         (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"

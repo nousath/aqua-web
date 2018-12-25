@@ -34,7 +34,8 @@ export class ReportsComponent implements OnInit {
     'departments',
     'supervisor',
     'userTypes',
-    'contractors'
+    'contractors',
+    'divisions'
   ]
 
   constructor(
@@ -85,6 +86,7 @@ export class ReportsComponent implements OnInit {
           'departments',
           'userTypes',
           'contractors',
+          'divisions',
           'supervisor',
 
           'shiftTypes',
@@ -106,7 +108,8 @@ export class ReportsComponent implements OnInit {
           'departments',
           'supervisor',
           'userTypes',
-          'contractors'
+          'contractors',
+          'divisions'
         ];
         break;
         case 'employees-details':
@@ -121,6 +124,7 @@ export class ReportsComponent implements OnInit {
           'employeeTypes',
           'userTypes',
           'contractors',
+          'divisions'
           // 'supervisor',
         ];
         break;

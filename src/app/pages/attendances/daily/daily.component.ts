@@ -52,6 +52,7 @@ export class DailyComponent {
     'departments',
     'userTypes',
     'contractors',
+    'divisions',
     'supervisor',
     'shiftTypes',
     { field: 'attendanceStates', value: 'present' },
@@ -78,7 +79,7 @@ export class DailyComponent {
     this.attendancePage = new Page({
       api: amsAttendanceService.dailyAttendances,
       location: location,
-      filters: ['ofDate', 'name', 'code', 'designations', 'departments', 'supervisorId', 'contractors', 'userTypes', 'tagIds',
+      filters: ['ofDate', 'name', 'code', 'designations', 'departments', 'supervisorId', 'divisions', 'contractors', 'userTypes', 'tagIds',
         'attendance-status', { field: 'status', value: 'present' }, 'shiftType-id', 'byShiftEnd', 'shiftTypeId', 'byShiftLength',
         'checkInStatus', 'checkIn-status', 'checkInAfter', 'checkInBefore',
         'checkOutStatus', 'checkOut-status', 'checkOutAfter', 'checkOutBefore',
@@ -99,6 +100,7 @@ export class DailyComponent {
     filters['supervisorId']['value'] = values.supervisorId;
     filters['tagIds']['value'] = values.tagIds;
     filters['contractors']['value'] = values.contractors;
+    filters['divisions']['value'] = values.divisions;
     filters['userTypes']['value'] = values.userTypeIds;
     filters['shiftTypeId']['value'] = values.shiftTypeIds;
     // filters['shiftType-id']['value'] = values.shiftType.map(item => item.id) || null;

@@ -14,6 +14,7 @@ import { RelievingDialogComponent } from '../../dialogs/relieving-dialog/relievi
 import { EmpShiftComponent } from './emp-shift/emp-shift.component';
 import { EmpLeavesComponent } from './emp-leaves/emp-leaves.component';
 import { ContractorsComponent } from './contractors/contractors.component';
+import { DivisionsComponent } from './divisions/divisions.component';
 
 @NgModule({
   imports: [
@@ -32,7 +33,8 @@ import { ContractorsComponent } from './contractors/contractors.component';
     RelievingDialogComponent,
     EmpLeavesComponent,
     EmpShiftComponent,
-    ContractorsComponent
+    ContractorsComponent,
+    DivisionsComponent
     // ResetPasswordDialogComponent
   ],
   entryComponents: [

@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Page } from '../../../common/contracts/page';
 import { Designation } from '../../../models';
 import { Model } from '../../../common/contracts/model';
-import { ValidatorService } from '../../../services';
+import { ValidatorService, AutoCompleteService } from '../../../services';
 import { EmsDesignationService } from '../../../services/ems/ems-designation.service';
 import { ToastyService } from 'ng2-toasty';
 import * as _ from 'lodash';
@@ -12,6 +12,7 @@ import { LocalStorageService } from '../../../services/local-storage.service';
 import { FileUploader } from 'ng2-file-upload';
 import { FileUploaderDialogComponent } from '../../../shared/components/file-uploader-dialog/file-uploader-dialog.component';
 import { ServerPageInput } from '../../../common/contracts/api';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'aqua-designations',
@@ -24,20 +25,24 @@ export class DesignationsComponent implements OnInit {
   designation: Model<Designation>
   designationA: Designation[];
   designationsId: number;
-  selectedDesignation = [];
+  selectedDesignation: Designation;
   designationList = [];
   isNew = false;
   uploader: FileUploader;
   isUpload = false;
   isFilter = false;
+  statusFilter = 'active';
   filterFields = [
     'name',
+    'status',
+    'code'
   ]
 
   @Output()
   onChange: EventEmitter<any> = new EventEmitter();
   dropdownSettings = {};
   constructor(private emsDesignationService: EmsDesignationService,
+    private autoCompleteService: AutoCompleteService,
     public validatorService: ValidatorService,
     private store: LocalStorageService,
     private toastyService: ToastyService,
@@ -48,7 +53,8 @@ export class DesignationsComponent implements OnInit {
       filters: [
         'ofDate',
         'name',
-        'code'
+        'code',
+        'status'
       ]
     });
 
@@ -58,21 +64,19 @@ export class DesignationsComponent implements OnInit {
     });
 
     this.fetchDesignation();
-    this.dropdownSettings = {
-      singleSelection: false,
-      idField: 'id',
-      textField: 'name',
-      text: '',
-      selectAllText: 'All',
-      unSelectAllText: 'All',
-      enableSearchFilter: true,
-      classes: 'myclass',
-      displayAllSelectedText: true,
-      maxHeight: 200,
-      badgeShowLimit: 1
-    };
   }
-
+  onSelectDesignation(cont: Designation) {
+    this.selectedDesignation = cont
+  }
+  designationSource(keyword: string): Observable<Designation[]> {
+    return this.autoCompleteService.searchByKey<Designation>('name', keyword, 'ems', 'designations');
+  }
+  designationFormatter(data: Designation): string {
+    return data.name;
+  }
+  designationListFormatter(data: Designation): string {
+    return `${data.name} (${data.code})`;
+  }
   fetchDesignation() {
     this.designations.fetch().then(
       data => {
@@ -82,7 +86,9 @@ export class DesignationsComponent implements OnInit {
       }
     ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
-
+  fetchByStatus() {
+    this.apply()
+  }
   private getDesignations() {
     const designationFilter = new ServerPageInput();
     this.emsDesignationService.designations.search(designationFilter).then(page => {
@@ -99,16 +105,8 @@ export class DesignationsComponent implements OnInit {
     });
   }
 
-  onItemSelect(item: any) {
-  }
-  OnItemDeSelect(item: any) {
-  }
-  onSelectAll(items: any) {
-  }
-  onDeSelectAll(items: any) {
-  }
   reset() {
-    this.selectedDesignation = [];
+    this.selectedDesignation = null;
   }
 
   toggleDesignation(isOpen?: boolean) {
@@ -187,20 +185,23 @@ export class DesignationsComponent implements OnInit {
     this.getDesignations();
   }
 
-  applyFilters(values) {
+  applyFilters(params) {
     const filters = this.designations.filters.properties;
-
-    filters['name']['value'] = values.name ? values.name.map(item => item) : '';
+    const values = params.designation
+    filters['status'].value = this.statusFilter ? this.statusFilter : 'active';
+    filters['name']['value'] = values && values.name ? values.name : '';
     this.fetchDesignation();
   }
 
   apply() {
 
     const params: any = {}
-    if (this.selectedDesignation && this.selectedDesignation.length) {
-      params.name = this.selectedDesignation.map(item => item.itemName)
-      params.id = this.selectedDesignation.map(item => item.id)
-      params.code = this.selectedDesignation.map(item => item.itemCode)
+    if (this.selectedDesignation) {
+      params.designation = {
+        id: this.selectedDesignation.id,
+        code: this.selectedDesignation.code,
+        name: this.selectedDesignation.name
+      }
     }
     this.applyFilters(params)
   }
