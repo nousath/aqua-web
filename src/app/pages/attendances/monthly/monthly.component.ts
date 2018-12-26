@@ -63,7 +63,6 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
   applyFilters(result) {
 
     const filters = this.monthlyAttendnace.filters.properties;
-debugger;
     const values = result.values
     filters['name']['value'] = values.employeeName;
     filters['code']['value'] = values.employeeCode;
