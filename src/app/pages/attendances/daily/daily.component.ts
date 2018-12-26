@@ -100,7 +100,7 @@ export class DailyComponent {
     filters['supervisorId']['value'] = values.supervisorId;
     filters['tagIds']['value'] = values.tagIds;
     filters['contractors']['value'] = values.contractors;
-    filters['divisions']['value'] = values.divisions;
+    filters['divisions']['value'] = values.divisionNames;
     filters['userTypes']['value'] = values.userTypeIds;
     filters['shiftTypeId']['value'] = values.shiftTypeIds;
     // filters['shiftType-id']['value'] = values.shiftType.map(item => item.id) || null;

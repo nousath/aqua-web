@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ViewContainerRef } from '@angular/core';
-import { EmsEmployeeService, EmsDesignationService, EmsDepartmentService, EmsContractorService } from '../../../services/ems';
+import { EmsEmployeeService, EmsDesignationService, EmsDepartmentService, EmsContractorService, EmsDivisionService } from '../../../services/ems';
 import { ToastyService } from 'ng2-toasty';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Employee, Designation } from '../../../models';
@@ -17,6 +17,7 @@ import { LocalStorageService } from '../../../services/local-storage.service';
 import { environment } from '../../../../environments/environment.qa';
 import { Department } from '../../../models/department';
 import { Contractor } from '../../../models/contractor';
+import { Division } from '../../../models/division';
 import { AmsEmployeeService } from '../../../services/index';
 import { DriveService } from '../../../shared/services/drive.service';
 import { UxService } from '../../../services/ux.service';
@@ -36,6 +37,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
   designations: Designation[];
   departments: Department[];
   contractors: Contractor[];
+  divisions: Division[];
 
   isProcessing = false;
   newImageFile: File;
@@ -55,6 +57,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     public validatorService: ValidatorService,
     private emsDesignationService: EmsDesignationService,
     private emsDepartmentService: EmsDepartmentService,
+    private emsDivisionService: EmsDivisionService,
     private emsContractorService: EmsContractorService,
     private store: LocalStorageService,
     private dialog: MdDialog,
@@ -74,6 +77,9 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     emsContractorService.contractors.search().then(contractors => {
       this.contractors = contractors.items;
+    });
+    emsDivisionService.divisions.search().then(divisions => {
+      this.divisions = divisions.items;
     });
     this.employee = new EmsEmployee();
     this.isProcessing = true;
@@ -123,7 +129,9 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     if (employee.department && employee.department.code === 'default') {
       employee.department = null;
     }
-
+    if (employee.division && employee.division.code === 'default') {
+      employee.division = null;
+    }
     employee.config = employee.config || new CustomFields();
 
     if (employee.designation && employee.designation.code === 'default') {
@@ -142,6 +150,12 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
         employee.department = this.departments.find(item => item.id === employee.department.id);
       }
     });
+    this.emsDivisionService.divisions.search().then(divisions => {
+      this.divisions = divisions.items;
+      if (employee.division) {
+        employee.division = this.divisions.find(item => item.id === employee.division.id);
+      }
+    });
 
     this.emsContractorService.contractors.search().then(contractors => {
       this.contractors = contractors.items;
@@ -153,6 +167,7 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
       }
       }
     });
+
 
 
     // employee.department = employee.department || new Department();

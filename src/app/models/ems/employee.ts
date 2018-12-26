@@ -80,6 +80,7 @@ export class EmsEmployee {
   supervisor: EmsEmployee;
   designation: Designation;
   department: Department;
+  division: Division;
   organization: Organization = new Organization();
 
   role: Role;

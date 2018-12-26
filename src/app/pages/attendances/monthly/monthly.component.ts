@@ -72,7 +72,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
     filters['supervisorId']['value'] = values.supervisorId;
     filters['userTypes']['value'] = values.userTypeIds;
     filters['contractors']['value'] = values.contractors;
-    filters['divisions']['value'] = values.divisions;
+    filters['divisions']['value'] = values.divisionNames;
     filters['tagIds']['value'] = values.tagIds;
 
     this.getAttendance();

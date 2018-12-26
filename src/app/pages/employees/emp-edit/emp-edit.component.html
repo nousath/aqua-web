@@ -254,6 +254,19 @@
           </div>
         </div>
       </div>
+      <div class="form-group row">
+          <div class="fields">
+              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <b>Division:</b>
+              </div>
+              <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                <select class="form-control" [(ngModel)]="employee.division">
+                  <option [ngValue]="null">Select an option</option>
+                  <option *ngFor="let item of divisions" [ngValue]="item">{{item.name}}</option>
+                </select>
+              </div>
+            </div>
+      </div>
     </md-card>
     <md-card [class.show]="employee.config.employmentType == 'contract'" [class.hide]="employee.config.employmentType != 'contract'">
       <div class="dialog_Header text-center">

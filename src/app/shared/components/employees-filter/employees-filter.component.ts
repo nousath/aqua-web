@@ -7,6 +7,8 @@ import { Designation, Employee, Contractor } from '../../../models';
 import { EmsDesignationService } from '../../../services/ems/ems-designation.service';
 import { Department } from '../../../models/department';
 import { EmsDepartmentService } from '../../../services/ems/ems-department.service';
+import { Division } from '../../../models/division';
+import { EmsDivisionService } from '../../../services/ems/ems-division.service';
 import { EmsContractorService } from '../../../services/ems/ems-contractor.service';
 import { ServerPageInput } from '../../../common/contracts/api/page-input';
 import * as moment from 'moment';
@@ -22,6 +24,8 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
 
   departments: Department[];
   departmentId: number;
+  divisions: Division[];
+  divisionId: number;
   designations: Designation[];
   designationsId: number;
   contractors: Contractor[];
@@ -65,6 +69,7 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
   selectedClockedStatus = [];
   selectedDesignation = [];
   selectedDepartment = [];
+  selectedDivision = [];
   selectedUserType = [];
   selectedEmployeeStatusList = [];
   selectedContractor = [];
@@ -101,6 +106,7 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
     userTypes?: boolean,
     designations?: boolean,
     departments?: boolean,
+    divisions?: boolean,
     contractors?: boolean,
     supervisor?: boolean,
     employeeTypes?: boolean,
@@ -112,7 +118,7 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
     checkIn?: boolean,
     checkOut?: boolean
   }
-
+  divisionList = [];
   departmentList = [];
   designationList = [];
   userTypeList = [];
@@ -133,6 +139,7 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
   constructor(
     private emsContractorService: EmsContractorService,
     private emsDepartmentService: EmsDepartmentService,
+    private emsDivisionService: EmsDivisionService,
     private emsDesignationService: EmsDesignationService,
     private autoCompleteService: AutoCompleteService,
     public validatorService: ValidatorService,
@@ -249,6 +256,9 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
     if (this.show.userTypes) {
       this.getTags();
     }
+    if (this.show.divisions) {
+      this.getDivisions();
+    }
     if (this.show.departments) {
       this.getDepartments();
     }
@@ -310,6 +320,20 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
     });
   }
 
+  private getDivisions() {
+    const divisionFilter = new ServerPageInput();
+    this.emsDivisionService.divisions.search(divisionFilter).then(page => {
+      this.divisions = page.items;
+      this.divisionList = [];
+      this.divisions.forEach(item => {
+        const obj = {
+          id: item.id,
+          itemName: item.name,
+        };
+        this.divisionList.push(obj);
+      })
+    });
+  }
   private getDepartments() {
     const deptFilter = new ServerPageInput();
     deptFilter.query = {
@@ -384,6 +408,7 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
   reset() {
     this.selectedDesignation = [];
     this.selectedDepartment = [];
+    this.selectedDivision = [];
     this.selectedUserType = [];
     this.selectedEmployeeStatusList = [];
     this.selectedContractor = [];
@@ -502,7 +527,12 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
       params.employee.employeeTypes = this.selectedEmployeeType
       values.employeeTypes = this.selectedEmployeeType
     }
-
+    if (this.selectedDivision && this.selectedDivision.length) {
+      params.employee = params.employee || {}
+      params.employee.divisions = this.selectedDivision.map(item => ({ id: item.id, name: item.itemName }))
+      values.divisionIds = this.selectedDivision.map(item => ({ id: item.id, name: item.itemName }))
+      values.divisionNames = this.selectedDivision.map(item => item.itemName)
+    }
     if (this.selectedDepartment && this.selectedDepartment.length) {
       params.employee = params.employee || {}
       params.employee.departments = this.selectedDepartment.map(item => ({ id: item.id, name: item.itemName }))

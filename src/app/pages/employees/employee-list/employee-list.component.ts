@@ -38,6 +38,7 @@ export class EmployeeListComponent implements OnInit {
     'biometricId',
     'designations',
     'departments',
+    'divisions',
     'supervisor',
     'employeeTypes',
     'userTypes',
@@ -94,6 +95,7 @@ export class EmployeeListComponent implements OnInit {
         'status',
         'designations',
         'departments',
+        'divisions',
         'biometricId',
         'supervisor',
         'userTypes',
@@ -129,6 +131,7 @@ export class EmployeeListComponent implements OnInit {
     filters['biometricId']['value'] = values.employee && values.employee.biometricId ? values.employee.biometricId : '';
     filters['departments']['value'] = values.employee && values.employee.departments ? values.employee.departments.map(item => item.id) : '';
     filters['designations']['value'] = values.employee && values.employee.designations ? values.employee.designations.map(item => item.id) : '';
+    filters['divisions']['value'] = values.employee && values.employee.divisions ? values.employee.divisions.map(item => item.id) : '';
     filters['supervisor']['value'] = values.employee && values.employee.supervisor ? values.employee.supervisor.id : '';
     filters['contractors']['value'] = values.employee && values.employee.contractors ? values.employee.contractors.map(item => item.name) : '';
     filters['userTypes']['value'] = values.employee && values.employee.userTypes ? values.employee.userTypes.map(item => item.name) : '';
@@ -148,6 +151,7 @@ export class EmployeeListComponent implements OnInit {
           'biometricId',
           'designations',
           'departments',
+          'divisions',
           'supervisor',
           'employeeTypes',
           'userTypes',
@@ -162,6 +166,7 @@ export class EmployeeListComponent implements OnInit {
           'terminationReason',
           'designations',
           'departments',
+          'divisions',
           'supervisor',
           'contractors'
         ];
@@ -173,6 +178,7 @@ export class EmployeeListComponent implements OnInit {
           'biometricId',
           'designations',
           'departments',
+          'divisions',
           'supervisor',
           'employeeTypes',
           'userTypes',
