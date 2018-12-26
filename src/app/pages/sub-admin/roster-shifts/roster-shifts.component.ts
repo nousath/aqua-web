@@ -89,9 +89,6 @@ export class RosterShiftsComponent implements OnInit {
         field: 'divisions',
         value: this.activatedRoute.queryParams['value']['divisions']
       }, {
-        field: 'contractors',
-        value: this.activatedRoute.queryParams['value']['contractors']
-      }, {
         field: 'shiftType',
         value: this.activatedRoute.queryParams['value']['shiftType']
       }, {
@@ -127,7 +124,7 @@ export class RosterShiftsComponent implements OnInit {
     filters['designations']['value'] = values.employee && values.employee.designations ? values.employee.designations.map(item => item.name) : '';
     filters['divisions']['value'] = values.employee && values.employee.divisions ? values.employee.divisions.map(item => item.name) : '';
     filters['supervisorId']['value'] = values.employee && values.employee.supervisor ? values.employee.supervisor.id : '';
-    filters['contractors']['value'] = values.employee && values.employee.contractors ? values.employee.contractors.map(item => item.id) : '';
+    filters['contractors']['value'] = values.employee && values.employee.contractors ? values.employee.contractors.map(item => item.name) : '';
     filters['userTypes']['value'] = values.employee && values.employee.userTypes ? values.employee.userTypes.map(item => item.id) : '';
     filters['shiftType']['value'] = values.shiftType && values.shiftType.map(item => item.id) || null;
     this.getEffectiveShift(this.date)
