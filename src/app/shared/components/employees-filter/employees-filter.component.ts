@@ -353,9 +353,6 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
   }
   private getContractors() {
     const contractorFilter = new ServerPageInput();
-    // deptFilter.query = {
-    //   divisionId: 1
-    // }
     this.emsContractorService.contractors.search(contractorFilter).then(page => {
       this.contractors = page.items;
       this.contractorList = [];
@@ -541,9 +538,9 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
     }
     if (this.selectedContractor && this.selectedContractor.length) {
       params.employee = params.employee || {}
-      params.employee.constructors = this.selectedContractor.map(item => ({ id: item.id, name: item.itemName }))
-      values.contractorIds = this.selectedContractor.map(item => item.id)
-      values.constructorNames = this.selectedContractor.map(item => item.itemName)
+      params.employee.contractors = this.selectedContractor.map(item => ({ id: item.id, name: item.itemName }))
+      values.contractorIds = this.selectedContractor.map(item => ({ id: item.id, name: item.itemName }))
+      values.contractorNames = this.selectedContractor.map(item => item.itemName)
     }
 
     if (this.selectedDesignation && this.selectedDesignation.length) {

@@ -99,7 +99,7 @@ export class DailyComponent {
     filters['designations']['value'] = values.designationNames;
     filters['supervisorId']['value'] = values.supervisorId;
     filters['tagIds']['value'] = values.tagIds;
-    filters['contractors']['value'] = values.contractors;
+    filters['contractors']['value'] = values.contractorNames;
     filters['divisions']['value'] = values.divisionNames;
     filters['userTypes']['value'] = values.userTypeIds;
     filters['shiftTypeId']['value'] = values.shiftTypeIds;

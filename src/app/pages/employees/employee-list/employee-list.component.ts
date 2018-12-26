@@ -133,7 +133,7 @@ export class EmployeeListComponent implements OnInit {
     filters['designations']['value'] = values.employee && values.employee.designations ? values.employee.designations.map(item => item.id) : '';
     filters['divisions']['value'] = values.employee && values.employee.divisions ? values.employee.divisions.map(item => item.id) : '';
     filters['supervisor']['value'] = values.employee && values.employee.supervisor ? values.employee.supervisor.id : '';
-    filters['contractors']['value'] = values.employee && values.employee.contractors ? values.employee.contractors.map(item => item.name) : '';
+    filters['contractors']['value'] = values.employee && values.employee.contractors ? values.employee.contractors.map(item => item.id) : '';
     filters['userTypes']['value'] = values.employee && values.employee.userTypes ? values.employee.userTypes.map(item => item.name) : '';
     filters['employeeTypes']['value'] = values.employee && values.employee.employeeTypes ? values.employee.employeeTypes.map(item => item.code) : '';
     filters['terminationReason']['value'] = values.employee && values.employee.terminationReason ? values.employee.terminationReason.map(item => item.code) : '';

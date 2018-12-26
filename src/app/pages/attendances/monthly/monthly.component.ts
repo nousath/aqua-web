@@ -63,7 +63,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
   applyFilters(result) {
 
     const filters = this.monthlyAttendnace.filters.properties;
-
+debugger;
     const values = result.values
     filters['name']['value'] = values.employeeName;
     filters['code']['value'] = values.employeeCode;
@@ -71,7 +71,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
     filters['designations']['value'] = values.designationNames;
     filters['supervisorId']['value'] = values.supervisorId;
     filters['userTypes']['value'] = values.userTypeIds;
-    filters['contractors']['value'] = values.contractors;
+    filters['contractors']['value'] = values.contractorNames;
     filters['divisions']['value'] = values.divisionNames;
     filters['tagIds']['value'] = values.tagIds;
 
