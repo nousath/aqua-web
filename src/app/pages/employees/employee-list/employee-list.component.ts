@@ -15,7 +15,7 @@ import { LocalStorageService } from 'app/services/local-storage.service';
 import { ValidatorService } from '../../../services/validator.service';
 import { RelievingDialogComponent } from '../../../dialogs/relieving-dialog/relieving-dialog.component';
 import { FileUploaderDialogComponent } from '../../../shared/components/file-uploader-dialog/file-uploader-dialog.component';
-
+import { EmsAuthService } from '../../../services/ems/ems-auth.service';
 
 @Component({
   selector: 'aqua-employee-list',
@@ -25,13 +25,13 @@ import { FileUploaderDialogComponent } from '../../../shared/components/file-upl
 export class EmployeeListComponent implements OnInit {
   @Output()
   data: EventEmitter<any> = new EventEmitter();
-
   employees: Page<EmsEmployee>
   employee: Model<EmsEmployee>
   statusFilter = 'active';
   uploader: FileUploader;
   isUpload = false;
   isFilter = false;
+  userDiv: any
   filterFields = [
     'name',
     'code',
@@ -50,6 +50,7 @@ export class EmployeeListComponent implements OnInit {
     public validatorService: ValidatorService,
     private activatedRoute: ActivatedRoute,
     private store: LocalStorageService,
+    private auth: EmsAuthService,
     private router: Router,
     public dialog: MdDialog) {
 
@@ -68,8 +69,6 @@ export class EmployeeListComponent implements OnInit {
     });
 
     this.uploader.onAfterAddingAll = (fileItems: FileItem) => {
-
-
     };
 
     this.uploader.onErrorItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
@@ -86,6 +85,15 @@ export class EmployeeListComponent implements OnInit {
 
     };
 
+    const divisionFilter = {
+      field: 'divisions',
+      value: null
+    }
+    const userDiv = this.auth.currentRole().employee.division
+    if (userDiv && userDiv.name && userDiv.code !== 'default') {
+      divisionFilter.value = [userDiv.id]
+    }
+
     this.employees = new Page({
       api: emsEmployeeService.employees,
       filters: [
@@ -95,7 +103,7 @@ export class EmployeeListComponent implements OnInit {
         'status',
         'designations',
         'departments',
-        'divisions',
+        divisionFilter,
         'biometricId',
         'supervisor',
         'userTypes',
@@ -120,6 +128,7 @@ export class EmployeeListComponent implements OnInit {
       });
     }, 1)
   }
+
 
   applyFilters(result) {
     const filters = this.employees.filters.properties;

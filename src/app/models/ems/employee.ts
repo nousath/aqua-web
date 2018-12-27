@@ -127,7 +127,7 @@ export class EmsEmployee {
 
     this.designation = new Designation(obj.designation);
     this.department = new Department(obj.department);
-    // this.division = new Division(obj.division);
+    this.division = new Division(obj.division);
     this.status = obj.status;
     this.type = obj.type;
     this.timeStamp = obj.timeStamp;

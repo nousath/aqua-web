@@ -21,6 +21,7 @@ import { FileUploader } from 'ng2-file-upload';
 import { FileUploaderDialogComponent } from '../../../shared/components/file-uploader-dialog/file-uploader-dialog.component';
 import { AddAttendanceLogsComponent } from '../../../shared/components/add-attendance-logs/add-attendance-logs.component';
 import { BulkTimeLogsDialogComponent } from '../../../shared/components/bulk-time-logs-dialog/bulk-time-logs-dialog.component';
+import { EmsAuthService } from '../../../services/ems/ems-auth.service';
 declare var $: any;
 
 @Component({
@@ -68,6 +69,7 @@ export class DailyComponent {
   constructor(
     public validatorService: ValidatorService,
     public activatedRoute: ActivatedRoute,
+    private auth: EmsAuthService,
     public router: Router,
     private location: Location,
     private amsAttendanceService: AmsAttendanceService,
@@ -75,11 +77,18 @@ export class DailyComponent {
     private toastyService: ToastyService,
     public dialog: MdDialog) {
 
-
+      const divisionFilter = {
+        field: 'divisions',
+        value: null
+      }
+      const userDiv = this.auth.currentRole().employee.division
+      if (userDiv && userDiv.name && userDiv.code !== 'default') {
+        divisionFilter.value = [userDiv.name]
+      }
     this.attendancePage = new Page({
       api: amsAttendanceService.dailyAttendances,
       location: location,
-      filters: ['ofDate', 'name', 'code', 'designations', 'departments', 'supervisorId', 'divisions', 'contractors', 'userTypes', 'tagIds',
+      filters: ['ofDate', 'name', 'code', 'designations', 'departments', 'supervisorId',   divisionFilter, 'contractors', 'userTypes', 'tagIds',
         'attendance-status', { field: 'status', value: 'present' }, 'shiftType-id', 'byShiftEnd', 'shiftTypeId', 'byShiftLength',
         'checkInStatus', 'checkIn-status', 'checkInAfter', 'checkInBefore',
         'checkOutStatus', 'checkOut-status', 'checkOutAfter', 'checkOutBefore',

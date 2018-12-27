@@ -17,11 +17,19 @@
   font-size: x-large;
   /* font-weight: bold; */
   color: #444D6E;
+  text-align: center;
+}
+.with-sub-text {
+  padding-top: 30px;
+}
+.with-sub-text>div {
+  line-height: 0;
+  
 }
 
 md-toolbar.header {
   background-color: #ffffff !important;
-  color: #8b9caf!important;
+  color: #8b9caf !important;
   position: fixed;
   right: 0;
   top: 0;
@@ -39,7 +47,7 @@ md-toolbar.header {
 
 .body {
   margin-top: 60px;
-  height: 93vh;
+  height: 90vh;
   background: #efefef;
   /*width: 100%;*/
   /*overflow-x: hidden;*/
@@ -51,7 +59,7 @@ md-toolbar.header {
 
 @media only screen and (max-width:600px) {
   .body {
-      margin-top: 52px;
+    margin-top: 52px;
   }
 }
 
@@ -105,33 +113,39 @@ md-toolbar.header {
 
 @media only screen and (max-width:600px) {
   .loginForm {
-      display: none;
+    display: none;
   }
+
   .searchXs {
-      display: flex !important;
+    display: flex !important;
   }
+
   /* .bodyPart {
       margin-top: 16%;
   } */
   .loginHeader {
-      width: 100%
+    width: 100%
   }
+
   .searchbar {
-      display: none;
+    display: none;
   }
+
   .logoHeader {
-      display: block;
+    display: block;
   }
+
   .menuBtn {
-      width: 40px;
-      float: left;
-      padding-left: 0px;
-      padding-right: 0px;
-      padding-top: 10px;
-      display: block;
+    width: 40px;
+    float: left;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 10px;
+    display: block;
   }
+
   .menuHeader {
-      display: block;
+    display: block;
   }
 }
 

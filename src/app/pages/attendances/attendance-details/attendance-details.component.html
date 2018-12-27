@@ -175,8 +175,11 @@
             </p>
 
             <p *ngIf="item?.status === 'weekoff'">
-              <span class="capitalize">{{item?.status}}</span>
+              <span class="capitalize">{{item?.status}}</span><br>
+              <span class="capitalize" *ngIf="item?.checkIn"> In - {{item?.checkIn | date:'shortTime'}}</span><br>
+              <span class="capitalize" *ngIf="item?.checkOut"> Out - {{item?.checkOut | date:'shortTime'}}</span>
             </p>
+            
             <p *ngIf="item?.shift?.status === 'holiday'
                         && (item?.status !== 'present'
                         && item?.status !== 'checkedin')">
