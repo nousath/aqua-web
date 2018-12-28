@@ -46,10 +46,17 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
     public auth: EmsAuthService,
     private router: Router,
     private toastyService: ToastyService) {
-
+      const divisionFilter = {
+        field: 'divisions',
+        value: null
+      }
+      const userDiv = this.auth.currentRole().employee.division
+      if (userDiv && userDiv.name && userDiv.code && userDiv.code !== 'default') {
+        divisionFilter.value = [userDiv.name]
+      }
     this.monthlyAttendnace = new Page({
       api: amsAttendanceService.monthlyAttendances,
-      filters: ['ofDate', 'name', 'code', 'designations', 'departments', 'supervisorId', 'userTypes', 'tagIds', 'contractors', 'divisions']
+      filters: ['ofDate', 'name', 'code', 'designations', 'departments', 'supervisorId', 'userTypes', 'tagIds', 'contractors', divisionFilter]
     });
   }
 

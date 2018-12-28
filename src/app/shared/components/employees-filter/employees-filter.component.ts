@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { ValidatorService, AmsShiftService, AutoCompleteService } from '../../../services';
+import { ValidatorService, AmsShiftService, AutoCompleteService, EmsAuthService } from '../../../services';
 import { ShiftType } from '../../../models/shift-type';
 import { TagType } from '../../../models/tag';
 import { AmsTagService } from '../../../services/ams/ams-tag.service';
@@ -32,7 +32,7 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
   contractorId: number;
   shiftTypes: ShiftType[];
   tagTypes: TagType[];
-
+userDiv: any;
   @Input()
   fields: any[] = [];
 
@@ -142,6 +142,7 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
     private emsDivisionService: EmsDivisionService,
     private emsDesignationService: EmsDesignationService,
     private autoCompleteService: AutoCompleteService,
+    private auth: EmsAuthService,
     public validatorService: ValidatorService,
     private amsShiftService: AmsShiftService,
     private tagService: AmsTagService,
@@ -319,7 +320,16 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
       })
     });
   }
-
+  getUserDivision() {
+    this.userDiv = this.auth.currentRole().employee.division
+    if (this.userDiv && this.userDiv.name && this.userDiv.code && this.userDiv.code !== 'default') {
+      const exists = {
+        id: this.userDiv.id,
+        itemName: this.userDiv.name,
+      };
+      this.selectedDivision.push(exists);
+    }
+  }
   private getDivisions() {
     const divisionFilter = new ServerPageInput();
     this.emsDivisionService.divisions.search(divisionFilter).then(page => {
@@ -332,6 +342,7 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
         };
         this.divisionList.push(obj);
       })
+      this.getUserDivision()
     });
   }
   private getDepartments() {
@@ -437,7 +448,6 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
   }
 
   apply() {
-
     const params: any = {}
     const values: any = {}
     if (this.fromDate) {

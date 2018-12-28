@@ -14,6 +14,7 @@ import { LocalStorageService } from '../../../services/local-storage.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MdDialogRef, MdDialog } from '@angular/material';
 import { FileUploaderDialogComponent } from '../../../shared/components/file-uploader-dialog/file-uploader-dialog.component';
+import { EmsAuthService } from '../../../services/ems/ems-auth.service';
 declare var $: any;
 
 
@@ -53,12 +54,20 @@ export class RosterShiftsComponent implements OnInit {
     private location: Location,
     public router: Router,
     public dialog: MdDialog,
+    private auth: EmsAuthService,
     private amsEmployeeService: AmsEmployeeService,
     private amsShiftService: AmsShiftService,
     private amsEffectiveShiftService: AmsEffectiveShiftService,
     private toastyService: ToastyService,
   ) {
-
+    const divisionFilter = {
+      field: 'divisions',
+      value: null
+    }
+    const userDiv = this.auth.currentRole().employee.division
+    if (userDiv && userDiv.name && userDiv.code && userDiv.code !== 'default') {
+      divisionFilter.value = [userDiv.name]
+    }
     this.shiftTypes = new Page({
       api: amsShiftService.shiftTypes
     });
@@ -85,10 +94,8 @@ export class RosterShiftsComponent implements OnInit {
       }, {
         field: 'designations',
         value: this.activatedRoute.queryParams['value']['designation']
-      }, {
-        field: 'divisions',
-        value: this.activatedRoute.queryParams['value']['divisions']
-      }, {
+      }, divisionFilter,
+       {
         field: 'shiftType',
         value: this.activatedRoute.queryParams['value']['shiftType']
       }, {

@@ -29,7 +29,7 @@
         {{selectedShiftType.name}}</span>
       <br *ngIf="selectedShiftType">
       <span *ngSwitchCase="'present'" class="name" [class.warn]="errorText" [class.success]="!errorText"
-        [class.sub-text]="selectedShiftType" mdTooltip="{{ errorText ? errorText : ''}} Present [{{daySummary.attendance.checkIn| date: 'HH:MM'}} - {{daySummary.attendance.checkOut| date: 'HH:MM'}}]">
+        [class.sub-text]="selectedShiftType" mdTooltip="{{ errorText ? errorText : ''}} Present [{{daySummary.attendance.checkIn| date: 'HH:mm'}} - {{daySummary.attendance.checkOut| date: 'HH:mm'}}]">
         <ng-container *ngIf="errorText">
           <md-icon>report_problem</md-icon>
         </ng-container>
