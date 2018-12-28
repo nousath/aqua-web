@@ -322,14 +322,13 @@ userDiv: any;
   }
   getUserDivision() {
     this.userDiv = this.auth.currentRole().employee.division
-    if (this.userDiv && this.userDiv.name && this.userDiv.code !== 'default') {
+    if (this.userDiv && this.userDiv.name && this.userDiv.code && this.userDiv.code !== 'default') {
       const exists = {
         id: this.userDiv.id,
         itemName: this.userDiv.name,
       };
       this.selectedDivision.push(exists);
     }
-    this.apply()
   }
   private getDivisions() {
     const divisionFilter = new ServerPageInput();

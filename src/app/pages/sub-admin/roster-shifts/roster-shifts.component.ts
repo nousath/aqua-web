@@ -65,7 +65,7 @@ export class RosterShiftsComponent implements OnInit {
       value: null
     }
     const userDiv = this.auth.currentRole().employee.division
-    if (userDiv && userDiv.name && userDiv.code !== 'default') {
+    if (userDiv && userDiv.name && userDiv.code && userDiv.code !== 'default') {
       divisionFilter.value = [userDiv.name]
     }
     this.shiftTypes = new Page({

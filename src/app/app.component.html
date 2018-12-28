@@ -10,10 +10,10 @@
         <md-icon>menu</md-icon>
       </span>
       <span class="example-spacer"></span>
-      <div class="org-name" [class.with-sub-text]= "currentRole.employee.division && currentRole.employee.division.name && currentRole.employee.division.code !== 'default'" *ngIf="currentRole && currentRole.organization && currentRole.organization">
+      <div class="org-name" [class.with-sub-text]= "currentRole.employee.division && currentRole.employee.division.name && currentRole.employee.division.code && currentRole.employee.division.code !== 'default'" *ngIf="currentRole && currentRole.organization && currentRole.organization">
        <div>{{currentRole.organization.name}}
        </div> 
-       <span class="sub-text" *ngIf= "currentRole.employee.division && currentRole.employee.division.name && currentRole.employee.division.code !== 'default'">{{currentRole.employee.division.name}}</span>
+       <span class="sub-text" *ngIf= "currentRole.employee.division && currentRole.employee.division.name && currentRole.employee.division.code && currentRole.employee.division.code !== 'default'">{{currentRole.employee.division.name}}</span>
       </div>
       <span class="example-spacer"></span>
       <button md-button (click)="logout()" mdTooltip="Logout" [mdTooltipPosition]="'below'">
