@@ -28,7 +28,13 @@
       <span *ngIf="selectedShiftType" class="name info" mdTooltip="New shift starts from this day">
         {{selectedShiftType.name}}</span>
       <br *ngIf="selectedShiftType">
-      <span *ngSwitchCase="'present'" class="name" [class.sub-text]="selectedShiftType" mdTooltip="Present (In: {{daySummary.attendance.checkIn| date: 'HH:MM'}}, Out: {{daySummary.attendance.checkOut| date: 'HH:MM'}})">&#10003;</span>
+      <span *ngSwitchCase="'present'" class="name" [class.warn]="errorText" [class.success]="!errorText"
+        [class.sub-text]="selectedShiftType" mdTooltip="{{ errorText ? errorText : ''}} Present [{{daySummary.attendance.checkIn| date: 'HH:MM'}} - {{daySummary.attendance.checkOut| date: 'HH:MM'}}]">
+        <ng-container *ngIf="errorText">
+          <md-icon>report_problem</md-icon>
+        </ng-container>
+        <span *ngIf="!errorText">&#10003;</span>
+      </span>
       <span *ngSwitchCase="'absent'" class="name warn" [class.sub-text]="selectedShiftType" mdTooltip="Absent">A</span>
       <span *ngSwitchCase="'weekOff'" class="badge" mdTooltip="Off Day">Off</span>
       <div *ngSwitchCase="'onLeave'" class="badge info" [class.first]="leaveSummary.first" [class.second]="leaveSummary.second"
@@ -49,11 +55,7 @@
       <span>Every Week</span>
       <md-slide-toggle [disabled]="isPast" [checked]="isWeeklyOff"></md-slide-toggle>
     </button>
-    <button md-menu-item [disabled]="leave" (click)="setDayOff()" *ngIf="(userType === 'superadmin' || userType === 'admin') && isPast">
-      <span>This Week</span>
-      <md-slide-toggle [checked]="isDayOff"></md-slide-toggle>
-    </button>
-    <button md-menu-item [disabled]="leave" (click)="setDayOff()" *ngIf="!isPast">
+    <button md-menu-item [disabled]="leave" (click)="setDayOff()" *ngIf="auth.hasPermission('superadmin') || (auth.hasPermission('admin') && !isPast)">
       <span>This Week</span>
       <md-slide-toggle [checked]="isDayOff"></md-slide-toggle>
     </button>

@@ -19,6 +19,7 @@ import { GenericApi } from '../../../common/generic-api';
 import { Http } from '@angular/http';
 import { ExtendShiftDialogComponent } from '../extend-shift-dialog/extend-shift-dialog.component';
 import { Page } from '../../../common/contracts/page';
+import { EmsAuthService } from '../../../services/ems/ems-auth.service';
 
 @Component({
   selector: 'aqua-shift-picker',
@@ -54,7 +55,7 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
   day: string;
 
   shiftSearch: string;
-  userType: string;
+  // userType: string;
   startingShift: ShiftType;
 
   isBeforeToday = false
@@ -80,6 +81,7 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
   leaveBalances: LeaveBalance[] = [];
   onDutyBalance: LeaveBalance;
   compOffBalance: LeaveBalance;
+  errorText = '';
 
   days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
 
@@ -93,9 +95,10 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
     private dates: DatesService,
     public dialog: MdDialog,
     private http: Http,
+    public auth: EmsAuthService
 
   ) {
-    this.userType = localStorage.getItem('userType')
+    // this.userType = localStorage.getItem('userType')
   }
 
   ngOnInit() {
@@ -131,6 +134,11 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
     this.computeWeeklyOff();
 
     this.computeIfRunning();
+
+    if (this.attendance && this.attendance.shift && this.attendance.shift.shiftType && this.effectiveShiftType && this.effectiveShiftType.id !== this.attendance.shift.shiftType.id) {
+      this.errorText = `Wrong Shift - ${this.attendance.shift.shiftType.name}`
+    }
+
   }
 
   computeEffectiveShift() {

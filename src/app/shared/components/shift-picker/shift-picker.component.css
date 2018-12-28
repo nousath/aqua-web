@@ -66,6 +66,10 @@
     color: red;
 }
 
+.display-text .name.success {
+  color: green;
+}
+
 .display-text .name.info {
     color: #666;
 }
