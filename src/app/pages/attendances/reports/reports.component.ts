@@ -112,7 +112,7 @@ export class ReportsComponent implements OnInit {
           'divisions'
         ];
         break;
-        case 'employees-details':
+      case 'employees-details':
         this.filterFields = [
           'employeeStatus',
           'name',
@@ -136,7 +136,8 @@ export class ReportsComponent implements OnInit {
   }
 
   getReportLists() {
-    this.reports.filters.properties['type'] = this.selected ? this.selected.type : null;
+    this.reports.filters.properties['type'].value = this.selected ? this.selected.type : null;
+
     if (this.selected) {
       this.reports.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
     }

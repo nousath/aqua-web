@@ -681,3 +681,7 @@ button.phantom {
   margin-left: 10px;
   outline: none;
 }
+
+.status .error {
+  color: red;
+}

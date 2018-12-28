@@ -17,7 +17,7 @@
         <td>{{i + 1}}</td>
         <td>
           <span *ngIf="item.reportParams.dates">
-            {{item.reportParams.dates.from| date: 'dd-MM-yyyy'}}</span>
+            {{item.reportParams.dates.from}}</span>
           <br>
           <span class="sub-text">{{item.date | date: 'HH:mm dd-MM-yyyy'}}</span>
         </td>
@@ -36,10 +36,10 @@
               <span *ngIf="item.reportParams.employee.supervisor" class="badge-holder">
                 Supervisor<span class="badge badge-primary">{{item.reportParams.employee.supervisor.name}}</span>
               </span>
-              
+
               <span *ngIf="item.reportParams.employee.contractors" class="badge-holder">
-                  Contractors<span class="badge badge-primary" *ngFor="let contractor of item.reportParams.employee.contractors">{{contractor.name}}</span>
-                </span>
+                Contractors<span class="badge badge-primary" *ngFor="let contractor of item.reportParams.employee.contractors">{{contractor.name}}</span>
+              </span>
               <span *ngIf="item.reportParams.employee.departments" class="badge-holder">
                 Departments<span class="badge badge-primary" *ngFor="let department of item.reportParams.employee.departments">{{department.name}}</span>
               </span>
@@ -93,7 +93,7 @@
             </ng-container>
           </div>
         </td>
-        <td>
+        <td class="status">
           <ng-container *ngIf="item.status === 'new'">
             <button md-raised-button (click)="updateList()">Requested</button>
             <span class="sub-text">{{item.agoTime}} ago</span>
@@ -108,7 +108,7 @@
             </button>
           </ng-container>
           <ng-container *ngIf="item.status === 'errored'">
-            <md-icon>report_problem</md-icon>
+            <md-icon class="error">report_problem</md-icon>
           </ng-container>
         </td>
       </tr>
@@ -122,12 +122,11 @@
     <div class="pageSize">
       <label>Page Size:</label>
       <select name="pageSize" [(ngModel)]="reportRequests.pageSize" (change)="reportRequests.pageNo = 1;">
-        <option value=10>10</option>
-        <option value=50>50</option>
-        <option value=100>100</option>
-        <option value=500>500</option>
+        <option value="10">10</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+        <option value="500">500</option>
       </select>
     </div>
   </div>
-  </div>
-
+</div>
