@@ -174,10 +174,10 @@ export class EmpEditComponent implements OnInit, OnDestroy, AfterViewInit {
     employee.address = employee.address || new Address();
 
     employee.config = employee.config || new CustomFields();
-    if (employee.profile.dob) { $('#dateSelector').datepicker('setDate', employee.profile.dob); }
-    if (employee.config.dom) { $('#membershipDate').datepicker('setDate', employee.config.dom); }
-    if (employee.doj) { $('#joiningDate').datepicker('setDate', employee.doj); }
-    if (employee.dol) { $('#terminateDate').datepicker('setDate', employee.dol); }
+    if (employee.profile.dob) { $('#dateSelector').datepicker('setDate', new Date(employee.profile.dob)); }
+    if (employee.config.dom) { $('#membershipDate').datepicker('setDate', new Date(employee.config.dom)); }
+    if (employee.doj) { $('#joiningDate').datepicker('setDate', new Date(employee.doj)); }
+    if (employee.dol) { $('#terminateDate').datepicker('setDate', new Date(employee.dol)); }
 
     if (!employee.config.biometricId) {
       employee.config.biometricId = employee.code;
