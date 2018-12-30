@@ -70,8 +70,12 @@ export class EmpShiftComponent implements OnInit {
   ngOnChanges() {
     if (this.employee) {
       this.getAttendance()
-
     }
+  }
+
+  toggleDynamicShift(employee: Employee) {
+    this.amsEmployeeService.toggleDynamicShift(employee).subscribe(item =>
+      this.employee.isDynamicShift = item.isDynamicShift)
   }
 
 
@@ -114,7 +118,7 @@ export class EmpShiftComponent implements OnInit {
         if (item.employee.code) {
           this.effective = item;
           // this.currentShift.date = this.effective.previousShift.date
-          this.currentShift = this.effective.previousShift.shiftType.name
+          this.currentShift = this.effective.previousShift.shiftType
           this.currentShiftDate = this.effective.previousShift.date
           this.upcomingShift = this.effective.shifts
         }

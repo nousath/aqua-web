@@ -1,6 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+:root {
+  --primary: #00A8c6;
+  --accent: #bfbdbd;
+  --primaryBackdrop: #00bcd47a;
+}
+
 body {
     background-color: #f5f5f5;
     overflow-x: hidden;
@@ -32,7 +39,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 .mat-primary {
-    background: #00A8c6 !important;
+    background: var(--primary) !important;
     color: white !important;
 }
 
@@ -49,8 +56,18 @@ body::-webkit-scrollbar-thumb {
     margin-bottom: 0;
 }
 
+.table .mat-icon-button {
+  height: inherit;
+  width: inherit;
+  line-height: inherit;
+}
+
+.mat-icon.warn {
+  color: red;
+}
+
 .primary_thead {
-    background-color: #dadada;
+    background-color: var(--accent);
     color: black;
 }
 
@@ -69,12 +86,37 @@ body::-webkit-scrollbar-thumb {
   margin-bottom: 20px
 }
 
+.mat-card-header {
+  background-color: var(--accent)!important;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+}
+
+.mat-card-header h5 {
+  font-weight: 700;
+  text-align: center;
+  width: 100%;
+}
+
+.mat-card-content {
+  padding-top: 20px;
+}
+
+.mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+  background-color: var(--primary);
+}
+
+.mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+  background-color: var(--primaryBackdrop);
+}
 .example-spacer {
     flex: 1 1 auto;
 }
 
 .mat-progress-bar-fill::after {
-    background-color: #00A8c6;
+    background-color: var(--primary);
 }
 
 .cta {
@@ -101,8 +143,6 @@ body::-webkit-scrollbar-thumb {
     box-shadow: none;
 }
 
-
-
 .calendar {
     background-image: url(assets/images/calendar-with-spring-binder-and-date-blocks.png);
     background-repeat: no-repeat;
@@ -122,20 +162,20 @@ body::-webkit-scrollbar-thumb {
 
 .btn-primary {
   color: #fff;
-  background-color: #00A8c6;
-  border-color: #00A8c6;
+  background-color: var(--primary);
+  border-color: var(--primary);
 }
 
 .btn-primary:hover {
   color: #fff;
-  background-color: #00A8c6;
-  border-color: #00A8c6;
+  background-color: var(--primary);
+  border-color: var(--primary);
 }
 
 .btn-primary.focus, .btn-primary:focus {
   color: #fff;
-  background-color: #00A8c6;
-  border-color: #00A8c6;
+  background-color: var(--primary);
+  border-color: var(--primary);
 }
 
 .tool-bar {
@@ -245,7 +285,7 @@ button.phantom {
 
 
 .dialog_Header {
-    background-color: #bfbdbd!important;
+    background-color: var(--accent)!important;
     position: absolute;
     top: 0;
     right: 0;
@@ -273,12 +313,12 @@ button.phantom {
     background: white !important;
     height: 63px !important;
     border-radius: 73%;
-    box-shadow: 0px 0px 0px 0 #00a8c6;
+    box-shadow: 0px 0px 0px 0 var(--primary);
 }
 
 .mat-progress-spinner path,
 .mat-spinner path {
-    stroke: #00A8c6 !important;
+    stroke: var(--primary) !important;
 }
 
 .ngui-auto-complete {
@@ -295,7 +335,7 @@ button.phantom {
 }
 
 .datepicker-days>table>tbody>tr>td>.active>.day {
-    background-color: #00a8c6 !important;
+    background-color: var(--primary) !important;
 }
 
 .datepicker table tr td span.active,
@@ -306,7 +346,7 @@ button.phantom {
 .datepicker table tr td.active:hover,
 .datepicker table tr td.active.disabled,
 .datepicker table tr td.active.disabled:hover {
-    background-image: linear-gradient(to bottom, #00a8c6, #00a8c6) !important;
+    background-image: linear-gradient(to bottom, var(--primary), var(--primary)) !important;
     background-repeat: repeat-x !important;
 }
 
@@ -319,11 +359,11 @@ button.phantom {
 }
 
 .mat-radio-button.mat-accent .mat-radio-inner-circle {
-    background-color: #00a8c6;
+    background-color: var(--primary);
 }
 
 .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
-    border-color: #00a8c6;
+    border-color: var(--primary);
 }
 
 .input-element>select::-ms-expand {

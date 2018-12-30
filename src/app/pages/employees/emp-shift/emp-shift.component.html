@@ -1,59 +1,46 @@
 <md-card>
-  <div class="dialog_Header text-center">
-    <h5>
-      <b>Shifts</b>
-    </h5>
+  <div class="mat-card-header">
+    <h5>Shifts</h5>
   </div>
-  <br>
-  <div>
-    <div>
-      <h5 class="text-center" s>
-        <b>Current Shifts</b>
-      </h5>
+  <div class="mat-card-content">
+    <div class="controls-row">
+      <h5>Roaster</h5>
+      <span class="spacer"></span>
+      <div class="input-group">
+        Auto <md-slide-toggle [checked]="employee.isDynamicShift" (change)="toggleDynamicShift(employee)"></md-slide-toggle>
+      </div>
     </div>
-    <table class="table table-condensed table-bordered">
-      <thead class="bordered-thead">
-        <tr>
-          <th class="text-center">
-            From Date
-          </th>
-          <th class="text-center">
-            Shift
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="text-center">{{currentShiftDate | date:'MMM d, EEE'}}</td>
-          <td class="text-center">{{currentShift}}</td>
-        </tr>
-      </tbody>
-    </table>
-    <br>
-    <div>
-      <h5 class="text-center">
-        <b>Upcoming Shifts</b>
-      </h5>
-    </div>
-    <table class="table table-condensed table-bordered">
+
+    <table *ngIf="!employee.isDynamicShift" class="table table-condensed">
       <tr>
-        <th class="text-center">
-          <b>From Date</b>
-        </th>
-        <th class="text-center">Shift</th>
+        <th>Date</th>
+        <th>Shift</th>
         <th>
-          <md-icon (click)="addShift()">add_circle_outline</md-icon>
+          <button md-icon-button (click)="addShift()" class="subtle">
+            <md-icon>add_circle_outline</md-icon>
+          </button>
         </th>
       </tr>
-      <tr *ngFor="let item of upcomingShift">
-        <td class="text-center">
-          {{item.date | date:'MMM d, EEE'}}
+      <tr>
+        <td>Current</td>
+        <td><span [style.color]="employee.shiftType?.color">{{employee.shiftType.name}}</span></td>
+        <td>
+          <span *ngIf="currentShift">
+            <md-icon mdTooltip="Wrong Shift {{currentShift.name}}" class="warn" *ngIf="employee.shiftType.id !== currentShift.id">report_problem</md-icon>
+          </span>
         </td>
-        <td class="text-center">
-          {{item.shiftType.name}}
+      </tr>
+      <tr *ngFor="let item of upcomingShift">
+        <td>
+          {{item.date | date:'dd-MM-yyyy'}}
         </td>
         <td>
-          <md-icon (click)="removeShift(item)">remove_circle_outline</md-icon>
+          <span [style.color]="item.shiftType.color">{{item.shiftType.name}}</span>
+        </td>
+        <td>
+          <button md-icon-button (click)="removeShift(item)" class="subtle">
+            <md-icon>remove_circle_outline</md-icon>
+          </button>
         </td>
       </tr>
     </table>
