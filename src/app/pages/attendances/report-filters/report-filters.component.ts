@@ -4,7 +4,6 @@ import { ReportRequest } from '../../../models/report-request';
 import { Observable } from 'rxjs/Observable';
 import { Employee } from '../../../models';
 import { AutoCompleteService } from '../../../services';
-import { AmsTagService } from '../../../services/ams/ams-tag.service';
 import { Page } from '../../../common/contracts/page';
 import { ToastyService } from 'ng2-toasty';
 
@@ -45,13 +44,7 @@ export class ReportFiltersComponent implements OnInit, OnChanges {
 
   constructor(private amsReportRequest: AmsReportRequestService,
     private autoCompleteService: AutoCompleteService,
-    private toastyService: ToastyService,
-    tagService: AmsTagService) {
-    this.tagTypes = new Page({
-      api: tagService.tagTypes
-    });
-
-    this.tagTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+    private toastyService: ToastyService) {
   }
 
   ngOnInit() { }
@@ -122,22 +115,5 @@ export class ReportFiltersComponent implements OnInit, OnChanges {
   }
 
   onSubmit() {
-    // const tags: string[] = [];
-    // this.tags.selected.forEach((tag: any) => {
-    //   tags.push(tag.tagId)
-    // })
-    // this.reportRequest.reportParams.tagIds = tags;
-    // this.isLoading = true;
-    // this.amsReportRequest.reportRequests
-    //   .create(this.reportRequest)
-    //   .then(response => {
-    //     this.isLoading = false;
-    //     this.tags.reset();
-    //     this.submitted.next();
-    //   })
-    //   .catch(err => {
-    //     this.isLoading = false;
-    //     this.tags.reset()
-    //   });
   }
 }
