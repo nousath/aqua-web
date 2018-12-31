@@ -35,7 +35,7 @@
           <tr>
             <th>Name</th>
             <th class="tdWidth">Designation</th>
-            <th class="tdWidth">Shift</th>
+            <th class="tdWidth">Department</th>
             <th class="tdWidth">Present Days</th>
             <th class="tdWidth">Absent Days</th>
             <th class="tdWidth">Leave Balance</th>
@@ -63,7 +63,7 @@
               </div>
             </td>
             <td class="tdWidth">{{item?.designation || '--'}}</td>
-            <td class="tdWidth">{{item?.shiftType?.name || '--'}}</td>
+            <td class="tdWidth">{{item?.department || '--'}}</td>
             <td class="tdWidth">{{item?.presentDays || '--'}}</td>
             <td class="tdWidth">{{item?.absentDays || '--'}}</td>
             <td class="tdWidth">{{item?.totalLeaveBalance | number:'1.0-2'}}</td>

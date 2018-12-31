@@ -124,8 +124,8 @@ export class ReportsComponent implements OnInit {
           'employeeTypes',
           'userTypes',
           'contractors',
-          'divisions'
-          // 'supervisor',
+          'divisions',
+          'supervisor'
         ];
         break;
     }

@@ -15,8 +15,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Filter } from '../../../common/contracts/filters';
 import * as _ from 'lodash';
 import { LocalStorageService } from '../../../services/local-storage.service';
-import { AmsTagService } from '../../../services/ams/ams-tag.service';
-import { TagType, Tag } from '../../../models/tag';
 import { FileUploader } from 'ng2-file-upload';
 import { FileUploaderDialogComponent } from '../../../shared/components/file-uploader-dialog/file-uploader-dialog.component';
 import { AddAttendanceLogsComponent } from '../../../shared/components/add-attendance-logs/add-attendance-logs.component';
@@ -88,7 +86,7 @@ export class DailyComponent {
     this.attendancePage = new Page({
       api: amsAttendanceService.dailyAttendances,
       location: location,
-      filters: ['ofDate', 'name', 'code', 'designations', 'departments', 'supervisorId',   divisionFilter, 'contractors', 'userTypes', 'tagIds',
+      filters: ['ofDate', 'name', 'code', 'designations', 'departments', 'supervisorId',   divisionFilter, 'contractors', 'userTypes',
         'attendance-status', { field: 'status', value: 'present' }, 'shiftType-id', 'byShiftEnd', 'shiftTypeId', 'byShiftLength',
         'checkInStatus', 'checkIn-status', 'checkInAfter', 'checkInBefore',
         'checkOutStatus', 'checkOut-status', 'checkOutAfter', 'checkOutBefore',
@@ -107,7 +105,6 @@ export class DailyComponent {
     filters['departments']['value'] = values.departmentNames;
     filters['designations']['value'] = values.designationNames;
     filters['supervisorId']['value'] = values.supervisorId;
-    filters['tagIds']['value'] = values.tagIds;
     filters['contractors']['value'] = values.contractorNames;
     filters['divisions']['value'] = values.divisionNames;
     filters['userTypes']['value'] = values.userTypeIds;
