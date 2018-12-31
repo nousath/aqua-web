@@ -1,8 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { ValidatorService, AmsShiftService, AutoCompleteService, EmsAuthService } from '../../../services';
 import { ShiftType } from '../../../models/shift-type';
-import { TagType } from '../../../models/tag';
-import { AmsTagService } from '../../../services/ams/ams-tag.service';
 import { Designation, Employee, Contractor } from '../../../models';
 import { EmsDesignationService } from '../../../services/ems/ems-designation.service';
 import { Department } from '../../../models/department';
@@ -31,7 +29,6 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
   contractors: Contractor[];
   contractorId: number;
   shiftTypes: ShiftType[];
-  tagTypes: TagType[];
 userDiv: any;
   @Input()
   fields: any[] = [];
@@ -145,7 +142,6 @@ userDiv: any;
     private auth: EmsAuthService,
     public validatorService: ValidatorService,
     private amsShiftService: AmsShiftService,
-    private tagService: AmsTagService,
   ) {
     this.attendanceStatusList = [
       { id: 1, code: 'present', itemName: 'Present' },
@@ -189,6 +185,11 @@ userDiv: any;
       { id: 2, code: 'extra', itemName: 'Extra' }
     ]
 
+    this.userTypeList = [
+      { id: 1, code: 'normal', itemName: 'Normal' },
+      { id: 2, code: 'admin', itemName: 'Admin' },
+      { id: 3, code: 'superadmin', itemName: 'Super Admin' }
+    ]
 
     this.dropdownSettings = {
       singleSelection: false,
@@ -254,9 +255,6 @@ userDiv: any;
       this.show.checkOut = moment(this.fromDate).isBefore(new Date(), 'd');
     }
 
-    if (this.show.userTypes) {
-      this.getTags();
-    }
     if (this.show.divisions) {
       this.getDivisions();
     }
@@ -377,33 +375,7 @@ userDiv: any;
     });
   }
 
-  private getTags() {
-    this.tagService.tagTypes.search().then(page => {
-      this.tagTypes = page.items;
-      this.userTypeList = [];
-      this.contractorList = []
-      this.tagTypes.forEach(item => {
-        switch (item.name.toLowerCase()) {
-          case 'usertype':
-            item.tags.forEach(obj => {
-              this.userTypeList.push({
-                id: obj.id,
-                itemName: obj.name,
-              });
-            });
-            break;
-          // case 'contractor':
-          //   item.tags.forEach(obj => {
-          //     this.contractorList.push({
-          //       id: obj.id,
-          //       itemName: obj.name,
-          //     });
-          //   });
-          //   break;
-        }
-      });
-    })
-  }
+
   onItemSelect(item: any) {
   }
   OnItemDeSelect(item: any) {
@@ -512,8 +484,8 @@ userDiv: any;
 
     if (this.selectedUserType && this.selectedUserType.length) {
       params.employee = params.employee || {}
-      params.employee.userTypes = this.selectedUserType.map(item => ({ id: item.id, name: item.itemName }))
-      values.userTypeIds = this.selectedUserType.map(item => item.id)
+      params.employee.userTypes = this.selectedUserType
+      values.userTypes = this.selectedUserType
     }
 
     if (this.selectedEmployeeStatusList && this.selectedEmployeeStatusList.length) {
@@ -638,18 +610,6 @@ userDiv: any;
       values.clockedLessThan = this.clockedLessThan
     }
 
-    // this.selectedUserType.forEach(item => {
-    //   values.employee.tags.push({
-    //     id: item.id,
-    //     name: item.itemName
-    //   });
-    // })
-    // this.selectedContractor.forEach(item => {
-    //   values.employee.tags.push({
-    //     id: item.id,
-    //     name: item.itemName
-    //   });
-    // })
 
     this.onChange.emit({
       values: values,

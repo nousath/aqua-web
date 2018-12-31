@@ -6,7 +6,6 @@ import { Employee } from '../../../models';
 import { AutoCompleteService } from '../../../services';
 import { AmsTagService } from '../../../services/ams/ams-tag.service';
 import { Page } from '../../../common/contracts/page';
-import { TagType } from '../../../models/tag';
 import { ToastyService } from 'ng2-toasty';
 
 @Component({
@@ -16,7 +15,6 @@ import { ToastyService } from 'ng2-toasty';
 })
 export class ReportFiltersComponent implements OnInit, OnChanges {
   reportRequest: ReportRequest = new ReportRequest();
-  tagTypes: Page<TagType>;
 
   employee: Employee;
   supervisor: Employee;
