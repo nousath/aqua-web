@@ -1,6 +1,6 @@
 import { AmsShiftService } from '../../../services/ams/ams-shift.service';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, Params } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { ToastyService } from 'ng2-toasty';
 import * as moment from 'moment';
@@ -20,7 +20,6 @@ import { MdDialogRef, MdDialog } from '@angular/material';
 import { BulkTimeLogsDialogComponent } from '../../../shared/components/bulk-time-logs-dialog/bulk-time-logs-dialog.component';
 import { EmsAuthService } from '../../../services/ems/ems-auth.service';
 
-
 @Component({
   selector: 'aqua-attendance-logs',
   templateUrl: './attendance-logs.component.html',
@@ -28,13 +27,12 @@ import { EmsAuthService } from '../../../services/ems/ems-auth.service';
 })
 export class AttendanceLogsComponent implements OnInit {
   employee: Model<Employee>;
-  userType: string;
   logs: Page<TimeLogs>;
   attendances: Page<DayEvent>;
   timeLog: Model<TimeLogs>;
   subscription: Subscription;
   empId: string;
-  ofDate: any;
+  ofDate = new Date();
   attendance: DayEvent;
   date: any;
   isButton = true;
@@ -57,15 +55,16 @@ export class AttendanceLogsComponent implements OnInit {
 
   isProcessing = false;
 
-  constructor(private activatedRoute: ActivatedRoute,
+  constructor(
+    private activatedRoute: ActivatedRoute,
     private toastyService: ToastyService,
     private amsAttendanceService: AmsAttendanceService,
     private amsTimelogsService: AmsTimelogsService,
     private shiftService: AmsShiftService,
-    private angulartics2: Angulartics2,
     private http: Http,
+    private router: Router,
     private amsEmployeeService: AmsEmployeeService,
-    private auth: EmsAuthService,
+    public auth: EmsAuthService,
     public _location: Location,
     public dialog: MdDialog) {
     this.employee = new Model({
@@ -79,25 +78,11 @@ export class AttendanceLogsComponent implements OnInit {
 
     this.attendances = new Page({
       api: amsAttendanceService.attendance,
-      filters: [{
-        field: 'employee',
-        value: null
-      },
-      {
-        field: 'ofDate',
-        value: null
-      }]
+      filters: ['employee', 'ofDate']
     })
     this.logs = new Page({
       api: amsTimelogsService.timeLogs,
-      filters: [{
-        field: 'employeeId',
-        value: null
-      },
-      {
-        field: 'fromDate',
-        value: null
-      }]
+      filters: ['employeeId', 'fromDate']
     })
 
     this.addAttendanceLogs = [{
@@ -110,22 +95,32 @@ export class AttendanceLogsComponent implements OnInit {
       'type': 'checkOut'
     }];
 
-
-    this.subscription = this.activatedRoute.params.subscribe(params => {
+    this.empId = this.activatedRoute.snapshot.params['empId']
+    if (this.activatedRoute.snapshot.queryParams['ofDate']) {
+      this.ofDate = new Date(this.activatedRoute.snapshot.queryParams['ofDate'])
+    }
+    this.activatedRoute.params.subscribe(params => {
       this.empId = params['empId'];
-      this.ofDate = params['ofDate'];
-      this.attendances.filters.properties['employee'].value = this.empId;
-      this.attendances.filters.properties['ofDate'].value = new Date(this.ofDate).toISOString();
-      this.logs.filters.properties['fromDate'].value = new Date(this.ofDate).toISOString();
-      this.logs.filters.properties['employeeId'].value = this.empId;
-      this.employee.fetch(this.empId).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
-      this.getAttendance();
-
-      this.checkTime = new Date(this.ofDate);
+      this.setData()
     })
 
-    this.userType = this.auth.currentRole().employee.type;
+    this.activatedRoute.queryParams.subscribe(query => {
+      this.ofDate = query['ofDate'] ? new Date(query['ofDate']) : new Date();
+      this.setData();
+    })
 
+    this.setData();
+  }
+
+  setData() {
+    this.attendances.filters.properties['employee'].value = this.empId;
+    this.attendances.filters.properties['ofDate'].value = new Date(this.ofDate).toISOString();
+    this.logs.filters.properties['fromDate'].value = new Date(this.ofDate).toISOString();
+    this.logs.filters.properties['employeeId'].value = this.empId;
+    this.employee.fetch(this.empId).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+    this.getAttendance();
+
+    this.checkTime = new Date(this.ofDate);
   }
 
 
@@ -141,6 +136,12 @@ export class AttendanceLogsComponent implements OnInit {
   getAttendance() {
 
     this.isProcessing = true;
+
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: { ofDate: this.ofDate.toISOString() },
+      queryParamsHandling: 'merge',
+    });
 
     this.amsAttendanceService.attendance.get(`${new Date(this.ofDate).toISOString()}?employeeId=${this.empId}`).then(item => {
       this.attendance = item;
@@ -191,21 +192,20 @@ export class AttendanceLogsComponent implements OnInit {
   }
 
   getLogs() {
-    this.logs.fetch().then(
-      data => {
-        _.each(this.logs.items, (log: TimeLogs, index) => {
-          if (log.location && log.location.coordinates) {
-            this.getLocation(log.location.coordinates, index);
-            log.location['has'] = true;
-            log.location['show'] = false;
-            if (!log.location.coordinates[0] || !log.location.coordinates[1]) {
-              log.location['has'] = false;
-            }
-          } else {
-            log['location'] = new TimeLogsLocation();
+    this.logs.fetch().then(data => {
+      _.each(this.logs.items, (log: TimeLogs, index) => {
+        if (log.location && log.location.coordinates) {
+          this.getLocation(log.location.coordinates, index);
+          log.location['has'] = true;
+          log.location['show'] = false;
+          if (!log.location.coordinates[0] || !log.location.coordinates[1]) {
+            log.location['has'] = false;
           }
-        });
-      }
+        } else {
+          log['location'] = new TimeLogsLocation();
+        }
+      });
+    }
     ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
@@ -223,11 +223,9 @@ export class AttendanceLogsComponent implements OnInit {
 
           this.checkTime = new Date(new Date(this.checkTime).setHours(parseInt(checkTimes[0]), parseInt(checkTimes[1])));
           this.checkTime = moment(this.checkTime).add(1, 'day').toDate()
-          console.log('check' + this.checkTime)
         } else {
           this.checkTime = new Date(new Date(this.checkTime).setHours(parseInt(checkTimes[0]), parseInt(checkTimes[1])));
           this.checkTime = moment(this.checkTime).utc().toDate()
-          console.log('uncheck' + this.checkTime)
 
         }
         this.timeLog.properties.employee.id = this.empId;
@@ -240,7 +238,6 @@ export class AttendanceLogsComponent implements OnInit {
 
       }
     })
-    console.log(this.addAttendanceLogs)
   }
 
   addNewRow() {

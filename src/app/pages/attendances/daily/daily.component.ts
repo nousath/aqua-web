@@ -75,18 +75,18 @@ export class DailyComponent {
     private toastyService: ToastyService,
     public dialog: MdDialog) {
 
-      const divisionFilter = {
-        field: 'divisions',
-        value: null
-      }
-      const userDiv = this.auth.currentRole().employee.division
-      if (userDiv && userDiv.name && userDiv.code && userDiv.code !== 'default') {
-        divisionFilter.value = [userDiv.name]
-      }
+    const divisionFilter = {
+      field: 'divisions',
+      value: null
+    }
+    const userDiv = this.auth.currentRole().employee.division
+    if (userDiv && userDiv.name && userDiv.code && userDiv.code !== 'default') {
+      divisionFilter.value = [userDiv.name]
+    }
     this.attendancePage = new Page({
       api: amsAttendanceService.dailyAttendances,
       location: location,
-      filters: ['ofDate', 'name', 'code', 'designations', 'departments', 'supervisorId',   divisionFilter, 'contractors', 'userTypes',
+      filters: ['ofDate', 'name', 'code', 'designations', 'departments', 'supervisorId', divisionFilter, 'contractors', 'userTypes',
         'attendance-status', { field: 'status', value: 'present' }, 'shiftType-id', 'byShiftEnd', 'shiftTypeId', 'byShiftLength',
         'checkInStatus', 'checkIn-status', 'checkInAfter', 'checkInBefore',
         'checkOutStatus', 'checkOut-status', 'checkOutAfter', 'checkOutBefore',
@@ -239,7 +239,11 @@ export class DailyComponent {
   }
   updateDayEvent(empId: string) {
     // if (item.ofDate < new Date().toISOString()) {
-    this.router.navigate([`/attendances/daily/${empId}/attendance-logs/${this.ofDate}`])
+    this.router.navigate([`/attendances/${empId}/logs`], {
+      queryParams: {
+        ofDate: this.ofDate.toISOString()
+      }
+    })
     // }
   }
 

@@ -45,7 +45,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
   ofDate: any;
   isProcessingAttendance = false;
   isDownloading = false;
-  selectedDate: Date = new Date();
+  selectedDate = new Date();
 
   isUpdatingLeaveStatus = false;
   attendance: Model<DayEvent>;
@@ -107,12 +107,22 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
     });
 
     this.shifTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+
+    if (this.activatedRoute.snapshot.queryParams['month']) {
+      this.selectedDate = new Date(this.activatedRoute.snapshot.queryParams['month'])
+    }
+
     this.subscription = activatedRoute.params.subscribe(params => {
       if (params['empId']) {
         this.empId = params['empId'];
         this.setEmployee()
       }
     });
+
+    this.activatedRoute.queryParams.subscribe(query => {
+      this.selectedDate = query['month'] ? new Date(query['month']) : new Date();
+      this.getAttendance(this.selectedDate);
+    })
   }
 
   setEmployee() {
@@ -214,6 +224,14 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
 
   getAttendance(date: Date) {
     this.selectedDate = new Date(date)
+
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: { month: this.selectedDate.toISOString() },
+      queryParamsHandling: 'merge',
+    });
+
+
     this.isProcessingAttendance = true;
     date = new Date(date);
     const y = date.getFullYear(), m = date.getMonth();
@@ -300,7 +318,11 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
 
   updateDayEvent(item: DayEvent) {
     if (item.ofDate < new Date().toISOString()) {
-      this.router.navigate([`/attendances/daily/${this.empId}/attendance-logs/${item.ofDate}`])
+      this.router.navigate([`/attendances/${this.empId}/logs`], {
+        queryParams: {
+          ofDate: new Date(item.ofDate).toISOString()
+        }
+      })
     }
   }
   openCalnder() {
@@ -342,7 +364,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
 
     });
 
-    $('#monthSelector').datepicker('setDate', new Date());
+    $('#monthSelector').datepicker('setDate', this.selectedDate);
 
   }
 

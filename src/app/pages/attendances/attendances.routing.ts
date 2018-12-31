@@ -34,7 +34,6 @@ const routes: Routes = [
       { path: 'daily/teams/:empId', component: TeamsComponent },
 
 
-      { path: 'daily/:empId/attendance-logs/:ofDate', component: AttendanceLogsComponent },
 
       { path: 'daily/:empId/apply-leave', component: ApplyLeaveComponent },
       { path: 'monthly/:empId/apply-leave', component: ApplyLeaveComponent },
@@ -44,6 +43,8 @@ const routes: Routes = [
       { path: 'leaves', component: LeavesComponent },
       { path: 'leave-balances', component: LeaveBalancesComponent },
       { path: 'manage-leaves', component: ManageLeavesComponent },
+      { path: ':empId/logs', component: AttendanceLogsComponent }
+
     ]
   }
 ];

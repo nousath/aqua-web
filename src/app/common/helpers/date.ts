@@ -67,7 +67,7 @@ export function dateUtil(date) {
     },
     slots: (options) => {
       const slots = [];
-      let  index;
+      let index;
       const value = options.date || date;
 
       const start = options.start || 8;

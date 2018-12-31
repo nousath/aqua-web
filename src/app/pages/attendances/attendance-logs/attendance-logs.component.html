@@ -104,7 +104,7 @@
                   </td>
                   <td class="text-center" *ngIf="!item?.location?.show">{{item.ipAddress}}</td>
                   <td class="text-center" *ngIf="!item?.location?.show">
-                    <span [matMenuTriggerFor]="moreMenu" md-icon-button style="cursor: pointer" *ngIf="(i == 0 || i == timeLogsLength - 1) && (userType === 'superadmin')">
+                    <span [matMenuTriggerFor]="moreMenu" md-icon-button style="cursor: pointer" *ngIf="(i == 0 || i == timeLogsLength - 1) && auth.hasPermission('superadmin')">
                       <md-icon>more_vert</md-icon>
                     </span>
                     <md-menu #moreMenu="mdMenu">
@@ -119,7 +119,7 @@
                     </md-menu>
                   </td>
                 </tr>
-                <tr *ngIf="userType === 'superadmin'">
+                <tr *ngIf="auth.hasPermission('superadmin')">
                   <td colspan="6">
                     <a md-raised-button color="primary" (click)="addLogs()" style="float: right">
                       Add Logs
