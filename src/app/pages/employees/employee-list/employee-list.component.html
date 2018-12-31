@@ -38,10 +38,9 @@
     <table class="table table-condensed table-hover">
       <thead class="primary_thead">
         <tr>
-          <th colspan="2">Name</th>
-          <th class="tdWidth">Code</th>
+          <th>Name</th>
           <th class="tdWidth">Designation</th>
-          <th class="tdWidth">Biometric Id</th>
+          <th class="tdWidth">Department</th>
           <th class="tdWidth  text-center">Action</th>
         </tr>
       </thead>
@@ -53,30 +52,38 @@
           class="capitalize">
 
           <td>
-            <img *ngIf="item?.profile?.pic?.url" class="img-circle img-profile" alt="img" [src]="item?.profile?.pic?.url">
-            <img *ngIf="!item?.profile?.pic?.url" class="img-circle img-profile" alt="img" src="assets/images/blank.png">
+            <div class="cols">
+              <div>
+                <img *ngIf="item?.profile?.pic?.url" class="img-circle img-profile" alt="img" [src]="item?.profile?.pic?.url"
+                  onError="this.src='/assets/images/blank.png'">
+                <img *ngIf="!item?.profile?.pic?.url" class="img-circle img-profile" alt="img" src="assets/images/blank.png">
+              </div>
+              <div>
+                <a [routerLink]="[item.code]">{{item?.profile?.firstName || '-'}}
+                  {{item?.profile?.lastName || ''}}</a>
+                <p class="sub-text">{{item?.code || ''}}</p>
+              </div>
+            </div>
           </td>
-          <td>
-            <a [routerLink]="[item.code]">{{item?.profile?.firstName || '-'}}
-              {{item?.profile?.lastName || ''}}</a>
-            <br>
-
-          </td>
-          <td><span>{{item?.code || '--'}}</span></td>
           <td class="tdWidth">
-            <span *ngIf="item?.designation"></span>{{(item?.designation?.code && item?.designation?.code !==
-            'default')? item?.designation?.name : '--' }}
+            <span *ngIf="item?.designation">{{(item?.designation?.code && item?.designation?.code !==
+              'default')? item?.designation?.name : '--' }}
+            </span>
           </td>
-          <td><span>{{item?.config?.biometricCode || '--'}}</span></td>
-
+          <td class="tdWidth">
+            <span *ngIf="item?.department">{{(item?.department?.code && item?.department?.code !==
+              'default')? item?.department?.name : '--' }}</span>
+            <p class="sub-text" *ngIf="item?.config?.contractor">{{(item?.config?.contractor?.code &&
+              item?.config?.contractor?.code !==
+              'default')? item?.config?.contractor?.name : '' }}</p>
+          </td>
           <td class="tdWidth text-center">
-            <a md-icon-button class="button_align cursor" mdTooltip="Edit details" [mdTooltipPosition]="'above'"
-              [routerLink]="[item.code]">
+            <button md-icon-button class="subtle" mdTooltip="Edit" [mdTooltipPosition]="'above'" [routerLink]="[item.code]">
               <md-icon>edit</md-icon>
-            </a>
+            </button>
             &nbsp;
-            <button [disabled]="employees?.isLoading || employee?.isProcessing" md-icon-button class="button_align cursor"
-              mdTooltip="Terminate" [mdTooltipPosition]="'above'" (click)="terminateEmp(item.id, item.name)">
+            <button [disabled]="employees?.isLoading || employee?.isProcessing" md-icon-button class="subtle" mdTooltip="Terminate"
+              [mdTooltipPosition]="'above'" (click)="terminateEmp(item.id, item.name)">
               <i class="fa fa-user-times fa-lg" aria-hidden="true"></i>
             </button>
           </td>
