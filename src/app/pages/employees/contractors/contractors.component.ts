@@ -118,6 +118,7 @@ export class ContractorsComponent implements OnInit {
         const obj = {
           id: item.id,
           itemName: item.name,
+          itemCode: item.code,
         };
         this.contractorList.push(obj);
       })
