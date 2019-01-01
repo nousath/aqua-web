@@ -29,7 +29,7 @@
   </md-menu>
 </div>
 <aqua-employees-filter *ngIf="isFilter" [fields]="filterFields" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter>
-<md-spinner class="custom_spinner" *ngIf="employees?.isLoading || uploader.isUploading || employee?.isProcessing" mode="indeterminate"></md-spinner>
+<md-spinner class="custom_spinner" *ngIf="employees?.isLoading || employee?.isProcessing" mode="indeterminate"></md-spinner>
 <md-card class="card">
   <div class="row text-center noData" *ngIf="employees?.items?.length == 0">
     <h5> No data to display !</h5>

@@ -163,6 +163,15 @@ export class Filters {
       this.properties[model.field] = model;
     });
     this.location = options.location;
+
+    if (this.location) {
+      const urlSearchParams = new URLSearchParams(this.location.path().split('?')[1]);
+
+      this.items.forEach(item => {
+        item.value = urlSearchParams.get(item.field)
+      })
+    }
+
     this.autoApply = options.autoApply;
   }
 

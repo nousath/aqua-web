@@ -36,12 +36,14 @@ export interface IPage {
 }
 
 export class Page<TModel> extends PageModel<TModel> implements IPage {
-  id: number[]= [];
+  id: number[] = [];
   errors: string[] = [];
   filters: Filters;
   isLoading = false;
   isGettingStats = false;
   lastpageNo = 0;
+
+  private location: Location;
 
   private handleError(err: any, callback?: (err: any) => any): Promise<void> {
     this.errors.push(err);
@@ -64,6 +66,20 @@ export class Page<TModel> extends PageModel<TModel> implements IPage {
       filters: options.filters,
       location: options.location
     });
+    this.location = options.location
+
+    if (this.location) {
+      const urlSearchParams = new URLSearchParams(this.location.path().split('?')[1]);
+      const pageSizeParam = urlSearchParams.get('pageSize');
+      if (pageSizeParam) {
+        this.pageSize = parseInt(pageSizeParam)
+      }
+
+      const pageNoParam = urlSearchParams.get('pageNo');
+      if (pageNoParam) {
+        this.pageNo = parseInt(pageNoParam)
+      }
+    }
   }
   fetch(callback?: (err: any, page?: Page<TModel>) => any): Promise<Page<TModel>> {
     this.isLoading = true;
@@ -76,6 +92,13 @@ export class Page<TModel> extends PageModel<TModel> implements IPage {
       params.limit = this.options.pageSize; // TODO - use take
       params.pageSize = this.options.pageSize || this.pageSize || 10;
       params.pageNo = this.pageNo;
+      if (this.location) {
+        const urlSearchParams = new URLSearchParams(this.location.path().split('?')[1]);
+        urlSearchParams.set('pageSize', '' + params.pageSize);
+        urlSearchParams.set('pageNo', '' + params.pageNo);
+        const url = this.location.path().split('?')[0];
+        this.location.replaceState(url, urlSearchParams.toString());
+      }
       // params.serverPaging
     }
 

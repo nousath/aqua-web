@@ -1,4 +1,5 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Location } from '@angular/common';
 import { EmsEmployeeService } from '../../../services/ems';
 import { Employee } from '../../../models/employee';
 import { Page } from '../../../common/contracts/page';
@@ -10,8 +11,6 @@ import { EmsEmployee } from '../../../models/ems/employee';
 import { Filter } from '../../../common/contracts/filters';
 import * as _ from 'lodash';
 import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-dialog.component';
-import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
-import { LocalStorageService } from 'app/services/local-storage.service';
 import { ValidatorService } from '../../../services/validator.service';
 import { RelievingDialogComponent } from '../../../dialogs/relieving-dialog/relieving-dialog.component';
 import { FileUploaderDialogComponent } from '../../../shared/components/file-uploader-dialog/file-uploader-dialog.component';
@@ -28,10 +27,7 @@ export class EmployeeListComponent implements OnInit {
   employees: Page<EmsEmployee>
   employee: Model<EmsEmployee>
   statusFilter = 'active';
-  uploader: FileUploader;
-  isUpload = false;
   isFilter = false;
-  userDiv: any
   filterFields = [
     'name',
     'code',
@@ -48,42 +44,10 @@ export class EmployeeListComponent implements OnInit {
   constructor(private emsEmployeeService: EmsEmployeeService,
     private toastyService: ToastyService,
     public validatorService: ValidatorService,
-    private activatedRoute: ActivatedRoute,
-    private store: LocalStorageService,
     private auth: EmsAuthService,
+    location: Location,
     private router: Router,
     public dialog: MdDialog) {
-
-    const access_Token: string = this.store.getItem('external-token');
-    const orgCode = this.store.getItem('orgCode');
-    this.uploader = new FileUploader({
-      url: '/ems/api/employees/importer',
-      itemAlias: 'file',
-      headers: [{
-        name: 'x-access-token',
-        value: access_Token
-      }, {
-        name: 'org-code',
-        value: orgCode
-      }]
-    });
-
-    this.uploader.onAfterAddingAll = (fileItems: FileItem) => {
-    };
-
-    this.uploader.onErrorItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
-      console.log('onErrorItem', response, headers);
-    };
-
-    this.uploader.onCompleteItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
-
-      const res: any = JSON.parse(response);
-      if (!res.isSuccess)
-        return toastyService.error({ title: 'Error', msg: 'excel upload failed' })
-      this.fetchEmp();
-      this.isUpload = false;
-
-    };
 
     const divisionFilter = {
       field: 'divisions',
@@ -111,13 +75,15 @@ export class EmployeeListComponent implements OnInit {
         'terminationReason',
         'terminationDate',
         'contractors',
-      ]
+      ],
+      location: location
     });
 
     this.employee = new Model({
       api: emsEmployeeService.employees,
       properties: new EmsEmployee()
     });
+
     this.fetchEmp();
   }
 
@@ -131,6 +97,8 @@ export class EmployeeListComponent implements OnInit {
 
 
   applyFilters(result) {
+    this.employees.pageNo = 1;
+
     const filters = this.employees.filters.properties;
 
     const values = result.params;
@@ -157,7 +125,7 @@ export class EmployeeListComponent implements OnInit {
         this.filterFields = [
           'name',
           'code',
-          'biometricId',
+          // 'biometricId',
           'designations',
           'departments',
           'divisions',
@@ -184,13 +152,13 @@ export class EmployeeListComponent implements OnInit {
         this.filterFields = [
           'name',
           'code',
-          'biometricId',
+          // 'biometricId',
           'designations',
           'departments',
           'divisions',
           'supervisor',
           'employeeTypes',
-          'userTypes',
+          // 'userTypes',
           'contractors'
         ];
         break;
@@ -202,6 +170,7 @@ export class EmployeeListComponent implements OnInit {
   }
 
   fetchEmp() {
+
     this.employees.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 

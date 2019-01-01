@@ -3,14 +3,11 @@ import { Location } from '@angular/common'
 import { AmsEmployeeService } from '../../../services/ams/ams-employee.service';
 import { Page } from '../../../common/contracts/page';
 import { ToastyService } from 'ng2-toasty';
-import { ServerPageInput } from '../../../common/contracts/api/page-input';
 import * as moment from 'moment';
 import { ShiftType } from '../../../models/shift-type';
 import { EffectiveShift } from '../../../models/effective-shift';
 import { AmsEffectiveShiftService } from '../../../services/ams/ams-effective-shift.service';
 import { AmsShiftService } from '../../../services/ams/ams-shift.service';
-import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
-import { LocalStorageService } from '../../../services/local-storage.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MdDialogRef, MdDialog } from '@angular/material';
 import { FileUploaderDialogComponent } from '../../../shared/components/file-uploader-dialog/file-uploader-dialog.component';
@@ -60,6 +57,9 @@ export class RosterShiftsComponent implements OnInit {
     private amsEffectiveShiftService: AmsEffectiveShiftService,
     private toastyService: ToastyService,
   ) {
+
+    const queryParams = this.activatedRoute.snapshot.queryParams || {};
+
     const divisionFilter = {
       field: 'divisions',
       value: null
@@ -72,48 +72,25 @@ export class RosterShiftsComponent implements OnInit {
       api: amsShiftService.shiftTypes
     });
 
-    this.date = moment(this.activatedRoute.queryParams['value']['fromDate']).startOf('week').toDate()
+    this.date = moment(queryParams['fromDate']).startOf('week').toDate()
 
     this.effectiveShifts = new Page({
       api: amsEffectiveShiftService.effectiveShifts,
-      filters: [{
-        field: 'fromDate',
-        value: this.date.toISOString()
-      }, {
-        field: 'name',
-        value: this.activatedRoute.queryParams['value']['name']
-      }, {
-        field: 'code',
-        value: this.activatedRoute.queryParams['value']['code']
-      }, {
-        field: 'contractors',
-        value: this.activatedRoute.queryParams['value']['contractors']
-      }, {
-        field: 'departments',
-        value: this.activatedRoute.queryParams['value']['departments']
-      }, {
-        field: 'designations',
-        value: this.activatedRoute.queryParams['value']['designation']
-      }, divisionFilter,
-       {
-        field: 'shiftType',
-        value: this.activatedRoute.queryParams['value']['shiftType']
-      }, {
-        field: 'byShiftEnd',
-        value: this.activatedRoute.queryParams['value']['byShiftEnd']
-      }, {
-        field: 'byShiftLength',
-        value: this.activatedRoute.queryParams['value']['byShiftLength']
-      }, {
-        field: 'tagIds',
-        value: ''
-      }, {
-        field: 'userTypes',
-        value: this.activatedRoute.queryParams['value']['userTypes']
-      }, {
-        field: 'supervisorId',
-        value: this.activatedRoute.queryParams['value']['supervisorId']
-      }],
+      filters: [
+        'fromDate',
+        'name',
+        'code',
+        divisionFilter,
+        'contractors',
+        'departments',
+        'designations',
+        'shiftType',
+        'byShiftEnd',
+        'byShiftLength',
+        'tagIds',
+        'userTypes',
+        'supervisorId'
+      ],
       location: location
     });
 
@@ -122,6 +99,7 @@ export class RosterShiftsComponent implements OnInit {
     });
   }
   applyFilters(result) {
+    this.effectiveShifts.pageNo = 1;
     const values = result.params;
     const filters = this.effectiveShifts.filters.properties;
 
@@ -139,8 +117,11 @@ export class RosterShiftsComponent implements OnInit {
 
   reset() {
     this.effectiveShifts.filters.reset();
-    $('#weekSelector').datepicker('setDate', new Date());
-    this.effectiveShifts.filters.properties['ofDate']['value'] = new Date();
+    this.effectiveShifts.pageNo = 1;
+
+    const date = moment().startOf('week').toDate()
+    $('#weekSelector').datepicker('setDate', date);
+    this.effectiveShifts.filters.properties['fromDate']['value'] = date;
     this.getAttendance();
   }
 
