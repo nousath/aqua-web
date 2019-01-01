@@ -369,6 +369,7 @@ userDiv: any;
         const obj = {
           id: item.id,
           itemName: item.name,
+          itemCode: item.code
         };
         this.contractorList.push(obj);
       })
@@ -476,11 +477,11 @@ userDiv: any;
       values.supervisorId = this.selectedSupervisor.id;
     }
 
-    if (this.selectedContractor && this.selectedContractor.length) {
-      params.employee = params.employee || {}
-      params.employee.contractors = this.selectedContractor.map(item => ({ id: item.id, name: item.itemName }))
-      values.contractors = this.selectedContractor.map(item => item.id)
-    }
+    // if (this.selectedContractor && this.selectedContractor.length) {
+    //   params.employee = params.employee || {}
+    //   params.employee.contractors = this.selectedContractor.map(item => ({ id: item.id, name: item.itemName, code: item.itemCode }))
+    //   values.contractors = this.selectedContractor.map(item => item.id)
+    // }
 
     if (this.selectedUserType && this.selectedUserType.length) {
       params.employee = params.employee || {}
@@ -520,7 +521,7 @@ userDiv: any;
     }
     if (this.selectedContractor && this.selectedContractor.length) {
       params.employee = params.employee || {}
-      params.employee.contractors = this.selectedContractor.map(item => ({ id: item.id, name: item.itemName }))
+      params.employee.contractors = this.selectedContractor.map(item => ({ id: item.id, name: item.itemName, code: item.itemCode }))
       values.contractorIds = this.selectedContractor.map(item => ({ id: item.id, name: item.itemName }))
       values.contractorNames = this.selectedContractor.map(item => item.itemName)
     }

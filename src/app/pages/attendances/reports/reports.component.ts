@@ -124,8 +124,8 @@ export class ReportsComponent implements OnInit {
           'employeeTypes',
           'userTypes',
           'contractors',
-          'divisions',
-          'supervisor'
+          'divisions'
+          // 'supervisor'
         ];
         break;
     }
@@ -153,7 +153,6 @@ export class ReportsComponent implements OnInit {
     reportRequest.type = this.selected.type;
     reportRequest.provider = this.selected.provider;
     reportRequest.name = this.selected.name;
-
     reportRequest.reportParams = result.params;
     this.isCreating = true;
     this.amsReportRequest.reportRequests
