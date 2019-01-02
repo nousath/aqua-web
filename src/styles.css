@@ -77,6 +77,7 @@ body::-webkit-scrollbar-thumb {
     margin-left: -5px;
 }
 
+.mat-card.table-only,
 .card {
     /* margin-top: 1% !important; */
     padding: 0 !important;

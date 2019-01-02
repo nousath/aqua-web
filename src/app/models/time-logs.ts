@@ -5,6 +5,7 @@ export class TimeLogs {
   device: string;
   ipAddress: string;
   source: string;
+  isComputed: boolean;
   location: TimeLogsLocation = new TimeLogsLocation();
   employee: Employee = new Employee();
 }

@@ -333,6 +333,20 @@ export class AttendanceLogsComponent implements OnInit {
     });
   }
 
+  repair() {
+    this.isProcessing = true;
+    this.amsAttendanceService.attendance.simplePost({
+      id: this.attendance.id,
+      removeWeekOff: false,
+      adjustTimeLogs: true
+    }, 'regenerate').then(() => {
+      this.isProcessing = false;
+      this.getAttendance();
+    }).catch(err => {
+      this.isProcessing = false;
+      this.toastyService.error(err)
+    })
+  }
   ngOnInit() {
   }
   backClicked() {
