@@ -121,7 +121,6 @@ export class RosterShiftsComponent implements OnInit {
 
     const date = moment().startOf('week').toDate()
     $('#weekSelector').datepicker('setDate', date);
-    this.effectiveShifts.filters.properties['fromDate']['value'] = date;
     this.getAttendance();
   }
 
@@ -165,7 +164,19 @@ export class RosterShiftsComponent implements OnInit {
       this.getAttendance();
       // this.getEffectiveShift(e.date);
     })
-    $('#weekSelector').datepicker('setDate', moment(this.activatedRoute.queryParams['value']['fromDate']).startOf('week').toDate());
+    $('#weekSelector').datepicker('setDate', this.date);
+  }
+
+  showNextWeek() {
+    this.date = moment(this.date).add(7, 'd').startOf('week').toDate();
+    $('#weekSelector').datepicker('setDate', this.date);
+    this.getAttendance();
+  }
+
+  showPreviousWeek() {
+    this.date = moment(this.date).subtract(7, 'd').startOf('week').toDate();
+    $('#weekSelector').datepicker('setDate', this.date);
+    this.getAttendance();
   }
 
   createDaySelector() {
@@ -225,19 +236,10 @@ export class RosterShiftsComponent implements OnInit {
 
   }
   getAttendance() {
+    this.effectiveShifts.filters.properties['fromDate']['value'] = moment(this.date).startOf('week').toDate().toISOString()
     this.shiftTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
     this.getEffectiveShift(this.date);
 
-  }
-
-  nextWeek() {
-    this.date = moment(this.date).add(7, 'd').toDate()
-    this.getAttendance()
-  }
-
-  previousWeek() {
-    this.date = moment(this.date).add(-7, 'd').toDate()
-    this.getAttendance()
   }
 
   updateEffectiveShift(id, model: any) {

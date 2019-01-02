@@ -93,11 +93,21 @@ export class DailyComponent {
         'hours', 'clocked-status', 'clockedGt', 'clockedLt']
     });
 
+    if (this.activatedRoute.snapshot.queryParams['ofDate']) {
+      this.ofDate = new Date(this.activatedRoute.snapshot.queryParams['ofDate'])
+    } else {
+      this.ofDate = new Date()
+    }
+
+    this.activatedRoute.queryParams.subscribe(query => {
+      this.ofDate = query['ofDate'] ? new Date(query['ofDate']) : new Date();
+      this.getAttendance();
+    })
   }
 
   applyFilters(result) {
+    this.attendancePage.pageNo = 1;
     const filters = this.attendancePage.filters.properties;
-
     const values = result.values;
 
     filters['name']['value'] = values.employeeName;
@@ -133,13 +143,14 @@ export class DailyComponent {
 
   reset() {
     this.attendancePage.filters.reset();
+    this.attendancePage.pageNo = 1;
     $('#dateSelector').datepicker('setDate', this.ofDate);
-    this.attendancePage.filters.properties['ofDate']['value'] = moment(this.ofDate).toISOString();
     this.getAttendance();
   }
 
   getAttendance() {
     this.attendances = [];
+    this.attendancePage.filters.properties['ofDate']['value'] = moment(this.ofDate).toISOString()
     this.attendancePage.fetch().then(page => {
       if (!page || !page.items) { return; }
       this.isPast = moment(this.ofDate).isBefore(new Date(), 'day');
@@ -226,13 +237,30 @@ export class DailyComponent {
         return this.toastyService.info({ title: 'Info', msg: 'Date should be less than or equal to current date' })
       }
 
-      this.attendancePage.filters.properties['ofDate']['value'] = moment(e.date).toISOString()
       this.ofDate = moment(e.date).startOf('day').toDate()
-
       setTimeout(() => this.getAttendance(), 1)
     });
-    $('#dateSelector').datepicker('setDate', new Date());
+    $('#dateSelector').datepicker('setDate', this.ofDate);
 
+  }
+
+  showNextDate() {
+    const nextDate = moment(this.ofDate).add(1, 'd').toDate();
+
+    if (nextDate < new Date()) {
+      this.ofDate = nextDate;
+      $('#dateSelector').datepicker('setDate', this.ofDate);
+      this.getAttendance();
+    } else {
+      this.toastyService.info({ title: 'Max Date', msg: `You cannot browse to future date` })
+    }
+
+  }
+
+  showPreviousDate() {
+    this.ofDate = moment(this.ofDate).subtract(1, 'd').toDate();
+    $('#dateSelector').datepicker('setDate', this.ofDate);
+    this.getAttendance();
   }
   downloadlink(type: string) {
     this.router.navigate(['pages/attendances/reports'], { queryParams: { type: type } });

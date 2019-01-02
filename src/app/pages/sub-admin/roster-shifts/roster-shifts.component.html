@@ -1,10 +1,17 @@
 <div class="tool-bar controls-row">
   <h5> Weekly Roaster</h5>
   <span class="spacer"></span>
-  <div class="input-group webView">
-    <span class="input-group-addon" id="basic-addon1">Week</span>
+  <button md-icon-button (click)="showPreviousWeek()">
+    <md-icon>arrow_back</md-icon>
+  </button>
+  <div class="input-group">
     <input id="weekSelector" type="text" class="form-control input-sm calendar no-spin">
   </div>
+  <button md-icon-button (click)="showNextWeek()">
+    <md-icon>arrow_forward</md-icon>
+  </button>
+  <span class="spacer"></span>
+
   <button md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'">
     <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
   </button>
@@ -56,17 +63,10 @@
         <th rowspan="2">Auto</th>
         <th class="tdWidth" rowspan="2">Previous</th>
         <th class="text-center tdWidth week" *ngFor="let date of dates">
-          <span [class.past]="date < isDateToday" [class.future]="date > isDateToday" [class.today]="(date | date:'dd/MM/yyyy') === (isDateToday | date:'dd/MM/yyyy')">{{date
-            | date:'EEE'}}</span>
-        </th>
-      </tr>
-      <tr>
-        <th class="text-center tdWidth week" *ngFor="let date of dates ;let idx = index">
-          <span [class.past]="date < isDateToday" [class.future]="date > isDateToday" [class.today]="(date | date:'dd/MM/yyyy') === (isDateToday | date:'dd/MM/yyyy')">
-            <a *ngIf="idx === 0" (click)="previousWeek()">&laquo;</a>
-            {{date | date:'dd/MM'}}
-            <a *ngIf="idx === 6" (click)="nextWeek()">&raquo;</a>
-          </span>
+          <div [class.past]="date < isDateToday" [class.future]="date > isDateToday" [class.today]="(date | date:'dd/MM/yyyy') === (isDateToday | date:'dd/MM/yyyy')">
+            {{date| date:'EEE'}}
+            <div class="sub-text">{{date | date:'dd/MM'}}</div>
+          </div>
         </th>
       </tr>
     </thead>

@@ -103,6 +103,9 @@
 .week .future {
     color: green
 }
+.week .sub-text {
+    color: inherit;
+}
 
 .mobileView {
     display: none;

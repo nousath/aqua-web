@@ -1,10 +1,16 @@
 <div class="tool-bar controls-row">
   <h5>Daily Attendance</h5>
   <span class="spacer"></span>
+  <button md-icon-button (click)="showPreviousDate()" [disabled]="attendancePage.isLoading">
+    <md-icon>arrow_back</md-icon>
+  </button>
   <div class="input-group">
-    <span class="input-group-addon" id="basic-addon1">Date</span>
-    <input id="dateSelector" type="text" class="form-control input-sm calendar no-spin">
+    <input id="dateSelector" type="text" class="form-control input-sm calendar no-spin" [disabled]="attendancePage.isLoading">
   </div>
+  <button md-icon-button (click)="showNextDate()" [disabled]="attendancePage.isLoading">
+    <md-icon>arrow_forward</md-icon>
+  </button>
+  <span class="spacer"></span>
   <button md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'">
     <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
   </button>
