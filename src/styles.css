@@ -550,6 +550,11 @@ button.phantom {
     padding-top: 5px;
 }
 
+.controls-row .input-group.wide {
+  max-width: 350px;
+  padding-top: 5px;
+}
+
 .flex-row>.form-group {
   padding: 0 5px;
 }
