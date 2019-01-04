@@ -570,6 +570,10 @@ button.phantom {
     color: #919191;
 }
 
+th .sub-text {
+  color: inherit;
+}
+
 .mini-control.mat-button-toggle-group {
     height: 25px;
 }

@@ -2,18 +2,18 @@
   <div class="backdrop"></div>
   <div class="outer">
     <div class="content wide">
+      <md-spinner class="custom_spinner" *ngIf="isLoading" mode="indeterminate"></md-spinner>
       <h4>Leave Rule</h4>
-      <div class="row section">
-        <h5>Details</h5>
-        <div class="form-group col-sm-4 col-md-4 col-lg-4 col-xs-4">
+      <div class="flex-row three section">
+        <div class="form-group">
           <label for="name">Name</label><span class="asterisk">*</span>
           <input class="form-control" type="text" [(ngModel)]="leaveType.properties.name">
         </div>
-        <div class="form-group col-sm-4 col-md-4 col-lg-4 col-xs-4">
+        <div class="form-group">
           <label for="name">Code</label><span class="asterisk">*</span>
           <input class="form-control" type="text" [(ngModel)]="leaveType.properties.code">
         </div>
-        <div class="form-group col-sm-4 col-md-4 col-lg-4 col-xs-4">
+        <div class="form-group">
           <label for="leaveCategory">Category</label><span class="asterisk">*</span>
           <select class="form-control" [(ngModel)]="leaveType.properties.category">
             <option [ngValue]="null" disabled>select an option</option>
@@ -22,10 +22,9 @@
             <option value="paidLeave">Paid Leave</option>
           </select>
         </div>
-      </div>
-      <div class="row section">
-        <h5>Grant Rules</h5>
-        <div class="form-group col-sm-4 col-md-4 col-lg-4 col-xs-4">
+        <h5>Limit Rules</h5>
+
+        <div class="form-group">
           <label for="unitsPerDay">Min Per Day</label><span class="asterisk">*</span>
           <select class="form-control" [(ngModel)]="leaveType.properties.unitsPerDay">
             <option [ngValue]="null">select an option</option>
@@ -34,25 +33,11 @@
             <option value="3">One Third</option>
           </select>
         </div>
-        <div class="form-group col-sm-4 col-md-4 col-lg-4 col-xs-4">
-          <label for="periodicityType">Period</label>
-          <select class="form-control" [(ngModel)]="leaveType.properties.periodicity.type">
-            <option [ngValue]="null">select an option</option>
-            <option value="manual">Manual</option>
-            <option value="monthly">Monthly</option>
-            <option value="yearly">Yearly</option>
-          </select>
+        <div class="form-group">
+          <label for="carryForward">Max Per Month</label>
+          <input class="form-control" type="number" min="0" [(ngModel)]="leaveType.properties.monthlyLimit">
         </div>
-        <div class="form-group col-sm-4 col-md-4 col-lg-4 col-xs-4">
-          <label *ngIf="leaveType.properties.periodicity.type !== 'manual'">Credit</label>
-          <label *ngIf="leaveType.properties.periodicity.type === 'manual'">Initial Balance</label>
-          <input class="form-control" type="number" min="0" [(ngModel)]="leaveType.properties.periodicity.value"
-            [disabled]="!leaveType.properties.periodicity.type">
-        </div>
-      </div>
-      <div class="row section">
-        <h5>Limit Rules</h5>
-        <div class="form-group col-sm-4 col-md-4 col-lg-4 col-xs-4">
+        <div class="form-group">
           <label for="unlimited">Is Unlimited</label>
           <select class="form-control" [(ngModel)]="leaveType.properties.unlimited">
             <option [ngValue]="null">select an option</option>
@@ -60,24 +45,38 @@
             <option value="false">No</option>
           </select>
         </div>
-
-        <div class="form-group col-sm-4 col-md-4 col-lg-4 col-xs-4">
-          <label for="carryForward"> Yearly Carry Forward</label>
+        <h5>Grant Rules</h5>
+        <div class="form-group">
+          <label for="periodicityType">Trigger</label>
+          <select class="form-control" [(ngModel)]="leaveType.properties.periodicity.type" [disabled]="leaveType.properties.unlimited">
+            <option [ngValue]="null">select an option</option>
+            <option value="daily">Overtime</option>
+            <option value="monthly">Month Start</option>
+            <option value="yearly">Year Start</option>
+            <option value="manual">Manual</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <ng-container [ngSwitch]="leaveType.properties.periodicity.type">
+            <label *ngSwitchCase="'daily'">Hours for 1 Leave</label>
+            <label *ngSwitchCase="'manual'">Initial Balance</label>
+            <label *ngSwitchDefault>Credit</label>
+          </ng-container>
+          <input class="form-control" type="number" min="0" [(ngModel)]="leaveType.properties.periodicity.value"
+            [disabled]="!leaveType.properties.periodicity.type || leaveType.properties.unlimited">
+        </div>
+        <div class="form-group">
+          <label for="carryForward">Carry Forward (Yearly)</label>
           <input class="form-control" [disabled]="leaveType.properties.unlimited" type="number" min="0" [(ngModel)]="leaveType.properties.carryForward">
         </div>
 
-        <div class="form-group col-sm-4 col-md-4 col-lg-4 col-xs-4">
-          <label for="carryForward">Monthly Limit</label>
-          <input class="form-control" type="number" min="0" [(ngModel)]="leaveType.properties.monthlyLimit">
-        </div>
       </div>
-
       <div class="controls-row footer">
         <span class="spacer"></span>
         <button md-button (click)="show= false">Cancel</button>
         <button md-raised-button color="primary" (click)="saveLeaveType()">Submit</button>
+        <span class="spacer"></span>
       </div>
     </div>
-    <md-spinner class="custom_spinner" *ngIf="isLoading" mode="indeterminate"></md-spinner>
   </div>
 </div>
