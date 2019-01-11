@@ -30,7 +30,11 @@ export class ShiftsComponent implements OnInit {
     });
   }
   getData() {
-    this.shiftTypes.filters.properties['department']['value'] = this.selectedDepartment ? this.selectedDepartment.name : '';
+    this.shiftTypes.filters.properties['department']['value'] = 'shared';
+
+    if (this.selectedDepartment && this.selectedDepartment.name) {
+      this.shiftTypes.filters.properties['department']['value'] = this.selectedDepartment.name
+    }
     this.shiftTypes.fetch().then(page => {
       this.departmentShifts = [];
       this.sharedShifts = [];
