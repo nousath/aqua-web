@@ -13,6 +13,8 @@ import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-
 import { LeaveConfirmDialogComponent } from '../../../dialogs/leave-confirm-dialog/leave-confirm-dialog.component';
 import { FileUploaderDialogComponent } from '../../../shared/components/file-uploader-dialog/file-uploader-dialog.component';
 import { EmsAuthService } from '../../../services';
+import * as moment from 'moment';
+import { appInitializerFactory } from '@angular/platform-browser/src/browser/server-transition';
 declare var $: any;
 
 @Component({
@@ -24,17 +26,13 @@ export class LeavesComponent implements OnInit, AfterViewInit {
 
   leaves: Page<Leave>;
   isFilter = false;
-  isShowLeaveAction = false;
-  date: Date = null
-  userType = ''
+  bulkActions = false;
+  date = new Date();
   select = false;
-  Selected = [];
-  check = false;
+  selected = [];
+  allSelected = false;
 
-  isUpdatingLeaveStatus = false;
-
-
-
+  isProcessing = false;
 
   constructor(public validatorService: ValidatorService,
     private amsLeaveService: AmsLeaveService,
@@ -43,40 +41,36 @@ export class LeavesComponent implements OnInit, AfterViewInit {
     private toastyService: ToastyService,
     private angulartics2: Angulartics2) {
 
-    let filters = []
-    if (this.auth.hasPermission(['admin', 'superadmin'])) {
-      filters = [{
-        field: 'name',
-        value: null
-      }, {
-        field: 'status',
-        value: null
-      }, {
-        field: 'date',
-        value: null
-      }];
-    }
+    const filters = ['date', 'status', 'name']
 
     this.leaves = new Page({
-      api: amsLeaveService.teamLeaves,
+      api: this.auth.hasPermission('superadmin') ? amsLeaveService.leaves : amsLeaveService.teamLeaves,
       filters: filters
     });
     this.fetchLeaves();
   }
   fetch() {
-    this.check = false;
-    this.Selected = [];
+    this.selected = [];
     this.fetchLeaves();
   }
 
-  fetchLeaves(date?: Date) {
+  fetchLeaves() {
+    this.selected = [];
+    this.allSelected = false;
+    this.leaves.filters.properties['date']['value'] = this.date.toISOString();
+    this.isProcessing = true
     this.leaves.fetch().then(data => {
-      const i: any = this.leaves.items.find((item: Leave) => {
-        return item.status.toLowerCase() === 'submitted'
+      this.bulkActions = !!this.leaves.items.length
+      this.leaves.items.forEach((item: Leave) => {
+        if (item.status.toLowerCase() !== 'submitted') {
+          this.bulkActions = false
+        }
       });
-      if (i)
-        this.isShowLeaveAction = true;
-    }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+      this.isProcessing = false
+    }).catch(err => {
+      this.isProcessing = false;
+      this.toastyService.error({ title: 'Error', msg: err })
+    });
   }
 
   reset() {
@@ -95,39 +89,46 @@ export class LeavesComponent implements OnInit, AfterViewInit {
 
   }
 
+  showNextMonth() {
+    this.date = moment(this.date).add(1, 'month').toDate();
+    $('#monthSelector').datepicker('setDate', this.date);
+    this.fetchLeaves();
+  }
+
+  showPreviousMonth() {
+    this.date = moment(this.date).subtract(1, 'month').toDate();
+    $('#monthSelector').datepicker('setDate', this.date);
+    this.fetchLeaves();
+  }
+
   updateStatus(leave: Leave) {
-    this.isUpdatingLeaveStatus = true;
+    this.isProcessing = true;
     this.amsLeaveService.leaves.update(leave.id, leave, null, `${leave.id}/action`).then(data => {
-      this.isUpdatingLeaveStatus = false;
+      this.isProcessing = false;
       this.fetchLeaves();
     }).catch(err => {
-      this.isUpdatingLeaveStatus = false;
+      this.isProcessing = false;
       this.toastyService.error({ title: 'Error', msg: err });
     });
   }
-  allLeaves(item: string) {
-    if (this.Selected.includes(item)) {
-      const i = this.Selected.indexOf(item)
-      this.Selected.splice(i, 1);
+
+  toggleLeaveSelection(item: Leave) {
+    if (this.selected.includes(item.id)) {
+      const i = this.selected.indexOf(item)
+      this.selected.splice(i, 1);
+      item.isSelected = false;
     } else {
-      this.Selected.push(item);
-    }
-  }
-  addLeaves(item: string) {
-    if (this.Selected.includes(item)) {
-      console.log(this.Selected)
-    } else {
-      this.Selected.push(item);
-      console.log(this.Selected)
+      this.selected.push(item);
+      item.isSelected = true;
     }
   }
 
   approveLeaves(status: string) {
     if (status === 'approved') {
-      this.Selected.forEach((item: any) => {
+      this.selected.forEach((item: any) => {
         item.status = status;
         this.updateStatus(item);
-        this.Selected = [];
+        this.selected = [];
       })
     } else {
 
@@ -136,7 +137,7 @@ export class LeavesComponent implements OnInit, AfterViewInit {
       });
 
       dialogRef.afterClosed().subscribe((reason: string) => {
-        this.Selected.forEach((item: any) => {
+        this.selected.forEach((item: any) => {
           if (reason) {
             item.comment = reason;
             item.status = status;
@@ -145,19 +146,18 @@ export class LeavesComponent implements OnInit, AfterViewInit {
           item.status = status;
           this.updateStatus(item);
         });
-        this.Selected = [];
+        this.selected = [];
 
       })
     }
   }
 
-  accept_reject_leave(leave: Leave, status: string) {
+  setStatus(leave: Leave, status: string) {
 
     if (status !== 'rejected') {
       leave.status = status;
       this.updateStatus(leave);
       this.angulartics2.eventTrack.next({ action: 'approveLeaveClick', properties: { category: 'allLeave', label: 'myLabel' } });
-
     } else {
       this.angulartics2.eventTrack.next({ action: 'rejectLeaveClick', properties: { category: 'allLeave', label: 'myLabel' } });
       const dialogRef = this.dialog.open(LeaveActionDialogComponent, {
@@ -184,38 +184,25 @@ export class LeavesComponent implements OnInit, AfterViewInit {
     }).on('changeMonth', (e) => {
       if (e.date) {
         this.date = e.date;
-        const date = new Date(e.date);
-        this.leaves.filters.properties['date']['value'] = date.toISOString();
+        this.date = new Date(e.date);
+        this.fetchLeaves()
       }
-      // this.fetchLeaves(e.date);
     });
-    // $("#monthSelector").datepicker("setDate", null);
-  }
-  selectAll() {
-    this.select = !this.select;
   }
 
   ngOnInit() {
+    this.date = moment().startOf('month').toDate()
   }
-  All() {
-    if (this.Selected.length === this.leaves.items.length) {
-      this.Selected = [];
-      this.check = false;
-      console.log(this.Selected)
-    } else if (this.Selected.length !== this.leaves.items.length) {
+  selectAll() {
+    if (this.selected.length === this.leaves.items.length) {
+      this.selected = [];
+      this.allSelected = false;
+    } else if (this.selected.length !== this.leaves.items.length) {
+      this.selected = [];
       this.leaves.items.forEach((item: any) => {
-        if (item.status === 'submitted') {
-          this.addLeaves(item)
-          this.check = true;
-        }
+        this.selected.push(item.id)
       })
-    } else {
-      this.leaves.items.forEach((item: any) => {
-        if (item.status === 'submitted') {
-          this.allLeaves(item)
-          this.check = true;
-        }
-      })
+      this.allSelected = true;
     }
   }
   import() {
@@ -233,16 +220,6 @@ export class LeavesComponent implements OnInit, AfterViewInit {
       //   url: 'assets/formats/leaves.csv'
     }];
 
-    // component.mappers = [{
-    //   name: 'Default',
-    //   value: 'default'
-    // }, {
-    //   name: 'Zoho',
-    //   value: 'zoho'
-    // }, {
-    //   name: 'Edualaya',
-    //   value: 'edu'
-    // }]
     component.name = 'Leaves';
     dialogRef.afterClosed().subscribe();
   }

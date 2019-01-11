@@ -2,24 +2,42 @@
   <h5>Leaves</h5>
   <span class="spacer"></span>
 
-  <!--
-    <div class="input-group">
-        <span class="input-group-addon" id="basic-addon1">Select Month</span>
-        <input id="monthSelector" type="text" class="form-control input-sm calendar no-spin">
-    </div>
-  -->
-  <button [disabled]="leaves?.isLoading  || isUpdatingLeaveStatus" md-icon-button (click)="isFilter = !isFilter"
-    mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
-  <a *ngIf="userType == 'superadmin'" md-icon-button [routerLink]="['new/apply']" mdTooltip="New Leave"
-    [mdTooltipPosition]="'above'">
-    <md-icon>add_circle_outline</md-icon>
-  </a>
-  <button *ngIf="userType === 'superadmin'" md-icon-button (click)="import()">
-    <md-icon>cloud_upload</md-icon>
+  <button md-icon-button (click)="showPreviousMonth()" [disabled]="isProcessing">
+    <md-icon>arrow_back</md-icon>
   </button>
+  <div class="input-group">
+    <span id="monthSelector" class="form-control input-sm calendar no-spin">{{date| date: 'MMM yy'}}</span>
+  </div>
+  <button md-icon-button (click)="showNextMonth()" [disabled]="isProcessing">
+    <md-icon>arrow_forward</md-icon>
+  </button>
+  <span class="spacer"></span>
+
+  <button [disabled]="isProcessing" md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf"
+    [mdTooltipPosition]="'above'"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
+  <button [matMenuTriggerFor]="moreMenu" md-icon-button>
+    <md-icon>more_vert</md-icon>
+  </button>
+  <md-menu #moreMenu="mdMenu">
+    <button *ngIf="auth.hasPermission(['superadmin', 'admin'])" [routerLink]="['new/apply']" mdTooltip="New Leave"
+      [mdTooltipPosition]="'above'" md-menu-item>
+      <md-icon>add_circle_outline</md-icon> New Leave
+    </button>
+
+    <button *ngIf="auth.hasPermission('superadmin')" (click)="import()" md-menu-item>
+      <md-icon>cloud_upload</md-icon> Upload
+    </button>
+
+    <button *ngIf="selected.length" [disabled]="isProcessing" (click)="approveLeaves('approved')" mdTooltip="Approve"
+      [mdTooltipPosition]="'above'" md-menu-item>
+      Approve</button>
+    <button *ngIf="selected.length" [disabled]="isProcessing" (click)="approveLeaves('rejected')" mdTooltip="Reject"
+      [mdTooltipPosition]="'above'" md-menu-item>
+      Reject</button>
+  </md-menu>
 </div>
 
-<md-spinner class="custom_spinner" *ngIf="leaves?.isLoading || isUpdatingLeaveStatus" mode="indeterminate"></md-spinner>
+<md-spinner class="custom_spinner" *ngIf="isProcessing" mode="indeterminate"></md-spinner>
 
 <md-card *ngIf="isFilter" class="card">
   <div class="row text-center headr_bar">
@@ -38,7 +56,7 @@
           <label for="email">Employee Name</label>
         </div>
         <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-          <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="leaves?.isLoading  || isUpdatingLeaveStatus"
+          <input [maxlength]="validatorService.textLength" type="text" class="form-control" [disabled]="isProcessing "
             [(ngModel)]="leaves.filters.properties['name']['value']" name="Name">
         </div>
       </div>
@@ -47,7 +65,7 @@
           <label>Status</label>
         </div>
         <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-          <select class="form-control" [disabled]="leaves?.isLoading  || isUpdatingLeaveStatus" [(ngModel)]="leaves.filters.properties['status']['value']"
+          <select class="form-control" [disabled]="isProcessing " [(ngModel)]="leaves.filters.properties['status']['value']"
             name="shift">
             <option value="approved">Approved</option>
             <option value="submitted">Submitted</option>
@@ -64,10 +82,10 @@
       </div>
       <div class="col-xs-8 col-sm-4 col-md-8 col-lg-8"></div>
       <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 button_align form-group text-center">
-        <button [disabled]="leaves?.isLoading || isUpdatingLeaveStatus" md-raised-button color="primary" mdTooltip="Apply"
-          [mdTooltipPosition]="'above'" (click)="fetchLeaves(leaves.filters.properties['date']['value'])">Apply</button>
-        <button [disabled]="leaves?.isLoading || isUpdatingLeaveStatus" md-raised-button class="btn_grey" mdTooltip="Reset"
-          [mdTooltipPosition]="'above'" (click)="reset()">Reset</button>
+        <button [disabled]="isProcessing" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'"
+          (click)="fetchLeaves(leaves.filters.properties['date']['value'])">Apply</button>
+        <button [disabled]="isProcessing" md-raised-button class="btn_grey" mdTooltip="Reset" [mdTooltipPosition]="'above'"
+          (click)="reset()">Reset</button>
       </div>
 
     </form>
@@ -79,14 +97,16 @@
     <table class="table table-condensed table-hover">
       <thead class="primary_thead">
         <tr>
-          <th class="selector"><input type="checkbox" [(ngModel)]="check" (click)="All()"> </th>
+          <th class="selector">
+            <input *ngIf="bulkActions" type="checkbox" [value]="leave.items.length === selected.length" (click)="selectAll()">
+          </th>
           <th class="tdWidth">Employee</th>
           <th class="tdWidth">Date</th>
           <th class="tdWidth">Type</th>
           <th class="tdWidth">Count</th>
           <th class="tdWidth">Status</th>
           <th class="tdWidth">Reason/Comment</th>
-          <th class="tdWidth text-center">Action</th>
+          <th class="tdWidth"></th>
         </tr>
       </thead>
       <tbody>
@@ -96,11 +116,13 @@
                                                       totalItems: leaves.totalRecords };"
           class="capitalize">
 
-          <td class="selector"><input type="checkbox" [checked]="check" (change)="allLeaves(item)" *ngIf="item?.status == 'submitted'"></td>
+          <td class="selector">
+            <input type="checkbox" [checked]="item.isSelected" (change)="toggleLeaveSelection(item)" *ngIf="item?.status === 'submitted'">
+          </td>
           <td class="tdWidth">
-            <a [routerLink]="[item.employee.id]">{{item.employee.name || '--'}}</a>
+            <a [routerLink]="['/employees', item.employee?.code]">{{item.employee?.name || '--'}}</a>
             <br>
-            <span class="sub-text">{{item.employee.code || '--'}}</span>
+            <span class="sub-text">{{item.employee?.code}}</span>
           </td>
           <td class="tdWidth">
             {{item?.date | date}}
@@ -130,36 +152,23 @@
             </ng-container>
           </td>
           <td class="tdWidth text-center">
-            <!--<button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status?.toLowerCase() == 'approved'
-                                      || item?.status?.toLowerCase() == 'submitted'" (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
-                                <md-icon>highlight_off</md-icon>
-                            </button>
-                            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status?.toLowerCase() == 'rejected'
-                                      || item?.status?.toLowerCase() == 'submitted'
-                                      || item?.status?.toLowerCase() == 'cancelled'" (click)="accept_reject_leave(item, 'approved')" mdTooltip="Approve" [mdTooltipPosition]="'above'">
-                                <md-icon>check_cirle</md-icon>
-                            </button>-->
-            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor reject" *ngIf="item?.status?.toLowerCase() == 'submitted'"
-              (click)="accept_reject_leave(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
+            <button [disabled]="item.isProcessing" md-icon-button *ngIf="item?.status?.toLowerCase() == 'submitted'"
+              (click)="setStatus(item, 'rejected')" mdTooltip="Reject" [mdTooltipPosition]="'above'">
               <md-icon>highlight_off</md-icon>
             </button>
-            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status?.toLowerCase() == 'submitted'"
-              (click)="accept_reject_leave(item, 'approved')" mdTooltip="Approve" [mdTooltipPosition]="'above'">
-              <md-icon>check_cirle</md-icon>
+            <button [disabled]="item.isProcessing" md-icon-button class="subtle" *ngIf="item?.status?.toLowerCase() == 'submitted'"
+              (click)="setStatus(item, 'approved')" mdTooltip="Approve" [mdTooltipPosition]="'above'">
+              <md-icon>check_circle</md-icon>
             </button>
-            <button [disabled]="isUpdatingLeaveStatus" md-icon-button class="button_align cursor apporve" *ngIf="item?.status?.toLowerCase() == 'approved'"
-              (click)="accept_reject_leave(item, 'cancelled')" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
+            <button [disabled]="item.isProcessing" md-icon-button class="subtle" *ngIf="item?.status?.toLowerCase() == 'approved'"
+              (click)="setStatus(item, 'cancelled')" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
               <md-icon>close</md-icon>
             </button>
           </td>
         </tr>
-
       </tbody>
     </table>
-    <button *ngIf="leaves.items.length" [disabled]="leaves?.isLoading || isUpdatingLeaveStatus" md-raised-button color="primary"
-      mdTooltip="Approve" [mdTooltipPosition]="'above'" (click)="approveLeaves('approved')" style="float: right;">Approve</button>
-    <button *ngIf="leaves.items.length" [disabled]="leaves?.isLoading || isUpdatingLeaveStatus" md-raised-button color="btn_grey"
-      mdTooltip="Reject" [mdTooltipPosition]="'above'" (click)="approveLeaves('rejected')" style="float: right;">Reject</button>
+
   </div>
   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <div class="custom_pagination">

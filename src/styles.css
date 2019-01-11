@@ -1,11 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
-
 :root {
-  --primary: #00A8c6;
-  --accent: #bfbdbd;
-  --primaryBackdrop: #00bcd47a;
+    --primary: #00A8c6;
+    --accent: #bfbdbd;
+    --primaryBackdrop: #00bcd47a;
 }
 
 body {
@@ -15,7 +14,7 @@ body {
 }
 
 h4 {
-  text-align: center;
+    text-align: center;
 }
 
 body::-webkit-scrollbar-track {
@@ -57,13 +56,13 @@ body::-webkit-scrollbar-thumb {
 }
 
 .table .mat-icon-button {
-  height: inherit;
-  width: inherit;
-  line-height: inherit;
+    height: inherit;
+    width: inherit;
+    line-height: inherit;
 }
 
 .mat-icon.warn {
-  color: red;
+    color: red;
 }
 
 .primary_thead {
@@ -84,34 +83,35 @@ body::-webkit-scrollbar-thumb {
 }
 
 .cards-col .mat-card {
-  margin-bottom: 20px
+    margin-bottom: 20px
 }
 
 .mat-card-header {
-  background-color: var(--accent)!important;
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
+    background-color: var(--accent) !important;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
 }
 
 .mat-card-header h5 {
-  font-weight: 700;
-  text-align: center;
-  width: 100%;
+    font-weight: 700;
+    text-align: center;
+    width: 100%;
 }
 
 .mat-card-content {
-  padding-top: 20px;
+    padding-top: 20px;
 }
 
 .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
-  background-color: var(--primary);
+    background-color: var(--primary);
 }
 
 .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
-  background-color: var(--primaryBackdrop);
+    background-color: var(--primaryBackdrop);
 }
+
 .example-spacer {
     flex: 1 1 auto;
 }
@@ -123,7 +123,6 @@ body::-webkit-scrollbar-thumb {
 .cta {
     color: #ff6666;
 }
-
 
 /* .mat-focused.mat-form-field-underline{
     color:  #6c78a8;
@@ -162,27 +161,28 @@ body::-webkit-scrollbar-thumb {
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: var(--primary);
-  border-color: var(--primary);
+    color: #fff;
+    background-color: var(--primary);
+    border-color: var(--primary);
 }
 
 .btn-primary:hover {
-  color: #fff;
-  background-color: var(--primary);
-  border-color: var(--primary);
+    color: #fff;
+    background-color: var(--primary);
+    border-color: var(--primary);
 }
 
-.btn-primary.focus, .btn-primary:focus {
-  color: #fff;
-  background-color: var(--primary);
-  border-color: var(--primary);
+.btn-primary.focus,
+.btn-primary:focus {
+    color: #fff;
+    background-color: var(--primary);
+    border-color: var(--primary);
 }
 
 .tool-bar {
-  margin-top: 10px;
-  margin-bottom: 5px;
-  /* margin-right: -15px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    /* margin-right: -15px;
   margin-left: -15px; */
 }
 
@@ -228,7 +228,6 @@ body::-webkit-scrollbar-thumb {
     -moz-appearance: textfield !important;
 }
 
-
 /*input::-webkit-calendar-picker-indicator {
     display: none;
 }*/
@@ -262,21 +261,22 @@ pagination-controls {
     text-align: right;
     padding-right: 3%;
 }
+
 button.subtle {
-  color: #eee;
+    color: #eee;
 }
 
 button.subtle:hover {
-  color: #999;
+    color: #999;
 }
 
 button.phantom {
-  opacity: 0;
+    opacity: 0;
 }
 
 .asterisk {
     color: red;
-    position: absolute;
+    /* position: absolute; */
     padding-left: 5px;
 }
 
@@ -284,9 +284,8 @@ button.phantom {
     border-color: #ccc !important;
 }
 
-
 .dialog_Header {
-    background-color: var(--accent)!important;
+    background-color: var(--accent) !important;
     position: absolute;
     top: 0;
     right: 0;
@@ -384,8 +383,12 @@ button.phantom {
 }
 
 .form-control.small.right {
-  width: 50%;
-  float: right;
+    width: 50%;
+    float: right;
+}
+
+.form-control {
+    min-width: 100px;
 }
 
 .mat-radio-label-content {
@@ -551,17 +554,17 @@ button.phantom {
 }
 
 .controls-row .input-group.wide {
-  max-width: 350px;
-  padding-top: 5px;
+    max-width: 350px;
+    padding-top: 5px;
 }
 
 .flex-row>.form-group {
-  padding: 0 5px;
+    padding: 0 5px;
 }
 
 .form-group .sub-text {
-  position: relative;
-  top: -15px
+    position: relative;
+    top: -15px
 }
 
 .sub-text {
@@ -571,7 +574,7 @@ button.phantom {
 }
 
 th .sub-text {
-  color: inherit;
+    color: inherit;
 }
 
 .mini-control.mat-button-toggle-group {
@@ -582,7 +585,6 @@ th .sub-text {
     line-height: 25px;
     font-size: smaller;
 }
-
 
 .section>h5 {
     text-align: center;
@@ -655,83 +657,88 @@ th .sub-text {
 }
 
 .img-profile {
-  width: 33px;
-  margin-right: 10px;
-  /* height: 33px; */
+    width: 33px;
+    margin-right: 10px;
+    /* height: 33px; */
 }
+
 @media only screen and (max-width:539px) {
-  .img-profile {
-      width: 20px;
-      margin-right: 5px;
-      /* height: 20px; */
-  }
+    .img-profile {
+        width: 20px;
+        margin-right: 5px;
+        /* height: 20px; */
+    }
 }
 
 .popup .backdrop {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  background: rgba(0, 0, 0, 0.5);
-  top: 0;
-  left: 0;
-  z-index: 4000;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background: rgba(0, 0, 0, 0.5);
+    top: 0;
+    left: 0;
+    z-index: 4000;
 }
 
 .popup .outer {
-  overflow: auto;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  z-index: 4200;
-  top: 0;
-  left: 0;
+    overflow: auto;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 4200;
+    top: 0;
+    left: 0;
 }
 
 .popup .content {
-  background: #fff;
-  top: 10%;
-  padding: 20px;
-  width: 440px;
-  position: relative;
-  z-index: 10000000;
-  margin: 20px auto;
-  left: 0;
+    background: #fff;
+    top: 10%;
+    padding: 20px;
+    width: 440px;
+    position: relative;
+    z-index: 10000000;
+    margin: 20px auto;
+    left: 0;
 }
 
 .popup .content.wide {
-  width: 80%;
-  max-width: 800px;
+    width: 80%;
+    max-width: 800px;
 }
 
 .popup .content.narrow {
-  width: 50%;
-  max-width: 500px;
+    width: 50%;
+    max-width: 500px;
 }
 
 @media only screen and (max-width:539px) {
-  .popup .content.wide,
-  .popup .content.narrow {
-    width: 90%;
-  }
+    .popup .content.wide,
+    .popup .content.narrow {
+        width: 90%;
+    }
 }
 
 .btn.alt {
-  background: linear-gradient(to right, #0CF 0%,#0CF  25%, #FFF 26%, #FFF 50%, #0CF  51%,#0CF  75%, #FFF  76%);
+    background: linear-gradient(to right, #0CF 0%, #0CF 25%, #FFF 26%, #FFF 50%, #0CF 51%, #0CF 75%, #FFF 76%);
 }
+
 .btn.half {
-  background: linear-gradient(to right, #0CF  0%, #0CF  50%, #FFF 51%);
+    background: linear-gradient(to right, #0CF 0%, #0CF 50%, #FFF 51%);
 }
+
 .btn.full {
-  background: #0CF ;
+    background: #0CF;
 }
+
 .btn.off {
-  background: #FFF
+    background: #FFF
 }
+
 .btn-toggle {
-  margin-left: 10px;
-  outline: none;
+    margin-left: 10px;
+    outline: none;
 }
 
 .status .error {
-  color: red;
+    color: red;
 }

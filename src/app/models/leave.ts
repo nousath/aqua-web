@@ -1,8 +1,7 @@
 import { Employee } from './employee';
 import { LeaveType } from './leave-type';
-export class Leave {
-  id: string;
-
+import { ModelBase } from '../common/contracts/base.model';
+export class Leave extends ModelBase {
   date: Date;
   start: {
     first: boolean,
@@ -22,5 +21,4 @@ export class Leave {
   leaveType: LeaveType;
   reason: string;
   comment: string;
-  status: string;
 }
