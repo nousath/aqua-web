@@ -1,6 +1,6 @@
 
 export class ModelBase {
-  id: string;
+  id: string | number;
   code: string;
   timeStamp: Date;
   status: string;

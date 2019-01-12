@@ -90,6 +90,7 @@ import { ImageEditorComponent } from './components/image-editor/image-editor.com
 import { UxService } from '../services/ux.service';
 import { ProcessingIndicatorComponent } from './components/processing-indicator/processing-indicator.component';
 import { PushEventService } from '../services/push-event.service';
+import { GetValueDialogComponent } from './components/get-value-dialog/get-value-dialog.component';
 
 
 
@@ -143,7 +144,8 @@ export const MaterialModules = [
     CommentDialogComponent,
     NamePipe,
     ImageEditorComponent,
-    ProcessingIndicatorComponent
+    ProcessingIndicatorComponent,
+    GetValueDialogComponent
   ],
   providers: [
     EmsEmployeeService,
@@ -203,7 +205,15 @@ export const MaterialModules = [
     ProcessingIndicatorComponent,
     NamePipe
   ],
-  entryComponents: [CommentDialogComponent, FileUploaderDialogComponent, BulkTimeLogsDialogComponent, GetDateDialogComponent, ExtendShiftDialogComponent, ImageEditorComponent],
+  entryComponents: [
+    CommentDialogComponent,
+    FileUploaderDialogComponent,
+    BulkTimeLogsDialogComponent,
+    GetDateDialogComponent,
+    GetValueDialogComponent,
+    ExtendShiftDialogComponent,
+    ImageEditorComponent
+  ],
 
 })
 export class SharedModule { }

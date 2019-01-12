@@ -1,26 +1,32 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Employee } from '../../../models/employee';
 import { AmsEmployeeService, AmsLeaveService } from '../../../services/index';
 import { LeaveBalance } from '../../../models/index';
 import { Page } from '../../../common/contracts/page';
 import { ServerPageInput } from '../../../common/contracts/api/index';
 import { ToastyService } from 'ng2-toasty';
+import { EmsAuthService } from '../../../services/ems/ems-auth.service';
+import { MdDialog } from '@angular/material';
+import { GetValueDialogComponent } from '../../../shared/components/get-value-dialog/get-value-dialog.component';
 
 @Component({
   selector: 'aqua-emp-leaves',
   templateUrl: './emp-leaves.component.html',
   styleUrls: ['./emp-leaves.component.css']
 })
-export class EmpLeavesComponent implements OnInit {
+export class EmpLeavesComponent implements OnInit, OnChanges {
   @Input()
-  employee: Employee
+  employee: Employee;
+
   leaveBalances: LeaveBalance[];
-  isEdit = false
+  isProcessing = false;
 
   constructor(
     private amsEmployeeService: AmsEmployeeService,
     private amsLeaveService: AmsLeaveService,
-    private toastyService: ToastyService
+    public auth: EmsAuthService,
+    private toastyService: ToastyService,
+    public dialog: MdDialog
   ) {
   }
 
@@ -28,48 +34,44 @@ export class EmpLeavesComponent implements OnInit {
   }
   ngOnChanges() {
     if (this.employee) {
-      // this.getAmsDetails();
-      this.getLeaveBalance(this.employee.id)
-
+      this.isProcessing = true;
+      const input = new ServerPageInput();
+      input.serverPaging = false;
+      input.query = {
+        employeeId: this.employee.id
+      };
+      this.amsLeaveService.leaveBalances.search(input).then(page => {
+        this.isProcessing = false;
+        this.leaveBalances = page.items;
+      })
     }
   }
 
+  add(item: LeaveBalance) {
 
+    const dialogRef = this.dialog.open(GetValueDialogComponent)
+    const component = dialogRef.componentInstance;
+    component.title = `Add ${item.leaveType.name}`
+    component.showComment = true;
+    component.type = 'number';
+    component.value = 0;
+    component.valueLabel = 'No of Days'
 
-  reset() {
-    this.isEdit = false,
-      this.getLeaveBalance(this.employee.id)
-  }
-  getLeaveBalance(employeeId: string) {
-    const input = new ServerPageInput();
-    input.serverPaging = false;
-    input.query = {
-      id: employeeId,
-      employeeId: employeeId
-    };
-    this.amsLeaveService.leaveBalances.search(input).then(page => {
-      this.leaveBalances = page.items;
-    })
-  }
-
-  updateLeaveBalance(leaves: LeaveBalance) {
-    this.amsLeaveService.leaveBalances.update(this.employee.id, leaves).then(
-      data => {
-        this.getLeaveBalance(this.employee.id)
-      }
-    ).catch(err => {
-      this.toastyService.error({ title: 'Error', msg: err });
+    dialogRef.afterClosed().subscribe((response: any) => {
+      if (response === false) { return; }
+      item.isProcessing = true;
+      this.amsLeaveService.leaveBalances.simplePost({
+        days: parseInt(response.value),
+        journal: {
+          comment: response.comment
+        }
+      }, `${item.id}/grant`).then(data => {
+        item.days = data.days
+        item.isProcessing = false;
+      }).catch(err => {
+        item.isProcessing = false;
+        this.toastyService.error({ title: 'Error', msg: err });
+      });
     });
   }
-
-  toggleLaveBalnce(isEdit: boolean) {
-    if (isEdit) {
-      isEdit = true;
-    } else {
-      isEdit = false;
-    }
-  }
-
-
-
 }

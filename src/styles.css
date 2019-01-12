@@ -112,6 +112,10 @@ body::-webkit-scrollbar-thumb {
     background-color: var(--primaryBackdrop);
 }
 
+tr.disabled {
+    color: var(--accent)
+}
+
 .example-spacer {
     flex: 1 1 auto;
 }
@@ -382,13 +386,49 @@ button.phantom {
     z-index: 99;
 }
 
-.form-control.small.right {
+td .form-control {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+td .form-control.small {
+    width: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -5px;
+}
+
+.form-control.small {
     width: 50%;
+}
+
+.form-control.right {
     float: right;
 }
 
 .form-control {
     min-width: 100px;
+}
+
+.form-control.editable {
+    background-color: inherit;
+    box-shadow: none;
+    border: none;
+}
+
+.form-control.editing,
+.form-control.editable:hover {
+    border-bottom: 1px solid var(--primary);
+    cursor: pointer;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+.form-control.text-center {
+    margin: auto;
 }
 
 .mat-radio-label-content {

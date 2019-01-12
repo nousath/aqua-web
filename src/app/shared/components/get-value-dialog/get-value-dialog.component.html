@@ -1,0 +1,24 @@
+<div md-dialog-title>
+  {{title}}
+</div>
+<div md-dialog-content class="rows">
+
+  <div class="form-group">
+    <label>{{valueLabel}}</label>
+    <ng-container [ngSwitch]="type">
+      <input *ngSwitchCase="'date'" class="form-control" type="date" [value]="value" (change)="updated($event)">
+      <input *ngSwitchCase="'number'" class="form-control" type="number" [value]="value" (change)="updated($event)">
+      <input *ngSwitchDefault class="form-control" type="text" [value]="value" (change)="updated($event)">
+    </ng-container>
+  </div>
+
+  <div class="form-group" *ngIf="showComment">
+    <label>Comment</label>
+    <textarea class="form-control" [value]="comment" (change)="updatedComment($event)"></textarea>
+  </div>
+</div>
+<div md-dialog-actions class="controls-row">
+  <span class="spacer"></span>
+  <button md-button (click)="dialogRef.close(false)">{{cancelText}}</button>
+  <button md-button (click)="continue()" color="primary">{{continueText}}</button>
+</div>

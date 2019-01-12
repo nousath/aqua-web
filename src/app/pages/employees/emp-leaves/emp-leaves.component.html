@@ -1,43 +1,31 @@
 <md-card>
-  <div class="dialog_Header text-center">
-    <h5>
-      <b>Leave Balance</b>
-    </h5>
-
+  <div class="mat-card-header">
+    <h5>Leave Balance</h5>
   </div>
-  <br>
-  <table class="table">
-    <thead>
-      <th>Type</th>
-      <th class="type">Balance</th>
-    </thead>
-    <tr *ngFor="let item of leaveBalances">
-      <td class="balance">{{item?.leaveType?.name}}</td>
-      <td class="text-center">
-        <input *ngIf="!item.leaveType.unlimited" type="text" maxlength="4" [name]="item.days" [readOnly]="leaveBalances.isLoading || isUpdatingLeave || !isEdit"
-          class="number form-control input-xs" [(ngModel)]="item.days">
-        <span *ngIf="item.leaveType.unlimited">Unlimited</span>
-      </td>
-
-    </tr>
-  </table>
-
-  <div class="controls-row footer">
-    <span class="spacer"></span>
-
-    <button *ngIf="!isEdit" md-raised-button mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="isEdit = true">
-      Edit
-    </button>
-    <ng-container *ngIf="isEdit">
-      <button md-button [disabled]="leaveBalances.isLoading || isUpdatingLeave" (click)="reset()" mdTooltip="Cancel"
-        [mdTooltipPosition]="'above'">
-        Cancel
-      </button>
-      <button md-button color="primary" [disabled]="leaveBalances.isLoading || isUpdatingLeave" (click)="updateLeaveBalance(leaveBalances)"
-        mdTooltip="Save" [mdTooltipPosition]="'above'">
-        Save
-      </button>
-    </ng-container>
-
+  <app-processing-indicator *ngIf="isProcessing"></app-processing-indicator>
+  <div class="mat-card-content">
+    <table class="table">
+      <thead>
+        <th>Type</th>
+        <th class="text-center">Balance</th>
+      </thead>
+      <tr *ngFor="let item of leaveBalances" [class.disabled]="item.isProcessing">
+        <td>{{item?.leaveType?.name}}</td>
+        <td>
+          <div class="controls-row">
+            <span class="spacer"></span>
+            <div>
+              <span *ngIf="!item.leaveType.unlimited" class="text-center">{{item.days}}</span>
+              <span *ngIf="item.leaveType.unlimited" class="text-center">∞</span>
+            </div>
+            <span class="spacer"></span>
+            <button *ngIf="auth.hasPermission('superadmin')" [disabled]="item.isProcessing" md-icon-button (click)="add(item)"
+              class="subtle">
+              <md-icon>add_circle_outline</md-icon>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </table>
   </div>
 </md-card>

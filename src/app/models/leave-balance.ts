@@ -1,6 +1,6 @@
 import { LeaveType } from './leave-type';
-export class LeaveBalance {
-  id: string | number = null;
+import { ModelBase } from '../common/contracts/base.model';
+export class LeaveBalance extends ModelBase {
   approvedLeavesCount: number = null;
   daysAvailed: number = null;
   openingBalance: number = null;
