@@ -76,7 +76,13 @@
                 currentPage: effectiveShifts.pageNo,
                 totalItems: effectiveShifts.totalRecords };">
         <td class="customStyle">
-          <div>{{item.employee.name || '--'}}</div>
+
+          <div>
+            <a *ngIf="auth.hasPermission('superadmin')" [routerLink]="['/employees', item.employee.code ]">{{item.employee.name
+              || '--'}}</a>
+
+            <span *ngIf="!auth.hasPermission('superadmin')">{{item.employee.name || '--'}}</span>
+          </div>
           <span class="sub-text">{{item.employee.code || ''}}</span>
         </td>
         <td>

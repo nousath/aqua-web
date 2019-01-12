@@ -160,10 +160,10 @@ export class EmpShiftComponent implements OnInit, OnChanges {
 
   }
 
-  setCurrentShift(shiftType: ShiftType) {
+  setRoasterShift() {
     const existing = this.employee.shiftType
 
-    this.employee.shiftType = shiftType
+    this.employee.shiftType = this.currentShift.shiftType
 
     this.isProcessing = true;
 

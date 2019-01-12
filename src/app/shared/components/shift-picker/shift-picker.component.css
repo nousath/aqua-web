@@ -13,6 +13,14 @@
     height: 32px;
 }
 
+.shifts .btn {
+    border-radius: 5px;
+    width: 40px;
+    margin-left: 1px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    outline: none;
+}
+
 .display-text {
     width: 100%;
     height: 100%;
@@ -67,7 +75,7 @@
 }
 
 .display-text .name.success {
-  color: green;
+    color: green;
 }
 
 .display-text .name.info {
@@ -123,7 +131,6 @@
     padding-left: 15px;
 }
 
-
 /* .shift.off {
     border-radius: 10px;
 } */
@@ -135,6 +142,7 @@
 .needs-attention {
     color: darkorange;
 }
+
 @media only screen and (max-width: 600px) {
     .shift.continue {
         border: 1px solid;

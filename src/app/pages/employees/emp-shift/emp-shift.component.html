@@ -34,7 +34,8 @@
               <md-icon mdTooltip="Wrong Shift {{currentShift.shiftType.name}}" class="warn" *ngIf="employee.shiftType.id !== currentShift.shiftType.id">report_problem</md-icon>
             </button>
             <md-menu #moreMenu="mdMenu">
-              <button md-menu-item mdTooltip="Set" [mdTooltipPosition]="'above'" [style.color]="currentShift.shiftType.name.color">
+              <button md-menu-item mdTooltip="Set" [mdTooltipPosition]="'above'" (click)="setRoasterShift()"
+                [style.color]="currentShift.shiftType.name.color">
                 <md-icon>add_circle_outline</md-icon> {{currentShift.shiftType.name}}
               </button>
             </md-menu>

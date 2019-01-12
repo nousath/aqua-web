@@ -135,10 +135,16 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
 
     this.computeIfRunning();
 
+    this.computeError();
+
+  }
+
+  computeError() {
     if (this.attendance && this.attendance.shift && this.attendance.shift.shiftType && this.effectiveShiftType && this.effectiveShiftType.id !== this.attendance.shift.shiftType.id) {
       this.errorText = `Wrong Shift - ${this.attendance.shift.shiftType.name}`
+    } else {
+      this.errorText = null
     }
-
   }
 
   computeEffectiveShift() {
@@ -220,6 +226,23 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
           this.isProcessing = false;
         }).catch(this.errorHandler)
     }
+  }
+
+  repair() {
+    this.isProcessing = true;
+    this.amsAttendanceService.attendance.simplePost({
+      id: this.attendance.id,
+      removeWeekOff: false,
+      adjustTimeLogs: true,
+      recalculateShift: true
+    }, 'regenerate').then((attendance) => {
+      this.isProcessing = false;
+      this.attendance = attendance;
+      this.computeError()
+    }).catch(err => {
+      this.isProcessing = false;
+      this.toastyService.error(err)
+    })
   }
 
   setDayOff() {
