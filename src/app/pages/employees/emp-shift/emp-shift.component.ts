@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Employee } from '../../../models/employee';
 import { AmsEmployeeService, AmsEffectiveShiftService, AmsShiftService } from '../../../services/index';
 import { EffectiveShift } from '../../../models/effective-shift';
@@ -11,6 +11,7 @@ import { forEach } from '@angular/router/src/utils/collection';
 import { Shift } from '../../../models/index';
 import { MdDialog } from '@angular/material';
 import { AddShiftDialogComponent } from '../../../dialogs/add-shift-dialog/add-shift-dialog.component';
+// import { DatesService } from '../../../shared/services/dates.service';
 
 
 @Component({
@@ -18,7 +19,7 @@ import { AddShiftDialogComponent } from '../../../dialogs/add-shift-dialog/add-s
   templateUrl: './emp-shift.component.html',
   styleUrls: ['./emp-shift.component.css']
 })
-export class EmpShiftComponent implements OnInit {
+export class EmpShiftComponent implements OnInit, OnChanges {
 
   @Input() employee: Employee
 
@@ -28,10 +29,12 @@ export class EmpShiftComponent implements OnInit {
   date = new Date()
   shiftTypes: Page<ShiftType>;
   shift: ShiftType;
-  currentShift: any;
-  currentShiftDate: any;
+  currentShift: Shift;
+  currentShiftDate: Date;
   upcomingShift: any = [];
   // addShift: boolean = false
+
+  isProcessing = false;
 
 
   // employee: Employee = new Employee();
@@ -41,6 +44,7 @@ export class EmpShiftComponent implements OnInit {
     private toastyService: ToastyService,
     private amsEffectiveShiftService: AmsEffectiveShiftService,
     private amsShiftService: AmsShiftService,
+    // private dateService: DatesService,
     public dialog: MdDialog) {
     this.effectiveShifts = new Page({
       api: amsEffectiveShiftService.effectiveShifts,
@@ -107,29 +111,35 @@ export class EmpShiftComponent implements OnInit {
   }
 
   getEffectiveShift(date: Date) {
-    // this.isLoading = true;
+    this.isProcessing = true;
+
     this.effectiveShifts.filters.properties['name']['value'] = this.employee.name;
 
     this.effectiveShifts.filters.properties['fromDate']['value'] = moment(date).startOf('week').toISOString();
     this.effectiveShifts.fetch().then(() => {
-      this.getWeek(date);
-      // this.isLoading = false;
-      this.effectiveShifts.items.forEach(item => {
-        if (item.employee.code) {
-          this.effective = item;
-          // this.currentShift.date = this.effective.previousShift.date
-          this.currentShift = this.effective.previousShift.shiftType
-          this.currentShiftDate = this.effective.previousShift.date
-          this.upcomingShift = this.effective.shifts
-        }
-      })
-    })
-      .catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+      this.isProcessing = false;
 
+      this.getWeek(date);
+      this.effectiveShifts.items.forEach(item => {
+        if (!item.employee.code && item.employee.code !== this.employee.code) { return }
+        this.effective = item;
+        this.currentShift = this.amsEffectiveShiftService.getCurrentShift(item);
+        this.upcomingShift = this.amsEffectiveShiftService.getUpcomingShifts(item);
+      })
+    }).catch(err => {
+      this.isProcessing = false;
+      this.toastyService.error({ title: 'Error', msg: err })
+    });
   }
   getAttendance() {
     this.shiftTypes.filters.properties['employeeId'].value = this.employee.id;
-    this.shiftTypes.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+    this.isProcessing = true;
+    this.shiftTypes.fetch().then(() => {
+      this.isProcessing = false;
+    }).catch(err => {
+      this.isProcessing = false;
+      this.toastyService.error({ title: 'Error', msg: err })
+    });
     this.getEffectiveShift(this.date);
 
   }
@@ -149,6 +159,19 @@ export class EmpShiftComponent implements OnInit {
     this.getEffectiveShift(this.date);
 
   }
-  ngAfterViewInit() {
+
+  setCurrentShift(shiftType: ShiftType) {
+    const existing = this.employee.shiftType
+
+    this.employee.shiftType = shiftType
+
+    this.isProcessing = true;
+
+    this.amsEmployeeService.employees.update(this.employee.id, this.employee).then(() => {
+      this.isProcessing = false;
+    }).catch(err => {
+      this.isProcessing = false;
+      this.toastyService.error(err)
+    })
   }
 }

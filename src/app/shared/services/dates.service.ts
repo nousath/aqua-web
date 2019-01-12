@@ -195,6 +195,7 @@ export class DatesService {
       isBetween: (from, till) => {
         return moment(date1).isBetween(moment(from), moment(till), 'day', '[]')
       },
+
       toString: (format) => {
         format = format || 'dddd, MMMM Do YYYY'
         return moment(date1).format('dddd, MMMM Do YYYY')

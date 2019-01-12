@@ -2,6 +2,7 @@
   <div class="mat-card-header">
     <h5>Shifts</h5>
   </div>
+  <app-processing-indicator *ngIf="isProcessing"></app-processing-indicator>
   <div class="mat-card-content">
     <div class="controls-row">
       <h5>Roaster</h5>
@@ -22,11 +23,21 @@
         </th>
       </tr>
       <tr>
-        <td>Current</td>
+        <td>
+          <div>Current</div>
+          <div *ngIf="currentShift" class="sub-text">{{currentShift.date| date: 'dd-MM-yy'}}</div>
+        </td>
         <td><span [style.color]="employee.shiftType?.color">{{employee.shiftType.name}}</span></td>
         <td>
           <span *ngIf="currentShift">
-            <md-icon mdTooltip="Wrong Shift {{currentShift.name}}" class="warn" *ngIf="employee.shiftType.id !== currentShift.id">report_problem</md-icon>
+            <button [matMenuTriggerFor]="moreMenu" md-icon-button>
+              <md-icon mdTooltip="Wrong Shift {{currentShift.shiftType.name}}" class="warn" *ngIf="employee.shiftType.id !== currentShift.shiftType.id">report_problem</md-icon>
+            </button>
+            <md-menu #moreMenu="mdMenu">
+              <button md-menu-item mdTooltip="Set" [mdTooltipPosition]="'above'" [style.color]="currentShift.shiftType.name.color">
+                <md-icon>add_circle_outline</md-icon> {{currentShift.shiftType.name}}
+              </button>
+            </md-menu>
           </span>
         </td>
       </tr>
