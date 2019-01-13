@@ -1,36 +1,62 @@
 <div class="countShiftTab" *ngIf="count">
-    <div class="hours" *ngIf="count >= 0 && count <=0.5">
-        <div class="half"></div>
-        <div></div>
-        <div></div>
-    </div>
-    <div class="hours" *ngIf="count > 0.5 && count <1">
-        <div class="quarter"></div>
-        <div></div>
-        <div></div>
-    </div>
-    <div class="hours" *ngIf="count == 1">
-        <div class="fullShift"></div>
-        <div></div>
-        <div></div>
-    </div>
-    <div class="hours" *ngIf="count >= 1.1 && count <=1.5">
-        <div class="fullShift"></div>
-        <div class="halfShift"></div>
-        <div></div>
-    </div>
-    <div class="hours" *ngIf="count > 1.5 && count <=2">
-        <div class="fullShift"></div>
-        <div class="fullShift"></div>
-    </div>
-    <div class="hours" *ngIf="count > 2 && count <=2.5">
-        <div class="fullShift"></div>
-        <div class="fullShift"></div>
-        <div class="halfShift"></div>
-    </div>
-    <div class="hours" *ngIf="count > 2.5">
-        <div class="fullShift"></div>
-        <div class="fullShift"></div>
-        <div class="fullShift"></div>
-    </div>
+  <div class="shift" *ngIf="count >= 0 && count <=0.4">
+    <div class="quarter"></div>
+    <div></div>
+    <div></div>
+  </div>
+  <div class="shift" *ngIf="count > 0.4 && count <=.6">
+    <div class="half"></div>
+    <div></div>
+    <div></div>
+  </div>
+  <div class="shift" *ngIf="count > 0.6 && count < 1">
+    <div class="three-quarter"></div>
+    <div></div>
+    <div></div>
+  </div>
+  <div class="shift" *ngIf="count >= 1 && count < 1.1">
+    <div class="full"></div>
+    <div></div>
+    <div></div>
+  </div>
+  <div class="shift" *ngIf="count >= 1.1 && count < 1.4">
+    <div class="full"></div>
+    <div class="quarter"></div>
+    <div></div>
+  </div>
+  <div class="shift" *ngIf="count >= 1.4 && count < 1.6">
+    <div class="full"></div>
+    <div class="half"></div>
+    <div></div>
+  </div>
+  <div class="shift" *ngIf="count >= 1.6 && count < 2">
+    <div class="full"></div>
+    <div class="three-quarter"></div>
+    <div></div>
+  </div>
+  <div class="shift" *ngIf="count >= 2 && count <2.1">
+    <div class="full"></div>
+    <div class="full"></div>
+    <div></div>
+  </div>
+  <div class="shift" *ngIf="count >= 2.1 && count <2.4">
+    <div class="full"></div>
+    <div class="full"></div>
+    <div class="quarter"></div>
+  </div>
+  <div class="shift" *ngIf="count >= 2.4 && count <2.6">
+    <div class="full"></div>
+    <div class="full"></div>
+    <div class="half"></div>
+  </div>
+  <div class="shift" *ngIf="count >= 2.6 && count <3">
+    <div class="full"></div>
+    <div class="full"></div>
+    <div class="three-quarter"></div>
+  </div>
+  <div class="shift" *ngIf="count >= 3">
+    <div class="full"></div>
+    <div class="full"></div>
+    <div class="full"></div>
+  </div>
 </div>

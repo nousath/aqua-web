@@ -91,6 +91,7 @@ import { UxService } from '../services/ux.service';
 import { ProcessingIndicatorComponent } from './components/processing-indicator/processing-indicator.component';
 import { PushEventService } from '../services/push-event.service';
 import { GetValueDialogComponent } from './components/get-value-dialog/get-value-dialog.component';
+import { CalendarViewComponent } from './components/calendar-view/calendar-view.component';
 
 
 
@@ -145,7 +146,8 @@ export const MaterialModules = [
     NamePipe,
     ImageEditorComponent,
     ProcessingIndicatorComponent,
-    GetValueDialogComponent
+    GetValueDialogComponent,
+    CalendarViewComponent
   ],
   providers: [
     EmsEmployeeService,
@@ -202,6 +204,7 @@ export const MaterialModules = [
     EmployeesFilterComponent,
     AddAttendanceLogsComponent,
     ShiftCountComponent,
+    CalendarViewComponent,
     ProcessingIndicatorComponent,
     NamePipe
   ],

@@ -94,7 +94,7 @@
           <td *ngFor="let lb of item?.leaveBalances">
             <input *ngIf="!lb.leaveType.unlimited" type="text" maxlength="4" [name]="lb.days" [readOnly]="leaveBalances.isLoading || isUpdatingLeave || !item?.isEdit"
               class="number form-control input-xs" [(ngModel)]="lb.days">
-            <span *ngIf="lb.leaveType.unlimited">Unlimited</span>
+            <span *ngIf="lb.leaveType.unlimited">∞</span>
           </td>
           <td class="btnClmWidth">
             <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Edit"

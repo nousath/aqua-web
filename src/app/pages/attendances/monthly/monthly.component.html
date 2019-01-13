@@ -1,10 +1,16 @@
 <div class="tool-bar controls-row">
   <h5>Monthly Attendance</h5>
   <span class="spacer"></span>
+  <button md-icon-button (click)="showPreviousMonth()" [disabled]="isProcessing">
+    <md-icon>arrow_back</md-icon>
+  </button>
   <div class="input-group">
-    <span class="input-group-addon" id="basic-addon1">Month</span>
-    <input id="monthSelector" type="text" class="form-control input-sm calendar no-spin">
+    <span id="monthSelector" class="form-control input-sm calendar no-spin">{{date| date: 'MMM yy'}}</span>
   </div>
+  <button md-icon-button (click)="showNextMonth()" [disabled]="isProcessing">
+    <md-icon>arrow_forward</md-icon>
+  </button>
+  <span class="spacer"></span>
   <button md-icon-button (click)="isFilter = !isFilter" mdTooltip="Filters" class="marginLetf" [mdTooltipPosition]="'above'">
     <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
   </button>
@@ -25,7 +31,7 @@
   </md-menu>
 </div>
 
-<md-spinner class="custom_spinner" *ngIf="monthlyAttendnace?.isLoading" mode="indeterminate"></md-spinner>
+<md-spinner class="custom_spinner" *ngIf="monthlyAttendance?.isLoading" mode="indeterminate"></md-spinner>
 <aqua-employees-filter *ngIf="isFilter" [fields]="filterFields" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter>
 <div class="row">
   <md-card class="card">
@@ -43,10 +49,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of monthlyAttendnace.items | paginate: { id: 'foo',
-                                                      itemsPerPage: monthlyAttendnace.pageSize,
-                                                      currentPage: monthlyAttendnace.pageNo,
-                                                      totalItems: monthlyAttendnace.totalRecords };"
+          <tr *ngFor="let item of monthlyAttendance.items | paginate: { id: 'foo',
+                                                      itemsPerPage: monthlyAttendance.pageSize,
+                                                      currentPage: monthlyAttendance.pageNo,
+                                                      totalItems: monthlyAttendance.totalRecords };"
             class="capitalize">
             <td>
               <div class="cols">
@@ -73,19 +79,19 @@
       </table>
     </div>
     <div class="mini">
-      <aqua-monthly-mobile-view [monthlyAttendance]="monthlyAttendnace.items"></aqua-monthly-mobile-view>
+      <aqua-monthly-mobile-view [monthlyAttendance]="monthlyAttendance.items"></aqua-monthly-mobile-view>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <div class="custom_pagination">
-        <pagination-controls id="foo" (pageChange)="monthlyAttendnace.pageNo = $event;getAttendance();"></pagination-controls>
-        <label class="full">Total Records: {{monthlyAttendnace.totalRecords}}</label>
+        <pagination-controls id="foo" (pageChange)="monthlyAttendance.pageNo = $event;getAttendance();"></pagination-controls>
+        <label class="full">Total Records: {{monthlyAttendance.totalRecords}}</label>
         <div class="pageSize">
           <label>Page Size:</label>
-          <select name="pageSize" [(ngModel)]="monthlyAttendnace.pageSize" (change)="monthlyAttendnace.pageNo = 1;getAttendance();">
-            <option value=10>10</option>
-            <option value=50>50</option>
-            <option value=100>100</option>
-            <option value=500>500</option>
+          <select name="pageSize" [(ngModel)]="monthlyAttendance.pageSize" (change)="monthlyAttendance.pageNo = 1;getAttendance();">
+            <option value="10">10</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="500">500</option>
           </select>
         </div>
       </div>

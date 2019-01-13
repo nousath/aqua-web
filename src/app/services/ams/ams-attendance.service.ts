@@ -34,7 +34,7 @@ export class AmsAttendanceService {
 
 
 
-  attendance: IApi<DayEvent>;
+  attendance: IApi<Attendance>;
 
   constructor(
     http: Http,
@@ -42,7 +42,7 @@ export class AmsAttendanceService {
   ) {
     const baseApi = 'ams';
     const id = '';
-    this.attendance = new GenericApi<DayEvent>('attendances', http, baseApi);
+    this.attendance = new GenericApi<Attendance>('attendances', http, baseApi);
     this.monthlyAttendances = new GenericApi<MonthAttendance>('attendances/employee/month/summary', http, baseApi);
     this.dailyAttendances = new GenericApi<Attendance>('attendances/getOneDayAttendances', http, baseApi);
     this.teamMember = new GenericApi<any>(`teams/${id}/teamMembers`, http, baseApi);

@@ -1,0 +1,52 @@
+<md-card>
+  <div class="mat-card-header controls-row">
+    <span class="spacer"></span>
+    <h5>{{month | date:'MMMM y'}}</h5>
+    <span class="spacer"></span>
+    <button *ngIf="auth.hasPermission('superadmin')" (click)="regenerate()" [mdTooltipPosition]="'above'" mdTooltip="Regenerate"
+      md-icon-button>
+      <md-icon>build</md-icon>
+    </button>
+  </div>
+  <app-processing-indicator *ngIf="isProcessing"></app-processing-indicator>
+  <div class="mat-card-content">
+    <div class="days row">
+      <label *ngFor="let item of days">{{item}}</label>
+      <div class="empty" *ngFor="let item of emptyStartDays"></div>
+      <div class="day {{item.style}}" *ngFor="let item of events;let i = index" (click)="updateDayEvent(item)"
+        [mdTooltipPosition]="'above'" mdTooltip="{{item.needsAction}}">
+        <div class="dayTab">
+          <h5>{{item.date| date: 'dd'}}</h5>
+          <!-- <p style="height: 10px;">
+            <img *ngIf="item?.checkOutExtend" alt="img" src="assets/images/extend.png" width="60%" height="8px">
+          </p> -->
+          <div [style.border-color]="item.color" class="in-out {{item.checkOutExtend && !item.isContinue? 'extended': ''}} {{item.isContinue? 'continued right': ''}} {{item.checkInExtend? 'continued left': ''}}">
+            <div *ngIf="item.checkIn" class="in {{item.checkInStatus}}">
+              <span>In</span> {{item.checkIn | date:'shortTime'}}
+            </div>
+            <div *ngIf="item.checkOut" class="out {{item.checkOutStatus}}">
+              <span>Out</span> {{item.checkOut | date:'shortTime'}}
+            </div>
+          </div>
+          <div class="status">
+            {{item.status}}
+          </div>
+        </div>
+        <aqua-shift-count [count]="item.count"></aqua-shift-count>
+      </div>
+    </div>
+
+    <div class="controls-row legends">
+      <span class="spacer"></span>
+      <div class="dot">
+        <img src="assets/images/dots/present.png">&nbsp;Present</div>
+      <div class="dot">
+        <img src="assets/images/dots/absent.png">&nbsp;Absent</div>
+      <div class="dot">
+        <img src="assets/images/dots/leave.png">&nbsp;Leave</div>
+      <div class="dot">
+        <img src="assets/images/dots/holiday.png">&nbsp;Holiday</div>
+      <span class="spacer"></span>
+    </div>
+  </div>
+</md-card>

@@ -32,11 +32,11 @@ export class DayEventDialogComponent implements OnInit {
       return this.checkIn ? this.toastyService.info({ title: 'Info', msg: 'Please Enter Check Out ' }) :
         this.toastyService.info({ title: 'Info', msg: 'Please Enter Check In ' });
     } else {
-      this.attendance.ofDate = new Date(this.attendance.ofDate).toISOString();
-      const checkIns: string[] = this.checkIn.split(':');
-      const checkOuts: string[] = this.checkOut.split(':');
-      this.attendance.checkIn = new Date(new Date(this.attendance.ofDate).setHours(parseInt(checkIns[0]), parseInt(checkIns[1]))).toISOString();
-      this.attendance.checkOut = new Date(new Date(this.attendance.ofDate).setHours(parseInt(checkOuts[0]), parseInt(checkOuts[1]))).toISOString();
+      // this.attendance.ofDate = new Date(this.attendance.ofDate).toISOString();
+      // const checkIns: string[] = this.checkIn.split(':');
+      // const checkOuts: string[] = this.checkOut.split(':');
+      // this.attendance.checkIn = new Date(new Date(this.attendance.ofDate).setHours(parseInt(checkIns[0]), parseInt(checkIns[1]))).toISOString();
+      // this.attendance.checkOut = new Date(new Date(this.attendance.ofDate).setHours(parseInt(checkOuts[0]), parseInt(checkOuts[1]))).toISOString();
       this.dialogRef.close(this.attendance);
     }
 

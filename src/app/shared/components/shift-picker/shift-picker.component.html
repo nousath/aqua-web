@@ -73,7 +73,7 @@
   <md-menu #shiftOptions="mdMenu" class="shifts" xPosition="after" [overlapTrigger]="false">
     <button md-menu-item (click)="resetShift()">Remove</button>
     <button *ngIf="attendance" md-menu-item (click)="extendCurrentShift()" [disabled]="attendance.isContinue">Extend</button>
-    <button *ngIf="attendance" md-menu-item (click)="toggleContinue()" [disabled]="!isRunning">
+    <button *ngIf="attendance" md-menu-item (click)="toggleContinue()">
       <span *ngIf="!attendance.isContinue">Continue</span>
       <span *ngIf="attendance.isContinue">Discontinue</span>
     </button>

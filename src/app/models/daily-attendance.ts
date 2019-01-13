@@ -40,13 +40,13 @@ export class Attendance {
   checkOutStatus: string;
   isContinue: boolean;
   hours: string;
-
+  count: number;
   units: {
     earned: Number,
     consumed: Number
   };
   passes: { out: Date, in: Date }[];
-  employee: Employee;
+  employee: any;
   timeLogs: TimeLogs[];
   shift: Shift;
   out1: any;

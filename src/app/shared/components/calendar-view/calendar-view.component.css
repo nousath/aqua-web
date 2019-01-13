@@ -1,0 +1,163 @@
+.days>label,
+.days>div {
+    width: 14%;
+    float: left;
+    margin: 0.1%;
+}
+
+.days>label {
+    padding: 2%;
+    height: 50px;
+    text-align: center;
+}
+
+.days>div {
+    height: 90px;
+}
+
+.empty {
+    border: 1px solid #f1f1f1;
+}
+
+.day {
+    cursor: pointer;
+    background-color: #f1f1f1;
+    text-align: center;
+    box-shadow: 1px 1px 1px 1px #86868636;
+    border-radius: 5px;
+}
+
+.day:hover {
+    background-color: #c6e7ec !important;
+}
+
+.day h5 {
+    margin: 5px;
+    text-align: left;
+    color: #a6a6a6;
+}
+
+.day .status,
+.day .out,
+.day .in {
+    margin: 0;
+}
+
+.in.late span,
+.out.early span,
+.out.missed span,
+.in.missed span {
+    border-bottom: 1px dotted red;
+}
+
+.day .status {
+    color: #dddddd;
+}
+
+.day.active .status {
+    color: #cccccc;
+}
+
+.day.inactive .status {
+    color: #fff;
+    background: #ccc;
+    border-radius: 5px;
+    margin: 0px 3px;
+}
+
+.day.info .status {
+    color: #fff;
+    background: #00a8c6;
+    border-radius: 5px;
+    margin: 0px 3px;
+}
+
+.day.error .status {
+    color: #999999;
+    border-radius: 5px;
+    border: 1px solid red;
+    margin: 0px 3px;
+}
+
+.in-out {
+    border: 1px solid #f1f1f1;
+    border-radius: 5px;
+    margin: 3px;
+    font-size: smaller;
+    height: 35px;
+}
+
+.in-out.extended {
+    border-right-style: dashed;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+.in-out.continued.left {
+    border-left-style: none;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    margin-left: 0px;
+}
+
+.in-out.continued.right {
+    border-right-style: none;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    margin-right: 0px;
+}
+
+.day p {
+    color: grey;
+    margin: 0;
+    font-size: 76%;
+}
+
+/*
+.calBox {
+    background-color: #f1f1f1;
+    width: 14%;
+    float: left;
+    margin: 0.1%;
+    text-align: center;
+    min-height: 80px;
+    border-color: #00a8c6;
+} */
+
+/* .calender {
+    margin-top: 1%;
+} */
+
+.error {
+    background-image: url(../../../../assets/images/corners/absent-icon.png);
+    background-position: right top;
+    background-repeat: no-repeat;
+}
+
+.active {
+    /* background-image: url(../../../../assets/images/corners/present-icon.png);
+    background-position: right top;
+    background-repeat: no-repeat;
+    border: #21c600 !important; */
+    /* background-color: #00a8c6 !important */
+}
+
+.info {
+    background-image: url(../../../../assets/images/corners/leave-icon.png);
+    background-position: right top;
+    background-repeat: no-repeat;
+}
+
+.inactive {
+    /* background-image: url(../../../../assets/images/corners/holiday-icon.png);
+    background-position: right top;
+    background-repeat: no-repeat; */
+}
+
+/* .weekoff {
+    color: rgb(250, 16, 16) !important;
+} */
+
+.legends div {
+    padding-left: 10px;
+}

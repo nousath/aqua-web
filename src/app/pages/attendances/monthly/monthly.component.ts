@@ -1,8 +1,8 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Location } from '@angular/common'
 import { Page } from '../../../common/contracts/page';
 import { ToastyService } from 'ng2-toasty';
 import * as moment from 'moment';
-import { ServerPageInput } from '../../../common/contracts/api/page-input';
 import { MonthAttendance, Employee } from '../../../models';
 import { AmsAttendanceService } from '../../../services/ams';
 import { ValidatorService } from '../../../services/validator.service';
@@ -11,6 +11,7 @@ import { Model } from '../../../common/contracts/model';
 import { Router, ExtraOptions, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
 import { EmsAuthService } from '../../../services';
+
 declare var $: any;
 
 @Component({
@@ -20,10 +21,10 @@ declare var $: any;
 })
 export class MonthlyComponent implements OnInit, AfterViewInit {
 
-  monthlyAttendnace: Page<MonthAttendance>;
+  monthlyAttendance: Page<MonthAttendance>;
   employee: Model<Employee>;
   isFilter = false;
-  date: Date = null;
+  date = new Date();
   showDatePicker = false;
 
   filterFields = [
@@ -38,38 +39,40 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
   ]
 
   isDownloading = false;
-
+  isProcessing = false;
 
   constructor(
     private amsAttendanceService: AmsAttendanceService,
     public validatorService: ValidatorService,
     public auth: EmsAuthService,
     private router: Router,
+    private location: Location,
     private toastyService: ToastyService) {
-      const divisionFilter = {
-        field: 'divisions',
-        value: null
-      }
-      const userDiv = this.auth.currentRole().employee.division
-      if (userDiv && userDiv.name && userDiv.code && userDiv.code !== 'default') {
-        divisionFilter.value = [userDiv.name]
-      }
-    this.monthlyAttendnace = new Page({
+    const divisionFilter = {
+      field: 'divisions',
+      value: null
+    }
+    const userDiv = this.auth.currentRole().employee.division
+    if (userDiv && userDiv.name && userDiv.code && userDiv.code !== 'default') {
+      divisionFilter.value = [userDiv.name]
+    }
+    this.monthlyAttendance = new Page({
       api: amsAttendanceService.monthlyAttendances,
+      location: location,
       filters: ['ofDate', 'name', 'code', 'designations', 'departments', 'supervisorId', 'userTypes', 'tagIds', 'contractors', divisionFilter]
     });
   }
 
   reset() {
-    this.monthlyAttendnace.filters.reset();
+    this.monthlyAttendance.filters.reset();
     $('#monthSelector').datepicker('setDate', new Date());
-    this.monthlyAttendnace.filters.properties['ofDate']['value'] = moment().toISOString();
+    this.monthlyAttendance.filters.properties['ofDate']['value'] = moment().toISOString();
     this.getAttendance();
   }
 
   applyFilters(result) {
 
-    const filters = this.monthlyAttendnace.filters.properties;
+    const filters = this.monthlyAttendance.filters.properties;
     const values = result.values
     filters['name']['value'] = values.employeeName;
     filters['code']['value'] = values.employeeCode;
@@ -85,7 +88,14 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
   }
 
   getAttendance() {
-    this.monthlyAttendnace.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+    this.isProcessing = true;
+    this.monthlyAttendance.filters.properties['ofDate']['value'] = this.date;
+    this.monthlyAttendance.fetch(() => {
+      this.isProcessing = false;
+    }).catch(err => {
+      this.isProcessing = false;
+      this.toastyService.error({ title: 'Error', msg: err })
+    });
   }
 
   downloadlink() {
@@ -95,13 +105,24 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
   regenerate() {
     const model = {
       period: 'month',
-      date: this.monthlyAttendnace.filters.properties['ofDate']['value'] || moment().toISOString()
+      date: this.monthlyAttendance.filters.properties['ofDate']['value'] || moment().toISOString()
     }
 
     this.amsAttendanceService.attendance.simplePost(model, 'regenerate').then(() => {
-      this.toastyService.info({ title: 'Status', msg: 'Submitted' })
-      this.toastyService.info({ title: 'Info', msg: 'Kindly reload' })
+      this.toastyService.info({ title: 'Status', msg: 'Request submitted. Kindly reload' })
     })
+  }
+
+  showNextMonth() {
+    this.date = moment(this.date).add(1, 'month').toDate();
+    $('#monthSelector').datepicker('setDate', this.date);
+    this.getAttendance();
+  }
+
+  showPreviousMonth() {
+    this.date = moment(this.date).subtract(1, 'month').toDate();
+    $('#monthSelector').datepicker('setDate', this.date);
+    this.getAttendance();
   }
 
   ngOnInit() {
@@ -115,11 +136,11 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
       maxViewMode: 2,
       autoclose: true
     }).on('changeMonth', (e) => {
-      this.monthlyAttendnace.filters.properties['ofDate']['value'] = e.date;
-      setTimeout(() => this.getAttendance(), 1)
+      this.date = e.date;
+      this.getAttendance()
     });
 
-    $('#monthSelector').datepicker('setDate', new Date());
+    $('#monthSelector').datepicker('setDate', this.date);
 
   }
 

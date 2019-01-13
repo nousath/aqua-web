@@ -261,9 +261,10 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
       return
     }
 
-    const dayEvent = new DayEvent()
+    const dayEvent = new Attendance();
+
     dayEvent.employee = { id: this.employee.id };
-    dayEvent.ofDate = this.date.toISOString();
+    dayEvent.ofDate = this.date;
     dayEvent.status = 'weekOff';
 
     if (this.attendance) {

@@ -1,47 +1,44 @@
-.fullShift {
-    float: left;
-    width: 33% !important;
-    height: 5px !important;
-    background-color: green;
-    border: #f1f1f1 1px solid;
-    padding-left: 3%;
-    /* display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: stretch; */
-}
-
-.halfShift {
-    float: left;
-    width: 16% !important;
-    height: 5px !important;
-    background-color: green;
-    border: #f1f1f1 1px solid;
-    padding-left: 3%;
-}
-
-.half {
-    float: left;
-    width: 16% !important;
-    height: 5px !important;
-    background-color: red;
-    border: #f1f1f1 1px solid;
-    padding-left: 3%;
-}
-
-.quarter {
-    float: left;
-    width: 24% !important;
-    height: 5px !important;
-    background-color: red;
-    border: #f1f1f1 1px solid;
-    padding-left: 3%;
-}
-
-.hours {
-    width: 90%;
-    height: 10px;
+.shift {
+    /* width: 90%;
+    height: 10px; */
     margin-left: auto;
     margin-right: auto;
+}
+
+.shift>div {
+    float: left;
+    width: 33% !important;
+    height: 4px !important;
+    padding-left: 3%;
+    background-color: #c1c1c1;
+    border: #f1f1f1 1px solid;
+    border-radius: 3px;
+}
+
+.shift>div.full {
+    background-color: #0CF;
+}
+
+.shift>div.quarter:first-child {
+    background: linear-gradient(to right, #0CF 0%, #0CF 25%, #c1c1c1 26%);
+}
+
+.shift>div.quarter:first-child {
+    background: linear-gradient(to right, red 0%, red 25%, #c1c1c1 26%);
+}
+
+.shift>div.half {
+    background: linear-gradient(to right, #0CF 0%, #0CF 50%, #c1c1c1 51%);
+}
+
+.shift>div.half:first-child {
+    background: linear-gradient(to right, red 0%, red 50%, #c1c1c1 51%);
+}
+
+.shift .three-quarter:first-child {
+    background: linear-gradient(to right, #0CF 0%, #0CF 75%, #c1c1c1 76%);
+}
+
+.shift .three-quarter:first-child {
+    background: linear-gradient(to right, red 0%, red 75%, #c1c1c1 76%);
 }

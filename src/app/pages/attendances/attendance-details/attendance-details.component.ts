@@ -24,6 +24,7 @@ import { LocalStorageService } from '../../../services/local-storage.service';
 import { EmsEmployeeService } from '../../../services';
 import { ResetPasswordDialogComponent } from '../../../dialogs/reset-password-dialog/reset-password-dialog.component';
 import { EmsAuthService } from '../../../services/ems/ems-auth.service';
+import { DatesService } from '../../../shared/services/dates.service';
 declare var $: any;
 
 
@@ -38,33 +39,29 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
   @Input()
   empId: string;
 
-  subscription: Subscription;
+  // subscription: Subscription;
   employee: Model<Employee>;
   user: string;
   shifTypes: Page<ShiftType>;
   ofDate: any;
-  isProcessingAttendance = false;
-  isDownloading = false;
+  isProcessing = false;
   selectedDate = new Date();
 
   isUpdatingLeaveStatus = false;
-  attendance: Model<DayEvent>;
+  // attendance: Model<DayEvent>;
 
-  leavesSubmiited: Page<Leave>;
+  leaves: Page<Leave>;
   leaveBalances: Page<LeaveBalance>;
   isShowLeaveAction = false;
-  days: string[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-  events: DayEvent[] = [];
-  emptyStartDays: any[] = [];
-  emptyEndDays: any[] = [];
-  date: any;
+
+  date = new Date();
   today = new Date(moment().startOf('day').toDate()).toISOString();
 
   constructor(
     private amsEmployeeService: AmsEmployeeService,
     private emsEmployeeService: EmsEmployeeService,
     private amsLeaveService: AmsLeaveService,
-    private amsShiftService: AmsShiftService,
+    amsShiftService: AmsShiftService,
     private amsAttendanceService: AmsAttendanceService,
     public auth: EmsAuthService,
     private toastyService: ToastyService,
@@ -73,16 +70,10 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
     public dialog: MdDialog,
     public _location: Location,
     private router: Router) {
-    // this.today=new Date(moment().startOf("day").toDate()).toISOString();
 
     this.employee = new Model({
       api: amsEmployeeService.employeesForAdmin,
       properties: new Employee()
-    });
-
-    this.attendance = new Model({
-      api: amsAttendanceService.attendance,
-      properties: new DayEvent()
     });
 
     this.shifTypes = new Page({
@@ -90,7 +81,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
     });
 
 
-    this.leavesSubmiited = new Page({
+    this.leaves = new Page({
       api: amsLeaveService.allLeavesOfOrg,
       filters: [{
         field: 'employeeId',
@@ -112,7 +103,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
       this.selectedDate = new Date(this.activatedRoute.snapshot.queryParams['month'])
     }
 
-    this.subscription = activatedRoute.params.subscribe(params => {
+    activatedRoute.params.subscribe(params => {
       if (params['empId']) {
         this.empId = params['empId'];
         this.setEmployee()
@@ -120,17 +111,17 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
     });
 
     this.activatedRoute.queryParams.subscribe(query => {
-      this.selectedDate = query['month'] ? new Date(query['month']) : new Date();
-      this.getAttendance(this.selectedDate);
+      if (query.month) {
+        this.date = new Date(query.month)
+      }
     })
   }
 
   setEmployee() {
-    this.leavesSubmiited.filters.properties['employeeId'].value = this.empId;
+    this.leaves.filters.properties['employeeId'].value = this.empId;
     this.leaveBalances.filters.properties['id'].value = this.empId;
     this.fetchSubmittedLeaveBalance();
     this.fetchLeavesBalances();
-    this.getAttendance(this.selectedDate);
     this.employee.fetch(this.empId).then(
       data => {
         this.checkCurrentAblity();
@@ -209,9 +200,9 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
   }
 
   fetchSubmittedLeaveBalance() {
-    this.leavesSubmiited.fetch().then(
+    this.leaves.fetch().then(
       data => {
-        const i: any = this.leavesSubmiited.items.find((item: Leave) => {
+        const i: any = this.leaves.items.find((item: Leave) => {
           return item.status.toLowerCase() === 'submitted'
         });
         if (i)
@@ -220,118 +211,13 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
       }
     ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
-
-
-  getAttendance(date: Date) {
-    this.selectedDate = new Date(date)
-
-    this.router.navigate([], {
-      relativeTo: this.activatedRoute,
-      queryParams: { month: this.selectedDate.toISOString() },
-      queryParamsHandling: 'merge',
-    });
-
-
-    this.isProcessingAttendance = true;
-    date = new Date(date);
-    const y = date.getFullYear(), m = date.getMonth();
-    const firstDay = new Date(y, m, 1);
-    const lastDay = new Date(y, m + 1, 1);
-
-    const serverPageInput: ServerPageInput = new ServerPageInput();
-    serverPageInput.query['fromDate'] = firstDay.toISOString();
-    serverPageInput.query['toDate'] = lastDay.toISOString();
-    serverPageInput.query['employee'] = this.empId;
-    const param: IGetParams = {
-      serverPageInput: serverPageInput
-    };
-
-    this.amsAttendanceService.attendance.simpleGet(param).then((data: DayEvent[]) => {
-      this.events = [];
-
-      let startDay = new Date(firstDay).getDay();
-      startDay = startDay === 0 ? 7 : startDay;
-
-      const dateVar: Date = new Date(this.selectedDate);
-      const year: number = dateVar.getFullYear();
-      const monthInNumber: number = dateVar.getMonth();
-      // let totalDaysInMonth: number;
-
-
-      // _.each(this.months, (value: Month, key: string, obj: Months) => {
-      //   if (value.id === m + 1)
-      //     totalDaysInMonth = value.days;
-      // });
-
-      const lastDateOfMonth: Date = new Date(y, monthInNumber + 1, 0);
-
-      const lastDayOfMonth = lastDateOfMonth.getDate();
-
-      const days: number[] = [];
-      for (let i = 0; i < lastDayOfMonth; i++) {
-        days.push(i);
-      }
-
-      _.each(days, (day: number) => {
-        let dateEvent: DayEvent;
-
-        dateEvent = _.find(data, (item: DayEvent) => {
-          return new Date(item.ofDate).getDate() === day + 1;
-        });
-
-        if (dateEvent) {
-          if (!dateEvent.shift) {
-            dateEvent['shift'] = new Shift();
-            dateEvent.shift.status = 'working';
-          }
-          dateEvent.status = dateEvent.status ? dateEvent.status.toLowerCase() : '';
-          dateEvent.shift.status = dateEvent.shift.status ? dateEvent.shift.status.toLowerCase() : '';
-          this.events.push(dateEvent)
-        } else {
-          const newEvent: DayEvent = new DayEvent();
-          newEvent.ofDate = new Date(year, monthInNumber, day + 1).toISOString();
-          this.events.push(newEvent);
-        }
-      })
-
-
-
-      this.emptyStartDays = [];
-      for (let i = 1; i < startDay; i++) {
-        this.emptyStartDays.push(i);
-      }
-      // this.emptyEndDays = [];
-      // for (let i = 0; i < lastDayOfMonth; i++) {
-      //   this.emptyEndDays.push(i);
-      // }
-
-
-
-      // this.events = data;
-      this.isProcessingAttendance = false;
-
-    }).catch(err => {
-      this.isProcessingAttendance = false;
-      this.toastyService.error({ title: 'Error', msg: err });
-    });
-  }
-
-  updateDayEvent(item: DayEvent) {
-    if (item.ofDate < new Date().toISOString()) {
-      this.router.navigate([`/attendances/${this.empId}/logs`], {
-        queryParams: {
-          ofDate: new Date(item.ofDate).toISOString()
-        }
-      })
-    }
-  }
-  openCalnder() {
+  openCalender() {
     $('#monthSelector').datepicker('show')
   }
 
 
   download(byShiftEnd: boolean, byShiftLength: boolean, reportName: string) {
-    this.isDownloading = true;
+    this.isProcessing = true;
     const serverPageInput: ServerPageInput = new ServerPageInput();
     serverPageInput.query['ofDate'] = this.selectedDate;
     serverPageInput.query['employee'] = this.empId;
@@ -339,10 +225,10 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
     serverPageInput.query['byShiftLength'] = byShiftLength;
     reportName = `${reportName}_${this.employee.properties.name}_${moment(this.selectedDate).format('MMM_YY')}_monthlyReport.xlsx`;
     this.amsAttendanceService.donwloadSingleEmpMonthAtte.exportReport(serverPageInput, null, reportName).then(
-      data => this.isDownloading = false
+      data => this.isProcessing = false
     ).catch(err => {
       this.toastyService.error({ title: 'Error', msg: err });
-      this.isDownloading = false
+      this.isProcessing = false
     });
   };
 
@@ -360,16 +246,25 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
       if (new Date(e.date).getFullYear() > new Date().getFullYear()) {
         return this.toastyService.info({ title: 'Info', msg: 'Year should be less than or equal to current Year' })
       }
-      this.getAttendance(e.date);
-
+      this.date = e.date;
     });
 
     $('#monthSelector').datepicker('setDate', this.selectedDate);
 
   }
 
+  showNextMonth() {
+    this.date = moment(this.date).add(1, 'month').toDate();
+    $('#monthSelector').datepicker('setDate', this.date);
+  }
+
+  showPreviousMonth() {
+    this.date = moment(this.date).subtract(1, 'month').toDate();
+    $('#monthSelector').datepicker('setDate', this.date);
+  }
+
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    // this.subscription.unsubscribe();
   }
 
   updateStatus(leave: Leave) {
@@ -431,15 +326,5 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
     this._location.back();
   }
 
-  regenerate() {
-    const model = {
-      employee: this.employee,
-      period: 'month',
-      date: this.attendance.properties['ofDate'] || moment().toISOString()
-    }
-    this.amsAttendanceService.attendance.simplePost(model, 'regenerate').then(() => {
-      this.toastyService.info({ title: 'Status', msg: 'Submitted' })
-      this.toastyService.info({ title: 'Info', msg: 'Kindly reload' })
-    })
-  }
+
 }

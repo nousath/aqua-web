@@ -19,6 +19,7 @@ import { Location } from '@angular/common';
 import { MdDialogRef, MdDialog } from '@angular/material';
 import { BulkTimeLogsDialogComponent } from '../../../shared/components/bulk-time-logs-dialog/bulk-time-logs-dialog.component';
 import { EmsAuthService } from '../../../services/ems/ems-auth.service';
+import { Attendance } from '../../../models/daily-attendance';
 
 @Component({
   selector: 'aqua-attendance-logs',
@@ -28,12 +29,12 @@ import { EmsAuthService } from '../../../services/ems/ems-auth.service';
 export class AttendanceLogsComponent implements OnInit {
   employee: Model<Employee>;
   logs: Page<TimeLogs>;
-  attendances: Page<DayEvent>;
+  attendances: Page<Attendance>;
   timeLog: Model<TimeLogs>;
   subscription: Subscription;
   empId: string;
   ofDate = new Date();
-  attendance: DayEvent;
+  attendance: Attendance;
   date: any;
   isButton = true;
   checkTime: Date;

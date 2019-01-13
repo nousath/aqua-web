@@ -36,8 +36,8 @@ export class GkuAttendanceComponent implements OnInit, OnDestroy {
     private toastyService: ToastyService,
     private meta: Meta) {
 
-      // this.meta.addTag({ name: 'viewport', content: 'width=device-width, initial-scale=1' }, true);
-      this.meta.addTag({ name: 'viewport', content: 'width=400' }, true);
+    // this.meta.addTag({ name: 'viewport', content: 'width=device-width, initial-scale=1' }, true);
+    this.meta.addTag({ name: 'viewport', content: 'width=400' }, true);
 
     this.subscription = activatedRoute.params.subscribe(
       params => {
@@ -113,27 +113,27 @@ export class GkuAttendanceComponent implements OnInit, OnDestroy {
         days.push(i);
       }
 
-      _.each(days, (day: number) => {
-        let dateEvent: DayEvent;
+      // _.each(days, (day: number) => {
+      //   let dateEvent: DayEvent;
 
-        dateEvent = _.find(data, (item: DayEvent) => {
-          return new Date(item.ofDate).getDate() === day + 1;
-        });
+      //   dateEvent = _.find(data, (item: DayEvent) => {
+      //     return new Date(item.ofDate).getDate() === day + 1;
+      //   });
 
-        if (dateEvent) {
-          if (!dateEvent.shift) {
-            dateEvent['shift'] = new Shift();
-            dateEvent.shift.status = 'working';
-          }
-          dateEvent.status = dateEvent.status ? dateEvent.status.toLowerCase() : '';
-          dateEvent.shift.status = dateEvent.shift.status ? dateEvent.shift.status.toLowerCase() : '';
-          this.events.push(dateEvent)
-        } else {
-          const newEvent: DayEvent = new DayEvent();
-          newEvent.ofDate = new Date(year, monthInNumber, day + 1).toISOString();
-          this.events.push(newEvent);
-        }
-      })
+      //   if (dateEvent) {
+      //     if (!dateEvent.shift) {
+      //       dateEvent['shift'] = new Shift();
+      //       dateEvent.shift.status = 'working';
+      //     }
+      //     dateEvent.status = dateEvent.status ? dateEvent.status.toLowerCase() : '';
+      //     dateEvent.shift.status = dateEvent.shift.status ? dateEvent.shift.status.toLowerCase() : '';
+      //     this.events.push(dateEvent)
+      //   } else {
+      //     const newEvent: DayEvent = new DayEvent();
+      //     newEvent.ofDate = new Date(year, monthInNumber, day + 1).toISOString();
+      //     this.events.push(newEvent);
+      //   }
+      // })
 
 
 
