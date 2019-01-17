@@ -46,30 +46,58 @@
           </select>
         </div>
         <h5>Grant Rules</h5>
-        <div class="form-group">
-          <label for="periodicityType">Trigger</label>
-          <select class="form-control" [(ngModel)]="leaveType.properties.periodicity.type" [disabled]="leaveType.properties.unlimited">
-            <option [ngValue]="null">select an option</option>
-            <option value="daily">Overtime</option>
-            <option value="monthly">Month Start</option>
-            <option value="yearly">Year Start</option>
-            <option value="manual">Manual</option>
-          </select>
+        <div>
+          <div class="form-group">
+            <label for="periodicityType">Trigger</label>
+            <select class="form-control" [(ngModel)]="leaveType.properties.periodicity.type" [disabled]="leaveType.properties.unlimited">
+              <option [ngValue]="null">select an option</option>
+              <option value="work-days">Paid Days</option>
+              <option value="overtime">Overtime</option>
+              <option value="new-joiner">New Joiner</option>
+              <option value="monthly">Month</option>
+              <option value="yearly">Year</option>
+              <option value="manual">Manual</option>
+            </select>
+          </div>
         </div>
-        <div class="form-group">
-          <ng-container [ngSwitch]="leaveType.properties.periodicity.type">
-            <label *ngSwitchCase="'daily'">Hours for 1 Leave</label>
-            <label *ngSwitchCase="'manual'">Initial Balance</label>
-            <label *ngSwitchDefault>Credit</label>
-          </ng-container>
-          <input class="form-control" type="number" min="0" [(ngModel)]="leaveType.properties.periodicity.value"
-            [disabled]="!leaveType.properties.periodicity.type || leaveType.properties.unlimited">
+        <div class="flex-row two">
+          <div class="form-group">
+            <ng-container [ngSwitch]="leaveType.properties.periodicity.type">
+              <label *ngSwitchCase="'work-days'">Days</label>
+              <label *ngSwitchCase="'overtime'">Hours</label>
+              <label *ngSwitchDefault>Config</label>
+            </ng-container>
+            <input *ngIf="leaveType.properties.periodicity.type === 'work-days' || leaveType.properties.periodicity.type === 'overtime'"
+              class="form-control" type="number" min="0" [(ngModel)]="leaveType.properties.periodicity.config"
+              [disabled]="!leaveType.properties.periodicity.type || leaveType.properties.unlimited">
+            <select *ngIf="leaveType.properties.periodicity.type === 'yearly' || leaveType.properties.periodicity.type === 'monthly'"
+              class="form-control" [(ngModel)]="leaveType.properties.periodicity.config" [disabled]="leaveType.properties.unlimited">
+              <option [ngValue]="null">select an option</option>
+              <option value="start">Start</option>
+              <option value="end">End</option>
+            </select>
+            <span *ngIf="!leaveType.properties.periodicity.type || leaveType.properties.periodicity.type === 'manual' || leaveType.properties.periodicity.type === 'new-joiner'"
+              class="form-control disabled"></span>
+          </div>
+          <div class="form-group">
+            <label>Credit</label>
+            <input class="form-control" type="number" min="0" [(ngModel)]="leaveType.properties.periodicity.value"
+              [disabled]="!leaveType.properties.periodicity.type || leaveType.properties.unlimited">
+          </div>
         </div>
         <div class="form-group">
           <label for="carryForward">Carry Forward (Yearly)</label>
           <input class="form-control" [disabled]="leaveType.properties.unlimited" type="number" min="0" [(ngModel)]="leaveType.properties.carryForward">
         </div>
-
+      </div>
+      <div class="help" [ngSwitch]="leaveType.properties.periodicity.type">
+        <span class="sub-text" *ngSwitchCase="'work-days'">after the configured no of paid days</span>
+        <span class="sub-text" *ngSwitchCase="'overtime'">after specified on of extra work hours</span>
+        <span class="sub-text" *ngSwitchCase="'manual'">click run button to grant the leave</span>
+        <span class="sub-text" *ngSwitchCase="'monthly'">based on calender month</span>
+        <span class="sub-text" *ngSwitchCase="'yearly'">based on calender year</span>
+        <span class="sub-text" *ngSwitchCase="'new-joiner'">when a new employee joins</span>
+        <span class="sub-text" *ngSwitchDefault>when the leave be credited to user</span>
       </div>
       <div class="controls-row footer">
         <span class="spacer"></span>

@@ -402,6 +402,10 @@ td .form-control.small {
     width: 50%;
 }
 
+.form-control.disabled {
+    background: #eee;
+}
+
 .form-control.right {
     float: right;
 }
@@ -602,6 +606,7 @@ td .form-control.small {
     padding: 0 5px;
 }
 
+.help .sub-text,
 .form-group .sub-text {
     position: relative;
     top: -15px
