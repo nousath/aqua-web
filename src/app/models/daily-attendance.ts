@@ -45,16 +45,10 @@ export class Attendance {
     earned: Number,
     consumed: Number
   };
-  passes: { out: Date, in: Date }[];
   employee: any;
   timeLogs: TimeLogs[];
+  passes: { out: TimeLogs, in: TimeLogs }[];
   shift: Shift;
-  out1: any;
-  out2: any;
-  out3: any;
-  in2: any;
-  in3: any;
-  in4: any;
 }
 
 export class ExtendShift {

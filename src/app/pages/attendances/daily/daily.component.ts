@@ -156,34 +156,6 @@ export class DailyComponent {
       this.isPast = moment(this.ofDate).isBefore(new Date(), 'day');
       page.items.forEach(pageItem => {
         const existingAttendance = this.attendances.find(item => item.employee.code === pageItem.employee.code);
-
-
-        pageItem.timeLogs.forEach(timeLog => {
-          const displayTime = timeLog.time
-          if (timeLog.type === 'checkOut' && (
-            (pageItem.checkOut && moment(timeLog.time).minutes() !== moment(pageItem.checkOut).minutes()) ||
-            !pageItem.checkOut)) {
-            if (!pageItem.out1) {
-              pageItem.out1 = displayTime
-            } else if (!pageItem.out2) {
-              pageItem.out2 = displayTime
-            } else if (!pageItem.out3) {
-              pageItem.out3 = displayTime
-            }
-          }
-
-          if (timeLog.type === 'checkIn' && (
-            (pageItem.checkIn && moment(timeLog.time).minutes() !== moment(pageItem.checkIn).minutes()) ||
-            !pageItem.checkIn)) {
-            if (!pageItem.in2) {
-              pageItem.in2 = displayTime
-            } else if (!pageItem.in3) {
-              pageItem.in3 = displayTime
-            } else if (!pageItem.in4) {
-              pageItem.in4 = displayTime
-            }
-          }
-        })
         if (existingAttendance) {
           if (!existingAttendance.checkIn || existingAttendance.checkIn > pageItem.checkIn) {
             existingAttendance.checkIn = pageItem.checkIn;

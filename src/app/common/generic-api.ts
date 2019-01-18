@@ -148,7 +148,7 @@ export class GenericApi<TModel> implements IApi<TModel> {
       .catch(this.handleError);
   }
 
-  create(model: TModel, path?: string): Promise<TModel> {
+  create(model: any, path?: string): Promise<TModel> {
 
     let url = `${this.rootUrl}/${this.key}`;
     url = path ? `${url}/${path}` : url;
@@ -170,7 +170,7 @@ export class GenericApi<TModel> implements IApi<TModel> {
       .catch(this.handleError);
   }
 
-  bulkCreate(models: TModel[], path?: string): Promise<RemoteDataModel> {
+  bulkCreate(models: any[], path?: string): Promise<RemoteDataModel> {
 
     let url = `${this.rootUrl}/${this.key}`;
     url = path ? `${url}/${path}` : `${url}/bulk`;
@@ -336,7 +336,7 @@ export class GenericApi<TModel> implements IApi<TModel> {
       .catch(this.handleError);
   }
 
-  update(id: number | string, model: TModel, input?: ServerPageInput, path?: string): Promise<TModel> {
+  update(id: number | string, model: any, input?: ServerPageInput, path?: string): Promise<TModel> {
     let parms: URLSearchParams;
     if (input) {
       parms = this.getQueryParams(input);

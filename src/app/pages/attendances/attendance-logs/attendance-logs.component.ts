@@ -285,6 +285,28 @@ export class AttendanceLogsComponent implements OnInit {
     return diff >= -12;
   }
 
+  ignore(log: TimeLogs, status: boolean) {
+    this.isProcessing = true;
+    this.amsTimelogsService.timeLogs.update(log.id, { ignore: status }).then(item => {
+      log.ignore = item.ignore;
+      this.isProcessing = false;
+      this.getAttendance();
+    }).catch(err => {
+      this.isProcessing = false;
+    })
+  }
+
+  setType(log: TimeLogs, type: string) {
+    this.isProcessing = true;
+    this.amsTimelogsService.timeLogs.update(log.id, { type: type }).then(item => {
+      log.type = item.type;
+      this.isProcessing = false;
+      this.getAttendance();
+    }).catch(err => {
+      this.isProcessing = false;
+    })
+  }
+
   moveNext(item: TimeLogs) {
     const date = moment(this.ofDate).add(1, 'd').toISOString()
     this.amsTimelogsService.timeLogs.simplePost({

@@ -96,14 +96,26 @@
             </ng-container>
             <span class="cta" *ngIf="item.status=== 'present' && !item.checkIn && item.checkInStatus">Missed Check In</span>
           </td>
-          <td class="tdWidth"><span *ngIf="item.out1" (click)="updateDayEvent(item.employee.id)">{{item.out1 |
-              date:'shortTime'}}</span></td>
-          <td class="tdWidth"><span *ngIf="item.in2" (click)="updateDayEvent(item.employee.id)">{{item.in2 |
-              date:'shortTime'}}</span></td>
-          <td class="tdWidth"><span *ngIf="item.out2" (click)="updateDayEvent(item.employee.id)">{{item.out2 |
-              date:'shortTime'}}</span></td>
-          <td class="tdWidth"><span *ngIf="item.in3" (click)="updateDayEvent(item.employee.id)">{{item.in3 |
-              date:'shortTime'}}</span></td>
+          <td class="tdWidth">
+            <span *ngIf="item.passes[0] && item.passes[0].out" (click)="updateDayEvent(item.employee.id)">
+              {{item.passes[0].out.time|date:'shortTime'}}
+            </span>
+          </td>
+          <td class="tdWidth">
+            <span *ngIf="item.passes[0] && item.passes[0].in" (click)="updateDayEvent(item.employee.id)">
+              {{item.passes[0].in.time| date:'shortTime'}}
+            </span>
+          </td>
+          <td class="tdWidth">
+            <span *ngIf="item.passes[1] && item.passes[1].out" (click)="updateDayEvent(item.employee.id)">
+              {{item.passes[1].out.time|date:'shortTime'}}
+            </span>
+          </td>
+          <td class="tdWidth">
+            <span *ngIf="item.passes[1] && item.passes[1].in" (click)="updateDayEvent(item.employee.id)">
+              {{item.passes[1].in.time| date:'shortTime'}}
+            </span>
+          </td>
           <td class=" tdWidth" (click)="updateDayEvent(item.employee.id)">
             <div class="controls-row">
               <div *ngIf="item.checkOut">{{item.checkOut | date:'shortTime'}}</div>

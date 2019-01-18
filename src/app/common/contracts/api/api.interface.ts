@@ -7,13 +7,13 @@ export interface IApi<TModel> extends IUploader {
   get(id: number | string): Promise<TModel>;
   simpleGet(input?: IGetParams): Promise<any>;
   search(input?: ServerPageInput): Promise<ServerPageModel<TModel>>;
-  create(model: TModel, path?: string): Promise<TModel>;
-  update(id: number | string, model: TModel, input?: ServerPageInput, path?: string): Promise<TModel>;
+  create(model: any, path?: string): Promise<TModel>;
+  update(id: number | string, model: any, input?: ServerPageInput, path?: string): Promise<TModel>;
   remove(id: number | string): Promise<void>;
   simplePost(model: any, key?: string): Promise<any>;
   exportReport(input: ServerPageInput, path?: string, reportName?: string): Promise<void>;
   all(type: any, id?: string, model?: any): Promise<void>;
-  bulkCreate(models: TModel[], path?: string): Promise<RemoteDataModel>;
+  bulkCreate(models: any[], path?: string): Promise<RemoteDataModel>;
 }
 
 

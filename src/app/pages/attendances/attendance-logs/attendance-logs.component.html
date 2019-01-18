@@ -90,13 +90,12 @@
             <th width="20%" class="text-center">Time</th>
             <th width="10%" class="text-center">Type</th>
             <th width="25%" class="text-center">Source</th>
-            <th width="20%" class="text-center">IP Address</th>
             <th width="20%" class="text-center"></th>
           </tr>
         </thead>
 
         <tbody *ngIf="attendance">
-          <tr class="capitalize" *ngFor="let item of attendance.timeLogs;index as i">
+          <tr class="capitalize" *ngFor="let item of attendance.timeLogs;index as i" [class.ignored]="item.ignore">
             <td class="text-center" *ngIf="!item?.location?.show && item">{{item?.time | date: 'dd-MM-yyyy' ||
               '--'}}</td>
             <td class="text-center" *ngIf="!item?.location?.show && item">{{item?.time | date: 'h:mm a' ||
@@ -104,22 +103,32 @@
             <td class="text-center" *ngIf="!item?.location?.show && item.type =='checkIn' && (timeLogsLength != 1 || !item?.isComputed)">In</td>
             <td class="text-center" *ngIf="!item?.location?.show && item.type =='checkOut' &&  (timeLogsLength != 1 || !item?.isComputed)">Out</td>
             <td class="text-center" *ngIf="!item?.location?.show">
-              <span *ngIf="item.source === 'system'">Continued</span>
-              <span *ngIf="item.source !== 'system'">{{item.source}}</span>
+              <div>{{item.device && item.device.name ? item.device.name:item.ipAddress}}</div>
+              <span class="sub-text" *ngIf="item.source === 'system'">Continued</span>
+              <span class="sub-text" *ngIf="item.source !== 'system'">{{item.source}}</span>
             </td>
-            <td class="text-center" *ngIf="!item?.location?.show">{{item.ipAddress}}</td>
             <td class="text-center" *ngIf="!item?.location?.show">
-              <span [matMenuTriggerFor]="moreMenu" md-icon-button style="cursor: pointer" *ngIf="(i == 0 || i == timeLogsLength - 1) && auth.hasPermission('superadmin')">
+              <button [matMenuTriggerFor]="moreMenu" md-icon-button class="subtle" *ngIf="auth.hasPermission('superadmin')">
                 <md-icon>more_vert</md-icon>
-              </span>
+              </button>
               <md-menu #moreMenu="mdMenu">
-                <!-- <button md-menu-item (click)="moveNext(item)" [disabled]="!canMoveNext(item)"> -->
-                <button md-menu-item (click)="moveNext(item)" [disabled]=" timeLogsLength > 1 && i == 0">
+                <button md-menu-item (click)="moveNext(item)" *ngIf="!item.ignore && i == timeLogsLength - 1">
                   <md-icon>arrow_forward</md-icon> Move to Next
                 </button>
-                <!-- <button md-menu-item (click)="movePrevious(item)" [disabled]="!canMovePrevious(item)"> -->
-                <button md-menu-item (click)="movePrevious(item)" [disabled]=" timeLogsLength > 1 && i == timeLogsLength - 1">
+                <button md-menu-item (click)="movePrevious(item)" *ngIf="!item.ignore && i == 0">
                   <md-icon>arrow_back</md-icon> Move to Previous
+                </button>
+                <button md-menu-item *ngIf="!item.ignore" (click)="ignore(item, true)">
+                  <md-icon>remove_circle_outline</md-icon> Ignore
+                </button>
+                <button md-menu-item *ngIf="item.ignore" (click)="ignore(item, false)">
+                  <md-icon>add_circle_outline</md-icon> Include
+                </button>
+                <button md-menu-item *ngIf="!item.ignore && item.type === 'checkIn'" (click)="setType(item, 'checkOut')">
+                  <md-icon>compare_arrows</md-icon> Set Check Out
+                </button>
+                <button md-menu-item *ngIf="!item.ignore && item.type === 'checkOut'" (click)="setType(item, 'checkIn')">
+                  <md-icon>compare_arrows</md-icon> Set Check In
                 </button>
               </md-menu>
             </td>
