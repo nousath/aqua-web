@@ -32,7 +32,6 @@
       <label>Message</label>
       <input type="text" class="form-control" [(ngModel)]="logs.filters.properties['message']['value']">
     </div>
-
     <div class="form-group">
       <label>Devices</label>
       <select class="form-control" name="devices" [(ngModel)]="logs.filters.properties['deviceId']['value']">
@@ -75,21 +74,22 @@
                                                     itemsPerPage: logs.pageSize,
                                                     currentPage: logs.pageNo,
                                                     totalItems: logs.totalRecords };"
-          class="capitalize" [ngClass]="{'bg-danger': item.level === 'Error'} ">
+          [ngClass]="{'bg-danger': item.level === 'Error'} ">
           <td class="cellFormat" [ngSwitch]="item.level">
-            <span mdTooltip="{{item.level}}">
+            <span mdTooltip="{{item.level}}" (click)="levelActivity(item.level)">
               <i *ngSwitchCase="'error'" class="fa fa-exclamation-triangle" style="color: #D8000C;" aria-hidden="true"></i>
               <i *ngSwitchCase="'info'" class="fa fa-info-circle" style="color: #00529B;" aria-hidden="true"></i>
-              <i *ngSwitchCase="'debug'" class="fa fa-info-circle" style="color: #a1a1a1;" aria-hidden="true"></i>
+              <i *ngSwitchCase="'debug'" class="fa fa-info" style="color: #a1a1a1;" aria-hidden="true"></i>
             </span>
           </td>
           <td class="cellFormat">
             <div>{{item?.timeStamp | date: "HH:mm"}}</div>
-            <div class="sub-text" *ngIf="item.app">{{item.app}}</div>
+            <div class="sub-text" (click)="appActivity(item.app)" *ngIf="item.app">{{item.app}}</div>
           </td>
           <td class="cellFormat">
             <div *ngIf="item.device">Device: {{item.device.name}}</div>
-            <div *ngIf="item.employee">User: {{item.employee.name}}</div>
+            <div *ngIf="item.employee">Employee: {{item.employee.name}}</div>
+            <div *ngIf="item.user" (click)="userActivity(item.user)">{{item.user.name}}</div>
             <div *ngIf="item.organization"><code>{{item.organization.code}}</code></div>
           </td>
           <td class="cellFormat">
@@ -98,7 +98,7 @@
             <div *ngIf="item.showMeta === true">
               <code>{{item.meta | json}}</code>
             </div>
-            <span class="sub-text">{{item.location}}</span>
+            <span class="sub-text" (click)="locationActivity(item.location)">{{item.location}}</span>
           </td>
         </tr>
       </tbody>

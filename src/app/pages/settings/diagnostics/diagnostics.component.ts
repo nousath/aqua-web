@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Location } from '@angular/common'
 import { Page } from '../../../common/contracts/page';
-import { DeviceLogs, Device, Log } from '../../../models';
+import { DeviceLogs, Device, Log, Employee } from '../../../models';
 import { ToastyService } from 'ng2-toasty';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { AmsEmployeeService, AmsDeviceService } from '../../../services';
+import { getErrorLogger } from '@angular/core/src/errors';
 declare var $: any;
 
 @Component({
@@ -20,6 +21,7 @@ export class DiagnosticsComponent implements OnInit, OnDestroy, AfterViewInit {
   status: string;
   date: any = null;
   pageSize: any;
+  userCode: string;
 
   constructor(private toastyService: ToastyService,
     private activatedRoute: ActivatedRoute,
@@ -44,6 +46,9 @@ export class DiagnosticsComponent implements OnInit, OnDestroy, AfterViewInit {
         field: 'deviceId',
         value: this.activatedRoute.queryParams['value']['deviceId']
       }, {
+        field: 'userId',
+        value: this.activatedRoute.queryParams['value']['userId']
+      }, {
         field: 'timeStamp',
         value: this.activatedRoute.queryParams['value']['timeStamp']
       }, {
@@ -66,6 +71,8 @@ export class DiagnosticsComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logs.filters.properties['timeStamp'].value = query['timeStamp'] ? query['timeStamp'] : new Date().toISOString();
       this.logs.filters.properties['deviceId'].value = query['deviceId'];
       this.logs.filters.properties['message'].value = query['message'];
+      this.logs.filters.properties['location'].value = query['location'];
+      this.logs.filters.properties['userId'].value = query['userId'];
     });
     this.getLogs();
   }
@@ -74,6 +81,25 @@ export class DiagnosticsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.logs.fetch().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
+  levelActivity(level: string) {
+    this.logs.filters.properties['level'].value = level;
+    this.getLogs()
+  }
+
+  userActivity(user: Employee) {
+    this.logs.filters.properties['userId'].value = user.id;
+    this.getLogs()
+  }
+
+  locationActivity(logLocation: string) {
+    this.logs.filters.properties['location'].value = logLocation;
+    this.getLogs()
+  }
+
+  appActivity(app: string) {
+    this.logs.filters.properties['app'].value = app;
+    this.getLogs()
+  }
   ngAfterViewInit() {
     $('#dateSelector').datepicker('setDate', new Date(this.activatedRoute.queryParams['value']['date']));
     $('#dateSelector').datepicker({
