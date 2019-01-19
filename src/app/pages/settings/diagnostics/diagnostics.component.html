@@ -1,0 +1,118 @@
+<div class="row page_header">
+  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+    <h5>
+      <b>Logs</b>
+    </h5>
+  </div>
+</div>
+<md-card class="filters">
+  <div class="flex-row three">
+    <div class="form-group">
+      <label>Level</label>
+      <select class="form-control" name="level" [(ngModel)]="logs.filters.properties['level']['value']">
+        <option value="all" [selected]>All</option>
+        <option value="info">Info</option>
+        <option value="error">Error</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Date</label>
+      <input id="dateSelector" name="dateSelect" type="text" class="form-control input-sm calendar no-spin">
+    </div>
+    <div class="form-group">
+      <label>Application</label>
+      <select class="form-control" name="app" [(ngModel)]="logs.filters.properties['app']['value']">
+        <option value="" [selected]>All</option>
+        <option value="api">API</option>
+        <option value="listener">Jobs</option>
+        <option value="cron">Cron</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Message</label>
+      <input type="text" class="form-control" [(ngModel)]="logs.filters.properties['message']['value']">
+    </div>
+
+    <div class="form-group">
+      <label>Devices</label>
+      <select class="form-control" name="devices" [(ngModel)]="logs.filters.properties['deviceId']['value']">
+        <option value="">All</option>
+        <option *ngFor="let device of devices.items" value="{{device.id}}">{{device.name}}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Location</label>
+      <input type="text" class="form-control" [(ngModel)]="logs.filters.properties['location']['value']">
+    </div>
+  </div>
+  <md-card-footer>
+    <div class="flex-row">
+      <div class="spacer"></div>
+      <div class="form-group">
+        <button [disabled]="logs?.isLoading" md-button mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()">Reset</button>
+        <button [disabled]="logs?.isLoading" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'"
+          (click)="getLogs()">Apply</button>
+      </div>
+    </div>
+  </md-card-footer>
+</md-card>
+<md-spinner class="custom_spinner" *ngIf="logs?.isLoading" mode="indeterminate"></md-spinner>
+
+<md-card class="card">
+  <div class="table-responsive">
+    <table class="table table-condensed table-hover">
+      <thead class="primary_thead">
+        <tr>
+          <th class="cellFormat">Level</th>
+          <th class="cellFormat">Time</th>
+          <th class="cellFormat">Context</th>
+          <th class="cellFormat">Message</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of logs.items | paginate: { id: 'foo',
+                                                    itemsPerPage: logs.pageSize,
+                                                    currentPage: logs.pageNo,
+                                                    totalItems: logs.totalRecords };"
+          class="capitalize" [ngClass]="{'bg-danger': item.level === 'Error'} ">
+          <td class="cellFormat" [ngSwitch]="item.level">
+            <span mdTooltip="{{item.level}}">
+              <i *ngSwitchCase="'error'" class="fa fa-exclamation-triangle" style="color: #D8000C;" aria-hidden="true"></i>
+              <i *ngSwitchCase="'info'" class="fa fa-info-circle" style="color: #00529B;" aria-hidden="true"></i>
+              <i *ngSwitchCase="'debug'" class="fa fa-info-circle" style="color: #a1a1a1;" aria-hidden="true"></i>
+            </span>
+          </td>
+          <td class="cellFormat">
+            <div>{{item?.timeStamp | date: "HH:mm"}}</div>
+            <div class="sub-text" *ngIf="item.app">{{item.app}}</div>
+          </td>
+          <td class="cellFormat">
+            <div *ngIf="item.device">Device: {{item.device.name}}</div>
+            <div *ngIf="item.employee">User: {{item.employee.name}}</div>
+            <div *ngIf="item.organization"><code>{{item.organization.code}}</code></div>
+          </td>
+          <td class="cellFormat">
+
+            <div (click)="item.showMeta = !item.showMeta">{{item.message}}</div>
+            <div *ngIf="item.showMeta === true">
+              <code>{{item.meta | json}}</code>
+            </div>
+            <span class="sub-text">{{item.location}}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</md-card>
+
+<pagination-controls id="foo" (pageChange)="logs.pageNo = $event;getLogs();"></pagination-controls>
+<div class="pageSize">
+  <label>Page Size:</label>
+  <select [(ngModel)]="logs.pageSize" (change)="logs.pageNo = 1;getLogs();">
+    <option value="10">10</option>
+    <option value="20">20</option>
+    <option value="50">50</option>
+    <option value="100">100</option>
+  </select>
+</div>

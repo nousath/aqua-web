@@ -1,12 +1,13 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common'
 import { ToastyService } from 'ng2-toasty';
-import { AmsDeviceService, AmsEmployeeService } from 'app/services';
-import { DeviceLogs, Device } from 'app/models';
-import { Page } from 'app/common/contracts/page';
+
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
+import { Page } from '../../../common/contracts/page';
+import { DeviceLogs, Device } from '../../../models';
+import { AmsEmployeeService, AmsDeviceService } from '../../../services';
 declare var $: any;
 
 @Component({

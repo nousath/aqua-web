@@ -5,6 +5,7 @@
     --primary: #00A8c6;
     --accent: #bfbdbd;
     --primaryBackdrop: #00bcd47a;
+    --defaultBackground: #efefef
 }
 
 body {
@@ -45,6 +46,10 @@ body::-webkit-scrollbar-thumb {
 .mat-toolbar {
     font-size: 100% !important;
     font-weight: 300 !important;
+}
+
+.nav-container {
+    background-color: var(--defaultBackground);
 }
 
 .container {

@@ -17,6 +17,7 @@ import { SyncDialogComponent } from '../../dialogs/sync-dialog/sync-dialog.compo
 import { SharedModule } from '../../shared/shared.module';
 import { ChannelTypesComponent } from './channel-types/channel-types.component';
 import { ReportFormatComponent } from './report-format/report-format.component';
+import { DiagnosticsComponent } from './diagnostics/diagnostics.component';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { ReportFormatComponent } from './report-format/report-format.component';
     ChannelTypeEditComponent,
     DeviceDialogComponent,
     SyncDialogComponent,
-    ReportFormatComponent
+    ReportFormatComponent,
+    DiagnosticsComponent
   ],
   entryComponents: [
     DeviceDialogComponent,
@@ -54,6 +56,7 @@ import { ReportFormatComponent } from './report-format/report-format.component';
     AlterEditComponent,
     ShiftTypeNewComponent,
     DeviceLogsComponent,
+    DiagnosticsComponent,
     ChannelTypesComponent,
     ChannelTypeEditComponent,
     DeviceDialogComponent,

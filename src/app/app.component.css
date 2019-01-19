@@ -1,97 +1,93 @@
 .example-icon {
-  padding: 0 14px;
+    padding: 0 14px;
 }
 
 .container {
-  overflow: scroll;
+    overflow: scroll;
 }
 
 .logout {
-  position: absolute;
-  right: 0;
-  top: 0;
-  color: black;
+    position: absolute;
+    right: 0;
+    top: 0;
+    color: black;
 }
 
 .org-name {
-  font-size: x-large;
-  /* font-weight: bold; */
-  color: #444D6E;
-  text-align: center;
+    font-size: x-large;
+    /* font-weight: bold; */
+    color: #444D6E;
+    text-align: center;
 }
-.with-sub-text {
-  padding-top: 30px;
-}
-.with-sub-text>div {
-  line-height: 0;
 
+.with-sub-text {
+    padding-top: 30px;
+}
+
+.with-sub-text>div {
+    line-height: 0;
 }
 
 md-toolbar.header {
-  background-color: #ffffff !important;
-  color: #8b9caf !important;
-  position: fixed;
-  right: 0;
-  top: 0;
-  z-index: 3;
-  box-shadow: 0 0 9px 0px black;
+    background-color: #ffffff !important;
+    color: #8b9caf !important;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 3;
+    box-shadow: 0 0 9px 0px black;
 }
 
 .logoHeader {
-  display: none;
+    display: none;
 }
 
 .menuBtn {
-  display: none;
+    display: none;
 }
 
 .body {
-  margin-top: 60px;
-  height: 90vh;
-  background: #efefef;
-  /*width: 100%;*/
-  /*overflow-x: hidden;*/
-  overflow-y: scroll;
-  padding-left: 25px;
-  padding-right: 25px;
-
+    margin-top: 60px;
+    height: 90vh;
+    background: var(--defaultBackground);
+    /*width: 100%;*/
+    /*overflow-x: hidden;*/
+    overflow-y: scroll;
+    padding-left: 25px;
+    padding-right: 25px;
 }
 
 @media only screen and (max-width:600px) {
-  .body {
-    margin-top: 52px;
-  }
+    .body {
+        margin-top: 52px;
+    }
 }
 
 @media only screen and (max-width:800px) {
-  .body {
-    padding-left: 5px;
-    padding-right: 5px;
-  }
+    .body {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
 }
-
-
 
 .section {
-  /* border: 1px solid #d0cdcd; */
-  padding: 0;
+    /* border: 1px solid #d0cdcd; */
+    padding: 0;
 }
 
-
 .loginFormXS {
-  width: 100%;
+    width: 100%;
 }
 
 .example-full-width-input {
-  margin-top: 6%;
+    margin-top: 6%;
 }
 
 .loginFormXS td,
 .loginFormXS .example-full-width-input {
-  width: 100%;
-  margin-top: 6%;
+    width: 100%;
+    margin-top: 6%;
 }
-
 
 /* @media only screen and (max-width:1359px) {
   .bodyPart {
@@ -111,7 +107,6 @@ md-toolbar.header {
   }
 } */
 
-
 /* @media only screen and (max-width:676px) {
   .bodyPart {
       margin-top: 13%;
@@ -119,43 +114,36 @@ md-toolbar.header {
 } */
 
 @media only screen and (max-width:600px) {
-  .loginForm {
-    display: none;
-  }
-
-  .searchXs {
-    display: flex !important;
-  }
-
-  /* .bodyPart {
+    .loginForm {
+        display: none;
+    }
+    .searchXs {
+        display: flex !important;
+    }
+    /* .bodyPart {
       margin-top: 16%;
   } */
-  .loginHeader {
-    width: 100%
-  }
-
-  .searchbar {
-    display: none;
-  }
-
-  .logoHeader {
-    display: block;
-  }
-
-  .menuBtn {
-    width: 40px;
-    float: left;
-    padding-left: 0px;
-    padding-right: 0px;
-    padding-top: 10px;
-    display: block;
-  }
-
-  .menuHeader {
-    display: block;
-  }
+    .loginHeader {
+        width: 100%
+    }
+    .searchbar {
+        display: none;
+    }
+    .logoHeader {
+        display: block;
+    }
+    .menuBtn {
+        width: 40px;
+        float: left;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 10px;
+        display: block;
+    }
+    .menuHeader {
+        display: block;
+    }
 }
-
 
 /*
 @media only screen and (max-width:520px) {
@@ -192,45 +180,43 @@ md-toolbar.header {
 } */
 
 .menu {
-  background-color: #757575;
+    background-color: #757575;
 }
 
 h5 {
-  color: white;
+    color: white;
 }
 
 .activeTab {
-  border-left: 3px solid #00a8c6;
-  background-color: #444c6f !important;
-  /* box-shadow: 3px -2px 6px 0px #030306; */
+    border-left: 3px solid #00a8c6;
+    background-color: #444c6f !important;
+    /* box-shadow: 3px -2px 6px 0px #030306; */
 }
-
 
 /* .mat-list-item h5 {
   margin: 0 auto;
 } */
 
 .subListHeader {
-  padding-left: 7%;
-  padding-bottom: 3%;
-  padding-top: 3%;
-  color: rgb(255, 255, 255);
-  background: #444c6f;
-  margin-bottom: 0px;
-  border-bottom: 1px solid #283047;
-  border-top: 1px solid #283047;
-  cursor: pointer;
+    padding-left: 7%;
+    padding-bottom: 3%;
+    padding-top: 3%;
+    color: rgb(255, 255, 255);
+    background: #444c6f;
+    margin-bottom: 0px;
+    border-bottom: 1px solid #283047;
+    border-top: 1px solid #283047;
+    cursor: pointer;
 }
 
 .nav-container {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
-
 md-sidenav {
-  width: 200px;
+    width: 200px;
 }
