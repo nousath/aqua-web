@@ -1,5 +1,5 @@
 export class PageOptions {
-  public query: object;
+  public query: object = {};
   public offset = 0;
   public limit = 10;
 
