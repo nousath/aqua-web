@@ -4,8 +4,8 @@ import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
 import { MdDialog } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastyService } from 'ng2-toasty';
-import { Page } from '../../../common/contracts/page';
-import { Model } from '../../../common/contracts/model';
+import { PagerModel } from '../../../common/ng-structures';
+import { DetailModel } from '../../../common/ng-structures';
 import { Device, Category } from '../../../models';
 import { DeviceDialogComponent } from '../../../dialogs/device-dialog/device-dialog.component';
 import { SyncDialogComponent } from '../../../dialogs/sync-dialog/sync-dialog.component';
@@ -21,9 +21,9 @@ import { CopyContentComponent } from '../../../dialogs/copy-content/copy-content
 })
 export class DevicesComponent implements OnInit {
 
-  devices: Page<Device>;
-  categories: Page<Category>;
-  device: Model<Device>;
+  devices: PagerModel<Device>;
+  categories: PagerModel<Category>;
+  device: DetailModel<Device>;
   isUpload = false;
   uploader: FileUploader;
   deviceId: string;
@@ -70,16 +70,16 @@ export class DevicesComponent implements OnInit {
 
     };
 
-    this.devices = new Page({
+    this.devices = new PagerModel({
       api: amsDeviceService.devices
     });
 
-    this.device = new Model({
+    this.device = new DetailModel({
       api: amsDeviceService.devices,
       properties: new Device()
     });
 
-    this.categories = new Page({
+    this.categories = new PagerModel({
       api: amsDeviceService.categories
     });
 
@@ -89,32 +89,28 @@ export class DevicesComponent implements OnInit {
   }
 
   fetchDevices() {
-    this.devices.fetch(
-      function (err, page) {
-        if (!err) {
-          let h: number, m: number;
-          page.items.forEach(device => {
-            if (!device.type) {
-              device.type = 'both';
+    this.devices.fetch().then(page => {
+      let h: number, m: number;
+      page.items.forEach(device => {
+        if (!device.type) {
+          device.type = 'both';
+        }
+        if (device.mute && device.mute.length > 0) {
+          device.mute.forEach(dt => {
+            if (dt.start != null) {
+              h = new Date(dt.start).getHours();
+              m = new Date(dt.start).getMinutes();
+              dt.start = `${h < 10 ? '0' + h : h}:${m < 10 ? '0' + m : m}`;
             }
-            if (device.mute && device.mute.length > 0) {
-              device.mute.forEach(dt => {
-                if (dt.start != null) {
-                  h = new Date(dt.start).getHours();
-                  m = new Date(dt.start).getMinutes();
-                  dt.start = `${h < 10 ? '0' + h : h}:${m < 10 ? '0' + m : m}`;
-                }
-                if (dt.end != null) {
-                  h = new Date(dt.end).getHours();
-                  m = new Date(dt.end).getMinutes();
-                  dt.end = `${h < 10 ? '0' + h : h}:${m < 10 ? '0' + m : m}`;
-                }
-              })
+            if (dt.end != null) {
+              h = new Date(dt.end).getHours();
+              m = new Date(dt.end).getMinutes();
+              dt.end = `${h < 10 ? '0' + h : h}:${m < 10 ? '0' + m : m}`;
             }
           })
         }
-      }
-    ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+      })
+    }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
 

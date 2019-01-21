@@ -1,8 +1,8 @@
 import { Component, OnInit, AfterViewInit, SimpleChanges, Output, EventEmitter, ViewChild } from '@angular/core';
-import { Page } from '../../../common/contracts/page';
+import { PagerModel } from '../../../common/ng-structures';
 import { Leave, Employee, LeaveType } from '../../../models';
 import { AmsLeaveService, ValidatorService, AmsEmployeeService, AutoCompleteService } from '../../../services';
-import { Model } from '../../../common/contracts/model';
+import { DetailModel } from '../../../common/ng-structures';
 import { LeaveBalance } from '../../../models/leave-balance';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, Observable } from 'rxjs/Rx';
@@ -10,7 +10,7 @@ import { Angulartics2 } from 'angulartics2';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { Location } from '@angular/common';
 import { ToastyService } from 'ng2-toasty';
-import { ServerPageInput } from '../../../common/contracts/api';
+import { PageOptions } from '../../../common/ng-api';
 import { MdDialogRef, MdDialog } from '@angular/material';
 import { FileUploaderDialogComponent } from '../../../shared/components/file-uploader-dialog/file-uploader-dialog.component';
 declare var $: any;
@@ -75,8 +75,8 @@ export class ApplyLeaveComponent {
 
   getLeaveBalance(employeeId: string) {
     this.isProcessing = true;
-    const input = new ServerPageInput();
-    input.serverPaging = false;
+    const input = new PageOptions();
+    input.noPaging = true;
     input.query = {
       id: employeeId,
       employeeId: employeeId
@@ -142,10 +142,10 @@ export class ApplyLeaveComponent {
     this.angulartics2.eventTrack.next({ action: 'applyLeaveClick', properties: { category: 'allLeave', label: 'myLabel' } });
 
     this.amsLeaveService.leaves.bulkCreate(items).then(() => {
-        this.isProcessing = false;
-        this.toastyService.info({ title: 'Processed', msg: `${items.length} leave(s) applied` })
-        this.reset()
-      }).catch(this.errorHandler);
+      this.isProcessing = false;
+      this.toastyService.info({ title: 'Processed', msg: `${items.length} leave(s) applied` })
+      this.reset()
+    }).catch(this.errorHandler);
   }
 
   backClicked() {

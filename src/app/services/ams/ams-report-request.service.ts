@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { ReportRequest } from '../../models/report-request';
-import { IApi } from '../../common/contracts/api/api.interface';
-import { GenericApi } from '../../common/generic-api';
+import { IApi } from '../../common/ng-api/api.interface';
+import { GenericApi } from '../../common/ng-api/generic-api';
 import { ReportType } from '../../models';
 
 @Injectable()

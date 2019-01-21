@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Page } from '../../../common/contracts/page';
-import { Model } from '../../../common/contracts/model';
+import { PagerModel } from '../../../common/ng-structures';
+import { DetailModel } from '../../../common/ng-structures';
 import { ValidatorService, AutoCompleteService } from '../../../services';
 import { EmsContractorService } from '../../../services/ems/ems-contractor.service';
 import { ToastyService } from 'ng2-toasty';
@@ -11,7 +11,7 @@ import { LocalStorageService } from '../../../services/local-storage.service';
 import { Contractor } from '../../../models/contractor';
 import { FileUploader } from 'ng2-file-upload';
 import { FileUploaderDialogComponent } from '../../../shared/components/file-uploader-dialog/file-uploader-dialog.component';
-import { ServerPageInput } from '../../../common/contracts/api';
+import { PageOptions } from '../../../common/ng-api';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -20,8 +20,8 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./contractors.component.css']
 })
 export class ContractorsComponent implements OnInit {
-  contractors: Page<Contractor>
-  contractor: Model<Contractor>
+  contractors: PagerModel<Contractor>
+  contractor: DetailModel<Contractor>
   contractorA: Contractor[];
   selectedContractor: Contractor;
   contractorId: number;
@@ -44,7 +44,7 @@ export class ContractorsComponent implements OnInit {
     private toastyService: ToastyService,
     public dialog: MdDialog) {
 
-    this.contractors = new Page({
+    this.contractors = new PagerModel({
       api: emsContractorService.contractors,
       filters: [
         //   {
@@ -54,10 +54,10 @@ export class ContractorsComponent implements OnInit {
         'ofDate',
         'name',
         'code',
-      'status']
+        'status']
     });
 
-    this.contractor = new Model({
+    this.contractor = new DetailModel({
       api: emsContractorService.contractors,
       properties: new Contractor()
     });
@@ -107,7 +107,7 @@ export class ContractorsComponent implements OnInit {
     this.applyFilters(params)
   }
   private getContractors() {
-    const contractorFilter = new ServerPageInput();
+    const contractorFilter = new PageOptions();
     // deptFilter.query = {
     //   divisionId: 1
     // }

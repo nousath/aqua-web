@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { GenericApi } from '../../common/generic-api';
+import { GenericApi } from '../../common/ng-api/generic-api';
 import { Channel, ChannelType } from '../../models';
-import { IApi } from '../../common/contracts/api/api.interface';
+import { IApi } from '../../common/ng-api/api.interface';
 
 
 

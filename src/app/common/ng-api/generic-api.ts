@@ -1,13 +1,11 @@
-import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response, URLSearchParams, ResponseContentType } from '@angular/http';
-import { IApi, ServerDataModel, ServerPageInput, ServerPageModel } from './contracts/api';
-import { ILocalStore } from './contracts/local-store-interface';
 import * as _ from 'lodash';
-import { ToastyService, ToastyConfig } from 'ng2-toasty';
-import { IGetParams } from './contracts/api/get-params.interface';
-import { environment } from '../../environments/environment';
-import { RemoteDataModel } from './contracts/api/remote-data.model';
+import { environment } from '../../../environments/environment';
+import { RemoteData } from './remote-data.model';
 import { FileUploader, FileItem } from 'ng2-file-upload';
+import { IApi, PageOptions } from '.';
+import { ServerData } from './server-data.model';
+import { Page } from './page.model';
 
 export class GenericApi<TModel> implements IApi<TModel> {
 
@@ -58,7 +56,7 @@ export class GenericApi<TModel> implements IApi<TModel> {
     return Promise.reject(error.message || error);
   }
 
-  private getQueryParams(input?: ServerPageInput): URLSearchParams {
+  private getQueryParams(input?: PageOptions): URLSearchParams {
 
     const params: URLSearchParams = new URLSearchParams();
     if (!input) {
@@ -81,7 +79,7 @@ export class GenericApi<TModel> implements IApi<TModel> {
     return this.http.get(`${this.rootUrl}/${this.key}/${id}`, { headers: this.getHeaders() })
       .toPromise()
       .then((response) => {
-        const dataModel = response.json() as ServerDataModel<TModel>;
+        const dataModel = response.json() as ServerData<TModel>;
 
         if (!dataModel.isSuccess) {
           if (response.status === 200) {
@@ -95,46 +93,12 @@ export class GenericApi<TModel> implements IApi<TModel> {
       .catch(this.handleError);
   }
 
-  simpleGet(input?: IGetParams): Promise<TModel> {
-
-    let url = `${this.rootUrl}/${this.key}`;
-    let parms: URLSearchParams = null;
-
-    if (input) {
-      parms = input.serverPageInput ? this.getQueryParams(input.serverPageInput) : null;
-      url = input.id ? `${url}/${input.id}` : url;
-      url = input.path ? `${url}/${input.path}` : url;
-      if (input.api) {
-        url = input.api;
-      }
-    }
-
-
-    return this.http.get(url, { headers: this.getHeaders(), search: parms })
-      .toPromise()
-      .then((response) => {
-        const dataModel = response.json() as ServerDataModel<TModel>;
-
-        if (!dataModel.isSuccess) {
-          if (response.status === 200) {
-            return this.handleError(dataModel.message || dataModel.error || dataModel.code || 'failed');
-          } else {
-            return this.handleError(response.status);
-          }
-        }
-        return dataModel.data || dataModel.items;
-      })
-      .catch(this.handleError);
-  }
-
-
-
-  search(input?: ServerPageInput): Promise<ServerPageModel<TModel>> {
+  search(input?: PageOptions): Promise<Page<TModel>> {
     const params: URLSearchParams = this.getQueryParams(input);
     return this.http.get(`${this.rootUrl}/${this.key}`, { headers: this.getHeaders(), search: params })
       .toPromise()
       .then((response) => {
-        const dataModel = response.json() as ServerPageModel<TModel>;
+        const dataModel = response.json() as Page<TModel>;
 
         if (!dataModel.isSuccess) {
           if (response.status === 200) {
@@ -156,7 +120,7 @@ export class GenericApi<TModel> implements IApi<TModel> {
     return this.http.post(url, model, { headers: this.getHeaders() })
       .toPromise()
       .then((response) => {
-        const dataModel = response.json() as ServerDataModel<TModel>;
+        const dataModel = response.json() as ServerData<TModel>;
 
         if (!dataModel.isSuccess) {
           if (response.status === 200) {
@@ -170,7 +134,7 @@ export class GenericApi<TModel> implements IApi<TModel> {
       .catch(this.handleError);
   }
 
-  bulkCreate(models: any[], path?: string): Promise<RemoteDataModel> {
+  bulkCreate(models: any[], path?: string): Promise<RemoteData> {
 
     let url = `${this.rootUrl}/${this.key}`;
     url = path ? `${url}/${path}` : `${url}/bulk`;
@@ -178,7 +142,7 @@ export class GenericApi<TModel> implements IApi<TModel> {
     return this.http.post(url, { items: models }, { headers: this.getHeaders() })
       .toPromise()
       .then((response) => {
-        const dataModel = response.json() as RemoteDataModel;
+        const dataModel = response.json() as RemoteData;
 
         if (!dataModel.isSuccess) {
           if (response.status === 200) {
@@ -233,7 +197,7 @@ export class GenericApi<TModel> implements IApi<TModel> {
       }
 
       uploader.onCompleteItem = (item: FileItem, response: string, status: number) => {
-        const dataModel = JSON.parse(response) as RemoteDataModel;
+        const dataModel = JSON.parse(response) as RemoteData;
 
         if (!dataModel.isSuccess) {
           if (status === 200) {
@@ -249,7 +213,7 @@ export class GenericApi<TModel> implements IApi<TModel> {
     });
   }
 
-  exportReport(input: ServerPageInput, path?: string, reportName?: string): Promise<any> {
+  exportReport(input: PageOptions, path?: string, reportName?: string): Promise<any> {
     const parms: URLSearchParams = this.getQueryParams(input);
     const apiPath: string = path ? `${this.rootUrl}/${path}` : `${this.rootUrl}/${this.key}`;
 
@@ -336,7 +300,7 @@ export class GenericApi<TModel> implements IApi<TModel> {
       .catch(this.handleError);
   }
 
-  update(id: number | string, model: any, input?: ServerPageInput, path?: string): Promise<TModel> {
+  update(id: number | string, model: any, input?: PageOptions, path?: string): Promise<TModel> {
     let parms: URLSearchParams;
     if (input) {
       parms = this.getQueryParams(input);
@@ -345,7 +309,7 @@ export class GenericApi<TModel> implements IApi<TModel> {
     return this.http.put(url, model, { headers: this.getHeaders(), search: parms })
       .toPromise()
       .then((response) => {
-        const dataModel = response.json() as ServerDataModel<TModel>;
+        const dataModel = response.json() as ServerData<TModel>;
 
         if (!dataModel.isSuccess) {
           if (response.status === 200) {
@@ -363,7 +327,7 @@ export class GenericApi<TModel> implements IApi<TModel> {
     return this.http.delete(`${this.rootUrl}/${this.key}/${id}`, { headers: this.getHeaders() })
       .toPromise()
       .then((response) => {
-        const dataModel = response.json() as ServerDataModel<TModel>;
+        const dataModel = response.json() as ServerData<TModel>;
 
         if (!dataModel.isSuccess) {
           if (response.status === 200) {

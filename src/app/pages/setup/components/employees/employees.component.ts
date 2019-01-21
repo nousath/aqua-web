@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Model } from '../../../../common/contracts/model';
-import { Page } from '../../../../common/contracts/page';
 import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
 import { ValidatorService, AmsOrganizationService, EmsEmployeeService } from '../../../../services';
 import { ToastyService } from 'ng2-toasty';
@@ -8,6 +6,7 @@ import { PushEventService } from '../../../../services/push-event.service';
 import { Angulartics2 } from 'angulartics2';
 import { LocalStorageService } from '../../../../services/local-storage.service';
 import { CurrentPage, EmsEmployee } from '../../../../models';
+import { PagerModel, DetailModel } from '../../../../common/ng-structures';
 // import { ValidatorService } from '../../services/validator.service';
 // import { EmsEmployeeService } from '../../services/ems/ems-employee.service';
 // import { EmsEmployee } from '../../models/ems/employee';
@@ -22,6 +21,7 @@ import { CurrentPage, EmsEmployee } from '../../../../models';
 // import { Angulartics2 } from 'angulartics2';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'ams-gs-employees',
   templateUrl: './employees.component.html',
   styleUrls: ['./employees.component.css']
@@ -30,8 +30,8 @@ export class EmployeesComponent implements OnInit {
 
   section: 'main' | 'excel' | 'edualaya' = 'main';
 
-  employee: Model<EmsEmployee>;
-  employees: Page<EmsEmployee>;
+  employee: DetailModel<EmsEmployee>;
+  employees: PagerModel<EmsEmployee>;
   uploader: FileUploader;
 
   dummyEmps: Array<EmsEmployee> = [
@@ -104,12 +104,12 @@ export class EmployeesComponent implements OnInit {
       this.section = 'main';
     };
 
-    this.employee = new Model({
+    this.employee = new DetailModel({
       api: emsEmployeeService.employees,
       properties: new EmsEmployee()
     });
 
-    this.employees = new Page({
+    this.employees = new PagerModel({
       api: emsEmployeeService.employees,
       filters: [{
         field: 'name',

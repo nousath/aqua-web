@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { Page } from '../../../common/contracts/page';
+import { PagerModel } from '../../../common/ng-structures';
 import { Division } from '../../../models';
-import { Model } from '../../../common/contracts/model';
+import { DetailModel } from '../../../common/ng-structures';
 import { ValidatorService, AutoCompleteService } from '../../../services';
 import { EmsDivisionService } from '../../../services/ems/ems-division.service';
 import { ToastyService } from 'ng2-toasty';
@@ -11,7 +11,7 @@ import { MdDialog, MdDialogRef } from '@angular/material';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { FileUploader } from 'ng2-file-upload';
 import { FileUploaderDialogComponent } from '../../../shared/components/file-uploader-dialog/file-uploader-dialog.component';
-import { ServerPageInput } from '../../../common/contracts/api';
+import { PageOptions } from '../../../common/ng-api';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -21,8 +21,8 @@ import { Observable } from 'rxjs/Observable';
 })
 export class DivisionsComponent implements OnInit {
 
-  divisions: Page<Division>
-  division: Model<Division>
+  divisions: PagerModel<Division>
+  division: DetailModel<Division>
   divisionA: Division[];
   divisionsId: number;
   selectedDivision: Division;
@@ -48,7 +48,7 @@ export class DivisionsComponent implements OnInit {
     private toastyService: ToastyService,
     public dialog: MdDialog) {
 
-    this.divisions = new Page({
+    this.divisions = new PagerModel({
       api: emsDivisionService.divisions,
       filters: [
         'ofDate',
@@ -58,7 +58,7 @@ export class DivisionsComponent implements OnInit {
       ]
     });
 
-    this.division = new Model({
+    this.division = new DetailModel({
       api: emsDivisionService.divisions,
       properties: new Division()
     });
@@ -90,7 +90,7 @@ export class DivisionsComponent implements OnInit {
     this.apply()
   }
   private getDivisions() {
-    const divisionFilter = new ServerPageInput();
+    const divisionFilter = new PageOptions();
     this.emsDivisionService.divisions.search(divisionFilter).then(page => {
       this.divisionA = page.items;
       this.divisionList = [];

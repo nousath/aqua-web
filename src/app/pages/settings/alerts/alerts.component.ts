@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { AmsAlertService } from '../../../services';
 import { ToastyService } from 'ng2-toasty';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Page } from '../../../common/contracts/page';
+import { PagerModel } from '../../../common/ng-structures';
 import { AmsAlert } from '../../../models';
-import { Model } from '../../../common/contracts/model';
+import { DetailModel } from '../../../common/ng-structures';
 
 
 @Component({
@@ -14,8 +14,8 @@ import { Model } from '../../../common/contracts/model';
 })
 export class AlertsComponent implements OnInit {
 
-  alerts: Page<AmsAlert>;
-  alert: Model<AmsAlert>;
+  alerts: PagerModel<AmsAlert>;
+  alert: DetailModel<AmsAlert>;
 
 
   constructor(private amsAlertService: AmsAlertService,
@@ -23,11 +23,11 @@ export class AlertsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router) {
 
-    this.alerts = new Page({
+    this.alerts = new PagerModel({
       api: amsAlertService.alerts
     });
 
-    this.alert = new Model({
+    this.alert = new DetailModel({
       api: amsAlertService.alerts,
       properties: new AmsAlert()
     });

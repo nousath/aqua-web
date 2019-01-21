@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { IApi } from '../../common/contracts/api/api.interface';
+import { IApi } from '../../common/ng-api/api.interface';
 import { User, Employee, MonthAttendance, DayEvent } from '../../models';
 import { Http } from '@angular/http';
-import { GenericApi } from '../../common/generic-api';
+import { GenericApi } from '../../common/ng-api/generic-api';
 import { DailyAttendance } from '../../models/daily-attendance';
 import { ToastyService } from 'ng2-toasty';
 import { Observable } from 'rxjs/Observable';

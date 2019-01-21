@@ -4,10 +4,10 @@ import { Attendance } from '../../../models/daily-attendance';
 import { DatesService } from '../../services/dates.service';
 import { Router } from '@angular/router';
 import { Employee } from '../../../models/employee';
-import { ServerPageInput } from '../../../common/contracts/api';
 import { AmsAttendanceService } from '../../../services/ams/ams-attendance.service';
 import { ToastyService } from 'ng2-toasty';
 import { EmsAuthService } from '../../../services/ems/ems-auth.service';
+import { PageOptions } from '../../../common/ng-api';
 
 @Component({
   selector: 'aqua-calendar-view',
@@ -185,13 +185,13 @@ export class CalendarViewComponent implements OnInit, OnChanges {
   }
   fetch() {
     this.renderMonth();
-    const serverPageInput = new ServerPageInput();
-    serverPageInput.query['fromDate'] = this.firstDay.toISOString();
-    serverPageInput.query['toDate'] = this.dateService.date(this.lastDay).nextBod().toISOString();
-    serverPageInput.query['employee'] = this.employee.id;
+    const pageOptions = new PageOptions();
+    pageOptions.query['fromDate'] = this.firstDay.toISOString();
+    pageOptions.query['toDate'] = this.dateService.date(this.lastDay).nextBod().toISOString();
+    pageOptions.query['employee'] = this.employee.id;
 
     this.isProcessing = true;
-    this.amsAttendanceService.attendance.search(serverPageInput).then((data) => {
+    this.amsAttendanceService.attendance.search(pageOptions).then((data) => {
       this.renderAttendance(data.items);
       this.isProcessing = false;
     }).catch(err => {

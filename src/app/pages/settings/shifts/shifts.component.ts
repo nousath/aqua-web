@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AmsShiftService } from '../../../services/ams/ams-shift.service';
-import { Page } from '../../../common/contracts/page';
+import { PagerModel } from '../../../common/ng-structures';
 import { ShiftType } from '../../../models/shift-type';
 import { Department } from '../../../models';
 import { EmsDepartmentService } from '../../../services';
@@ -11,7 +11,7 @@ import { EmsDepartmentService } from '../../../services';
 })
 export class ShiftsComponent implements OnInit {
 
-  shiftTypes: Page<ShiftType>;
+  shiftTypes: PagerModel<ShiftType>;
   departmentShifts: ShiftType[] = [];
   sharedShifts: ShiftType[] = [];
   departments: Department[];
@@ -24,7 +24,7 @@ export class ShiftsComponent implements OnInit {
       this.departments = departments.items;
     });
 
-    this.shiftTypes = new Page({
+    this.shiftTypes = new PagerModel({
       api: amsShiftService.shiftTypes,
       filters: ['department']
     });

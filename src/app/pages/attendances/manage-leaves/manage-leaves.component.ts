@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { LeaveType } from '../../../models';
-import { Page } from '../../../common/contracts/page';
+import { PagerModel } from '../../../common/ng-structures';
 import { ValidatorService, AmsLeaveService } from '../../../services';
 import { ToastyService } from 'ng2-toasty';
-import { Model } from '../../../common/contracts/model';
+import { DetailModel } from '../../../common/ng-structures';
+
 import * as _ from 'lodash';
 import { LocalStorageService } from '../../../services/local-storage.service';
 
@@ -14,8 +15,8 @@ import { LocalStorageService } from '../../../services/local-storage.service';
 })
 export class ManageLeavesComponent implements OnInit {
 
-  leaveTypes: Page<LeaveType>;
-  leaveType: Model<LeaveType>;
+  leaveTypes: PagerModel<LeaveType>;
+  leaveType: DetailModel<LeaveType>;
   leaveTypeModel: LeaveType = new LeaveType()
   isNew = false;
   isEdit = false;
@@ -25,11 +26,11 @@ export class ManageLeavesComponent implements OnInit {
     private store: LocalStorageService,
     private toastyService: ToastyService) {
 
-    this.leaveTypes = new Page({
+    this.leaveTypes = new PagerModel({
       api: amsLeaveService.leaveTypes
     });
 
-    this.leaveType = new Model({
+    this.leaveType = new DetailModel({
       api: amsLeaveService.leaveTypes,
       properties: new LeaveType()
     });
@@ -49,22 +50,19 @@ export class ManageLeavesComponent implements OnInit {
 
   remove(leaveType: LeaveType) {
     this.leaveType.properties = leaveType;
-    this.leaveType.remove(
-      data => {
-        this.isNew = false;
-        this.fetchLeaveTypes();
-      }
-    ).then().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+    this.leaveType.remove().then(data => {
+      this.isNew = false;
+      this.fetchLeaveTypes();
+    }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
   fetchLeaveTypes() {
-    this.leaveTypes.fetch(
-      data => {
-        _.each(this.leaveTypes.items, (item: LeaveType) => {
-          item['category'] = item.category ? item.category : null;
-          item['isEdit'] = false;
-        });
-      }
+    this.leaveTypes.fetch().then(data => {
+      _.each(this.leaveTypes.items, (item: LeaveType) => {
+        item['category'] = item.category ? item.category : null;
+        item['isEdit'] = false;
+      });
+    }
     ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
@@ -100,16 +98,15 @@ export class ManageLeavesComponent implements OnInit {
     const unlimited: any = 'true';
     this.leaveType.properties.unlimited = this.leaveType.properties.unlimited === unlimited ? true : false;
 
-    this.leaveType.save(
-      data => {
-        if (this.isNew) {
-          this.isNew = false;
-          this.fetchLeaveTypes();
-        } else {
-          leaveType.isEdit = false
-        }
+    this.leaveType.save().then(data => {
+      if (this.isNew) {
+        this.isNew = false;
+        this.fetchLeaveTypes();
+      } else {
+        leaveType.isEdit = false
       }
-    ).then().catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+    }
+    ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
   ngOnInit() {

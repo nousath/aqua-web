@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AmsAlertService } from '../../../services';
 import { ToastyService } from 'ng2-toasty';
 import { Router } from '@angular/router';
-import { Page } from '../../../common/contracts/page';
+import { PagerModel } from '../../../common/ng-structures';
 import { AlertType } from '../../../models';
 import * as _ from 'lodash';
 import { AlertParameter } from '../../../models/alert-parameter.model';
@@ -14,17 +14,17 @@ import { AlertParameter } from '../../../models/alert-parameter.model';
 })
 export class AlterTypesComponent implements OnInit {
 
-  alterTypes: Page<AlertType>
+  alterTypes: PagerModel<AlertType>
 
   constructor(private amsAlertService: AmsAlertService,
     private toastyService: ToastyService,
     private router: Router) {
 
-    this.alterTypes = new Page({
+    this.alterTypes = new PagerModel({
       api: amsAlertService.alertTypes
     })
 
-    this.alterTypes.fetch(
+    this.alterTypes.fetch().then(
       data => {
         // _.each(this.alterTypes.items, (item: AlertType) => {
         //   _.each(item.processor.parameters, (i: AlertParameter) => {

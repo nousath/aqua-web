@@ -1,13 +1,13 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Location } from '@angular/common'
-import { Page } from '../../../common/contracts/page';
+import { PagerModel } from '../../../common/ng-structures';
 import { ToastyService } from 'ng2-toasty';
 import * as moment from 'moment';
 import { MonthAttendance, Employee } from '../../../models';
 import { AmsAttendanceService } from '../../../services/ams';
 import { ValidatorService } from '../../../services/validator.service';
 // import * as $ from 'jquery';
-import { Model } from '../../../common/contracts/model';
+import { DetailModel } from '../../../common/ng-structures';
 import { Router, ExtraOptions, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
 import { EmsAuthService } from '../../../services';
@@ -21,8 +21,8 @@ declare var $: any;
 })
 export class MonthlyComponent implements OnInit, AfterViewInit {
 
-  monthlyAttendance: Page<MonthAttendance>;
-  employee: Model<Employee>;
+  monthlyAttendance: PagerModel<MonthAttendance>;
+  employee: DetailModel<Employee>;
   isFilter = false;
   date = new Date();
   showDatePicker = false;
@@ -56,7 +56,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
     if (userDiv && userDiv.name && userDiv.code && userDiv.code !== 'default') {
       divisionFilter.value = [userDiv.name]
     }
-    this.monthlyAttendance = new Page({
+    this.monthlyAttendance = new PagerModel({
       api: amsAttendanceService.monthlyAttendances,
       location: location,
       filters: ['ofDate', 'name', 'code', 'designations', 'departments', 'supervisorId', 'userTypes', 'tagIds', 'contractors', divisionFilter]
@@ -90,7 +90,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
   getAttendance() {
     this.isProcessing = true;
     this.monthlyAttendance.filters.properties['ofDate']['value'] = this.date;
-    this.monthlyAttendance.fetch(() => {
+    this.monthlyAttendance.fetch().then(() => {
       this.isProcessing = false;
     }).catch(err => {
       this.isProcessing = false;

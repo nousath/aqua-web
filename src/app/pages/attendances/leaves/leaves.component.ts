@@ -2,11 +2,10 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { AmsLeaveService } from '../../../services/ams';
 import { ValidatorService } from '../../../services/validator.service';
 import { ToastyService } from 'ng2-toasty';
-import { Page } from '../../../common/contracts/page';
+import { PagerModel } from '../../../common/ng-structures';
 import { Leave } from '../../../models';
 import { LeaveActionDialogComponent } from '../../../dialogs/leave-action-dialog/leave-action-dialog.component';
 import { MdDialog, MdDialogRef } from '@angular/material';
-import { Filter } from '../../../common/contracts/filters';
 import * as _ from 'lodash';
 import { Angulartics2 } from 'angulartics2';
 import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-dialog.component';
@@ -24,7 +23,7 @@ declare var $: any;
 })
 export class LeavesComponent implements OnInit, AfterViewInit {
 
-  leaves: Page<Leave>;
+  leaves: PagerModel<Leave>;
   isFilter = false;
   bulkActions = false;
   date = new Date();
@@ -43,7 +42,7 @@ export class LeavesComponent implements OnInit, AfterViewInit {
 
     const filters = ['date', 'status', 'name']
 
-    this.leaves = new Page({
+    this.leaves = new PagerModel({
       api: this.auth.hasPermission('superadmin') ? amsLeaveService.leaves : amsLeaveService.teamLeaves,
       filters: filters
     });

@@ -2,13 +2,12 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Location } from '@angular/common';
 import { EmsEmployeeService } from '../../../services/ems';
 import { Employee } from '../../../models/employee';
-import { Page } from '../../../common/contracts/page';
+import { PagerModel } from '../../../common/ng-structures';
 import { ToastyService } from 'ng2-toasty';
 import { MdDialog, MdDialogRef } from '@angular/material';
-import { Model } from '../../../common/contracts/model';
+import { DetailModel } from '../../../common/ng-structures';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { EmsEmployee } from '../../../models/ems/employee';
-import { Filter } from '../../../common/contracts/filters';
 import * as _ from 'lodash';
 import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-dialog.component';
 import { ValidatorService } from '../../../services/validator.service';
@@ -24,8 +23,8 @@ import { EmsAuthService } from '../../../services/ems/ems-auth.service';
 export class EmployeeListComponent implements OnInit {
   @Output()
   data: EventEmitter<any> = new EventEmitter();
-  employees: Page<EmsEmployee>
-  employee: Model<EmsEmployee>
+  employees: PagerModel<EmsEmployee>
+  employee: DetailModel<EmsEmployee>
   statusFilter = 'active';
   isFilter = false;
   filterFields = [
@@ -58,7 +57,7 @@ export class EmployeeListComponent implements OnInit {
       divisionFilter.value = [userDiv.id]
     }
 
-    this.employees = new Page({
+    this.employees = new PagerModel({
       api: emsEmployeeService.employees,
       filters: [
         'ofDate',
@@ -79,7 +78,7 @@ export class EmployeeListComponent implements OnInit {
       location: location
     });
 
-    this.employee = new Model({
+    this.employee = new DetailModel({
       api: emsEmployeeService.employees,
       properties: new EmsEmployee()
     });
@@ -187,7 +186,7 @@ export class EmployeeListComponent implements OnInit {
         }
 
         this.employee.properties = empl;
-        this.employee.update().then(
+        this.employee.save().then(
           data => {
             this.fetchEmp();
           }

@@ -6,14 +6,64 @@ import { ImageEditorComponent } from '../shared/components/image-editor/image-ed
 import { Doc } from '../models/doc.model';
 import { SELECT_MAX_OPTIONS_DISPLAYED } from '@angular/material';
 import { Entity } from '../models/entity.model';
+import { Link, Menu, Action } from '../common/ng-structures';
 
 @Injectable()
 export class UxService {
 
+  private _title = new Subject<string>();
+  private _contextMenu = new Subject<Menu>();
+  private _breadcrumb = new Subject<Link[]>();
+  breadcrumbChanges = this._breadcrumb.asObservable();
+  contextMenuChanges = this._contextMenu.asObservable();
+  title = this._title.asObservable();
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver
   ) { }
 
+  setContextMenu(obj: Menu | any[]) {
+    if (obj instanceof Menu) {
+      this._contextMenu.next(obj);
+    } else {
+      const items: Action[] = [];
+      obj.forEach(item => {
+        items.push(new Action(item));
+      });
+      const menu = new Menu(items);
+      this._contextMenu.next(menu);
+    }
+
+  }
+
+  resetContextMenu() {
+    this._contextMenu.next(null);
+  }
+
+  setBreadcrumb(links: any[]) {
+    const obj: Link[] = [];
+    links.forEach(link => {
+      const item = new Link(link);
+      item.isActive = true;
+      obj.push(item);
+    });
+    if (obj.length > 0) {
+      obj[obj.length - 1].isActive = false;
+    }
+    this._breadcrumb.next(obj);
+  }
+
+  resetBreadcrumb() {
+    this._breadcrumb.next([]);
+  }
+
+
+  setTitle(title: string) {
+    this._title.next(title);
+  }
+
+  resetTitle() {
+    this._title.next('');
+  }
   getImageEditor(options: any, viewContainerRef: ViewContainerRef): Observable<Doc> {
 
     const factory = this.componentFactoryResolver.resolveComponentFactory(ImageEditorComponent);

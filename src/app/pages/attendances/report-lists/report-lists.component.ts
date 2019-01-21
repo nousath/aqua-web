@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AmsReportRequestService } from '../../../services';
 import { ReportRequest } from '../../../models/report-request';
-import { Page } from '../../../common/contracts/page';
+import { PagerModel } from '../../../common/ng-structures';
 
 @Component({
   selector: 'aqua-report-lists',
@@ -11,7 +11,7 @@ import { Page } from '../../../common/contracts/page';
 export class ReportListsComponent implements OnInit {
 
 
-  @Input() reportRequests: Page<ReportRequest>
+  @Input() reportRequests: PagerModel<ReportRequest>
 
   @Output()
   refresh: EventEmitter<String> = new EventEmitter<String>();

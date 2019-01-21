@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Model } from '../../common/contracts/model';
 import { User, Employee } from '../../models';
 import { EmsEmployeeService } from '../../services/ems';
 import { ToastyService } from 'ng2-toasty';
@@ -8,7 +7,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ValidatorService, EmsOrganizationService, EmsAuthService } from '../../services';
 import { EmsEmployee } from '../../models/ems/employee';
 import { Organization } from '../../models/organization';
-import { Page } from '../../common/contracts/page';
 import { LocalStorageService } from '../../services/local-storage.service';
 import { Subscription } from 'rxjs/Rx';
 import { environment } from '../../../environments/environment';

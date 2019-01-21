@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { IApi } from '../../common/contracts/api/api.interface';
-import { GenericApi } from '../../common/generic-api';
+import { IApi } from '../../common/ng-api/api.interface';
+import { GenericApi } from '../../common/ng-api/generic-api';
 import { Http, ResponseContentType } from '@angular/http';
 import { Organization, User } from '../../models';
 import { LocalStorageService } from '../local-storage.service';

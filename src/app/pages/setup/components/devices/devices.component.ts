@@ -10,13 +10,13 @@ import { Component, OnInit } from '@angular/core';
 // import { AmsOrganizationService } from '../../services/ams/ams-organization.service';
 import { Angulartics2 } from 'angulartics2';
 import { Device, CurrentPage } from '../../../../models';
-import { Page } from '../../../../common/contracts/page';
-import { Model } from '../../../../common/contracts/model';
+import { DetailModel, PagerModel } from '../../../../common/ng-structures';
 import { AmsDeviceService, ValidatorService, AmsOrganizationService } from '../../../../services';
 import { ToastyService } from 'ng2-toasty';
 import { PushEventService } from '../../../../services/push-event.service';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'ams-gs-devices',
   templateUrl: './devices.component.html',
   styleUrls: ['./devices.component.css']
@@ -25,9 +25,9 @@ export class DevicesComponent implements OnInit {
 
   section: 'main' | 'configure' = 'main';
 
-  devices: Page<Device>;
-  deviceTypes: Page<Device>;
-  device: Model<Device>
+  devices: PagerModel<Device>;
+  deviceTypes: PagerModel<Device>;
+  device: DetailModel<Device>
 
   constructor(private amsDeviceService: AmsDeviceService,
     public validatorService: ValidatorService,
@@ -44,15 +44,15 @@ export class DevicesComponent implements OnInit {
     page.onBoardingStatus = 'devices';
     pushEventService.pushPage(page);
 
-    this.devices = new Page({
+    this.devices = new PagerModel({
       api: amsDeviceService.devices
     });
 
-    this.deviceTypes = new Page({
+    this.deviceTypes = new PagerModel({
       api: amsDeviceService.deviceTypes
     });
 
-    this.device = new Model({
+    this.device = new DetailModel({
       api: amsDeviceService.devices,
       properties: new Device()
     });

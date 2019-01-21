@@ -1,5 +1,4 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
-import { Model } from '../../common/contracts/model';
 import { User, EmsEmployee } from '../../models';
 import { Subscription } from 'rxjs/Subscription';
 import { AmsEmployeeService, EmsOrganizationService, EmsAuthService, ValidatorService } from '../../services';
@@ -7,6 +6,7 @@ import { Angulartics2GoogleAnalytics } from 'angulartics2';
 import { LocalStorageService } from '../../services/local-storage.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastyService } from 'ng2-toasty';
+import { DetailModel } from '../../common/ng-structures';
 
 
 
@@ -26,19 +26,20 @@ class VerifyOTP {
 
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'ams-gs-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
 
-  user: Model<User>;
+  user: DetailModel<User>;
   otpModel: EmsEmployee;
   signupEmail = '';
   isProcessing = false;
   section: 'SIGNIN' | 'SIGNUP' | 'OTP' | 'COMPLETE' | 'FORGOTPASSWORD' | 'RESETPASSWORD' = 'SIGNUP';
   verifyOTP: VerifyOTP = new VerifyOTP();
-  // organizations: Page<Organization>;
+  // organizations: PagerModel<Organization>;
   // newOrg: boolean = false;
   profileModel: EmsEmployee = new EmsEmployee();
   subscription: Subscription;
@@ -54,7 +55,7 @@ export class SignupComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private toastyService: ToastyService) {
-    this.user = new Model({
+    this.user = new DetailModel({
       api: emsAuthService.signin,
       properties: new User()
     });

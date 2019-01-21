@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Holiday } from '../../../models';
-import { Page } from '../../../common/contracts/page';
+import { PagerModel } from '../../../common/ng-structures';
 import { AmsHolidayService, ValidatorService } from '../../../services';
 import { ToastyService } from 'ng2-toasty';
 import * as moment from 'moment';
-import { Model } from '../../../common/contracts/model';
+import { DetailModel } from '../../../common/ng-structures';
 import { FileUploader } from 'ng2-file-upload';
 import { FileUploaderDialogComponent } from '../../../shared/components/file-uploader-dialog/file-uploader-dialog.component';
 import { MdDialogRef, MdDialog } from '@angular/material';
@@ -17,8 +17,8 @@ declare var $: any;
 })
 export class HolidaysComponent implements OnInit {
 
-  holidays: Page<Holiday>
-  holiday: Model<Holiday>
+  holidays: PagerModel<Holiday>
+  holiday: DetailModel<Holiday>
   isFilter = false;
   uploader: FileUploader;
   isNew = false;
@@ -32,7 +32,7 @@ export class HolidaysComponent implements OnInit {
     private toastyService: ToastyService,
     public dialog: MdDialog) {
 
-    this.holidays = new Page({
+    this.holidays = new PagerModel({
       api: amsHolidayService.holidays,
       filters: [{
         field: 'date',
@@ -40,7 +40,7 @@ export class HolidaysComponent implements OnInit {
       }]
     });
 
-    this.holiday = new Model({
+    this.holiday = new DetailModel({
       api: amsHolidayService.holidays,
       properties: new Holiday()
     });
@@ -109,9 +109,9 @@ export class HolidaysComponent implements OnInit {
     component.uploader = this.amsHolidayService.holidays,
       component.samples = [{
         name: 'CSV/Excel',
-        mapper : 'default',
-        url_csv : 'assets/formats/holiday.csv',
-        url_xlsx : 'assets/formats/holiday.xlsx'
+        mapper: 'default',
+        url_csv: 'assets/formats/holiday.csv',
+        url_xlsx: 'assets/formats/holiday.xlsx'
       }];
   }
   ngOnInit() {

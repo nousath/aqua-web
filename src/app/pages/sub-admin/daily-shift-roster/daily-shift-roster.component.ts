@@ -18,12 +18,13 @@ import { ToastyService } from 'ng2-toasty';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { ShiftType, EffectiveShift } from '../../../models';
-import { Page } from '../../../common/contracts/page';
 import { AutoCompleteService } from '../../../services/auto-complete.service';
 import { AmsEmployeeService } from '../../../services/ams/ams-employee.service';
 import { AmsEffectiveShiftService } from '../../../services/ams/ams-effective-shift.service';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { AmsShiftService } from '../../../services/ams/ams-shift.service';
+import { Page } from '../../../common/ng-api';
+import { PagerModel } from '../../../common/ng-structures';
 declare var $: any;
 
 @Component({
@@ -32,8 +33,8 @@ declare var $: any;
   styleUrls: ['./daily-shift-roster.component.css']
 })
 export class DailyShiftRosterComponent implements OnInit {
-  shiftTypes: Page<ShiftType>;
-  effectiveShifts: Page<EffectiveShift>;
+  shiftTypes: PagerModel<ShiftType>;
+  effectiveShifts: PagerModel<EffectiveShift>;
   effectiveShift: any;
   isLoading = true;
   date: Date;
@@ -66,11 +67,11 @@ export class DailyShiftRosterComponent implements OnInit {
     })
 
 
-    this.shiftTypes = new Page({
+    this.shiftTypes = new PagerModel({
       api: amsShiftService.shiftTypes
     });
 
-    this.effectiveShifts = new Page({
+    this.effectiveShifts = new PagerModel({
       api: amsEffectiveShiftService.effectiveShifts,
       filters: [{
         field: 'fromDate',

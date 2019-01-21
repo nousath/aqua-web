@@ -2,8 +2,8 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Employee } from '../../../models/employee';
 import { AmsEmployeeService, AmsLeaveService } from '../../../services/index';
 import { LeaveBalance } from '../../../models/index';
-import { Page } from '../../../common/contracts/page';
-import { ServerPageInput } from '../../../common/contracts/api/index';
+import { PagerModel } from '../../../common/ng-structures';
+import { PageOptions } from '../../../common/ng-api/index';
 import { ToastyService } from 'ng2-toasty';
 import { EmsAuthService } from '../../../services/ems/ems-auth.service';
 import { MdDialog } from '@angular/material';
@@ -35,8 +35,8 @@ export class EmpLeavesComponent implements OnInit, OnChanges {
   ngOnChanges() {
     if (this.employee) {
       this.isProcessing = true;
-      const input = new ServerPageInput();
-      input.serverPaging = false;
+      const input = new PageOptions();
+      input.noPaging = true;
       input.query = {
         employeeId: this.employee.id
       };

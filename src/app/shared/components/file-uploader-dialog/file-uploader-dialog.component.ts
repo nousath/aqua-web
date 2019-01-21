@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IUploader } from '../../../common/contracts/api/api.interface';
+import { IUploader } from '../../../common/ng-api/api.interface';
 import { MdDialogRef } from '@angular/material';
 import { ToastyService } from 'ng2-toasty';
 
@@ -14,7 +14,7 @@ export class FileUploaderDialogComponent implements OnInit {
   name: string;
 
   @Input()
-  samples: { name: string, mapper?: string, url_csv: string , url_xlsx: string }[];
+  samples: { name: string, mapper?: string, url_csv: string, url_xlsx: string }[];
 
   @Input()
   mappers: { name: string, value: string }[];

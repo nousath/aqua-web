@@ -8,9 +8,9 @@ import { EmsDepartmentService } from '../../../services/ems/ems-department.servi
 import { Division } from '../../../models/division';
 import { EmsDivisionService } from '../../../services/ems/ems-division.service';
 import { EmsContractorService } from '../../../services/ems/ems-contractor.service';
-import { ServerPageInput } from '../../../common/contracts/api/page-input';
 import * as moment from 'moment';
 import { Observable } from 'rxjs/Observable';
+import { PageOptions } from '../../../common/ng-api';
 
 @Component({
   selector: 'aqua-employees-filter',
@@ -29,7 +29,7 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
   contractors: Contractor[];
   contractorId: number;
   shiftTypes: ShiftType[];
-userDiv: any;
+  userDiv: any;
   @Input()
   fields: any[] = [];
 
@@ -305,7 +305,7 @@ userDiv: any;
   }
 
   private getDesignations() {
-    const designationFilter = new ServerPageInput();
+    const designationFilter = new PageOptions();
     this.emsDesignationService.designations.search(designationFilter).then(page => {
       this.designations = page.items;
       this.designationList = [];
@@ -329,7 +329,7 @@ userDiv: any;
     }
   }
   private getDivisions() {
-    const divisionFilter = new ServerPageInput();
+    const divisionFilter = new PageOptions();
     this.emsDivisionService.divisions.search(divisionFilter).then(page => {
       this.divisions = page.items;
       this.divisionList = [];
@@ -344,7 +344,7 @@ userDiv: any;
     });
   }
   private getDepartments() {
-    const deptFilter = new ServerPageInput();
+    const deptFilter = new PageOptions();
     deptFilter.query = {
       divisionId: 1
     }
@@ -361,7 +361,7 @@ userDiv: any;
     });
   }
   private getContractors() {
-    const contractorFilter = new ServerPageInput();
+    const contractorFilter = new PageOptions();
     this.emsContractorService.contractors.search(contractorFilter).then(page => {
       this.contractors = page.items;
       this.contractorList = [];

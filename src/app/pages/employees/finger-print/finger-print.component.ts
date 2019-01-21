@@ -1,14 +1,13 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AmsEmployeeService, AmsDeviceService } from '../../../services';
 import { Employee, Device, Category } from '../../../models';
-import { Page } from '../../../common/contracts/page';
-import { Model } from '../../../common/contracts/model';
-import { GenericApi } from '../../../common/generic-api';
+import { PagerModel } from '../../../common/ng-structures';
+import { DetailModel } from '../../../common/ng-structures';
+import { GenericApi } from '../../../common/ng-api/generic-api';
 import { Http } from '@angular/http';
-import { IApi } from '../../../common/contracts/api';
+import { IApi, PageOptions } from '../../../common/ng-api';
 import { ToastyService } from 'ng2-toasty';
 import { Biometric } from '../../../models/biometric.model';
-import { ServerPageInput } from '../../../common/contracts/api/page-input';
 
 @Component({
   selector: 'aqua-finger-print',
@@ -85,9 +84,9 @@ export class FingerPrintComponent implements OnInit {
   getAmsDetails() {
     this.biometrics = [];
 
-    const fingerPrintFilters = new ServerPageInput();
+    const fingerPrintFilters = new PageOptions();
     fingerPrintFilters.query = { userId: this.employee.id };
-    const deviceFilters = new ServerPageInput();
+    const deviceFilters = new PageOptions();
     deviceFilters.query = { category: 'biometric' };
 
     this.amsDeviceService.devices.search(deviceFilters).then(devicePage => {

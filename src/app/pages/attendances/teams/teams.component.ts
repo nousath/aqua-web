@@ -1,24 +1,23 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, Input } from '@angular/core';
 import { Location } from '@angular/common'
-import { Page } from '../../../common/contracts/page';
+import { PagerModel, Filter } from '../../../common/ng-structures';
 import { AmsEmployeeService, AmsShiftService, AmsAttendanceService } from '../../../services/ams';
 import { ToastyService } from 'ng2-toasty';
 import { MonthAttendance, ShiftType } from '../../../models';
 import * as moment from 'moment';
 import { DailyAttendance } from '../../../models/daily-attendance';
-import { ServerPageInput } from '../../../common/contracts/api/page-input';
 import { Employee } from '../../../models';
 import { ValidatorService } from '../../../services/validator.service';
-import { Model } from '../../../common/contracts/model';
+import { DetailModel } from '../../../common/ng-structures';
 import { MdDialog } from '@angular/material';
 import { ActivatedRoute, Router, Params } from '@angular/router';
-import { Filter } from '../../../common/contracts/filters';
 import * as _ from 'lodash';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { AmsTagService } from '../../../services/ams/ams-tag.service';
 import { TagType, Tag } from '../../../models/tag';
-import { GenericApi } from '../../../common/generic-api';
+import { GenericApi } from '../../../common/ng-api/generic-api';
 import { Http } from '@angular/http';
+import { PageOptions } from '../../../common/ng-api';
 declare var $: any;
 
 export interface SelectedTag {
@@ -50,11 +49,11 @@ export class TeamsComponent implements OnInit {
   @Input()
   empId: any;
 
-  dailyAttendnace: Page<DailyAttendance>;
+  dailyAttendnace: PagerModel<DailyAttendance>;
   isFilter = false;
-  shiftTypes: Page<ShiftType>;
-  employee: Model<Employee>;
-  tagTypes: Page<TagType>;
+  shiftTypes: PagerModel<ShiftType>;
+  employee: DetailModel<Employee>;
+  tagTypes: PagerModel<TagType>;
   tags: Tags = new Tags();
   date: Date = null
   isDownloading = false;
@@ -75,12 +74,12 @@ export class TeamsComponent implements OnInit {
 
 
 
-    this.employee = new Model({
+    this.employee = new DetailModel({
       api: amsEmployeeService.employees,
       properties: new Employee()
     });
 
-    this.dailyAttendnace = new Page({
+    this.dailyAttendnace = new PagerModel({
       api: this.amsAttendanceService.teamMember,
       location: location,
       filters: [{
@@ -110,11 +109,11 @@ export class TeamsComponent implements OnInit {
       }],
     });
 
-    this.shiftTypes = new Page({
+    this.shiftTypes = new PagerModel({
       api: amsShiftService.shiftTypes
     });
 
-    this.tagTypes = new Page({
+    this.tagTypes = new PagerModel({
       api: tagService.tagTypes
     });
 
@@ -187,7 +186,7 @@ export class TeamsComponent implements OnInit {
 
   download(byShiftEnd: boolean, byShiftLength: boolean, reportName: string) {
     this.isDownloading = true;
-    const serverPageInput: ServerPageInput = new ServerPageInput();
+    const pageOptions = new PageOptions();
     const queryParams: any = {};
     _.each(this.dailyAttendnace.filters.properties, (filter: Filter, key: any, obj: any) => {
       if (filter.value) {
@@ -196,9 +195,9 @@ export class TeamsComponent implements OnInit {
     });
     queryParams['byShiftEnd'] = byShiftEnd;
     queryParams['byShiftLength'] = byShiftLength;
-    serverPageInput.query = queryParams;
+    pageOptions.query = queryParams;
     reportName = `${reportName}_${moment(queryParams['ofDate']).format('DD_MMM_YY')}_DailyReport.xlsx`;
-    this.amsAttendanceService.donwloadDailyAttendances.exportReport(serverPageInput, null, reportName).then(
+    this.amsAttendanceService.donwloadDailyAttendances.exportReport(pageOptions, null, reportName).then(
       data => this.isDownloading = false
     ).catch(err => {
       this.toastyService.error({ title: 'Error', msg: err });

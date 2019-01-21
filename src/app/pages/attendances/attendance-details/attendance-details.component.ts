@@ -1,21 +1,14 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, Input } from '@angular/core';
-import { DayEventDialogComponent } from '../../../dialogs/day-event-dialog/day-event-dialog.component';
-import { DayEvent } from '../../../models/day-event';
-import { ServerPageInput } from '../../../common/contracts/api/page-input';
-import { IGetParams } from '../../../common/contracts/api/get-params.interface';
 import { ToastyService } from 'ng2-toasty';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MdDialog } from '@angular/material';
-import { Model } from '../../../common/contracts/model';
+import { DetailModel } from '../../../common/ng-structures';
 import { Employee, Abilities } from '../../../models/employee';
-import { Subscription } from 'rxjs/Rx';
 import { AmsLeaveService, AmsAttendanceService, AmsEmployeeService } from '../../../services/ams';
-import { Page } from '../../../common/contracts/page';
+import { PagerModel } from '../../../common/ng-structures';
 import { LeaveBalance, Attendance, Leave, User } from '../../../models';
 import * as _ from 'lodash';
-import { DailyAttendance } from '../../../models/daily-attendance';
 import { LeaveActionDialogComponent } from '../../../dialogs/leave-action-dialog/leave-action-dialog.component';
-import { Shift } from '../../../models/shift';
 import { ShiftType } from '../../../models/shift-type';
 import * as moment from 'moment';
 import { Location } from '@angular/common';
@@ -25,6 +18,7 @@ import { EmsEmployeeService } from '../../../services';
 import { ResetPasswordDialogComponent } from '../../../dialogs/reset-password-dialog/reset-password-dialog.component';
 import { EmsAuthService } from '../../../services/ems/ems-auth.service';
 import { DatesService } from '../../../shared/services/dates.service';
+import { PageOptions } from '../../../common/ng-api';
 declare var $: any;
 
 
@@ -40,18 +34,18 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
   empId: string;
 
   // subscription: Subscription;
-  employee: Model<Employee>;
+  employee: DetailModel<Employee>;
   user: string;
-  shifTypes: Page<ShiftType>;
+  shifTypes: PagerModel<ShiftType>;
   ofDate: any;
   isProcessing = false;
   selectedDate = new Date();
 
   isUpdatingLeaveStatus = false;
-  // attendance: Model<DayEvent>;
+  // attendance: DetailModel<DayEvent>;
 
-  leaves: Page<Leave>;
-  leaveBalances: Page<LeaveBalance>;
+  leaves: PagerModel<Leave>;
+  leaveBalances: PagerModel<LeaveBalance>;
   isShowLeaveAction = false;
 
   date = new Date();
@@ -71,17 +65,17 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
     public _location: Location,
     private router: Router) {
 
-    this.employee = new Model({
+    this.employee = new DetailModel({
       api: amsEmployeeService.employeesForAdmin,
       properties: new Employee()
     });
 
-    this.shifTypes = new Page({
+    this.shifTypes = new PagerModel({
       api: amsShiftService.shiftTypes
     });
 
 
-    this.leaves = new Page({
+    this.leaves = new PagerModel({
       api: amsLeaveService.allLeavesOfOrg,
       filters: [{
         field: 'employeeId',
@@ -89,7 +83,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
       }]
     });
 
-    this.leaveBalances = new Page({
+    this.leaveBalances = new PagerModel({
       api: amsLeaveService.leaveBalances,
       filters: [{
         field: 'id',
@@ -218,13 +212,13 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
 
   download(byShiftEnd: boolean, byShiftLength: boolean, reportName: string) {
     this.isProcessing = true;
-    const serverPageInput: ServerPageInput = new ServerPageInput();
-    serverPageInput.query['ofDate'] = this.selectedDate;
-    serverPageInput.query['employee'] = this.empId;
-    serverPageInput.query['byShiftEnd'] = byShiftEnd;
-    serverPageInput.query['byShiftLength'] = byShiftLength;
+    const pageOptions = new PageOptions();
+    pageOptions.query['ofDate'] = this.selectedDate;
+    pageOptions.query['employee'] = this.empId;
+    pageOptions.query['byShiftEnd'] = byShiftEnd;
+    pageOptions.query['byShiftLength'] = byShiftLength;
     reportName = `${reportName}_${this.employee.properties.name}_${moment(this.selectedDate).format('MMM_YY')}_monthlyReport.xlsx`;
-    this.amsAttendanceService.donwloadSingleEmpMonthAtte.exportReport(serverPageInput, null, reportName).then(
+    this.amsAttendanceService.donwloadSingleEmpMonthAtte.exportReport(pageOptions, null, reportName).then(
       data => this.isProcessing = false
     ).catch(err => {
       this.toastyService.error({ title: 'Error', msg: err });

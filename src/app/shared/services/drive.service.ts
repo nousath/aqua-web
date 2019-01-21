@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FileUploader, FileItem } from 'ng2-file-upload';
-import { RemoteDataModel } from '../../common/contracts/api/remote-data.model';
-import { ServerDataModel } from '../../common/contracts/api';
+import { RemoteData } from '../../common/ng-api/remote-data.model';
+import { ServerData } from '../../common/ng-api';
 import { Doc } from '../../models/doc.model';
 import { environment } from '../../../environments/environment';
 import { Entity } from '../../models/entity.model';
@@ -48,7 +48,7 @@ export class DriveService {
       }
 
       uploader.onCompleteItem = (item: FileItem, response: string, status: number) => {
-        const dataModel = JSON.parse(response) as ServerDataModel<Doc>;
+        const dataModel = JSON.parse(response) as ServerData<Doc>;
 
         if (!dataModel.isSuccess) {
           if (status === 200) {

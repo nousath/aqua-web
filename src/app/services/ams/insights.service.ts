@@ -1,5 +1,5 @@
-import { GenericApi } from '../../common/generic-api';
-import { IApi } from '../../common/contracts/api/api.interface';
+import { GenericApi } from '../../common/ng-api/generic-api';
+import { IApi } from '../../common/ng-api/api.interface';
 import { Insight } from '../../models/insight.model';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';

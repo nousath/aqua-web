@@ -3,7 +3,7 @@ import { AmsAlertService } from '../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastyService } from 'ng2-toasty';
 import { AmsAlert } from '../../../models';
-import { Model } from '../../../common/contracts/model';
+import { DetailModel } from '../../../common/ng-structures';
 import { Subscription } from 'rxjs/Rx';
 import * as _ from 'lodash';
 import { AlertParameter } from '../../../models/alert-parameter.model';
@@ -25,7 +25,7 @@ interface MyType {
 })
 export class AlterEditComponent implements OnInit {
 
-  alert: Model<AmsAlert>;
+  alert: DetailModel<AmsAlert>;
   subscription: Subscription;
   reset: Function;
   resetConfig: Boolean = false;
@@ -37,7 +37,7 @@ export class AlterEditComponent implements OnInit {
     private angulartics2: Angulartics2,
     private router: Router) {
 
-    this.alert = new Model({
+    this.alert = new DetailModel({
       api: amsAlertService.alerts,
       properties: new AmsAlert()
     });

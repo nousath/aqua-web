@@ -1,11 +1,9 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ValidatorService, AmsLeaveService } from '../../../services';
 import { ToastyService } from 'ng2-toasty';
-import { Page } from '../../../common/contracts/page';
+import { PagerModel } from '../../../common/ng-structures';
 import { OrgLeaveBalance, LeaveType, LeaveBalance } from '../../../models';
 import * as _ from 'lodash';
-import { Model } from '../../../common/contracts/model';
-import { Filter } from '../../../common/contracts/filters';
 import { LocalStorageService } from '../../../services/local-storage.service';
 
 @Component({
@@ -15,9 +13,9 @@ import { LocalStorageService } from '../../../services/local-storage.service';
 })
 export class LeaveBalancesComponent implements OnInit {
 
-  leaveBalances: Page<OrgLeaveBalance>;
-  // leaveBalance: Model<OrgLeaveBalance>;
-  leaveTypes: Page<LeaveType>;
+  leaveBalances: PagerModel<OrgLeaveBalance>;
+  // leaveBalance: DetailModel<OrgLeaveBalance>;
+  leaveTypes: PagerModel<LeaveType>;
   isUpdatingLeave = false;
   isFilter = false;
 
@@ -27,7 +25,7 @@ export class LeaveBalancesComponent implements OnInit {
     private ref: ChangeDetectorRef,
     private toastyService: ToastyService) {
 
-    this.leaveBalances = new Page({
+    this.leaveBalances = new PagerModel({
       api: amsLeaveService.allLeaveBalances,
       filters: [{
         field: 'name',
@@ -38,12 +36,12 @@ export class LeaveBalancesComponent implements OnInit {
       }]
     });
 
-    // this.leaveBalance = new Model({
+    // this.leaveBalance = new DetailModel({
     //   api: amsLeaveService.updateLeaveBlances,
     //   properties: new OrgLeaveBalance()
     // });
 
-    this.leaveTypes = new Page({
+    this.leaveTypes = new PagerModel({
       api: amsLeaveService.leaveTypes
     });
 

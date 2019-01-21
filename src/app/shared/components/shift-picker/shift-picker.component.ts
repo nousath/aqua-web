@@ -3,7 +3,6 @@ import { ShiftType, EffectiveShift, Shift, LeaveType } from '../../../models';
 import * as moment from 'moment';
 import { AmsEffectiveShiftService, AmsAttendanceService, AmsEmployeeService, AmsLeaveService, AmsShiftService } from '../../../services/ams';
 import { ToastyService } from 'ng2-toasty';
-import { ServerPageInput } from '../../../common/contracts/api/page-input';
 import { LeaveBalance } from '../../../models/leave-balance';
 import { Leave } from '../../../models/leave';
 import { Employee } from '../../../models/employee';
@@ -15,11 +14,12 @@ import { LeaveSummary } from '../../../services/ams/ams-leave.service';
 import { AttendanceSummary } from '../../../services/ams/ams-attendance.service';
 import { DatesService } from '../../services/dates.service';
 import { GetDateDialogComponent } from '../get-date-dialog/get-date-dialog.component';
-import { GenericApi } from '../../../common/generic-api';
+import { GenericApi } from '../../../common/ng-api/generic-api';
 import { Http } from '@angular/http';
 import { ExtendShiftDialogComponent } from '../extend-shift-dialog/extend-shift-dialog.component';
-import { Page } from '../../../common/contracts/page';
+import { PagerModel } from '../../../common/ng-structures';
 import { EmsAuthService } from '../../../services/ems/ems-auth.service';
+import { PageOptions } from '../../../common/ng-api';
 
 @Component({
   selector: 'aqua-shift-picker',
@@ -311,7 +311,7 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
   }
 
   getShiftTypes() {
-    const input = new ServerPageInput();
+    const input = new PageOptions();
     input.query = {
       employeeId: this.effectiveShift.employee.id
     };
@@ -338,8 +338,8 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
     // Todo
   }
   getLeaveBalances(cb) {
-    const input = new ServerPageInput();
-    input.serverPaging = false;
+    const input = new PageOptions();
+    input.noPaging = true;
     input.query = {
       id: this.effectiveShift.employee.id,
       employeeId: this.effectiveShift.employee.id

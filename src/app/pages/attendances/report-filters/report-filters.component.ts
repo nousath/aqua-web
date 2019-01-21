@@ -4,7 +4,7 @@ import { ReportRequest } from '../../../models/report-request';
 import { Observable } from 'rxjs/Observable';
 import { Employee } from '../../../models';
 import { AutoCompleteService } from '../../../services';
-import { Page } from '../../../common/contracts/page';
+import { PagerModel } from '../../../common/ng-structures';
 import { ToastyService } from 'ng2-toasty';
 
 @Component({

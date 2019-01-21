@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { Http, Response, Headers, URLSearchParams, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { User } from '../models/user';
-import { ServerPageInput } from '../common/contracts/api/page-input';
 import * as _ from 'lodash';
 import { LocalStorageService } from './local-storage.service';
 import { environment } from '../../environments/environment';
+import { PageOptions } from '../common/ng-api';
 
 
 @Injectable()
@@ -50,7 +50,7 @@ export class AutoCompleteService {
     return headers;
   }
 
-  private getQueryParams(input: ServerPageInput): URLSearchParams {
+  private getQueryParams(input: PageOptions): URLSearchParams {
 
     const params: URLSearchParams = new URLSearchParams();
     _.each(input, (value, key, obj) => {
@@ -64,7 +64,7 @@ export class AutoCompleteService {
     return params;
   }
 
-  searchByKey<TModel>(key: string, value: string, apiName: string, apiKey: string, input?: ServerPageInput): Observable<TModel[]> {
+  searchByKey<TModel>(key: string, value: string, apiName: string, apiKey: string, input?: PageOptions): Observable<TModel[]> {
     const params: URLSearchParams = new URLSearchParams();
 
     if (input) {

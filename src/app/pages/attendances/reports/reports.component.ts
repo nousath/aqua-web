@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AmsReportRequestService } from '../../../services';
 import { ReportRequest } from '../../../models/report-request';
-import { Page } from '../../../common/contracts/page';
+import { PagerModel } from '../../../common/ng-structures';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common'
 import { ToastyService } from 'ng2-toasty';
@@ -19,7 +19,7 @@ export class ReportsComponent implements OnInit {
   fields: string[] = [];
   reportTypes: ReportType[] = [];
 
-  reports: Page<ReportRequest>;
+  reports: PagerModel<ReportRequest>;
 
   selectedType: String;
   selected: ReportType;
@@ -47,7 +47,7 @@ export class ReportsComponent implements OnInit {
 
     this.reportTypes = amsReportRequest.reportTypes;
 
-    this.reports = new Page({
+    this.reports = new PagerModel({
       api: amsReportRequest.reportRequests,
       location: location,
       filters: [{

@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { Page } from '../../../common/contracts/page';
-import { Model } from '../../../common/contracts/model';
+import { PagerModel } from '../../../common/ng-structures';
+import { DetailModel } from '../../../common/ng-structures';
 import { ValidatorService, AutoCompleteService } from '../../../services';
 import { EmsDepartmentService } from '../../../services/ems/ems-department.service';
 import { ToastyService } from 'ng2-toasty';
@@ -11,7 +11,7 @@ import { LocalStorageService } from '../../../services/local-storage.service';
 import { Department } from '../../../models/department';
 import { FileUploader } from 'ng2-file-upload';
 import { FileUploaderDialogComponent } from '../../../shared/components/file-uploader-dialog/file-uploader-dialog.component';
-import { ServerPageInput } from '../../../common/contracts/api';
+import { PageOptions } from '../../../common/ng-api';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -20,8 +20,8 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./departments.component.css']
 })
 export class DepartmentsComponent implements OnInit {
-  departments: Page<Department>
-  department: Model<Department>
+  departments: PagerModel<Department>
+  department: DetailModel<Department>
   dept: Department[];
   departmentId: number;
   selectedDepartment: Department;
@@ -47,7 +47,7 @@ export class DepartmentsComponent implements OnInit {
     private toastyService: ToastyService,
     public dialog: MdDialog) {
 
-    this.departments = new Page({
+    this.departments = new PagerModel({
       api: emsDepartmentService.departments,
       filters: [{
         field: 'divisionId',
@@ -55,10 +55,10 @@ export class DepartmentsComponent implements OnInit {
       },
         'ofDate',
         'name',
-      'status']
+        'status']
     });
 
-    this.department = new Model({
+    this.department = new DetailModel({
       api: emsDepartmentService.departments,
       properties: new Department()
     });
@@ -109,7 +109,7 @@ export class DepartmentsComponent implements OnInit {
     this.applyFilters(params)
   }
   private getDepartments() {
-    const deptFilter = new ServerPageInput();
+    const deptFilter = new PageOptions();
     deptFilter.query = {
       divisionId: 1
     }

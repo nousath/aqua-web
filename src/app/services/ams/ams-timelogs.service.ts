@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { IApi } from '../../common/contracts/api/api.interface';
+import { IApi } from '../../common/ng-api/api.interface';
 import { TimeLogs } from '../../models/time-logs';
-import { GenericApi } from '../../common/generic-api';
+import { GenericApi } from '../../common/ng-api/generic-api';
 
 @Injectable()
 export class AmsTimelogsService {

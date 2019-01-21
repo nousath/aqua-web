@@ -12,7 +12,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
 import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
 import { AdminGuard } from './guards/admin.guard';
-import { GkuAttendanceComponent } from './pages/gku-attendance/gku-attendance.component';
 import { SystemUsageComponent } from './pages/system-usage/system-usage.component';
 import { ResetPasswordDialogComponent } from './dialogs/reset-password-dialog/reset-password-dialog.component';
 import { EmsDepartmentService, EmsContractorService, EmsDivisionService } from './services';
@@ -31,7 +30,6 @@ import { SignupComponent } from './pages/signup/signup.component';
     SignupComponent,
     OrgLoginComponent,
     AppDownloadComponent,
-    GkuAttendanceComponent,
     SystemUsageComponent,
     ResetPasswordDialogComponent,
     NavigationBarComponent,

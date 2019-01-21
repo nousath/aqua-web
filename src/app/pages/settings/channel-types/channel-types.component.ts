@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AmsCommunicationAppsService } from '../../../services/ams/ams-communication-apps.service';
 import { Channel, ChannelType } from '../../../models';
-import { Page } from '../../../common/contracts/page';
+import { PagerModel } from '../../../common/ng-structures';
 import { ToastyService } from 'ng2-toasty';
 import { Router } from '@angular/router';
 
@@ -16,9 +16,9 @@ import { Router } from '@angular/router';
 })
 export class ChannelTypesComponent implements OnInit {
 
-  emailChannelTypes: Page<ChannelType>;
-  smsChannelTypes: Page<ChannelType>;
-  chatChannelTypes: Page<ChannelType>;
+  emailChannelTypes: PagerModel<ChannelType>;
+  smsChannelTypes: PagerModel<ChannelType>;
+  chatChannelTypes: PagerModel<ChannelType>;
   orgChannelTypes;
   isSubscribing: boolean;
 
@@ -27,21 +27,21 @@ export class ChannelTypesComponent implements OnInit {
     private route: Router,
   ) {
 
-    this.emailChannelTypes = new Page({
+    this.emailChannelTypes = new PagerModel({
       api: amsCommunicationAppService.channelType,
       filters: [{
         field: 'category',
         value: 'email'
       }]
     })
-    this.smsChannelTypes = new Page({
+    this.smsChannelTypes = new PagerModel({
       api: amsCommunicationAppService.channelType,
       filters: [{
         field: 'category',
         value: 'sms'
       }]
     })
-    this.chatChannelTypes = new Page({
+    this.chatChannelTypes = new PagerModel({
       api: amsCommunicationAppService.channelType,
       filters: [{
         field: 'category',

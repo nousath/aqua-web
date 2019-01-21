@@ -1,10 +1,10 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MD_DIALOG_DATA, MdDialogRef } from '@angular/material';
 import { ShiftType } from '../../models/shift-type';
-import { Page } from '../../common/contracts/page';
 import { AmsEffectiveShiftService } from '../../services/index';
 import { ToastyService } from 'ng2-toasty';
 import * as moment from 'moment';
+import { PagerModel } from '../../common/ng-structures/pager/pager.model';
 
 
 @Component({
@@ -14,7 +14,7 @@ import * as moment from 'moment';
 })
 export class AddShiftDialogComponent implements OnInit {
 
-  shiftTypes: Page<ShiftType>;
+  shiftTypes: PagerModel<ShiftType>;
   date = new Date()
   updated: boolean
   fromDate: any

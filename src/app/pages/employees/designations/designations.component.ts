@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { Page } from '../../../common/contracts/page';
+import { PagerModel } from '../../../common/ng-structures';
 import { Designation } from '../../../models';
-import { Model } from '../../../common/contracts/model';
+import { DetailModel } from '../../../common/ng-structures';
 import { ValidatorService, AutoCompleteService } from '../../../services';
 import { EmsDesignationService } from '../../../services/ems/ems-designation.service';
 import { ToastyService } from 'ng2-toasty';
@@ -11,7 +11,7 @@ import { MdDialog, MdDialogRef } from '@angular/material';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { FileUploader } from 'ng2-file-upload';
 import { FileUploaderDialogComponent } from '../../../shared/components/file-uploader-dialog/file-uploader-dialog.component';
-import { ServerPageInput } from '../../../common/contracts/api';
+import { PageOptions } from '../../../common/ng-api';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -21,8 +21,8 @@ import { Observable } from 'rxjs/Observable';
 })
 export class DesignationsComponent implements OnInit {
 
-  designations: Page<Designation>
-  designation: Model<Designation>
+  designations: PagerModel<Designation>
+  designation: DetailModel<Designation>
   designationA: Designation[];
   designationsId: number;
   selectedDesignation: Designation;
@@ -48,7 +48,7 @@ export class DesignationsComponent implements OnInit {
     private toastyService: ToastyService,
     public dialog: MdDialog) {
 
-    this.designations = new Page({
+    this.designations = new PagerModel({
       api: emsDesignationService.designations,
       filters: [
         'ofDate',
@@ -58,7 +58,7 @@ export class DesignationsComponent implements OnInit {
       ]
     });
 
-    this.designation = new Model({
+    this.designation = new DetailModel({
       api: emsDesignationService.designations,
       properties: new Designation()
     });
@@ -90,7 +90,7 @@ export class DesignationsComponent implements OnInit {
     this.apply()
   }
   private getDesignations() {
-    const designationFilter = new ServerPageInput();
+    const designationFilter = new PageOptions();
     this.emsDesignationService.designations.search(designationFilter).then(page => {
       this.designationA = page.items;
       this.designationList = [];

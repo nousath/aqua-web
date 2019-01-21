@@ -5,7 +5,7 @@ import { ToastyService } from 'ng2-toasty';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { Page } from '../../../common/contracts/page';
+import { PagerModel } from '../../../common/ng-structures';
 import { DeviceLogs, Device } from '../../../models';
 import { AmsEmployeeService, AmsDeviceService } from '../../../services';
 declare var $: any;
@@ -18,8 +18,8 @@ declare var $: any;
 })
 export class DeviceLogsComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  deviceLogs: Page<DeviceLogs>;
-  devices: Page<Device>;
+  deviceLogs: PagerModel<DeviceLogs>;
+  devices: PagerModel<Device>;
   status: string;
   date: any = null;
   pageSize: any;
@@ -33,7 +33,7 @@ export class DeviceLogsComponent implements OnInit, OnDestroy, AfterViewInit {
     private amsEmployeeService: AmsEmployeeService,
     private amsDeviceService: AmsDeviceService) {
 
-    this.deviceLogs = new Page({
+    this.deviceLogs = new PagerModel({
       api: amsDeviceService.deviceLogs,
       filters: [{
         field: 'level',
@@ -51,7 +51,7 @@ export class DeviceLogsComponent implements OnInit, OnDestroy, AfterViewInit {
       location: location
     });
 
-    this.devices = new Page({
+    this.devices = new PagerModel({
       api: amsDeviceService.devices,
       filters: []
     });

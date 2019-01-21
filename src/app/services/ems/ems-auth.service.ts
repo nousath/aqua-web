@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { IApi } from '../../common/contracts/api/api.interface';
+import { IApi } from '../../common/ng-api/api.interface';
 import { Http } from '@angular/http';
-import { GenericApi } from '../../common/generic-api';
+import { GenericApi } from '../../common/ng-api/generic-api';
 import { Observable } from 'rxjs/Observable';
 import { Employee, Organization } from '../../models';
 import { LocalStorageService } from '../local-storage.service';

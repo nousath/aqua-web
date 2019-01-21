@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Page } from '../../../../common/contracts/page';
 import { AmsAlert, Organization, AlertType, ChannelType, Channel, CurrentPage, ChannelTypeParams, CommAppConfig } from '../../../../models';
-import { Model } from '../../../../common/contracts/model';
+import { DetailModel, PagerModel } from '../../../../common/ng-structures';
 import { AmsAlertService, ValidatorService, AmsOrganizationService } from '../../../../services';
 import { ToastyService } from 'ng2-toasty';
 import { PushEventService } from '../../../../services/push-event.service';
@@ -9,6 +8,7 @@ import { AlertParameter } from '../../../../models/alert-parameter.model';
 
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'ams-gs-alerts',
   templateUrl: './alerts.component.html',
   styleUrls: ['./alerts.component.css']
@@ -17,12 +17,12 @@ export class AlertsComponent implements OnInit {
 
   section: 'main' | 'configure' | 'channelType' | 'addChannelType' = 'main';
 
-  alerts: Page<AmsAlert>;
-  alert: Model<AmsAlert>;
-  org: Model<Organization>;
-  alterTypes: Page<AlertType>;
-  channelTypes: Page<ChannelType>;
-  channel: Model<Channel>;
+  alerts: PagerModel<AmsAlert>;
+  alert: DetailModel<AmsAlert>;
+  org: DetailModel<Organization>;
+  alterTypes: PagerModel<AlertType>;
+  channelTypes: PagerModel<ChannelType>;
+  channel: DetailModel<Channel>;
 
   isSubscribing = false;
 
@@ -41,30 +41,30 @@ export class AlertsComponent implements OnInit {
     page.onBoardingStatus = 'alerts';
     pushEventService.pushPage(page);
 
-    this.alerts = new Page({
+    this.alerts = new PagerModel({
       api: amsAlertService.alerts
     });
 
-    this.alert = new Model({
+    this.alert = new DetailModel({
       api: amsAlertService.alerts,
       properties: new AmsAlert()
     });
 
-    this.org = new Model({
+    this.org = new DetailModel({
       api: amsOrganizationService.organizations,
       properties: new Organization()
     });
 
-    this.alterTypes = new Page({
+    this.alterTypes = new PagerModel({
       api: amsAlertService.alertTypes
     });
 
-    this.channel = new Model({
+    this.channel = new DetailModel({
       api: amsAlertService.channel,
       properties: new Channel()
     });
 
-    this.channelTypes = new Page({
+    this.channelTypes = new PagerModel({
       api: amsAlertService.channelType,
       filters: [{
         field: 'category',

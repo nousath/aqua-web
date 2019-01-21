@@ -1,18 +1,16 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Location } from '@angular/common'
-import { Page } from '../../../common/contracts/page';
+import { PagerModel } from '../../../common/ng-structures';
 import { AmsEmployeeService, AmsShiftService, AmsAttendanceService, AmsTimelogsService } from '../../../services/ams';
 import { ToastyService } from 'ng2-toasty';
 import { MonthAttendance, ShiftType } from '../../../models';
 import * as moment from 'moment';
 import { Attendance } from '../../../models/daily-attendance';
-import { ServerPageInput } from '../../../common/contracts/api/page-input';
 import { Employee } from '../../../models';
 import { ValidatorService } from '../../../services/validator.service';
-import { Model } from '../../../common/contracts/model';
+import { DetailModel } from '../../../common/ng-structures';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Filter } from '../../../common/contracts/filters';
 import * as _ from 'lodash';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { FileUploader } from 'ng2-file-upload';
@@ -35,7 +33,7 @@ export class DailyComponent {
 
   isPast = false;
 
-  attendancePage: Page<Attendance>;
+  attendancePage: PagerModel<Attendance>;
   isFilter = false;
   isUpload = false;
   uploader: FileUploader;
@@ -83,7 +81,7 @@ export class DailyComponent {
     if (userDiv && userDiv.name && userDiv.code && userDiv.code !== 'default') {
       divisionFilter.value = [userDiv.name]
     }
-    this.attendancePage = new Page({
+    this.attendancePage = new PagerModel({
       api: amsAttendanceService.dailyAttendances,
       location: location,
       filters: ['ofDate', 'name', 'code', 'designations', 'departments', 'supervisorId', divisionFilter, 'contractors', 'userTypes',

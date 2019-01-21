@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Employee } from '../../../models/employee';
 import { AmsEmployeeService, AmsEffectiveShiftService, AmsShiftService } from '../../../services/index';
 import { EffectiveShift } from '../../../models/effective-shift';
-import { Page } from '../../../common/contracts/page';
+import { PagerModel } from '../../../common/ng-structures';
 import * as moment from 'moment';
 import { ToastyService } from 'ng2-toasty';
 import { ActivatedRoute } from '@angular/router';
@@ -23,11 +23,11 @@ export class EmpShiftComponent implements OnInit, OnChanges {
 
   @Input() employee: Employee
 
-  effectiveShifts: Page<EffectiveShift>;
+  effectiveShifts: PagerModel<EffectiveShift>;
   effective: EffectiveShift
   dates: any = [];
   date = new Date()
-  shiftTypes: Page<ShiftType>;
+  shiftTypes: PagerModel<ShiftType>;
   shift: ShiftType;
   currentShift: Shift;
   currentShiftDate: Date;
@@ -46,7 +46,7 @@ export class EmpShiftComponent implements OnInit, OnChanges {
     private amsShiftService: AmsShiftService,
     // private dateService: DatesService,
     public dialog: MdDialog) {
-    this.effectiveShifts = new Page({
+    this.effectiveShifts = new PagerModel({
       api: amsEffectiveShiftService.effectiveShifts,
       filters: [{
         field: 'fromDate',
@@ -56,7 +56,7 @@ export class EmpShiftComponent implements OnInit, OnChanges {
         value: this.activatedRoute.queryParams['value']['name']
       }]
     })
-    this.shiftTypes = new Page({
+    this.shiftTypes = new PagerModel({
       api: amsShiftService.shiftTypes,
       filters: [{
         field: 'employeeId'

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Location } from '@angular/common'
-import { Page } from '../../../common/contracts/page';
+import { PagerModel } from '../../../common/ng-structures';
 import { DeviceLogs, Device, Log, Employee } from '../../../models';
 import { ToastyService } from 'ng2-toasty';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,8 +16,8 @@ declare var $: any;
 })
 export class DiagnosticsComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  logs: Page<Log>;
-  devices: Page<Device>;
+  logs: PagerModel<Log>;
+  devices: PagerModel<Device>;
   status: string;
   date: any = null;
   pageSize: any;
@@ -31,7 +31,7 @@ export class DiagnosticsComponent implements OnInit, OnDestroy, AfterViewInit {
     private amsEmployeeService: AmsEmployeeService,
     private amsDeviceService: AmsDeviceService) {
 
-    this.logs = new Page({
+    this.logs = new PagerModel({
       api: amsDeviceService.logs,
       filters: [{
         field: 'org',
@@ -61,7 +61,7 @@ export class DiagnosticsComponent implements OnInit, OnDestroy, AfterViewInit {
       location: location
     });
 
-    this.devices = new Page({
+    this.devices = new PagerModel({
       api: amsDeviceService.devices,
       filters: []
     });

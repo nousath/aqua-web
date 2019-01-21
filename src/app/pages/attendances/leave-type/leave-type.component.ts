@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { LeaveType, Periodicity } from '../../../models';
 import { AmsLeaveService } from '../../../services';
-import { Model } from '../../../common/contracts/model';
+import { DetailModel } from '../../../common/ng-structures';
 import { ToastyService } from 'ng2-toasty/src/toasty.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { ToastyService } from 'ng2-toasty/src/toasty.service';
   styleUrls: ['./leave-type.component.css']
 })
 export class LeaveTypeComponent implements OnInit {
-  leaveType: Model<LeaveType>;
+  leaveType: DetailModel<LeaveType>;
   @Input() leave: LeaveType;
   isLoading = false;
   show = true;
@@ -19,7 +19,7 @@ export class LeaveTypeComponent implements OnInit {
     private amsLeaveService: AmsLeaveService,
     private toastyService: ToastyService
   ) {
-    this.leaveType = new Model({
+    this.leaveType = new DetailModel({
       api: amsLeaveService.leaveTypes,
       properties: new LeaveType()
     });
@@ -49,13 +49,9 @@ export class LeaveTypeComponent implements OnInit {
       this.leaveType.properties.unlimited === unlimited ? true : false;
     this.isLoading = true;
     this.leaveType
-      .save(data => {
+      .save().then(data => {
         this.isLoading = false;
         this.toastyService.success({ title: 'Success' });
-        this.show = false;
-      })
-      .then(() => {
-        this.isLoading = false;
         this.show = false;
       })
       .catch(err => {

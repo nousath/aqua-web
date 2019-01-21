@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common'
 import { AmsEmployeeService } from '../../../services/ams/ams-employee.service';
-import { Page } from '../../../common/contracts/page';
+import { PagerModel } from '../../../common/ng-structures';
 import { ToastyService } from 'ng2-toasty';
 import * as moment from 'moment';
 import { ShiftType } from '../../../models/shift-type';
@@ -22,8 +22,8 @@ declare var $: any;
 })
 export class RosterShiftsComponent implements OnInit {
   dates: any = [];
-  effectiveShifts: Page<EffectiveShift>;
-  shiftTypes: Page<ShiftType>;
+  effectiveShifts: PagerModel<EffectiveShift>;
+  shiftTypes: PagerModel<ShiftType>;
   change: any;
   date = new Date();
   isDateToday = moment().startOf('day').toDate();
@@ -68,13 +68,13 @@ export class RosterShiftsComponent implements OnInit {
     if (userDiv && userDiv.name && userDiv.code && userDiv.code !== 'default') {
       divisionFilter.value = [userDiv.name]
     }
-    this.shiftTypes = new Page({
+    this.shiftTypes = new PagerModel({
       api: amsShiftService.shiftTypes
     });
 
     this.date = moment(queryParams['fromDate']).startOf('week').toDate()
 
-    this.effectiveShifts = new Page({
+    this.effectiveShifts = new PagerModel({
       api: amsEffectiveShiftService.effectiveShifts,
       filters: [
         'fromDate',

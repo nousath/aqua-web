@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { IApi } from '../../common/contracts/api/api.interface';
+import { IApi } from '../../common/ng-api/api.interface';
 import { Shift } from '../../models/shift';
 import { ShiftType } from '../../models/shift-type';
-import { GenericApi } from '../../common/generic-api';
+import { GenericApi } from '../../common/ng-api/generic-api';
 
 @Injectable()
 export class AmsShiftService {

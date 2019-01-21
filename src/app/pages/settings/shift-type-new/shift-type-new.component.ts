@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastyService } from 'ng2-toasty';
 import { AmsShiftService } from '../../../services';
-import { Model } from '../../../common/contracts/model';
+import { DetailModel } from '../../../common/ng-structures';
 import { ShiftType } from '../../../models';
 import { ValidatorService } from '../../../services/validator.service';
 import { Subscription } from 'rxjs/Rx';
 import { Department } from '../../../models/department';
 import { EmsDepartmentService } from '../../../services/ems';
-import { ServerPageInput } from '../../../common/contracts/api/page-input';
 import { Location } from '@angular/common';
+import { PageOptions } from '../../../common/ng-api';
 
 @Component({
   selector: 'aqua-shift-type-new',
@@ -18,7 +18,7 @@ import { Location } from '@angular/common';
 })
 export class ShiftTypeNewComponent implements OnInit {
 
-  shiftType: Model<ShiftType>;
+  shiftType: DetailModel<ShiftType>;
   subscription: Subscription;
   shiftId: string;
   departments: Department[];
@@ -36,7 +36,7 @@ export class ShiftTypeNewComponent implements OnInit {
     public _location: Location,
     private router: Router) {
 
-    const deptFilter = new ServerPageInput();
+    const deptFilter = new PageOptions();
     deptFilter.query = {
       divisionId: 1
     }
@@ -44,7 +44,7 @@ export class ShiftTypeNewComponent implements OnInit {
       this.departments = departments.items;
     });
 
-    this.shiftType = new Model({
+    this.shiftType = new DetailModel({
       api: amsShiftService.shiftTypes,
       properties: new ShiftType()
     });

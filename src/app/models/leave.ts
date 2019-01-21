@@ -21,4 +21,5 @@ export class Leave extends ModelBase {
   leaveType: LeaveType;
   reason: string;
   comment: string;
+  status: any;
 }

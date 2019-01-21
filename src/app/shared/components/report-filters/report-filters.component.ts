@@ -5,7 +5,7 @@
 // import { Router, ActivatedRoute } from '@angular/router';
 // import { ToastyService } from 'ng2-toasty';
 // import { AmsAlert } from '../../../models';
-// import { Model } from '../../../common/contracts/model';
+// import { DetailModel } from '../../../common/ng-structures';
 // import { Subscription } from 'rxjs/Rx';
 // import * as _ from 'lodash';
 // import { AlertParameter } from '../../../models/alert-parameter.model';
@@ -24,7 +24,7 @@
 
 // export class ReportFiltersComponent  implements OnInit {
 
-//    alert: Model<Insight>;
+//    alert: DetailModel<Insight>;
 //   subscription: Subscription;
 //   reset: Function;
 //  resetConfig: Boolean = false;
@@ -38,7 +38,7 @@
 //     private angulartics2: Angulartics2,
 //     private router: Router) {
 
-//     this.alert = new Model({
+//     this.alert = new DetailModel({
 //       api: amsInsightService.insights,
 //       properties: new Insight()
 //     });

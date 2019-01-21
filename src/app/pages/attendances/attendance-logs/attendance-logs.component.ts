@@ -7,9 +7,9 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 import { TimeLogsLocation, TimeLogs } from '../../../models/time-logs';
 import { Employee } from '../../../models/employee';
-import { Model } from '../../../common/contracts/model';
+import { DetailModel } from '../../../common/ng-structures';
 import { DayEvent } from '../../../models/day-event';
-import { Page } from '../../../common/contracts/page';
+import { PagerModel } from '../../../common/ng-structures';
 import { AmsAttendanceService } from '../../../services/ams/ams-attendance.service';
 import { AmsTimelogsService } from '../../../services/ams/ams-timelogs.service';
 import { AmsEmployeeService } from '../../../services/ams/ams-employee.service';
@@ -27,10 +27,10 @@ import { Attendance } from '../../../models/daily-attendance';
   styleUrls: ['./attendance-logs.component.css']
 })
 export class AttendanceLogsComponent implements OnInit {
-  employee: Model<Employee>;
-  logs: Page<TimeLogs>;
-  attendances: Page<Attendance>;
-  timeLog: Model<TimeLogs>;
+  employee: DetailModel<Employee>;
+  logs: PagerModel<TimeLogs>;
+  attendances: PagerModel<Attendance>;
+  timeLog: DetailModel<TimeLogs>;
   subscription: Subscription;
   empId: string;
   ofDate = new Date();
@@ -68,20 +68,20 @@ export class AttendanceLogsComponent implements OnInit {
     public auth: EmsAuthService,
     public _location: Location,
     public dialog: MdDialog) {
-    this.employee = new Model({
+    this.employee = new DetailModel({
       api: amsEmployeeService.employeesForAdmin,
       properties: new Employee()
     })
-    this.timeLog = new Model({
+    this.timeLog = new DetailModel({
       api: amsTimelogsService.timeLogs,
       properties: new TimeLogs()
     })
 
-    this.attendances = new Page({
+    this.attendances = new PagerModel({
       api: amsAttendanceService.attendance,
       filters: ['employee', 'ofDate']
     })
-    this.logs = new Page({
+    this.logs = new PagerModel({
       api: amsTimelogsService.timeLogs,
       filters: ['employeeId', 'fromDate']
     })

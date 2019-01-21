@@ -4,7 +4,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { ToastyService } from 'ng2-toasty';
 import { Channel, ChannelType, ChannelTypeParams } from '../../../models';
 import { Subscription } from 'rxjs/Subscription';
-import { Model } from '../../../common/contracts/model';
+import { DetailModel } from '../../../common/ng-structures';
 import * as _ from 'lodash';
 
 
