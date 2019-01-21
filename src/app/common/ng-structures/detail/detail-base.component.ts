@@ -22,6 +22,8 @@ export class DetailBase<TModel> {
       id: 'id' | string
     }
   } | DetailOptions<TModel>) {
+    options.fields = options.fields || { id: 'id' };
+
     if (options.properties) {
       this.originalModel = JSON.parse(JSON.stringify(options.properties));
       this.setModel(options.properties);
@@ -90,6 +92,10 @@ export class DetailBase<TModel> {
   save(): Promise<TModel> {
     this.isProcessing = true;
     const id = this.properties[this.options.fields.id];
+
+    if (!id) {
+      return this.create();
+    }
     return this.options.api.update(id, this.properties).then(data => {
       this.setModel(data);
       this.isProcessing = false;
