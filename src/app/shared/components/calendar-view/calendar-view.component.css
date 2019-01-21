@@ -1,3 +1,8 @@
+.days {
+    background: #f1f1f1;
+    padding: 5px 0px 5px 5px;
+}
+
 .days>label,
 .days>div {
     width: 14%;
@@ -9,6 +14,9 @@
     padding: 2%;
     height: 50px;
     text-align: center;
+    background-color: #ffffff;
+    border-radius: 5px;
+    border: 1px solid #f1f1f1;
 }
 
 .days>div {
@@ -17,13 +25,15 @@
 
 .empty {
     border: 1px solid #f1f1f1;
+    /* background: #f1f1f1; */
 }
 
 .day {
     cursor: pointer;
-    background-color: #f1f1f1;
+    background-color: #ffffff;
+    border: 1px solid #f1f1f1;
     text-align: center;
-    box-shadow: 1px 1px 1px 1px #86868636;
+    /* box-shadow: 1px 1px 1px 1px #86868636; */
     border-radius: 5px;
 }
 
@@ -33,8 +43,9 @@
 
 .day h5 {
     margin: 5px;
+    font-weight: 300;
     text-align: left;
-    color: #a6a6a6;
+    /* color: #868686; */
 }
 
 .day .status,
