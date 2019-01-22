@@ -1,4 +1,4 @@
 export class Periodicity {
-    value = 0;
-    type = '';
-  }
+  value = 0;
+  type = '';
+}

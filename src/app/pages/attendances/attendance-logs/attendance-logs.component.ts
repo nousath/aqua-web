@@ -20,6 +20,7 @@ import { MdDialogRef, MdDialog } from '@angular/material';
 import { BulkTimeLogsDialogComponent } from '../../../shared/components/bulk-time-logs-dialog/bulk-time-logs-dialog.component';
 import { EmsAuthService } from '../../../services/ems/ems-auth.service';
 import { Attendance } from '../../../models/daily-attendance';
+import { AmsLeaveService } from '../../../services/ams/ams-leave.service';
 
 @Component({
   selector: 'aqua-attendance-logs',
@@ -65,6 +66,7 @@ export class AttendanceLogsComponent implements OnInit {
     private http: Http,
     private router: Router,
     private amsEmployeeService: AmsEmployeeService,
+    private leaveService: AmsLeaveService,
     public auth: EmsAuthService,
     public _location: Location,
     public dialog: MdDialog) {
@@ -365,6 +367,19 @@ export class AttendanceLogsComponent implements OnInit {
     }, 'regenerate').then(() => {
       this.isProcessing = false;
       this.getAttendance();
+    }).catch(err => {
+      this.isProcessing = false;
+      this.toastyService.error(err)
+    })
+  }
+
+  runOvertimeRules() {
+    this.leaveService.leaveBalances.simplePost({
+      attendance: {
+        id: this.attendance.id
+      }
+    }, 'run-overtime-rule').then(() => {
+      this.isProcessing = false;
     }).catch(err => {
       this.isProcessing = false;
       this.toastyService.error(err)

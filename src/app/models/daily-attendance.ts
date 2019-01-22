@@ -41,6 +41,7 @@ export class Attendance {
   isContinue: boolean;
   hours: string;
   count: number;
+  overTime: number; // minutes
   units: {
     earned: Number,
     consumed: Number

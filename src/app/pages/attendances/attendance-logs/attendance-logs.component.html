@@ -48,9 +48,18 @@
                     <p class="sub-text" *ngIf="extraShiftCount !== 0">+ {{extraShiftCount}} Shift(s)</p>
                   </div>
                   <span class="spacer"></span>
-                  <button *ngIf="auth.hasPermission('superadmin')" class="subtle" md-icon-button (click)="repair()">
-                    <md-icon>build</md-icon>
+                  <button [matMenuTriggerFor]="moreMenu" class="subtle" md-icon-button>
+                    <md-icon>more_vert</md-icon>
                   </button>
+                  <md-menu #moreMenu="mdMenu">
+                    <button *ngIf="auth.hasPermission('superadmin')" md-menu-item (click)="repair()">
+                      <md-icon>build</md-icon> Rebuild
+                    </button>
+                    <button *ngIf="auth.hasPermission('superadmin')" md-menu-item (click)="runOvertimeRules()">
+                      <md-icon>play_arrow</md-icon> Overtime Rules
+                    </button>
+                  </md-menu>
+
                 </div>
               </td>
             </tr>
@@ -65,7 +74,10 @@
             </tr>
             <tr class="capitalize">
               <td> CheckOut : </td>
-              <td> {{attendance?.checkOut | date: 'shortTime'}}</td>
+              <td>
+                <div>{{attendance?.checkOut | date: 'shortTime'}}</div>
+                <span *ngIf="attendance?.overTime" class="sub-text">{{attendance?.overTime}} minutes</span>
+              </td>
             </tr>
             <tr class="capitalize" *ngIf="logsSource">
               <td> Shift Continued </td>

@@ -37,8 +37,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let item of leaveTypes.items" class="capitalize">
-
+      <tr *ngFor="let item of leaveTypes.items">
         <td>
           <div>{{item?.name}}</div>
           <span class="sub-text">{{item?.code}}</span>
@@ -48,23 +47,14 @@
         <td>{{item?.monthlyLimit || 'No Limit'}}</td>
         <td>{{item?.unlimited === false ? 'No': '∞'}}</td>
         <td>
+          <div>{{item?.days}} Leave(s)</div>
           <ng-container [ngSwitch]="item.periodicity?.type">
-            <ng-container *ngSwitchCase="'daily'">
-              <div>1 Leave</div>
-              <span class="sub-text">On {{item?.periodicity?.value}} hrs of overtime</span>
-            </ng-container>
-            <ng-container *ngSwitchCase="'monthly'">
-              <div>{{item?.periodicity?.value}} Leave(s)</div>
-              <span class="sub-text">On month start</span>
-            </ng-container>
-            <ng-container *ngSwitchCase="'yearly'">
-              <div>{{item?.periodicity?.value}} Leave(s)</div>
-              <span class="sub-text">On year start</span>
-            </ng-container>
-            <ng-container *ngSwitchDefault>
-              <div>{{item?.periodicity?.value}} Leave(s)</div>
-              <span class="sub-text">Manually</span>
-            </ng-container>
+            <span *ngSwitchCase="'work-days'" class="sub-text">After {{item?.periodicity?.value}} days present</span>
+            <span *ngSwitchCase="'overtime'" class="sub-text">On {{item?.periodicity?.value}} minutes of overtime</span>
+            <span *ngSwitchCase="'monthly'" class="sub-text">On month {{ item.periodicity.value? 'start': 'end'}}</span>
+            <span *ngSwitchCase="'yearly'" class="sub-text">On year {{ item.periodicity.value? 'start': 'end'}}</span>
+            <span *ngSwitchCase="'new-joiner'" class="sub-text">When new employee joins</span>
+            <span *ngSwitchDefault class="sub-text">Manually</span>
           </ng-container>
         </td>
         <td>{{item?.carryForward || 'All'}}</td>

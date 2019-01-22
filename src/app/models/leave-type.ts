@@ -1,4 +1,3 @@
-import { Organization } from './organization';
 import { Periodicity } from './periodicity';
 
 
@@ -14,5 +13,4 @@ export class LeaveType {
   carryForward: number = null;
   monthlyLimit: number;
   isEdit = false;
-  organization: Organization = new Organization();
 }
