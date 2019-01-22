@@ -3,4 +3,23 @@
     padding-bottom: 2%;
 }
 
+.toggle-group.form-control {
+    border-radius: 5px;
+    padding: 1px 5px;
+    box-shadow: none;
+}
 
+.toggle-group.form-control button {
+    background-color: #ffffff;
+    border-radius: 5px;
+}
+
+.toggle-group.form-control button.selected {
+    color: #00A8c6;
+    border: #00A8c6 1px solid;
+}
+
+.mat-button-toggle-label>.mat-button-toggle-label-content {
+    line-height: 30px;
+    font-weight: 300px;
+}

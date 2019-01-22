@@ -1,83 +1,80 @@
-<div class="tool-bar controls-row">
-  <h5>Leave Rules</h5>
-  <span class="spacer"></span>
-  <button [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" md-icon-button mdTooltip="Add New"
-    [mdTooltipPosition]="'above'" (click)="toggleNew()">
-    <md-icon>add_circle_outline</md-icon>
-  </button>
+<div *ngIf="!isEdit">
+  <div class="tool-bar controls-row">
+    <h5>Leave Rules</h5>
+    <span class="spacer"></span>
+    <button [disabled]="leaveTypes.isLoading" md-raised-button mdTooltip="Add New" [mdTooltipPosition]="'above'"
+      (click)="add()">
+      Add Rule
+    </button>
+  </div>
+  <md-spinner class="custom_spinner" *ngIf="leaveTypes.isLoading" mode="indeterminate"></md-spinner>
+  <md-card class="card">
+    <table class="table table-condensed table-hover">
+      <thead class="primary_thead">
+        <tr>
+          <th>Name</th>
+          <th>Category</th>
+          <th>
+            <div>Min</div>
+            <span class="sub-text">per Day</span>
+          </th>
+          <th>
+            <div>Max</div>
+            <span class="sub-text">per Month</span>
+          </th>
+          <th>Rule</th>
+          <th>
+            <div>Carry Forward</div>
+            <span class="sub-text">Yearly</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of leaveTypes.items" (click)="edit(item)">
+          <td>
+            <div>{{item?.name}}</div>
+            <span class="sub-text">{{item?.code}}</span>
+          </td>
+          <td>
+            <ng-container [ngSwitch]="item.category">
+              <span *ngSwitchCase="'lossOfPay'">Loss Of Pay</span>
+              <span *ngSwitchCase="'OnDuty'">On Duty</span>
+              <span *ngSwitchCase="'paidLeave'">Paid Leave</span>
+            </ng-container>
+
+          </td>
+          <td>{{item?.unitsPerDay === 1 ? 'Full': item?.unitsPerDay === 2? '½':'⅓'}}</td>
+          <td>{{item?.monthlyLimit || 'No Limit'}}</td>
+          <td>
+            <div *ngIf="item.unlimited">∞</div>
+            <ng-container *ngIf="!item.unlimited && item.days">
+              <div>{{item?.days}} Leave(s)</div>
+              <ng-container [ngSwitch]="item.periodicity?.type">
+                <span *ngSwitchCase="'work-days'" class="sub-text">After {{item?.periodicity?.value}} days present</span>
+                <span *ngSwitchCase="'overtime'" class="sub-text">On {{item?.periodicity?.value}} minutes of overtime</span>
+                <span *ngSwitchCase="'monthly'" class="sub-text">On month {{ item.periodicity.value? 'start': 'end'}}</span>
+                <span *ngSwitchCase="'yearly'" class="sub-text">On year {{ item.periodicity.value? 'start': 'end'}}</span>
+                <span *ngSwitchCase="'new-joiner'" class="sub-text">When new employee joins</span>
+                <span *ngSwitchDefault class="sub-text">Manually</span>
+              </ng-container>
+            </ng-container>
+          </td>
+          <td>
+            <div class="controls-row">
+              <div *ngIf="!item.unlimited">{{item.carryForward === 0? 'None': (item.carryForward || 'All')}}</div>
+              <span class="spacer"></span>
+              <button md-icon-button class="subtle" mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="edit(item)">
+                <md-icon>edit</md-icon>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </md-card>
 </div>
-<md-spinner class="custom_spinner" *ngIf="leaveTypes?.isLoading  || leaveType?.isProcessing" mode="indeterminate"></md-spinner>
 
-<aqua-leave-type *ngIf="isNew || isEdit" [leave]="leaveTypeModel"></aqua-leave-type>
+<div *ngIf="isEdit">
 
-<md-card class="card">
-  <table class="table table-condensed table-hover">
-    <thead class="primary_thead">
-      <tr>
-        <th>Name</th>
-        <th>Category</th>
-        <th>
-          <div>Min</div>
-          <span class="sub-text">per Day</span>
-        </th>
-        <th>
-          <div>Max</div>
-          <span class="sub-text">per Month</span>
-        </th>
-        <th>Unlimited</th>
-        <th>
-          <div>No of Leaves</div>
-          <span class="sub-text">Trigger</span>
-        </th>
-        <th>
-          <div>Carry Forward</div>
-          <span class="sub-text">Yearly</span>
-        </th>
-        <th class="actionBtnss"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of leaveTypes.items">
-        <td>
-          <div>{{item?.name}}</div>
-          <span class="sub-text">{{item?.code}}</span>
-        </td>
-        <td>{{item?.category}}</td>
-        <td>{{item?.unitsPerDay === 1 ? 'Full': item?.unitsPerDay === 2? '½':'⅓'}}</td>
-        <td>{{item?.monthlyLimit || 'No Limit'}}</td>
-        <td>{{item?.unlimited === false ? 'No': '∞'}}</td>
-        <td>
-          <div>{{item?.days}} Leave(s)</div>
-          <ng-container [ngSwitch]="item.periodicity?.type">
-            <span *ngSwitchCase="'work-days'" class="sub-text">After {{item?.periodicity?.value}} days present</span>
-            <span *ngSwitchCase="'overtime'" class="sub-text">On {{item?.periodicity?.value}} minutes of overtime</span>
-            <span *ngSwitchCase="'monthly'" class="sub-text">On month {{ item.periodicity.value? 'start': 'end'}}</span>
-            <span *ngSwitchCase="'yearly'" class="sub-text">On year {{ item.periodicity.value? 'start': 'end'}}</span>
-            <span *ngSwitchCase="'new-joiner'" class="sub-text">When new employee joins</span>
-            <span *ngSwitchDefault class="sub-text">Manually</span>
-          </ng-container>
-        </td>
-        <td>{{item?.carryForward || 'All'}}</td>
-        <td>
-          <button *ngIf="!item?.isEdit" md-icon-button class="subtle" mdTooltip="Edit" [mdTooltipPosition]="'above'"
-            (click)="isEdit = true;leaveTypeModel = item;">
-            <md-icon>edit</md-icon>
-          </button>
-          <!-- <button *ngIf="!item?.isEdit" md-icon-button class="button_align cursor" mdTooltip="Delete"
-              [mdTooltipPosition]="'above'" (click)="remove(item)">
-              <md-icon>delete</md-icon>
-            </button>
-            <button *ngIf="item?.isEdit" [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" md-icon-button
-              class="button_align cursor " (click)="saveLeaveType(item)" mdTooltip="Save" [mdTooltipPosition]="'above'">
-              <md-icon>save</md-icon>
-            </button>
-            <button *ngIf="item?.isEdit" [disabled]="leaveTypes?.isLoading  || leaveType?.isProcessing" md-icon-button
-              class="button_align cursor" (click)="toggleLeaveType(item, false)" mdTooltip="Cancel" [mdTooltipPosition]="'above'">
-              <md-icon>undo</md-icon>
-            </button> -->
-        </td>
-      </tr>
-
-    </tbody>
-  </table>
-</md-card>
+  <aqua-leave-type [leaveType]="leaveTypeModel" (onCancel)="isEdit = false" (onUpdate)="fetchLeaveTypes()" (onCreate)="fetchLeaveTypes()"></aqua-leave-type>
+</div>

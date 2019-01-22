@@ -1,5 +1,5 @@
 <div class="tool-bar controls-row">
-  <h5>{{ isNew ? 'New': 'Edit'}} Shift</h5>
+  <h5>{{ isNew ? 'New': 'Edit'}} Shift Rule</h5>
   <span class="spacer"></span>
   <a md-icon-button *ngIf="!isNew" (click)="backClicked()">
     <md-icon>close</md-icon>
@@ -91,7 +91,7 @@
       <label>Color</label>
       <div class="form-control color-picker btn-group btn-group-sm">
         <button type="button" [style.background-color]="shiftType.properties.color === color ? color: ''"
-          [style.border-color]="color" class="btn btn-sm" (click)="setColor(color)" *ngFor="let color of colors"></button>
+          [style.border-color]="color" class="btn btn-sm btn-circle" (click)="setColor(color)" *ngFor="let color of colors"></button>
       </div>
     </div>
     <div class="form-group">

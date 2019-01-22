@@ -1,109 +1,110 @@
-<div class="popup" *ngIf="show">
-  <div class="backdrop"></div>
-  <div class="outer">
-    <div class="content wide">
-      <md-spinner class="custom_spinner" *ngIf="isLoading" mode="indeterminate"></md-spinner>
-      <h4>Leave Rule</h4>
-      <div class="flex-row three section">
-        <div class="form-group">
-          <label for="name">Name</label><span class="asterisk">*</span>
-          <input class="form-control" type="text" [(ngModel)]="leaveType.properties.name">
-        </div>
-        <div class="form-group">
-          <label for="name">Code</label><span class="asterisk">*</span>
-          <input class="form-control" type="text" [(ngModel)]="leaveType.properties.code">
-        </div>
-        <div class="form-group">
-          <label for="leaveCategory">Category</label><span class="asterisk">*</span>
-          <select class="form-control" [(ngModel)]="leaveType.properties.category">
-            <option [ngValue]="null" disabled>select an option</option>
-            <option value="lossOfPay">Loss Of Pay</option>
-            <option value="OnDuty">On Duty</option>
-            <option value="paidLeave">Paid Leave</option>
-          </select>
-        </div>
-        <h5>Limit Rules</h5>
+<div class="tool-bar controls-row">
+  <h5 *ngIf="model.id">Edit Leave Rule</h5>
+  <h5 *ngIf="!model.id">New Leave Rule</h5>
+  <span class="spacer"></span>
+  <a md-icon-button (click)="cancel()">
+    <md-icon>close</md-icon>
+  </a>
+</div>
 
-        <div class="form-group">
-          <label for="unitsPerDay">Min Per Day</label><span class="asterisk">*</span>
-          <select class="form-control" [(ngModel)]="leaveType.properties.unitsPerDay">
-            <option [ngValue]="null">select an option</option>
-            <option value="1">Full</option>
-            <option value="2">Half</option>
-            <option value="3">One Third</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="carryForward">Max Per Month</label>
-          <input class="form-control" type="number" min="0" [(ngModel)]="leaveType.properties.monthlyLimit">
-        </div>
-        <div class="form-group">
-          <label for="unlimited">Is Unlimited</label>
-          <select class="form-control" [(ngModel)]="leaveType.properties.unlimited">
-            <option [ngValue]="null">select an option</option>
-            <option value="true">Yes</option>
-            <option value="false">No</option>
-          </select>
-        </div>
-        <h5>Grant Rules</h5>
-        <div>
-          <div class="form-group">
-            <label for="periodicityType">Trigger</label>
-            <select class="form-control" [(ngModel)]="leaveType.properties.periodicity.type" [disabled]="leaveType.properties.unlimited">
-              <option [ngValue]="null">select an option</option>
-              <option value="work-day">Paid Days</option>
-              <option value="overtime">Overtime</option>
-              <option value="new-joiner">New Joiner</option>
-              <option value="monthly">Month</option>
-              <option value="yearly">Year</option>
-              <option value="manual">Manual</option>
-            </select>
-          </div>
-        </div>
-        <div class="flex-row two">
-          <div class="form-group">
-            <ng-container [ngSwitch]="leaveType.properties.periodicity.type">
-              <label *ngSwitchCase="'work-day'">Days</label>
-              <label *ngSwitchCase="'overtime'">Minutes</label>
-              <label *ngSwitchDefault>Config</label>
-            </ng-container>
-            <input *ngIf="leaveType.properties.periodicity.type === 'work-day' || leaveType.properties.periodicity.type === 'overtime'"
-              class="form-control" type="number" min="0" [(ngModel)]="leaveType.properties.periodicity.value"
-              [disabled]="!leaveType.properties.periodicity.type || leaveType.properties.unlimited">
-            <select *ngIf="leaveType.properties.periodicity.type === 'yearly' || leaveType.properties.periodicity.type === 'monthly'"
-              class="form-control" [(ngModel)]="leaveType.properties.periodicity.value" [disabled]="leaveType.properties.unlimited">
-              <option [ngValue]="null">select an option</option>
-              <option value="0">Start</option>
-              <option value="1">End</option>
-            </select>
-            <span *ngIf="!leaveType.properties.periodicity.type || leaveType.properties.periodicity.type === 'manual' || leaveType.properties.periodicity.type === 'new-joiner'"
-              class="form-control disabled"></span>
-          </div>
-          <div class="form-group">
-            <label>Credit</label>
-            <input class="form-control" type="number" min="0" [(ngModel)]="leaveType.properties.days" [disabled]="!leaveType.properties.periodicity.type || leaveType.properties.unlimited">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="carryForward">Carry Forward (Yearly)</label>
-          <input class="form-control" [disabled]="leaveType.properties.unlimited" type="number" min="0" [(ngModel)]="leaveType.properties.carryForward">
-        </div>
-      </div>
-      <div class="help" [ngSwitch]="leaveType.properties.periodicity.type">
-        <span class="sub-text" *ngSwitchCase="'new-joiner'">when a new employee joins</span>
-        <span class="sub-text" *ngSwitchCase="'work-day'">after the configured no of paid days</span>
-        <span class="sub-text" *ngSwitchCase="'overtime'">after specified on of extra work hours</span>
-        <span class="sub-text" *ngSwitchCase="'manual'">click run button to grant the leave</span>
-        <span class="sub-text" *ngSwitchCase="'monthly'">based on calender month</span>
-        <span class="sub-text" *ngSwitchCase="'yearly'">based on calender year</span>
-        <span class="sub-text" *ngSwitchDefault>when the leave be credited to user</span>
-      </div>
-      <div class="controls-row footer">
-        <span class="spacer"></span>
-        <button md-button (click)="show= false">Cancel</button>
-        <button md-raised-button color="primary" (click)="saveLeaveType()">Submit</button>
-        <span class="spacer"></span>
+<md-card>
+  <md-spinner class="custom_spinner" *ngIf="isLoading" mode="indeterminate"></md-spinner>
+  <div class="flex-row three section">
+    <div class="form-group">
+      <label for="name">Name</label><span class="asterisk">*</span>
+      <input class="form-control" type="text" [(ngModel)]="model.name">
+    </div>
+    <div class="form-group">
+      <label for="name">Code</label><span class="asterisk">*</span>
+      <input class="form-control" type="text" [(ngModel)]="model.code">
+    </div>
+    <div class="form-group">
+      <label for="leaveCategory">Category</label><span class="asterisk">*</span>
+      <select class="form-control" [(ngModel)]="model.category">
+        <option [ngValue]="null" disabled>select an option</option>
+        <option value="lossOfPay">Loss Of Pay</option>
+        <option value="OnDuty">On Duty</option>
+        <option value="paidLeave">Paid Leave</option>
+      </select>
+    </div>
+    <h5>Limit Rules</h5>
+
+    <div class="form-group">
+      <label for="unitsPerDay">Min Per Day</label><span class="asterisk">*</span>
+      <select class="form-control" [(ngModel)]="model.unitsPerDay">
+        <option [ngValue]="null">select an option</option>
+        <option value="1">Full</option>
+        <option value="2">Half</option>
+        <option value="3">One Third</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="carryForward">Max Per Month</label>
+      <input class="form-control" type="number" min="0" [(ngModel)]="model.monthlyLimit">
+    </div>
+    <div class="form-group">
+      <label for="unlimited">Is Unlimited</label>
+      <div class="form-control btn-group btn-group-sm">
+        <button class="btn btn-sm btn-default" [class.btn-primary]="model.unlimited" (click)="setUnlimited(true)">Yes</button>
+        <button class="btn btn-sm btn-default" [class.btn-primary]="!model.unlimited" (click)="setUnlimited(false)">No</button>
       </div>
     </div>
+    <h5>Grant Rules</h5>
+    <div>
+      <div class="form-group">
+        <label for="periodicityType">Trigger</label>
+        <select class="form-control" [(ngModel)]="model.periodicity.type" [disabled]="model.unlimited">
+          <option [ngValue]="null">select an option</option>
+          <option value="work-day">Paid Days</option>
+          <option value="overtime">Overtime</option>
+          <option value="new-joiner">New Joiner</option>
+          <option value="monthly">Month</option>
+          <option value="yearly">Year</option>
+          <option value="manual">Manual</option>
+        </select>
+      </div>
+    </div>
+    <div class="flex-row two">
+      <div class="form-group">
+        <ng-container [ngSwitch]="model.periodicity.type">
+          <label *ngSwitchCase="'work-day'">Days</label>
+          <label *ngSwitchCase="'overtime'">Minutes</label>
+          <label *ngSwitchDefault>Config</label>
+        </ng-container>
+        <input *ngIf="model.periodicity.type === 'work-day' || model.periodicity.type === 'overtime'" class="form-control"
+          type="number" min="0" [(ngModel)]="model.periodicity.value" [disabled]="!model.periodicity.type || model.unlimited">
+        <select *ngIf="model.periodicity.type === 'yearly' || model.periodicity.type === 'monthly'" class="form-control"
+          [(ngModel)]="model.periodicity.value" [disabled]="model.unlimited">
+          <option [ngValue]="null">select an option</option>
+          <option value="0">Start</option>
+          <option value="1">End</option>
+        </select>
+        <span *ngIf="!model.periodicity.type || model.periodicity.type === 'manual' || model.periodicity.type === 'new-joiner'"
+          class="form-control disabled"></span>
+      </div>
+      <div class="form-group">
+        <label>Credit</label>
+        <input class="form-control" type="number" min="0" [(ngModel)]="model.days" [disabled]="!model.periodicity.type || model.unlimited">
+      </div>
+    </div>
+    <div class="form-group">
+      <input type="checkbox" [disabled]="model.unlimited" [(ngModel)]="yearlyCapping">
+      <label for="carryForward">Carry Forward (Yearly)</label>
+      <input class="form-control" [disabled]="model.unlimited || !yearlyCapping" type="number" min="0" [(ngModel)]="model.carryForward">
+    </div>
   </div>
+  <div class="help" [ngSwitch]="model.periodicity.type">
+    <span class="sub-text" *ngSwitchCase="'new-joiner'">when a new employee joins</span>
+    <span class="sub-text" *ngSwitchCase="'work-day'">paid days = days - absent - leaves</span>
+    <span class="sub-text" *ngSwitchCase="'overtime'">after specified on of extra work hours</span>
+    <span class="sub-text" *ngSwitchCase="'manual'">click run button to grant the leave</span>
+    <span class="sub-text" *ngSwitchCase="'monthly'">based on calender month</span>
+    <span class="sub-text" *ngSwitchCase="'yearly'">based on calender year</span>
+    <span class="sub-text" *ngSwitchDefault>when the leave be credited to user</span>
+  </div>
+</md-card>
+<div class="controls-row footer">
+  <button md-raised-button *ngIf="model.id" (click)="remove()">Remove</button>
+  <span class="spacer"></span>
+  <button md-raised-button color="primary" (click)="save()">Save</button>
 </div>

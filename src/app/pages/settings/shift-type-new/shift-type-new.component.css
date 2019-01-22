@@ -11,28 +11,5 @@
 }
 
 h5 {
-  text-align: center;
-}
-
-
-.form-control.btn-group {
-  padding: 1px;
-  height: auto;
-}
-
-.form-control.btn-group>.btn {
-  border-radius: 5px;
-  width: 40px;
-  margin-left: 1px;
-  box-shadow: 0 1px 1px rgba(0,0,0,0.15);
-  outline: none;
-}
-
-.form-control.color-picker.btn-group>.btn {
-  border-radius: 20px;
-  width: 26px;
-  height: 26px;
-  margin: 2px;
-  border: 1px solid;
-
+    text-align: center;
 }

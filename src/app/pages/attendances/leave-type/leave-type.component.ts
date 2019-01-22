@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { LeaveType, Periodicity } from '../../../models';
 import { AmsLeaveService } from '../../../services';
 import { DetailModel } from '../../../common/ng-structures';
@@ -10,82 +10,118 @@ import { ToastyService } from 'ng2-toasty/src/toasty.service';
   styleUrls: ['./leave-type.component.css']
 })
 export class LeaveTypeComponent implements OnInit {
-  leaveType: DetailModel<LeaveType>;
-  @Input() leave: LeaveType;
+  @Input()
+  leaveType: LeaveType;
+
+  model: LeaveType;
+
+  @Output()
+  onUpdate: EventEmitter<LeaveType> = new EventEmitter();
+
+  @Output()
+  onCreate: EventEmitter<LeaveType> = new EventEmitter();
+
+  @Output()
+  onCancel: EventEmitter<boolean> = new EventEmitter();
+
+  yearlyCapping = true;
+
   isLoading = false;
-  show = true;
 
   constructor(
     private amsLeaveService: AmsLeaveService,
     private toastyService: ToastyService
   ) {
-    this.leaveType = new DetailModel({
-      api: amsLeaveService.leaveTypes,
-      properties: new LeaveType()
-    });
   }
 
-  saveLeaveType() {
-    if (!this.leaveType.properties.category)
+  save() {
+    if (!this.model.category)
       return this.toastyService.info({ title: 'Info', msg: 'Select category' });
-    if (
-      this.leaveType.properties.unlimited === null ||
-      this.leaveType.properties.unlimited === undefined
-    )
+
+    if (this.model.unlimited === null || this.model.unlimited === undefined)
       return this.toastyService.info({
         title: 'Info',
         msg: 'Select Yes if user can take unlimited leaves otherwise select No'
       });
-    if (!this.leaveType.properties.name)
+
+    if (!this.model.name)
       return this.toastyService.info({ title: 'Info', msg: 'Enter name' });
-    if (!this.leaveType.properties.unitsPerDay)
+
+    if (!this.model.unitsPerDay)
       return this.toastyService.info({
         title: 'Info',
-        msg: 'Select units per day'
+        msg: 'Select min per day'
       });
 
-    const unlimited: any = 'true';
-    this.leaveType.properties.unlimited =
-      this.leaveType.properties.unlimited === unlimited ? true : false;
+
+
+
     this.isLoading = true;
-    this.leaveType
-      .save().then(data => {
+
+    (this.model.id ? this.amsLeaveService.leaveTypes.update(this.model.id, this.model) : this.amsLeaveService.leaveTypes.create(this.model))
+      .then(data => {
         this.isLoading = false;
         this.toastyService.success({ title: 'Success' });
-        this.show = false;
+        (this.model.id ? this.onUpdate : this.onCreate).emit(this.model)
       })
       .catch(err => {
         this.isLoading = false;
-        this.show = false;
         this.toastyService.error({ title: 'Error', msg: err });
       });
   }
 
-  ngOnChanges() {
-    this.show = true;
+  remove() {
+    this.amsLeaveService.leaveTypes.remove(this.model.id).then(data => {
+      this.isLoading = false;
+      this.toastyService.success({ title: 'Success' });
+      this.onUpdate.emit(this.model)
+    })
+      .catch(err => {
+        this.isLoading = false;
+        this.toastyService.error({ title: 'Error', msg: err });
+      });
+  }
 
-    if (!this.leave) {
-      return (this.leaveType.properties = new LeaveType());
-    }
-    if (!this.leaveType) {
-      this.leaveType.properties = new LeaveType();
-    }
-    this.leaveType.properties = this.leave;
-    if (!this.leaveType.properties.periodicity) {
-      this.leaveType.properties.periodicity = new Periodicity();
-    }
-    if (!this.leaveType.properties.carryForward) {
-      this.leaveType.properties.carryForward = null;
+  onYearlyCappingToggled() {
+    this.yearlyCapping = !this.yearlyCapping
+    if (!this.yearlyCapping) {
+      this.model.carryForward = null;
     }
   }
 
-  ngOnInit() {
-    this.show = true;
-    if (!this.leave) {
-      this.leaveType.properties = new LeaveType();
+  setUnlimited(value: boolean) {
+    this.model.unlimited = value;
+
+    if (this.model.unlimited) {
+      this.yearlyCapping = false;
+      this.model.periodicity = new Periodicity();
+      this.model.days = null;
+      this.model.carryForward = null;
     }
+  }
+
+  cancel() {
+    this.onCancel.emit(false)
+  }
+
+  ngOnChanges() {
+
     if (!this.leaveType) {
-      this.leaveType.properties = new LeaveType();
+      this.model = new LeaveType();
+      this.model.periodicity = new Periodicity();
+      return
     }
+
+    this.model = JSON.parse(JSON.stringify(this.leaveType))
+
+
+    if (this.model.carryForward === undefined || this.model.carryForward === null) {
+      this.yearlyCapping = false;
+    }
+
+  }
+
+  ngOnInit() {
+    this.ngOnChanges()
   }
 }
