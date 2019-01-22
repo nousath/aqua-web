@@ -51,7 +51,7 @@
             <label for="periodicityType">Trigger</label>
             <select class="form-control" [(ngModel)]="leaveType.properties.periodicity.type" [disabled]="leaveType.properties.unlimited">
               <option [ngValue]="null">select an option</option>
-              <option value="work-days">Paid Days</option>
+              <option value="work-day">Paid Days</option>
               <option value="overtime">Overtime</option>
               <option value="new-joiner">New Joiner</option>
               <option value="monthly">Month</option>
@@ -63,11 +63,11 @@
         <div class="flex-row two">
           <div class="form-group">
             <ng-container [ngSwitch]="leaveType.properties.periodicity.type">
-              <label *ngSwitchCase="'work-days'">Days</label>
+              <label *ngSwitchCase="'work-day'">Days</label>
               <label *ngSwitchCase="'overtime'">Minutes</label>
               <label *ngSwitchDefault>Config</label>
             </ng-container>
-            <input *ngIf="leaveType.properties.periodicity.type === 'work-days' || leaveType.properties.periodicity.type === 'overtime'"
+            <input *ngIf="leaveType.properties.periodicity.type === 'work-day' || leaveType.properties.periodicity.type === 'overtime'"
               class="form-control" type="number" min="0" [(ngModel)]="leaveType.properties.periodicity.value"
               [disabled]="!leaveType.properties.periodicity.type || leaveType.properties.unlimited">
             <select *ngIf="leaveType.properties.periodicity.type === 'yearly' || leaveType.properties.periodicity.type === 'monthly'"
@@ -91,7 +91,7 @@
       </div>
       <div class="help" [ngSwitch]="leaveType.properties.periodicity.type">
         <span class="sub-text" *ngSwitchCase="'new-joiner'">when a new employee joins</span>
-        <span class="sub-text" *ngSwitchCase="'work-days'">after the configured no of paid days</span>
+        <span class="sub-text" *ngSwitchCase="'work-day'">after the configured no of paid days</span>
         <span class="sub-text" *ngSwitchCase="'overtime'">after specified on of extra work hours</span>
         <span class="sub-text" *ngSwitchCase="'manual'">click run button to grant the leave</span>
         <span class="sub-text" *ngSwitchCase="'monthly'">based on calender month</span>
