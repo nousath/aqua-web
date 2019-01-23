@@ -66,6 +66,10 @@ body::-webkit-scrollbar-thumb {
     line-height: inherit;
 }
 
+table .index {
+    width: 10px;
+}
+
 .mat-icon.warn {
     color: red;
 }
@@ -313,7 +317,7 @@ button.phantom {
     /*padding-left: 20px;*/
 }
 
-.custom_spinner {
+.mat-progress-spinner {
     position: fixed;
     z-index: 99999999999999;
     left: 49%;

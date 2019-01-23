@@ -22,6 +22,9 @@ export class PagerBaseComponent<TModel> implements IPager {
   items: Array<TModel>;
   stats: any;
 
+  nextEnabled = false;
+  previousEnabled = false;
+
 
   constructor(public options: PagerOptions<TModel>) {
     this.items = [];
@@ -37,8 +40,10 @@ export class PagerBaseComponent<TModel> implements IPager {
 
   private convertToPageOption(pageNo: number) {
     const options = new PageOptions()
-    options.offset = (pageNo - 1) * this.options.pageOptions.limit;
-    options.limit = this.options.pageOptions.limit;
+    options.set({
+      offset: (pageNo - 1) * this.options.pageOptions.limit,
+      limit: this.options.pageOptions.limit
+    })
     return options;
   }
 
@@ -70,6 +75,19 @@ export class PagerBaseComponent<TModel> implements IPager {
       this.pageNo = page.pageNo;
 
       this.totalPages = Math.ceil(this.totalRecords / this.options.pageOptions.limit);
+
+      this.nextEnabled = false;
+      this.previousEnabled = false;
+
+      if (this.totalPages > 1) {
+        if (this.pageNo > 1) {
+          this.previousEnabled = true;
+        }
+
+        if (this.pageNo < this.totalPages) {
+          this.nextEnabled = true;
+        }
+      }
       return page;
     }).catch((err) => {
 
@@ -179,5 +197,6 @@ export class PagerBaseComponent<TModel> implements IPager {
     }
     this.showPage(this.pageNo + 1);
   };
+
 }
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AmsSystemUsageService } from '../../services/ams/ams-system-usage.service';
-import { System } from '../../models/system';
-import { PagerModel } from '../../common/ng-structures';
+import { System } from '../../../models/system';
+import { PagerModel } from '../../../common/ng-structures';
+import { AmsSystemUsageService } from '../../../services';
 
 @Component({
   selector: 'aqua-system-usage',

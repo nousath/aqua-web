@@ -1,8 +1,12 @@
-.reportList{
+.reportList {
     width: 50% !important;
     text-align: center !important;
 }
 
-.marginLeft{
+.marginLeft {
     margin-left: 25% !important;
+}
+
+.cards>div {
+    padding: 10px;
 }

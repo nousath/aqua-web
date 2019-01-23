@@ -1,8 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import { Employee } from '../../../models/employee';
-import { AmsEmployeeService } from '../../../services/index';
 import { Role } from '../../../models/ems/role';
 import { EmsAuthService } from '../../../services/ems/ems-auth.service';
 
@@ -11,7 +9,9 @@ class Sections {
   home = false;
   employee = false;
   attendance = false;
+  reports = false;
   settings = false;
+  system = false;
   select(section: string) {
     this[section] = !this[section];
   }
@@ -41,8 +41,9 @@ export class NavigationBarComponent implements OnInit {
   employeeSearch = true;
 
 
-  constructor(private router: Router,
-    private auth: EmsAuthService
+  constructor(
+    private router: Router,
+    public auth: EmsAuthService
   ) {
 
     this.subscription = router.events

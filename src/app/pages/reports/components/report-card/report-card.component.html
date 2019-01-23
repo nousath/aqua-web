@@ -1,0 +1,8 @@
+<md-card [routerLink]="['/reports', type.area, type.code]">
+  <div class="controls-row">
+    <h5>{{type.name}}</h5>
+    <span class="spacer"></span>
+    <img class="icon" src="../../../../assets/reports/{{type.area}}/{{type.icon}}">
+  </div>
+  <p>{{type.description}}</p>
+</md-card>

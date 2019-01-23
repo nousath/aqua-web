@@ -1,0 +1,20 @@
+<div class="tool-bar controls-row">
+  <h5 *ngIf="!selected">{{area | titlecase }} Reports</h5>
+  <h5 *ngIf="selected">{{ selected.name}}</h5>
+  <span class="spacer"></span>
+  <a md-icon-button *ngIf="selected" (click)="backClicked()">
+    <md-icon>close</md-icon>
+  </a>
+</div>
+
+<div *ngIf="!selected" class="flex-row three cards">
+  <div *ngFor="let item of reportTypes">
+    <aqua-report-card [type]="item"></aqua-report-card>
+  </div>
+</div>
+
+<ng-container *ngIf="selected">
+  <aqua-employees-filter [fields]="selected.filters" (onReset)="reset()" (onChange)="build($event)"></aqua-employees-filter>
+  <md-spinner *ngIf="isCreating" mode="indeterminate"></md-spinner>
+  <aqua-report-lists [reportType]="selected" [reportParams]="filters"></aqua-report-lists>
+</ng-container>

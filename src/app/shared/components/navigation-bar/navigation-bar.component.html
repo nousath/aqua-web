@@ -22,16 +22,16 @@
       <i *ngIf="sections.employee" class="material-icons leftIcon">keyboard_arrow_down</i>
     </p>
     <div class="list-items" *ngIf="sections.employee">
-      <a [routerLink]="['/employees']" *ngIf="currentRole?.employee?.type === 'superadmin'" md-list-item (click)="selectedTab()"
+      <a [routerLink]="['/employees']" *ngIf="auth.hasPermission('superadmin')" md-list-item (click)="selectedTab()"
         routerLinkActive="active-link" #rla1="routerLinkActive">
         <h5>Employees</h5>
       </a>
-      <a [routerLink]="['/employees/designations']" *ngIf="currentRole?.employee?.type === 'superadmin'" md-list-item
-        (click)="selectedTab()" routerLinkActive="active-link" #rla2="routerLinkActive">
+      <a [routerLink]="['/employees/designations']" *ngIf="auth.hasPermission('superadmin')" md-list-item (click)="selectedTab()"
+        routerLinkActive="active-link" #rla2="routerLinkActive">
         <h5>Designations</h5>
       </a>
-      <a [routerLink]="['/employees/departments']" *ngIf="currentRole?.employee?.type === 'superadmin'" md-list-item
-        (click)="selectedTab()" routerLinkActive="active-link" #rla15="routerLinkActive">
+      <a [routerLink]="['/employees/departments']" *ngIf="auth.hasPermission('superadmin')" md-list-item (click)="selectedTab()"
+        routerLinkActive="active-link" #rla15="routerLinkActive">
         <h5>Departments</h5>
       </a>
       <a [routerLink]="['/employees/contractors']" *ngIf="currentRole?.employee.type === 'superadmin'" md-list-item
@@ -39,27 +39,20 @@
         <h5>Contractors</h5>
       </a>
       <a [routerLink]="['/employees/divisions']" *ngIf="currentRole?.employee.type === 'superadmin'" md-list-item
-      (click)="selectedTab()" routerLinkActive="active-link" #rla15="routerLinkActive">
-      <h5>Divisions</h5>
-    </a>
-      <a [routerLink]="['/attendances/leave-balances']" *ngIf="currentRole?.employee?.type === 'superadmin'"
-        md-list-item (click)="selectedTab()" routerLinkActive="active-link" #rla6="routerLinkActive">
+        (click)="selectedTab()" routerLinkActive="active-link" #rla15="routerLinkActive">
+        <h5>Divisions</h5>
+      </a>
+      <a [routerLink]="['/attendances/leave-balances']" *ngIf="auth.hasPermission('superadmin')" md-list-item (click)="selectedTab()"
+        routerLinkActive="active-link" #rla6="routerLinkActive">
         <h5>Leave Balances</h5>
       </a>
-      <a [routerLink]="['/attendances/manage-leaves']" *ngIf="currentRole?.employee?.type === 'superadmin'"
-        md-list-item (click)="selectedTab()" routerLinkActive="active-link" #rla7="routerLinkActive">
-        <h5>Leave Rules</h5>
-      </a>
-      <a [routerLink]="['/settings/shifts']" *ngIf="currentRole?.employee?.type === 'superadmin'" md-list-item (click)="selectedTab()"
-        routerLinkActive="active-link" #rla8="routerLinkActive">
-        <h5>Shifts</h5>
-      </a>
+
       <a [routerLink]="['/subAdmin/shifts']" *ngIf="currentRole?.employee?.type !== 'normal'" md-list-item (click)="selectedTab()"
         routerLinkActive="active-link" #rla17="routerLinkActive">
         <h5>Roster Shift</h5>
       </a>
-      <a [routerLink]="['/settings/holidays']" *ngIf="currentRole?.employee?.type === 'superadmin'" md-list-item
-        (click)="selectedTab()" routerLinkActive="active-link" #rla10="routerLinkActive">
+      <a [routerLink]="['/settings/holidays']" *ngIf="auth.hasPermission('superadmin')" md-list-item (click)="selectedTab()"
+        routerLinkActive="active-link" #rla10="routerLinkActive">
         <h5>Holidays</h5>
       </a>
     </div>
@@ -68,49 +61,90 @@
       <i *ngIf="sections.attendance" class="material-icons leftIcon">keyboard_arrow_down</i>
     </p>
     <div class="list-items" *ngIf="sections.attendance">
-      <a [routerLink]="['/attendances/daily']" *ngIf="currentRole?.employee?.type === 'superadmin'" md-list-item
-        (click)="selectedTab()" routerLinkActive="active-link" #rla3="routerLinkActive">
+      <a [routerLink]="['/attendances/daily']" *ngIf="auth.hasPermission('superadmin')" md-list-item (click)="selectedTab()"
+        routerLinkActive="active-link" #rla3="routerLinkActive">
         <h5>Daily Attendance</h5>
       </a>
-      <a [routerLink]="['/attendances/monthly']" *ngIf="currentRole?.employee?.type === 'superadmin'" md-list-item
-        (click)="selectedTab()" routerLinkActive="active-link" #rla4="routerLinkActive">
+      <a [routerLink]="['/attendances/monthly']" *ngIf="auth.hasPermission('superadmin')" md-list-item (click)="selectedTab()"
+        routerLinkActive="active-link" #rla4="routerLinkActive">
         <h5>Monthly Attendance</h5>
-      </a>
-      <a [routerLink]="['/attendances/reports']" *ngIf="currentRole?.employee?.type === 'superadmin'" md-list-item
-        (click)="selectedTab()" routerLinkActive="active-link" #rla18="routerLinkActive">
-        <h5>Reports</h5>
       </a>
       <a [routerLink]="['/attendances/leaves']" *ngIf="currentRole?.employee?.type != 'normal'" md-list-item (click)="selectedTab()"
         routerLinkActive="active-link" #rla5="routerLinkActive">
-        <h5>Leaves(all)</h5>
+        <h5>Leaves</h5>
       </a>
     </div>
-    <p class="list-header" *ngIf="currentRole?.employee?.type === 'superadmin'" (click)="sections.select('settings')">Settings
+    <p class="list-header" *ngIf="auth.hasPermission(['superadmin'])" (click)="sections.select('reports')">Reports
+      <i *ngIf="!sections.reports" class="material-icons leftIcon">keyboard_arrow_right</i>
+      <i *ngIf="sections.reports" class="material-icons leftIcon">keyboard_arrow_down</i>
+    </p>
+    <div class="list-items" *ngIf="sections.reports">
+      <a [routerLink]="['/reports/attendances']" *ngIf="auth.hasPermission(['superadmin', 'hr.admin'])" md-list-item
+        (click)="selectedTab()" routerLinkActive="active-link" #rla21="routerLinkActive">
+        <h5>Attendance</h5>
+      </a>
+
+      <a [routerLink]="['/reports/leaves']" *ngIf="auth.hasPermission(['superadmin', 'hr.admin'])" md-list-item (click)="selectedTab()"
+        routerLinkActive="active-link" #rla21="routerLinkActive">
+        <h5>Leaves</h5>
+      </a>
+
+      <a [routerLink]="['/reports/employees']" *ngIf="auth.hasPermission(['superadmin', 'hr.admin'])" md-list-item
+        (click)="selectedTab()" routerLinkActive="active-link" #rla21="routerLinkActive">
+        <h5>Employees</h5>
+      </a>
+    </div>
+    <p class="list-header" *ngIf="auth.hasPermission('superadmin')" (click)="sections.select('settings')">Settings
       <i *ngIf="!sections.settings" class="material-icons leftIcon">keyboard_arrow_right</i>
       <i *ngIf="sections.settings" class="material-icons leftIcon">keyboard_arrow_down</i>
     </p>
     <div class="list-items" *ngIf="sections.settings">
-      <!-- <a [routerLink]="['/settings/roster']" md-list-item (click)="selectedTab()" routerLinkActive="active-link" #rla15="routerLinkActive">
-                </a> -->
-      <a [routerLink]="['/settings/alerts']" *ngIf="currentRole?.employee?.type === 'superadmin'" md-list-item (click)="selectedTab()"
-        routerLinkActive="active-link" #rla11="routerLinkActive">
-        <h5>Alerts</h5>
+
+      <a [routerLink]="['/attendances/manage-leaves']" *ngIf="auth.hasPermission('superadmin')" md-list-item (click)="selectedTab()"
+        routerLinkActive="active-link" #rla7="routerLinkActive">
+        <h5>Leave Rules</h5>
       </a>
-      <a [routerLink]="['/settings/devices']" *ngIf="currentRole?.employee?.type === 'superadmin'" md-list-item (click)="selectedTab()"
+      <a [routerLink]="['/settings/shifts']" *ngIf="auth.hasPermission('superadmin')" md-list-item (click)="selectedTab()"
+        routerLinkActive="active-link" #rla8="routerLinkActive">
+        <h5>Shift Rules</h5>
+      </a>
+      <a [routerLink]="['/settings/devices']" *ngIf="auth.hasPermission('superadmin')" md-list-item (click)="selectedTab()"
         routerLinkActive="active-link" #rla12="routerLinkActive">
         <h5>Devices</h5>
       </a>
-      <a [routerLink]="['/settings/deviceLogs']" *ngIf="currentRole?.employee?.type === 'superadmin'" md-list-item
-        (click)="selectedTab()" routerLinkActive="active-link" #rla13="routerLinkActive">
-        <h5>Devices Logs</h5>
-      </a>
-      <a routerLink="/settings/channelTypes" *ngIf="currentRole?.employee?.type === 'superadmin'" md-list-item (click)="selectedTab()"
-        routerLinkActive="active-link" #rla14="routerLinkActive">
-        <h5>Communication Apps</h5>
-      </a>
-      <a routerLink="/settings/reportFormat" *ngIf="currentRole?.employee?.type === 'superadmin'" md-list-item (click)="selectedTab()"
+
+
+      <a routerLink="/settings/reportFormat" *ngIf="auth.hasPermission('superadmin')" md-list-item (click)="selectedTab()"
         routerLinkActive="active-link" #rla16="routerLinkActive">
         <h5>Report Format</h5>
+      </a>
+
+      <a [routerLink]="['/settings/alerts']" *ngIf="auth.hasPermission('superadmin')" md-list-item (click)="selectedTab()"
+        routerLinkActive="active-link" #rla11="routerLinkActive">
+        <h5>Alerts</h5>
+      </a>
+      <a routerLink="/settings/channelTypes" *ngIf="auth.hasPermission('superadmin')" md-list-item (click)="selectedTab()"
+        routerLinkActive="active-link" #rla14="routerLinkActive">
+        <h5>Integrations</h5>
+      </a>
+    </div>
+    <p class="list-header" *ngIf="auth.hasPermission(['system.manage'])" (click)="sections.select('system')">System
+      <i *ngIf="!sections.system" class="material-icons leftIcon">keyboard_arrow_right</i>
+      <i *ngIf="sections.system" class="material-icons leftIcon">keyboard_arrow_down</i>
+    </p>
+    <div class="list-items" *ngIf="sections.system">
+
+      <a [routerLink]="['/system/diagnostics']" *ngIf="auth.hasPermission(['system.manage'])" md-list-item (click)="selectedTab()"
+        routerLinkActive="active-link" #rla20="routerLinkActive">
+        <h5>Diagnostics</h5>
+      </a>
+      <a [routerLink]="['/settings/deviceLogs']" *ngIf="auth.hasPermission(['system.manage', 'superadmin'])"
+        md-list-item (click)="selectedTab()" routerLinkActive="active-link" #rla13="routerLinkActive">
+        <h5>Devices Logs</h5>
+      </a>
+      <a [routerLink]="['/system/usage']" *ngIf="auth.hasPermission(['system.owner'])" md-list-item (click)="selectedTab()"
+        routerLinkActive="active-link" #rla20="routerLinkActive">
+        <h5>Usage</h5>
       </a>
     </div>
   </md-nav-list>

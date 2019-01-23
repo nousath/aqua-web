@@ -20,6 +20,10 @@ export class SubAdminGuard implements CanActivate {
       return true;
     }
 
+    if (this.auth.hasPermission(['superadmin', 'admin', 'organization.admin'])) {
+      return true;
+    }
+
     this.auth.goHome();
     return false;
   }

@@ -9,7 +9,6 @@ import { LeavesComponent } from './leaves/leaves.component';
 import { LeaveBalancesComponent } from './leave-balances/leave-balances.component';
 import { ManageLeavesComponent } from './manage-leaves/manage-leaves.component';
 import { AttendanceLogsComponent } from './attendance-logs/attendance-logs.component';
-import { ReportsComponent } from './reports/reports.component';
 import { TeamsComponent } from './teams/teams.component';
 
 
@@ -20,20 +19,14 @@ const routes: Routes = [
       { path: 'monthly', component: MonthlyComponent },
       { path: 'daily', component: DailyComponent },
 
-
-      { path: 'reports', component: ReportsComponent },
-
       { path: 'daily/:empId', component: AttendanceDetailsComponent },
       { path: 'monthly/:empId', component: AttendanceDetailsComponent },
       { path: 'leaves/:empId', component: AttendanceDetailsComponent },
       { path: 'leave-balances/:empId', component: AttendanceDetailsComponent },
 
-
       { path: 'teams/:empId', component: TeamsComponent },
       { path: 'daily/teams/:empId', component: TeamsComponent },
       { path: 'daily/teams/:empId', component: TeamsComponent },
-
-
 
       { path: 'daily/:empId/apply-leave', component: ApplyLeaveComponent },
       { path: 'monthly/:empId/apply-leave', component: ApplyLeaveComponent },

@@ -1,8 +1,23 @@
-<div class="table-responsive">
+<div class="tool-bar controls-row">
+  <h5>Downloads</h5>
+  <span class="spacer"></span>
+
+  <button md-icon-button (click)="reportRequests.showPrevious()" [disabled]="!reportRequests.previousEnabled">
+    <md-icon>chevron_left</md-icon>
+  </button>
+  <button md-icon-button (click)="getReportLists()">
+    <md-icon>loop</md-icon>
+  </button>
+  <button md-icon-button (click)="reportRequests.showNext()" [disabled]="!reportRequests.nextEnabled">
+    <md-icon>chevron_right</md-icon>
+  </button>
+</div>
+<md-card>
+  <md-spinner *ngIf="reportRequests.isLoading" mode="indeterminate"></md-spinner>
   <table class="table">
     <thead>
       <tr>
-        <th>#</th>
+        <th class="index">#</th>
         <th style="width:115px">Date</th>
         <th>Params</th>
         <th style="width:125px">Status</th>
@@ -10,11 +25,11 @@
     </thead>
     <tbody>
       <tr *ngFor="let item of reportRequests.items | paginate: { id: 'foo',
-        itemsPerPage: reportRequests.pageSize,
-        currentPage: reportRequests.pageNo,
-        totalItems: reportRequests.totalRecords }; let i=index"
+            itemsPerPage: reportRequests.pageSize,
+            currentPage: reportRequests.pageNo,
+            totalItems: reportRequests.totalRecords }; let i=index"
         class="capitalize {{item.status}}">
-        <td>{{i + 1}}</td>
+        <td>{{ reportRequests.pageSize * (reportRequests.pageNo - 1) + i +1 }}</td>
         <td>
           <span *ngIf="item.reportParams.dates">
             {{item.reportParams.dates.from}}</span>
@@ -95,11 +110,11 @@
         </td>
         <td class="status">
           <ng-container *ngIf="item.status === 'new'">
-            <button md-raised-button (click)="updateList()">Requested</button>
+            <button md-raised-button (click)="getReportLists()">Requested</button>
             <span class="sub-text">{{item.agoTime}} ago</span>
           </ng-container>
           <ng-container *ngIf="item.status === 'in-progress'">
-            <button md-raised-button (click)="updateList()">Generating</button>
+            <button md-raised-button (click)="getReportLists()">Generating</button>
             <span class="sub-text">{{item.agoTime}} ago</span>
           </ng-container>
           <ng-container *ngIf="item.status === 'ready'">
@@ -114,19 +129,18 @@
       </tr>
     </tbody>
   </table>
-</div>
-<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-  <div class="custom_pagination">
-    <pagination-controls id="foo" (pageChange)="reportRequests.pageNo = $event;"></pagination-controls>
-    <label>Total Records: {{reportRequests.totalRecords}}</label>
-    <div class="pageSize">
-      <label>Page Size:</label>
-      <select name="pageSize" [(ngModel)]="reportRequests.pageSize" (change)="reportRequests.pageNo = 1;">
-        <option value="10">10</option>
-        <option value="50">50</option>
-        <option value="100">100</option>
-        <option value="500">500</option>
-      </select>
-    </div>
+</md-card>
+
+<div class="custom_pagination">
+  <pagination-controls id="foo" (pageChange)="reportRequests.pageNo = $event;getReportLists()"></pagination-controls>
+  <label>Total Records: {{reportRequests.totalRecords}}</label>
+  <div class="pageSize">
+    <label>Page Size:</label>
+    <select name="pageSize" [(ngModel)]="reportRequests.pageSize" (change)="reportRequests.pageNo = 1;getReportLists()">
+      <option value="10">10</option>
+      <option value="50">50</option>
+      <option value="100">100</option>
+      <option value="500">500</option>
+    </select>
   </div>
 </div>

@@ -12,7 +12,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
 import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
 import { AdminGuard } from './guards/admin.guard';
-import { SystemUsageComponent } from './pages/system-usage/system-usage.component';
 import { ResetPasswordDialogComponent } from './dialogs/reset-password-dialog/reset-password-dialog.component';
 import { EmsDepartmentService, EmsContractorService, EmsDivisionService } from './services';
 import { LeaveConfirmDialogComponent } from './dialogs/leave-confirm-dialog/leave-confirm-dialog.component';
@@ -21,6 +20,7 @@ import { AddShiftDialogComponent } from './dialogs/add-shift-dialog/add-shift-di
 import { NavigationBarComponent } from './shared/components/navigation-bar/navigation-bar.component';
 import { CopyContentComponent } from './dialogs/copy-content/copy-content.component';
 import { SignupComponent } from './pages/signup/signup.component';
+import { SystemAdminGuard } from './guards/system-admin.guard';
 
 
 @NgModule({
@@ -30,7 +30,6 @@ import { SignupComponent } from './pages/signup/signup.component';
     SignupComponent,
     OrgLoginComponent,
     AppDownloadComponent,
-    SystemUsageComponent,
     ResetPasswordDialogComponent,
     NavigationBarComponent,
     LeaveConfirmDialogComponent,
@@ -46,7 +45,14 @@ import { SignupComponent } from './pages/signup/signup.component';
     AppRoutingModule
   ],
   providers: [
-    LoginGuard, UserGuard, AdminGuard, OwnerGuard, EmsDepartmentService, EmsContractorService, EmsDivisionService
+    LoginGuard,
+    UserGuard,
+    AdminGuard,
+    OwnerGuard,
+    SystemAdminGuard,
+    EmsDepartmentService,
+    EmsContractorService,
+    EmsDivisionService
   ],
   entryComponents: [
     ResetPasswordDialogComponent,

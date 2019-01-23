@@ -157,15 +157,11 @@
       <label for="email">Before</label>
       <input type="time" class="form-control" [(ngModel)]="checkOutBefore">
     </div>
-
   </div>
-  <md-card-footer>
-    <div class="flex-row">
-      <div class="spacer"></div>
-      <div class="form-group">
-        <button md-button mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()">Reset</button>
-        <button md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="apply()">Apply</button>
-      </div>
-    </div>
-  </md-card-footer>
+  <div class="controls-row footer">
+    <div class="spacer"></div>
+    <button md-button mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()">Reset</button>
+    <button md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="apply()">Apply</button>
+    <div class="spacer"></div>
+  </div>
 </md-card>

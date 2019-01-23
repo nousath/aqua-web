@@ -12,7 +12,6 @@ import { AlterEditComponent } from './alter-edit/alter-edit.component';
 import { ChannelTypesComponent } from './channel-types/channel-types.component';
 import { ChannelTypeEditComponent } from './channel-type-edit/channel-type-edit.component';
 import { ReportFormatComponent } from './report-format/report-format.component';
-import { DiagnosticsComponent } from './diagnostics/diagnostics.component';
 
 const routes: Routes = [
   {
@@ -22,7 +21,6 @@ const routes: Routes = [
       { path: 'shifts/:id', component: ShiftTypeNewComponent },
       { path: 'devices', component: DevicesComponent },
       { path: 'deviceLogs', component: DeviceLogsComponent },
-      { path: 'diagnostics', component: DiagnosticsComponent },
       { path: 'holidays', component: HolidaysComponent },
       { path: 'alerts', component: AlertsComponent },
       { path: 'alerts/types', component: AlterTypesComponent },
