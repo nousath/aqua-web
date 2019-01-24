@@ -26,8 +26,6 @@ export class Role {
       this.employee = new EmsEmployee(obj.employee);
     }
 
-
-
     if (obj.organization) {
       this.organization = new Organization(obj.organization);
     }

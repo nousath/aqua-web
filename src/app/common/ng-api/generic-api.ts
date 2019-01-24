@@ -350,6 +350,18 @@ export class GenericApi<TModel> implements IApi<TModel> {
       key: string,
       value: string
     }[]) {
-    this.rootUrl = `${environment.apiUrls[apiName]}/api` || `${apiName}/api`;
+
+    let apiUrls = {}
+    const stringified = localStorage.getItem('api.urls')
+    if (stringified) {
+      apiUrls = JSON.parse(stringified)
+    }
+    if (apiUrls[apiName]) {
+      this.rootUrl = apiUrls[apiName]
+    } else {
+      this.rootUrl = `${environment.apiUrls[apiName] || apiName}/api`;
+      apiUrls[apiName] = this.rootUrl;
+      localStorage.setItem('api.urls', JSON.stringify(apiUrls))
+    }
   }
 }

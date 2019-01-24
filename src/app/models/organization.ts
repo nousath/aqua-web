@@ -1,5 +1,4 @@
 import { ChannelType } from './channel-type';
-import { Role } from './ems/role';
 
 export class Organization {
   id = '';
@@ -14,6 +13,13 @@ export class Organization {
   onBoardingStatus: 'start' | 'employees' | 'devices' | 'syncapp' | 'alerts' | 'complete' = 'start';
   communicationApps: CommunicationApps = new CommunicationApps();
 
+  services: {
+    code: string,
+    logo: string,
+    url: string,
+    name: string
+  }[] = [];
+
   constructor(obj?: any) {
 
     if (!obj) {
@@ -26,13 +32,18 @@ export class Organization {
     this.name = obj.name;
     this.status = obj.status;
     this.timeStamp = obj.timeStamp;
-    // this.services = [];
+    this.services = [];
 
-    // if (obj.services) {
-    //   obj.services.forEach(item => {
-    //     this.services.push(new Service(item));
-    //   });
-    // }
+    if (obj.services) {
+      obj.services.forEach(item => {
+        this.services.push({
+          code: item.code,
+          logo: item.logo,
+          name: item.name,
+          url: item.url
+        });
+      });
+    }
   }
 }
 export class CommunicationApps {

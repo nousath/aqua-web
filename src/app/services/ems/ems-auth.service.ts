@@ -87,29 +87,44 @@ export class EmsAuthService {
     // return role;
   }
 
-  private _setRole(role: Role) {
-    this._role = role;
-    if (role) {
-      this.store.setItem('role-key', role.key);
-      // this.store.setItem('roleKey', role.key); // obsolete
+  private _setRole(role: Role, setUrls?: boolean) {
 
-    } else {
+    this._role = role;
+    if (!role) {
       this.store.removeItem('role-key');
-      // this.store.removeItem('roleKey'); // obsolete
+      this._setApiUrls(null)
+    } else {
+      this.store.setItem('role-key', role.key);
+      if (role.employee) {
+        role.permissions.push(role.employee.type)
+      }
+      if (setUrls) {
+        this._setApiUrls(role.organization)
+      }
     }
-    if (role.employee) {
-      role.permissions.push(role.employee.type)
-    }
+
     this._roleSubject.next(this._role);
     return role;
   }
 
-  private _setUser(user: User) {
+  private _setApiUrls(organization: Organization) {
+    const apiUrls: any = {}
+
+    if (organization && organization.services && organization.services.length) {
+      organization.services.forEach(api => {
+        apiUrls[api.code] = api.url
+      });
+    }
+
+    localStorage.setItem('api.urls', JSON.stringify(apiUrls))
+  }
+
+  private _setUser(user: User, setUrls?: boolean) {
     this._user = user;
     this.store.setObject('user', this._user);
 
     const role = this._extractRole(user);
-    this._setRole(role);
+    this._setRole(role, setUrls);
     // this._currentUserSubject.next(this._user);
     return user;
   }
@@ -124,7 +139,7 @@ export class EmsAuthService {
       email: email,
       password: password
     }, 'signIn').then((data: User) => {
-      this._setUser(new User(data));
+      this._setUser(new User(data), true);
       const role = this.currentRole();
       subject.next(role);
     }).catch(err => subject.error(err));
@@ -151,7 +166,7 @@ export class EmsAuthService {
     this.users.simplePost({
       email: email
     }).then(data => {
-      this._setUser(new User(data));
+      this._setUser(new User(data), true);
       subject.next(data);
     }).catch(err => subject.error(err));
     return subject
@@ -177,7 +192,7 @@ export class EmsAuthService {
     const subject = new Subject<Role>();
 
     (new GenericApi<User>('users', this.http, 'ems')).get('my').then((data: User) => {
-      this._setUser(new User(data));
+      this._setUser(new User(data), true);
       const role = this.currentRole();
       subject.next(role);
     }).catch(err => subject.error(err));
@@ -295,7 +310,7 @@ export class EmsAuthService {
       const api = new GenericApi<User>('users', this.http, 'ems', headers);
 
       api.get('my').then(data => {
-        this._setUser(new User(data));
+        this._setUser(new User(data), true);
       });
     }
   }
