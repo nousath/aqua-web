@@ -352,7 +352,7 @@ export class GenericApi<TModel> implements IApi<TModel> {
     }[]) {
 
     let apiUrls = {}
-    const stringified = localStorage.getItem('api.urls')
+    const stringified = localStorage.getItem('api-urls')
     if (stringified) {
       apiUrls = JSON.parse(stringified)
     }
@@ -361,7 +361,7 @@ export class GenericApi<TModel> implements IApi<TModel> {
     } else {
       this.rootUrl = `${environment.apiUrls[apiName] || apiName}/api`;
       apiUrls[apiName] = this.rootUrl;
-      localStorage.setItem('api.urls', JSON.stringify(apiUrls))
+      localStorage.setItem('api-urls', JSON.stringify(apiUrls))
     }
   }
 }

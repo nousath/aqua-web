@@ -116,7 +116,7 @@ export class EmsAuthService {
       });
     }
 
-    localStorage.setItem('api.urls', JSON.stringify(apiUrls))
+    localStorage.setItem('api-urls', JSON.stringify(apiUrls))
   }
 
   private _setUser(user: User, setUrls?: boolean) {
