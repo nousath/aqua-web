@@ -83,7 +83,9 @@ export class DeviceLogsComponent implements OnInit, OnDestroy, AfterViewInit {
       if (new Date(e.date) > new Date()) {
         return this.toastyService.info({ title: 'Info', msg: 'Date should be less than or equal to current date' });
       }
-      this.deviceLogs.filters.properties['date'].value = e.date.toISOString();
+      if (e.date) {
+        this.deviceLogs.filters.properties['date'].value = e.date.toISOString();
+      }
       this.getDeviceLogs();
     });
   }

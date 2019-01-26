@@ -1,102 +1,104 @@
 <div class="row page_header">
-    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <h5>
-            <b>Device Logs</b>
-        </h5>
-    </div>
+  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+    <h5>
+      <b>Device Logs</b>
+    </h5>
+  </div>
 </div>
 <md-card class="filters">
-    <div class="flex-row three">
-        <div class="form-group">
-            <label>Level</label>
-            <select class="form-control" name="level" [(ngModel)]="deviceLogs.filters.properties['level']['value']">
-                  <option value="all" [selected]>All</option>
-                  <option value="info">Info</option>
-                  <option value="error">Error</option>
-                </select>
-        </div>
-        <div class="form-group">
-            <label>Devices</label>
-            <select class="form-control" name="devices" [(ngModel)]="deviceLogs.filters.properties['deviceId']['value']">
-                  <option value="">All</option>
-                  <option *ngFor="let device of devices.items" value="{{device.id}}">{{device.ip}}</option>
-                </select>
-        </div>
-        <div class="form-group">
-            <label>Date</label>
-            <input id="dateSelector" name="dateSelect" type="text" class="form-control input-sm calendar no-spin">
-        </div>
-        <div class="form-group">
-            <label>Description</label>
-            <input type="text" class="form-control" [(ngModel)]="deviceLogs.filters.properties['description']['value']">
-        </div>
+  <div class="flex-row three">
+    <div class="form-group">
+      <label>Level</label>
+      <select class="form-control" name="level" [(ngModel)]="deviceLogs.filters.properties['level']['value']">
+        <option value="all" [selected]>All</option>
+        <option value="info">Info</option>
+        <option value="error">Error</option>
+      </select>
     </div>
-    <md-card-footer>
-        <div class="flex-row">
-            <div class="spacer"></div>
-            <div class="form-group">
-                <button [disabled]="deviceLogs?.isLoading" md-button mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()">Reset</button>
-                <button [disabled]="deviceLogs?.isLoading" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'" (click)="getDeviceLogs()">Apply</button>
-            </div>
-        </div>
-    </md-card-footer>
+    <div class="form-group">
+      <label>Devices</label>
+      <select class="form-control" name="devices" [(ngModel)]="deviceLogs.filters.properties['deviceId']['value']">
+        <option value="">All</option>
+        <option *ngFor="let device of devices.items" value="{{device.id}}">{{device.ip}}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Date</label>
+      <input id="dateSelector" name="dateSelect" type="text" class="form-control input-sm calendar no-spin">
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <input type="text" class="form-control" [(ngModel)]="deviceLogs.filters.properties['description']['value']">
+    </div>
+  </div>
+  <md-card-footer>
+    <div class="flex-row">
+      <div class="spacer"></div>
+      <div class="form-group">
+        <button [disabled]="deviceLogs?.isLoading" md-button mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()">Reset</button>
+        <button [disabled]="deviceLogs?.isLoading" md-raised-button color="primary" mdTooltip="Apply"
+          [mdTooltipPosition]="'above'" (click)="getDeviceLogs()">Apply</button>
+      </div>
+    </div>
+  </md-card-footer>
 </md-card>
 <md-spinner class="custom_spinner" *ngIf="deviceLogs?.isLoading" mode="indeterminate"></md-spinner>
 <div class="row">
-    <md-card class="card">
-        <div class="table-responsive">
-            <table class="table table-condensed table-hover">
-                <thead class="primary_thead">
-                    <tr>
-                        <th class="cellFormat"></th>
-                        <th class="cellFormat">Date</th>
-                        <th class="cellFormat">Time</th>
-                        <th class="cellFormat">Device(IP)</th>
-                        <th class="cellFormat">Message</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of deviceLogs.items | paginate: { id: 'foo',
+  <md-card class="card">
+    <div class="table-responsive">
+      <table class="table table-condensed table-hover">
+        <thead class="primary_thead">
+          <tr>
+            <th class="cellFormat"></th>
+            <th class="cellFormat">Date</th>
+            <th class="cellFormat">Time</th>
+            <th class="cellFormat">Device(IP)</th>
+            <th class="cellFormat">Message</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of deviceLogs.items | paginate: { id: 'foo',
                                                       itemsPerPage: deviceLogs.pageSize,
                                                       currentPage: deviceLogs.pageNo,
-                                                      totalItems: deviceLogs.totalRecords };" class="capitalize" [ngClass]="{'bg-danger': item.status === 'Error'} ">
-                        <td class="cellFormat" [ngSwitch]="item.status">
-                            <span mdTooltip="{{item.status}}">
+                                                      totalItems: deviceLogs.totalRecords };"
+            class="capitalize" [ngClass]="{'bg-danger': item.status === 'Error'} ">
+            <td class="cellFormat" [ngSwitch]="item.status">
+              <span mdTooltip="{{item.status}}">
                 <i *ngSwitchCase="'Error'" class="fa fa-exclamation-triangle" style="color: #D8000C;" aria-hidden="true"></i>
                 <i *ngSwitchCase="'Info'" class="fa fa-info-circle" style="color: #00529B;" aria-hidden="true"></i>
                 <i *ngSwitchCase="'Debug'" class="fa fa-info-circle" style="color: #a1a1a1;" aria-hidden="true"></i>
                 <i *ngSwitchCase="'Success'" class="fa fa-check" style="color: #4F8A10;" aria-hidden="true"></i>
               </span>
-                        </td>
-                        <td class="cellFormat">{{item?.date | date: "dd-MM-yyyy"}}</td>
-                        <td class="cellFormat">{{item?.date | date: "HH:mm"}}</td>
-                        <td class="cellFormat">
-                            <span mdTooltip="{{item.deviceName}}">{{item?.ipAddress}}</span>
-                        </td>
-                        <td class="cellFormat">{{item?.message}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </md-card>
+            </td>
+            <td class="cellFormat">{{item?.date | date: "dd-MM-yyyy"}}</td>
+            <td class="cellFormat">{{item?.date | date: "HH:mm"}}</td>
+            <td class="cellFormat">
+              <span mdTooltip="{{item.deviceName}}">{{item?.ipAddress}}</span>
+            </td>
+            <td class="cellFormat">{{item?.message}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </md-card>
 </div>
 <div class="row footer">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+    </div>
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="custom_pagination">
-                <pagination-controls id="foo" (pageChange)="deviceLogs.pageNo = $event;getDeviceLogs();"></pagination-controls>
-                <div class="pageSize">
-                    <label>Page Size:</label>
-                    <select [(ngModel)]="deviceLogs.pageSize" (change)="deviceLogs.pageNo = 1;getDeviceLogs();">
+      <div class="custom_pagination">
+        <pagination-controls id="foo" (pageChange)="deviceLogs.pageNo = $event;getDeviceLogs();"></pagination-controls>
+        <div class="pageSize">
+          <label>Page Size:</label>
+          <select [(ngModel)]="deviceLogs.pageSize" (change)="deviceLogs.pageNo = 1;getDeviceLogs();">
             <option value="10">10</option>
             <option value="20">20</option>
             <option value="50">50</option>
             <option value="100">100</option>
           </select>
-                </div>
-            </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>

@@ -53,8 +53,8 @@ export class PagerBaseComponent<TModel> implements IPager {
       options = new PageOptions()
       if (!this.options.pageOptions.noPaging) {
         options.set({
-          offset: (this.pageNo - 1) * this.options.pageOptions.limit,
-          limit: this.options.pageOptions.limit
+          offset: (this.pageNo - 1) * (this.pageSize || this.options.pageOptions.limit),
+          limit: (this.pageSize || this.options.pageOptions.limit)
         })
       }
     }
