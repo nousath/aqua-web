@@ -19,16 +19,11 @@ export class DiagnosticsComponent implements OnInit, OnDestroy, AfterViewInit {
   logs: PagerModel<Log>;
   devices: PagerModel<Device>;
   status: string;
-  date: any = null;
-  pageSize: any;
-  userCode: string;
+  showFilters = false;
 
   constructor(private toastyService: ToastyService,
     private activatedRoute: ActivatedRoute,
-    private router: Router,
     private location: Location,
-    private store: LocalStorageService,
-    private amsEmployeeService: AmsEmployeeService,
     private amsDeviceService: AmsDeviceService) {
 
     this.logs = new PagerModel({
@@ -126,6 +121,14 @@ export class DiagnosticsComponent implements OnInit, OnDestroy, AfterViewInit {
   reset() {
     this.logs.filters.reset();
     this.getLogs();
-    this.store.removeItem('device-logs-filter')
+  }
+
+  clearAll() {
+    this.amsDeviceService.logs.simplePost({}, 'remove-all').then(() => {
+      return this.toastyService.info({ title: 'Info', msg: 'Removed all logs' });
+    }).catch((err) => {
+      return this.toastyService.error({ title: 'Could Not Remove Logs', msg: err });
+
+    })
   }
 }

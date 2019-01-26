@@ -1,11 +1,30 @@
-<div class="row page_header">
-  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-    <h5>
-      <b>Logs</b>
-    </h5>
-  </div>
+<div class="tool-bar controls-row">
+  <h5>Logs</h5>
+  <span class="spacer"></span>
+
+  <button md-icon-button (click)="logs.showPrevious()" [disabled]="!logs.previousEnabled">
+    <md-icon>chevron_left</md-icon>
+  </button>
+  <button md-icon-button (click)="logs.fetch()">
+    <md-icon>loop</md-icon>
+  </button>
+  <button md-icon-button (click)="logs.showNext()" [disabled]="!logs.nextEnabled">
+    <md-icon>chevron_right</md-icon>
+  </button>
+  <span class="spacer"></span>
+  <button md-icon-button (click)="showFilters = !showFilters" mdTooltip="Filters" [mdTooltipPosition]="'above'">
+    <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
+  </button>
+  <button [matMenuTriggerFor]="moreMenu" md-icon-button>
+    <md-icon>more_vert</md-icon>
+  </button>
+  <md-menu #moreMenu="mdMenu">
+    <button md-menu-item (click)="clearAll()" mdTooltip="Clear All Logs" [mdTooltipPosition]="'above'">
+      <md-icon>add_circle_outline</md-icon> Clear
+    </button>
+  </md-menu>
 </div>
-<md-card class="filters">
+<md-card class="filters" *ngIf="showFilters">
   <div class="flex-row three">
     <div class="form-group">
       <label>Level</label>
