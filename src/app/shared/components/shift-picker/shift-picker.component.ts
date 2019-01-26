@@ -117,7 +117,7 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
     this.isPast = moment(this.date).isBefore(new Date());
     this.isToday = moment(this.date).isSame(new Date(), 'd');
     this.isBeforeToday = moment(this.date).isBefore(new Date(), 'd');
-    this.day = moment(this.date).day().toString()
+    this.day = this.dates.date(this.date).day();
 
     if (this.effectiveShift.previousShift) {
       this.startingShift = this.effectiveShift.previousShift.shiftType

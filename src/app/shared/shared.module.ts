@@ -94,6 +94,7 @@ import { GetValueDialogComponent } from './components/get-value-dialog/get-value
 import { CalendarViewComponent } from './components/calendar-view/calendar-view.component';
 import { CheckInComponent } from './components/check-in/check-in.component';
 import { CheckOutComponent } from './components/check-out/check-out.component';
+import { WeekOffComponent } from './components/week-off/week-off.component';
 
 
 
@@ -151,7 +152,8 @@ export const MaterialModules = [
     GetValueDialogComponent,
     CalendarViewComponent,
     CheckInComponent,
-    CheckOutComponent
+    CheckOutComponent,
+    WeekOffComponent
   ],
   providers: [
     EmsEmployeeService,
@@ -211,6 +213,7 @@ export const MaterialModules = [
     CalendarViewComponent,
     CheckInComponent,
     CheckOutComponent,
+    WeekOffComponent,
     ProcessingIndicatorComponent,
     NamePipe
   ],

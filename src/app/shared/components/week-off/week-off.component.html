@@ -1,0 +1,46 @@
+<app-processing-indicator *ngIf="isProcessing"></app-processing-indicator>
+<div class="form-control btn-group btn-group-sm">
+  <!-- <div class="btn-group btn-group-sm"> -->
+  <button type="button" class="btn btn-sm btn-default" (click)="toggleWeeklyOff('sunday')" [ngClass]="{
+      'off' :weeklyOff.sunday?.toLowerCase() === 'off' || !weeklyOff.sunday,
+      'full':weeklyOff.sunday?.toLowerCase() === 'full',
+      'half':weeklyOff.sunday?.toLowerCase() === 'half',
+      'alt': weeklyOff.sunday?.toLowerCase() === 'alternate'}"
+    [mdTooltip]="weeklyOff.sunday?.toUpperCase()" [mdTooltipPosition]="'above'">Sun</button>
+  <button type="button" class="btn btn-sm btn-default" (click)="toggleWeeklyOff('monday')" [ngClass]="{
+      'off' :weeklyOff.monday?.toLowerCase() === 'off' || !weeklyOff.monday,
+      'full':weeklyOff.monday?.toLowerCase() === 'full',
+      'half':weeklyOff.monday?.toLowerCase() === 'half',
+      'alt': weeklyOff.monday?.toLowerCase() === 'alternate'}"
+    [mdTooltip]="weeklyOff.monday?.toUpperCase()" [mdTooltipPosition]="'above'">Mon</button>
+  <button type="button" class="btn btn-sm btn-default" (click)="toggleWeeklyOff('tuesday')" [ngClass]="{
+      'off' :weeklyOff.tuesday?.toLowerCase() === 'off' || !weeklyOff.tuesday,
+      'full':weeklyOff.tuesday?.toLowerCase() === 'full',
+      'half':weeklyOff.tuesday?.toLowerCase() === 'half',
+      'alt': weeklyOff.tuesday?.toLowerCase() === 'alternate'}"
+    [mdTooltip]="weeklyOff.tuesday?.toUpperCase()" [mdTooltipPosition]="'above'">Tue</button>
+  <button type="button" class="btn btn-sm btn-default" (click)="toggleWeeklyOff('wednesday')" [ngClass]="{
+      'off' :weeklyOff.wednesday?.toLowerCase() === 'off' || !weeklyOff.wednesday,
+      'full':weeklyOff.wednesday?.toLowerCase() === 'full',
+      'half':weeklyOff.wednesday?.toLowerCase() === 'half',
+      'alt': weeklyOff.wednesday?.toLowerCase() === 'alternate'}"
+    [mdTooltip]="weeklyOff.wednesday?.toUpperCase()" [mdTooltipPosition]="'above'">Wed</button>
+  <button type="button" class="btn btn-sm btn-default" (click)="toggleWeeklyOff('thursday')" [ngClass]="{
+      'off' :weeklyOff.thursday?.toLowerCase() === 'off' || !weeklyOff.thursday,
+      'full':weeklyOff.thursday?.toLowerCase() === 'full',
+      'half':weeklyOff.thursday?.toLowerCase() === 'half',
+      'alt': weeklyOff.thursday?.toLowerCase() === 'alternate'}"
+    [mdTooltip]="weeklyOff.thursday?.toUpperCase()" [mdTooltipPosition]="'above'">Thu</button>
+  <button type="button" class="btn btn-sm btn-default" (click)="toggleWeeklyOff('friday')" [ngClass]="{
+      'off' :weeklyOff.friday?.toLowerCase() === 'off' || !weeklyOff.friday,
+      'full':weeklyOff.friday?.toLowerCase() === 'full',
+      'half':weeklyOff.friday?.toLowerCase() === 'half',
+      'alt': weeklyOff.friday?.toLowerCase() === 'alternate'}"
+    [mdTooltip]="weeklyOff.friday?.toUpperCase()" [mdTooltipPosition]="'above'">Fri</button>
+  <button type="button" class="btn btn-sm btn-default" (click)="toggleWeeklyOff('saturday')" [ngClass]="{
+        'off' :weeklyOff.saturday?.toLowerCase() === 'off' || !weeklyOff.saturday,
+        'full':weeklyOff.saturday?.toLowerCase() === 'full',
+        'half':weeklyOff.saturday?.toLowerCase() === 'half',
+        'alt': weeklyOff.saturday?.toLowerCase() === 'alternate'}"
+    [mdTooltip]="weeklyOff.saturday?.toUpperCase()" [mdTooltipPosition]="'above'">Sat</button>
+</div>
