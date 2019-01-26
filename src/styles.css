@@ -199,6 +199,11 @@ tr.disabled {
     color: #ffffff;
 }
 
+.badge.disabled {
+    background-color: var(--disabled);
+    color: #ffffff;
+}
+
 .badge.warn {
     background-color: var(--warn);
     color: #ffffff;

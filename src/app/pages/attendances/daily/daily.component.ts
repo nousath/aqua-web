@@ -18,6 +18,7 @@ import { FileUploaderDialogComponent } from '../../../shared/components/file-upl
 import { AddAttendanceLogsComponent } from '../../../shared/components/add-attendance-logs/add-attendance-logs.component';
 import { BulkTimeLogsDialogComponent } from '../../../shared/components/bulk-time-logs-dialog/bulk-time-logs-dialog.component';
 import { EmsAuthService } from '../../../services/ems/ems-auth.service';
+import { DatesService } from '../../../shared/services/dates.service';
 declare var $: any;
 
 @Component({
@@ -71,6 +72,7 @@ export class DailyComponent {
     private amsAttendanceService: AmsAttendanceService,
     private amsTimelogsService: AmsTimelogsService,
     private toastyService: ToastyService,
+    private datesService: DatesService,
     public dialog: MdDialog) {
 
     const divisionFilter = {
@@ -193,6 +195,7 @@ export class DailyComponent {
     });
   }
   ngOnInit() {
+    this.datesService.date(this.ofDate).isPast()
   }
 
   ngAfterViewInit() {

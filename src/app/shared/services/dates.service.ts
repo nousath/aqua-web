@@ -196,6 +196,10 @@ export class DatesService {
       isFuture: () => {
         return moment(date1).isAfter(new Date());
       },
+
+      isPast: () => {
+        return moment(date1).isBefore(new Date(), 'date')
+      },
       isBetween: (from, till) => {
         return moment(date1).isBetween(moment(from), moment(till), 'day', '[]')
       },
