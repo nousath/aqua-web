@@ -192,6 +192,10 @@ export class DatesService {
       isSame: (date2) => {
         return moment(date1).startOf('day').isSame(moment(date2).startOf('day'))
       },
+
+      isFuture: () => {
+        return moment(date1).isAfter(new Date());
+      },
       isBetween: (from, till) => {
         return moment(date1).isBetween(moment(from), moment(till), 'day', '[]')
       },
@@ -199,6 +203,10 @@ export class DatesService {
       toString: (format) => {
         format = format || 'dddd, MMMM Do YYYY'
         return moment(date1).format('dddd, MMMM Do YYYY')
+      },
+
+      serialize: () => {
+        return moment(date1).toDate().toISOString()
       }
     }
   }

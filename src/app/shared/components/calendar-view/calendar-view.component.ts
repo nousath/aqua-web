@@ -201,10 +201,11 @@ export class CalendarViewComponent implements OnInit, OnChanges {
   }
 
   updateDayEvent(item: DayEvent) {
-    if (item.date < new Date()) {
+    const date = this.dateService.date(item.date)
+    if (!date.isFuture()) {
       this.router.navigate([`/attendances/${this.employee.id}/logs`], {
         queryParams: {
-          ofDate: item.date.toISOString()
+          ofDate: date.serialize()
         }
       })
     }

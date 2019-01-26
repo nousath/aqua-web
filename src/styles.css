@@ -199,6 +199,11 @@ tr.disabled {
     color: #ffffff;
 }
 
+.badge.warn {
+    background-color: var(--warn);
+    color: #ffffff;
+}
+
 .badge.info.first {
     background: linear-gradient(to right, var(--primary) 0%, var(--primary) 50%, var(--disabled) 50%, var(--disabled) 50%);
 }

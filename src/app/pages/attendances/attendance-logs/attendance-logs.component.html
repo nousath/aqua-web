@@ -5,7 +5,7 @@
     <button md-icon-button (click)="showPreviousDate()">
       <md-icon>arrow_back</md-icon>
     </button>
-    {{ofDate | date}}
+    <span [routerLink]="[ '/attendances/monthly', employee?.properties?.id ]">{{ofDate | date}}</span>
     <button md-icon-button (click)="showNextDate()">
       <md-icon>arrow_forward</md-icon>
     </button>
