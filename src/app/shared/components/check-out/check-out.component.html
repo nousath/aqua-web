@@ -1,0 +1,11 @@
+<div *ngIf="attendance.checkOut">
+  <div>{{attendance.checkOut | date:'shortTime'}}</div>
+  <ng-container *ngIf="isPast" [ngSwitch]="attendance.checkOutStatus">
+    <span class="sub-text" *ngSwitchCase="'late'">Went Late</span>
+    <span class="sub-text" *ngSwitchCase="'early'">Left Early</span>
+    <span class="sub-text" *ngSwitchCase="'missed'">Missed</span>
+  </ng-container>
+
+</div>
+<span class="cta" *ngIf="!attendance.checkOut && isPast && attendance.status === 'present'">Missed
+  Check Out</span>

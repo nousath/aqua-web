@@ -70,12 +70,14 @@
             </tr>
             <tr class="capitalize">
               <td> CheckIn : </td>
-              <td> {{attendance?.checkIn | date: 'shortTime'}}</td>
+              <td>
+                <aqua-check-in *ngIf="attendance" [attendance]="attendance"></aqua-check-in>
+              </td>
             </tr>
             <tr class="capitalize">
               <td> CheckOut : </td>
               <td>
-                <div>{{attendance?.checkOut | date: 'shortTime'}}</div>
+                <aqua-check-out *ngIf="attendance" [attendance]="attendance"></aqua-check-out>
                 <span *ngIf="attendance?.overTime" class="sub-text">{{attendance?.overTime}} minutes</span>
               </td>
             </tr>

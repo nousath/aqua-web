@@ -92,6 +92,8 @@ import { ProcessingIndicatorComponent } from './components/processing-indicator/
 import { PushEventService } from '../services/push-event.service';
 import { GetValueDialogComponent } from './components/get-value-dialog/get-value-dialog.component';
 import { CalendarViewComponent } from './components/calendar-view/calendar-view.component';
+import { CheckInComponent } from './components/check-in/check-in.component';
+import { CheckOutComponent } from './components/check-out/check-out.component';
 
 
 
@@ -147,7 +149,9 @@ export const MaterialModules = [
     ImageEditorComponent,
     ProcessingIndicatorComponent,
     GetValueDialogComponent,
-    CalendarViewComponent
+    CalendarViewComponent,
+    CheckInComponent,
+    CheckOutComponent
   ],
   providers: [
     EmsEmployeeService,
@@ -205,6 +209,8 @@ export const MaterialModules = [
     AddAttendanceLogsComponent,
     ShiftCountComponent,
     CalendarViewComponent,
+    CheckInComponent,
+    CheckOutComponent,
     ProcessingIndicatorComponent,
     NamePipe
   ],
