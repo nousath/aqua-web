@@ -51,13 +51,13 @@
     <button md-menu-item [mdMenuTriggerFor]="shiftOptions" [disabled]="isDynamic" (click)="stopPropagation($event)">Shifts</button>
   </md-menu>
   <md-menu #offOptions="mdMenu" class="off" xPosition="after" [overlapTrigger]="false">
-    <button md-menu-item [disabled]="isPast" (click)="setWeeklyOff()">
+    <button md-menu-item [disabled]="isPast || isShiftOff" (click)="setWeeklyOff()">
       <span>Every Week</span>
-      <md-slide-toggle [disabled]="isPast" [checked]="isWeeklyOff"></md-slide-toggle>
+      <md-slide-toggle [disabled]="isPast || isShiftOff" [checked]="isWeeklyOff"></md-slide-toggle>
     </button>
-    <button md-menu-item [disabled]="leave" (click)="setDayOff()" *ngIf="auth.hasPermission('superadmin') || (auth.hasPermission('admin') && !isPast)">
+    <button md-menu-item [disabled]="leave || isShiftOff" (click)="setDayOff()" *ngIf="auth.hasPermission('superadmin') || (auth.hasPermission('admin') && !isPast)">
       <span>This Week</span>
-      <md-slide-toggle [checked]="isDayOff"></md-slide-toggle>
+      <md-slide-toggle [disabled]="leave || isShiftOff" [checked]="isDayOff"></md-slide-toggle>
     </button>
   </md-menu>
   <md-menu #leaveOptions="mdMenu" class="leaves" xPosition="after" [overlapTrigger]="false">

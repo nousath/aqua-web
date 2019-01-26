@@ -72,6 +72,7 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
   isDynamic = false;
   isAttendance = false;
   isContinue = false;
+  isShiftOff = false;
 
   selectedShift: Shift;
   selectedShiftType: ShiftType;
@@ -195,10 +196,11 @@ export class ShiftPickerComponent implements OnInit, OnChanges {
     } else if (!this.isPast) {
       if (this.attendance && (this.attendance.status === 'weekOff' || this.attendance.shift.status === 'weeklyOff')) {
         this.isDayOff = true;
-      } else if (this.employee.weeklyOff && this.employee.weeklyOff.isConfigured) {
-        this.isWeeklyOff = this.employee.weeklyOff[this.day];
       } else if (this.dayShiftType[this.day] === 'off') {
         this.isWeeklyOff = true;
+        this.isShiftOff = true;
+      } else if (this.employee.weeklyOff && this.employee.weeklyOff.isConfigured) {
+        this.isWeeklyOff = this.employee.weeklyOff[this.day];
       }
     }
 
