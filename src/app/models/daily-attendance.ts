@@ -38,6 +38,10 @@ export class Attendance {
   needsAction: string;
   checkInStatus: string;
   checkOutStatus: string;
+
+  firstHalfStatus: string;
+  secondHalfStatus: string;
+
   isContinue: boolean;
   hours: string;
   count: number;

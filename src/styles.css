@@ -4,6 +4,8 @@
 :root {
     --primary: #00A8c6;
     --accent: #bfbdbd;
+    --disabled: #bfbdbd;
+    --warn: #ff6666;
     --primaryBackdrop: #00bcd47a;
     --defaultBackground: #efefef
 }
@@ -71,7 +73,7 @@ table .index {
 }
 
 .mat-icon.warn {
-    color: red;
+    color: var(--warn);
 }
 
 .primary_thead {
@@ -134,7 +136,7 @@ tr.disabled {
 }
 
 .cta {
-    color: #ff6666;
+    color: var(--warn);
 }
 
 /* .mat-focused.mat-form-field-underline{
@@ -190,6 +192,23 @@ tr.disabled {
     color: #fff;
     background-color: var(--primary);
     border-color: var(--primary);
+}
+
+.badge.info {
+    background-color: var(--primary);
+    color: #ffffff;
+}
+
+.badge.info.first {
+    background: linear-gradient(to right, var(--primary) 0%, var(--primary) 50%, var(--disabled) 50%, var(--disabled) 50%);
+}
+
+.badge.info.second {
+    background: linear-gradient(to right, var(--disabled) 0%, var(--disabled) 50%, var(--primary) 50%, var(--primary) 50%);
+}
+
+.badge.info.first.second {
+    background: var(--primary);
 }
 
 .tool-bar {

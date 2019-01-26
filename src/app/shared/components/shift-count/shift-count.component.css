@@ -7,38 +7,36 @@
 
 .shift>div {
     float: left;
-    width: 33% !important;
-    height: 4px !important;
+    width: 25% !important;
+    height: 2px !important;
     padding-left: 3%;
-    background-color: #c1c1c1;
-    border: #f1f1f1 1px solid;
-    border-radius: 3px;
+    margin-left: 5px;
 }
 
 .shift>div.full {
-    background-color: #0CF;
+    background-color: var(--primary);
 }
 
 .shift>div.quarter:first-child {
-    background: linear-gradient(to right, #0CF 0%, #0CF 25%, #c1c1c1 26%);
+    background: linear-gradient(to right, var(--primary) 0%, var(--primary) 25%, var(--disabled) 26%);
 }
 
 .shift>div.quarter:first-child {
-    background: linear-gradient(to right, red 0%, red 25%, #c1c1c1 26%);
+    background: linear-gradient(to right, red 0%, red 25%, var(--disabled) 26%);
 }
 
 .shift>div.half {
-    background: linear-gradient(to right, #0CF 0%, #0CF 50%, #c1c1c1 51%);
+    background: linear-gradient(to right, var(--primary) 0%, var(--primary) 50%, var(--disabled) 51%);
 }
 
 .shift>div.half:first-child {
-    background: linear-gradient(to right, red 0%, red 50%, #c1c1c1 51%);
+    background: linear-gradient(to right, red 0%, red 50%, var(--disabled) 51%);
+}
+
+.shift .three-quarter {
+    background: linear-gradient(to right, var(--primary) 0%, var(--primary) 75%, var(--disabled) 76%);
 }
 
 .shift .three-quarter:first-child {
-    background: linear-gradient(to right, #0CF 0%, #0CF 75%, #c1c1c1 76%);
-}
-
-.shift .three-quarter:first-child {
-    background: linear-gradient(to right, red 0%, red 75%, #c1c1c1 76%);
+    background: linear-gradient(to right, red 0%, red 75%, var(--disabled) 76%);
 }
