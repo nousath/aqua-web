@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-import { Location } from '@angular/common'
+import { Location } from '@angular/common';
 import { PagerModel } from '../../../common/ng-structures';
 import { DeviceLogs, Device, Log, Employee } from '../../../models';
 import { ToastyService } from 'ng2-toasty';

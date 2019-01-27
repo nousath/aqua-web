@@ -7,6 +7,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { DiagnosticsComponent } from './diagnostics/diagnostics.component';
 import { SystemRoutingModule } from './system-routing.module';
 import { SystemUsageComponent } from './system-usage/system-usage.component';
+import { TasksComponent } from './tasks/tasks.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { SystemUsageComponent } from './system-usage/system-usage.component';
   ],
   declarations: [
     SystemUsageComponent,
-    DiagnosticsComponent
+    DiagnosticsComponent,
+    TasksComponent
   ],
   entryComponents: [
   ],

@@ -1,0 +1,116 @@
+<div class="tool-bar controls-row">
+  <h5>Tasks</h5>
+  <span class="spacer"></span>
+
+  <button md-icon-button (click)="tasks.showPrevious()" [disabled]="!tasks.previousEnabled">
+    <md-icon>chevron_left</md-icon>
+  </button>
+  <button md-icon-button (click)="tasks.fetch()">
+    <md-icon>loop</md-icon>
+  </button>
+  <button md-icon-button (click)="tasks.showNext()" [disabled]="!tasks.nextEnabled">
+    <md-icon>chevron_right</md-icon>
+  </button>
+  <span class="spacer"></span>
+  <button md-icon-button (click)="showFilters = !showFilters" mdTooltip="Filters" [mdTooltipPosition]="'above'">
+    <i class="fa fa-filter fa-lg" aria-hidden="true"></i>
+  </button>
+  <button [matMenuTriggerFor]="moreMenu" md-icon-button>
+    <md-icon>more_vert</md-icon>
+  </button>
+  <md-menu #moreMenu="mdMenu">
+    <button md-menu-item (click)="clearAll()" mdTooltip="Clear All Logs" [mdTooltipPosition]="'above'">
+      <md-icon>add_circle_outline</md-icon> Clear
+    </button>
+  </md-menu>
+</div>
+<md-card class="filters" *ngIf="showFilters">
+  <div class="flex-row three">
+    <div class="form-group">
+      <label>Status</label>
+      <select class="form-control" name="level" [(ngModel)]="tasks.filters.properties['status']['value']">
+        <option value="any" [selected]>Any</option>
+        <option value="new">New</option>
+        <option value="done">Done</option>
+        <option value="error">Error</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>From</label>
+      <input type="date" class="form-control input-sm calendar no-spin" [(ngModel)]="tasks.filters.properties['from']['value']">
+    </div>
+    <div class="form-group">
+      <label>Devices</label>
+      <select class="form-control" name="devices" [(ngModel)]="tasks.filters.properties['deviceId']['value']">
+        <option value="">All</option>
+        <option *ngFor="let device of devices.items" value="{{device.id}}">{{device.name}}</option>
+      </select>
+    </div>
+
+  </div>
+  <md-card-footer>
+    <div class="flex-row">
+      <div class="spacer"></div>
+      <button [disabled]="tasks.isLoading" md-button mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()">Reset</button>
+      <button [disabled]="tasks.isLoading" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'"
+        (click)="tasks.fetch()">Apply</button>
+      <div class="spacer"></div>
+    </div>
+  </md-card-footer>
+</md-card>
+<md-spinner class="custom_spinner" *ngIf="tasks.isLoading" mode="indeterminate"></md-spinner>
+
+<md-card class="card">
+  <div class="table-responsive">
+    <table class="table table-condensed table-hover">
+      <thead class="primary_thead">
+        <tr>
+          <th class="cellFormat"></th>
+          <th class="cellFormat">Date</th>
+          <th class="cellFormat">Action</th>
+          <th class="cellFormat">Assigned To</th>
+          <th class="cellFormat">Device</th>
+          <th class="cellFormat">Employee</th>
+          <th class="cellFormat">Data</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of tasks.items | paginate: { id: 'foo',
+                                                    itemsPerPage: tasks.pageSize,
+                                                    currentPage: tasks.pageNo,
+                                                    totalItems: tasks.totalRecords };"
+          [ngClass]="{'bg-danger': item.status === 'Error'} ">
+          <td class="cellFormat" [ngSwitch]="item.status">
+            <span mdTooltip="{{item.status}}">
+              <i *ngSwitchCase="'error'" class="fa fa-exclamation-triangle" style="color: #D8000C;" aria-hidden="true"></i>
+              <i *ngSwitchCase="'done'" class="fa fa-check" style="color: #00529B;" aria-hidden="true"></i>
+              <i *ngSwitchCase="'new'" class="fa fa-question" style="color: #a1a1a1;" aria-hidden="true"></i>
+            </span>
+          </td>
+          <td class="cellFormat">
+            <div>{{item?.date | date: "HH:mm dd-MM-yyyy"}}</div>
+          </td>
+
+          <td class="cellFormat">{{item.action}}</td>
+          <td class="cellFormat"><a *ngIf="item.device" [routerLink]="[ '/settings','devices']" [queryParams]="{ id: item.device.id}">{{item.device.id}}</a></td>
+          <td class="cellFormat">{{item.assignedTo}}</td>
+          <td class="cellFormat">{{item.employee.code}}</td>
+          <td class="cellFormat"><code>{{item.data | json}}</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</md-card>
+Total: {{tasks.totalRecords}}
+<pagination-controls id="foo" (pageChange)="tasks.pageNo = $event;tasks.fetch();"></pagination-controls>
+<div class="pageSize">
+  <label>Page Size:</label>
+  <select [(ngModel)]="tasks.pageSize" (change)="tasks.pageNo = 1;tasks.fetch();">
+    <option value="10">10</option>
+    <option value="20">20</option>
+    <option value="50">50</option>
+    <option value="100">100</option>
+  </select>
+</div>

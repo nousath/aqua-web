@@ -39,37 +39,6 @@ export class DevicesComponent implements OnInit {
     private router: Router,
     public dialog: MdDialog) {
 
-    const access_Token: string = this.store.getItem('ams_token');
-    const orgCode = this.store.getItem('orgCode');
-
-    this.uploader = new FileUploader({
-      // url: `/ams/api/devices/${this.deviceId}/logs`,
-      url: `localhost:3040/api/devices/${this.deviceId}/logs`,
-      itemAlias: 'file',
-      headers: [{
-        name: 'x-access-token',
-        value: access_Token
-      }, {
-        name: 'org-code',
-        value: orgCode
-      }]
-    });
-
-
-    this.uploader.onErrorItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
-      console.log('onErrorItem', response, headers);
-    };
-
-    this.uploader.onCompleteItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
-      console.log(response);
-      const res: any = JSON.parse(response);
-      if (!res.isSuccess) {
-        return toastyService.error({ title: 'Error', msg: 'excel upload failed' })
-      }
-      this.isUpload = false;
-
-    };
-
     this.devices = new PagerModel({
       api: amsDeviceService.devices
     });
@@ -114,7 +83,7 @@ export class DevicesComponent implements OnInit {
   }
 
 
-  saveDevice(device?: Device) {
+  edit(device?: Device) {
     const dialogRef = this.dialog.open(DeviceDialogComponent, {
       width: '40%'
     });

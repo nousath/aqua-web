@@ -4,7 +4,9 @@
     <br>
   </div>
   <md-nav-list dense>
-    <p class="list-header" (click)="sections.select('home')">Home
+    <p class="list-header" (click)="sections.select('home')">
+      <i class="main-menu-icon fa fa-home"></i>
+      Home
       <i *ngIf="!sections.home" class="material-icons leftIcon">keyboard_arrow_right</i>
       <i *ngIf="sections.home" class="material-icons leftIcon">keyboard_arrow_down</i>
     </p>
@@ -17,7 +19,9 @@
         <h5>Team Attendance</h5>
       </a>
     </div>
-    <p class="list-header" *ngIf="currentRole?.employee?.type != 'normal'" (click)="sections.select('employee')">Master
+    <p class="list-header" *ngIf="currentRole?.employee?.type != 'normal'" (click)="sections.select('employee')">
+      <i class="main-menu-icon fa fa-database"></i>
+      Master
       <i *ngIf="!sections.employee" class="material-icons leftIcon">keyboard_arrow_right</i>
       <i *ngIf="sections.employee" class="material-icons leftIcon">keyboard_arrow_down</i>
     </p>
@@ -46,7 +50,9 @@
         <h5>Holidays</h5>
       </a>
     </div>
-    <p class="list-header" *ngIf="currentRole?.employee?.type != 'normal'" (click)="sections.select('attendance')">Attendance
+    <p class="list-header" *ngIf="currentRole?.employee?.type != 'normal'" (click)="sections.select('attendance')">
+      <i class="main-menu-icon fa fa-calendar-check-o"></i>
+      Attendance
       <i *ngIf="!sections.attendance" class="material-icons leftIcon">keyboard_arrow_right</i>
       <i *ngIf="sections.attendance" class="material-icons leftIcon">keyboard_arrow_down</i>
     </p>
@@ -64,7 +70,9 @@
         <h5>Leaves</h5>
       </a>
     </div>
-    <p class="list-header" *ngIf="auth.hasPermission(['superadmin'])" (click)="sections.select('reports')">Reports
+    <p class="list-header" *ngIf="auth.hasPermission(['superadmin'])" (click)="sections.select('reports')">
+      <i class="main-menu-icon fa fa-file"></i>
+      Reports
       <i *ngIf="!sections.reports" class="material-icons leftIcon">keyboard_arrow_right</i>
       <i *ngIf="sections.reports" class="material-icons leftIcon">keyboard_arrow_down</i>
     </p>
@@ -82,7 +90,9 @@
         <h5>Employees</h5>
       </a>
     </div>
-    <p class="list-header" *ngIf="auth.hasPermission('superadmin')" (click)="sections.select('settings')">Settings
+    <p class="list-header" *ngIf="auth.hasPermission('superadmin')" (click)="sections.select('settings')">
+      <i class="main-menu-icon fa fa-gears"></i>
+      Settings
       <i *ngIf="!sections.settings" class="material-icons leftIcon">keyboard_arrow_right</i>
       <i *ngIf="sections.settings" class="material-icons leftIcon">keyboard_arrow_down</i>
     </p>
@@ -126,7 +136,9 @@
         <h5>Integrations</h5>
       </a>
     </div>
-    <p class="list-header" *ngIf="auth.hasPermission(['system.manage'])" (click)="sections.select('system')">System
+    <p class="list-header" *ngIf="auth.hasPermission(['system.manage'])" (click)="sections.select('system')">
+      <i class="main-menu-icon fa fa-microchip"></i>
+      System
       <i *ngIf="!sections.system" class="material-icons leftIcon">keyboard_arrow_right</i>
       <i *ngIf="sections.system" class="material-icons leftIcon">keyboard_arrow_down</i>
     </p>
@@ -135,6 +147,11 @@
       <a [routerLink]="['/system/diagnostics']" *ngIf="auth.hasPermission(['system.manage'])" md-list-item (click)="selectedTab()"
         routerLinkActive="active-link" #rla20="routerLinkActive">
         <h5>Diagnostics</h5>
+      </a>
+
+      <a [routerLink]="['/system/tasks']" *ngIf="auth.hasPermission(['system.manage'])" md-list-item (click)="selectedTab()"
+        routerLinkActive="active-link" #rla20="routerLinkActive">
+        <h5>Tasks</h5>
       </a>
       <a [routerLink]="['/settings/deviceLogs']" *ngIf="auth.hasPermission(['system.manage', 'superadmin'])"
         md-list-item (click)="selectedTab()" routerLinkActive="active-link" #rla13="routerLinkActive">
