@@ -30,7 +30,7 @@
   </md-menu>
 </div>
 
-<md-spinner class="custom_spinner" *ngIf="leaveBalances.isLoading || isUpdatingLeave" mode="indeterminate"></md-spinner>
+<md-spinner class="custom_spinner" *ngIf="leaveBalances.isLoading || isProcessing" mode="indeterminate"></md-spinner>
 <aqua-employees-filter *ngIf="isFilter" [fields]="filterFields" (onReset)="reset()" (onChange)="applyFilters($event)"></aqua-employees-filter>
 
 <md-card class="card">

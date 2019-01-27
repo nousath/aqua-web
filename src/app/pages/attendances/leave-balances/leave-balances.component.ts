@@ -17,7 +17,6 @@ import { GetValueDialogComponent } from '../../../shared/components/get-value-di
 export class LeaveBalancesComponent implements OnInit {
 
   leaveBalances: PagerModel<OrgLeaveBalance>;
-  // leaveBalance: DetailModel<OrgLeaveBalance>;
   leaveTypes: PagerModel<LeaveType>;
   isProcessing = false;
   isFilter = false;
@@ -37,9 +36,7 @@ export class LeaveBalancesComponent implements OnInit {
     public validatorService: ValidatorService,
     private amsLeaveService: AmsLeaveService,
     public auth: EmsAuthService,
-    private store: LocalStorageService,
-    private location: Location,
-    private ref: ChangeDetectorRef,
+    location: Location,
     private toastyService: ToastyService,
     public dialog: MdDialog
   ) {
@@ -116,7 +113,6 @@ export class LeaveBalancesComponent implements OnInit {
     });
   }
 
-
   fetchLeaveBalances() {
     this.leaveBalances.fetch().then(data => {
       this.leaveBalances.items.forEach((emp: OrgLeaveBalance) => {
@@ -125,7 +121,6 @@ export class LeaveBalancesComponent implements OnInit {
           const lb: LeaveBalance = _.find(emp.leaveBalances, (i: LeaveBalance) => {
             return i.leaveType.id === leaveType.id;
           });
-          // lb ? leaveBalnces.push(lb) : leaveBalnces.push(new LeaveBalance());
           if (lb) {
             leaveBalnces.push(lb)
           } else {
@@ -143,37 +138,8 @@ export class LeaveBalancesComponent implements OnInit {
 
   reset() {
     this.leaveBalances.filters.reset();
-    // this.store.removeItem('leaveBalances-filters');
     this.fetchLeaveBalances();
   }
-
-  toggleLaveBalnce(leave: OrgLeaveBalance, isEdit: boolean) {
-    if (isEdit) {
-      leave.isEdit = true;
-      this.store.setObject(`leeaveBalance_${leave.id}`, leave);
-    } else {
-      leave.isEdit = false;
-      const l: OrgLeaveBalance = this.store.getObject(`leeaveBalance_${leave.id}`) as OrgLeaveBalance;
-      leave.leaveBalances = l.leaveBalances;
-      this.store.removeItem(`leeaveBalance_${leave.id}`);
-    }
-  }
-
-  // updateLeaveBalance(leave: OrgLeaveBalance) {
-  //   this.isUpdatingLeave = true;
-
-  //   this.amsLeaveService.updateLeaveBlances.update(leave.code, leave.leaveBalances, null).then(
-  //     data => {
-  //       this.isUpdatingLeave = false;
-  //       leave.isEdit = false;
-  //       this.store.removeItem(`leeaveBalance_${leave.id}`);
-  //       this.fetchLeaveBalances();
-  //     }
-  //   ).catch(err => {
-  //     this.isUpdatingLeave = false;
-  //     this.toastyService.error({ title: 'Error', msg: err });
-  //   });
-  // }
 
   ngOnInit() {
   }
