@@ -12,7 +12,6 @@
       </div>
     </div>
 
-    <aqua-week-off [employee]="employee"></aqua-week-off>
 
     <table *ngIf="!employee.isDynamicShift" class="table table-condensed">
       <tr>
@@ -58,5 +57,7 @@
         </td>
       </tr>
     </table>
+    <label>Week Off</label>
+    <aqua-week-off [employee]="employee"></aqua-week-off>
   </div>
 </md-card>
