@@ -69,11 +69,10 @@
           <th class="cellFormat"></th>
           <th class="cellFormat">Date</th>
           <th class="cellFormat">Action</th>
-          <th class="cellFormat">Assigned To</th>
           <th class="cellFormat">Device</th>
           <th class="cellFormat">Employee</th>
           <th class="cellFormat">Data</th>
-
+          <th class="cellFormat">Assigned To</th>
         </tr>
       </thead>
       <tbody>
@@ -95,9 +94,9 @@
 
           <td class="cellFormat">{{item.action}}</td>
           <td class="cellFormat"><a *ngIf="item.device" [routerLink]="[ '/settings','devices']" [queryParams]="{ id: item.device.id}">{{item.device.id}}</a></td>
-          <td class="cellFormat">{{item.assignedTo}}</td>
           <td class="cellFormat">{{item.employee.code}}</td>
           <td class="cellFormat"><code>{{item.data | json}}</code></td>
+          <td class="cellFormat">{{item.assignedTo}}</td>
         </tr>
       </tbody>
     </table>
