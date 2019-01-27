@@ -1,38 +1,41 @@
 <div [class.selected]="canCreate" [class.has-error]="error" class="leave-creator">
-    <div class="flex-row">
-        <div class="left">
-            <label>{{type.name}}</label>
-            <p *ngIf="limitLabel" class="sub-text">{{limitLabel}}</p>
-            <div class="footer">
-                <md-button-toggle-group [(ngModel)]="duration" (change)="changed('duration')" class="mini-control">
-                    <md-button-toggle *ngIf="enable.durations.multi" value="multi">Multi</md-button-toggle>
-                    <md-button-toggle *ngIf="enable.durations.single" value="single">1</md-button-toggle>
-                    <md-button-toggle *ngIf="enable.durations.twoThird" value="twoThird">2/3</md-button-toggle>
-                    <md-button-toggle *ngIf="enable.durations.half" value="half">1/2</md-button-toggle>
-                    <md-button-toggle *ngIf="enable.durations.oneThird" value="oneThird">1/3</md-button-toggle>
-                </md-button-toggle-group>
-            </div>
-        </div>
-        <div class="middle">
-            <label>Date: <span class="asterisk">*</span>
-              <span class="sub-text" *ngIf="leave.days">{{leave.days}} days(s)</span>
-            </label>
-            <input type="date" [(ngModel)]="startDate" class="form-control" (change)="startDateChanged()" [disabled]="!enable.start.date">
-            <ng-container *ngIf="duration !== 'single' && (enable.durations.twoThird || enable.durations.half || enable.durations.oneThird)">
-                <md-checkbox [(ngModel)]="leave.start.first" (change)="changed('start.first')" [disabled]="!enable.start.first">First</md-checkbox>
-                <md-checkbox [(ngModel)]="leave.start.second" (change)="changed('start.second')" [disabled]="!enable.start.second">Second</md-checkbox>
-            </ng-container>
-        </div>
-        <div class="right">
-            <ng-container *ngIf="duration === 'multi'">
-                <label>To: <span class="asterisk">*</span></label>
-                <input type="date" [(ngModel)]="endDate" class="form-control" (change)="endDateChanged()" [disabled]="!enable.end.date">
-                <ng-container *ngIf="duration !== 'single' && (enable.durations.twoThird || enable.durations.half || enable.durations.oneThird)">
-                    <md-checkbox [(ngModel)]="leave.end.first" (change)="changed('end.first')" [disabled]="!enable.end.first">First</md-checkbox>
-                    <md-checkbox [(ngModel)]="leave.end.second" (change)="changed('end.second')" [disabled]="!enable.end.second">Second</md-checkbox>
-                </ng-container>
-            </ng-container>
-        </div>
+  <div class="flex-row">
+    <div class="left">
+      <label>{{type.name}}</label>
+      <button *ngIf="!type.unlimited" class="subtle" md-icon-button (click)="explain()">
+        <md-icon>info</md-icon>
+      </button>
+      <p *ngIf="limitLabel" class="sub-text">{{limitLabel}}</p>
+      <div class="footer">
+        <md-button-toggle-group [(ngModel)]="duration" (change)="changed('duration')" class="mini-control">
+          <md-button-toggle *ngIf="enable.durations.multi" value="multi">Multi</md-button-toggle>
+          <md-button-toggle *ngIf="enable.durations.single" value="single">1</md-button-toggle>
+          <md-button-toggle *ngIf="enable.durations.twoThird" value="twoThird">2/3</md-button-toggle>
+          <md-button-toggle *ngIf="enable.durations.half" value="half">1/2</md-button-toggle>
+          <md-button-toggle *ngIf="enable.durations.oneThird" value="oneThird">1/3</md-button-toggle>
+        </md-button-toggle-group>
+      </div>
     </div>
-    <div *ngIf="error" class="error text-center">{{error}}</div>
+    <div class="middle">
+      <label>Date: <span class="asterisk">*</span>
+        <span class="sub-text" *ngIf="leave.days">{{leave.days}} days(s)</span>
+      </label>
+      <input type="date" [(ngModel)]="startDate" class="form-control" (change)="startDateChanged()" [disabled]="!enable.start.date">
+      <ng-container *ngIf="duration !== 'single' && (enable.durations.twoThird || enable.durations.half || enable.durations.oneThird)">
+        <md-checkbox [(ngModel)]="leave.start.first" (change)="changed('start.first')" [disabled]="!enable.start.first">First</md-checkbox>
+        <md-checkbox [(ngModel)]="leave.start.second" (change)="changed('start.second')" [disabled]="!enable.start.second">Second</md-checkbox>
+      </ng-container>
+    </div>
+    <div class="right">
+      <ng-container *ngIf="duration === 'multi'">
+        <label>To: <span class="asterisk">*</span></label>
+        <input type="date" [(ngModel)]="endDate" class="form-control" (change)="endDateChanged()" [disabled]="!enable.end.date">
+        <ng-container *ngIf="duration !== 'single' && (enable.durations.twoThird || enable.durations.half || enable.durations.oneThird)">
+          <md-checkbox [(ngModel)]="leave.end.first" (change)="changed('end.first')" [disabled]="!enable.end.first">First</md-checkbox>
+          <md-checkbox [(ngModel)]="leave.end.second" (change)="changed('end.second')" [disabled]="!enable.end.second">Second</md-checkbox>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+  <div *ngIf="error" class="error text-center">{{error}}</div>
 </div>

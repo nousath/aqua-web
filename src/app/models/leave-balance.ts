@@ -6,7 +6,20 @@ export class LeaveBalance extends ModelBase {
   openingBalance: number = null;
   days: number = null;
   leaveType: LeaveType = new LeaveType();
+  journals: BalanceJournal[];
 }
+
+export class BalanceJournal {
+  date: Date;
+  units: number;
+  entity: {
+    id: string,
+    type: string
+  };
+  meta: Object;
+  comment: string;
+}
+
 
 export class OrgLeaveBalance {
   id = '';

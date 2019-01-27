@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { MdDialog } from '@angular/material';
 import { GetValueDialogComponent } from '../../../shared/components/get-value-dialog/get-value-dialog.component';
+import { JournalsComponent } from '../../../shared/components/journals/journals.component';
 
 @Component({
   selector: 'aqua-leave-balances',
@@ -134,6 +135,12 @@ export class LeaveBalancesComponent implements OnInit {
       })
     }
     ).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
+  }
+
+  explain(item: LeaveBalance) {
+    const dialogRef = this.dialog.open(JournalsComponent)
+    const component = dialogRef.componentInstance;
+    component.balance = item;
   }
 
   reset() {

@@ -72,7 +72,7 @@
         </td>
         <td *ngFor="let lb of item?.leaveBalances">
           <span *ngIf="lb.leaveType.unlimited">∞</span>
-          <span *ngIf="!lb.leaveType.unlimited">{{lb.days}}</span>
+          <button md-icon-button *ngIf="!lb.leaveType.unlimited" (click)="explain(lb)" class="text-center">{{lb.days}}</button>
         </td>
       </tr>
     </tbody>

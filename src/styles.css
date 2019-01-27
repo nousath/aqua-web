@@ -3,6 +3,7 @@
 :root {
     --primary: #00A8c6;
     --primaryBackdrop: #00bcd47a;
+    --primaryTextColor: #ffffff;
     --accent: rgba(68, 76, 111);
     --accentBackground: rgba(68, 76, 111, 0.5);
     --secondary: #515151;
@@ -2128,10 +2129,17 @@ table .index {
     color: var(--warn);
 }
 
+thead.secondary,
+table.secondary>thead,
 .dialog_Header,
 .primary_thead {
     background-color: var(--secondaryBackground);
     color: var(--secondary);
+}
+
+thead.primary {
+    background-color: var(--primary);
+    color: var(--primaryTextColor);
 }
 
 .dialog_Header {

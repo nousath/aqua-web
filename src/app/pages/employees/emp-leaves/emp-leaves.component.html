@@ -15,7 +15,7 @@
           <div class="controls-row">
             <span class="spacer"></span>
             <div>
-              <span *ngIf="!item.leaveType.unlimited" class="text-center">{{item.days}}</span>
+              <button md-icon-button *ngIf="!item.leaveType.unlimited" (click)="explain(item)" class="text-center">{{item.days}}</button>
               <span *ngIf="item.leaveType.unlimited" class="text-center">∞</span>
             </div>
             <span class="spacer"></span>

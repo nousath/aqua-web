@@ -40,7 +40,7 @@ export class AmsLeaveService {
     this.leaveTypes = new GenericApi<LeaveType>('leaveTypes', http, baseApi);
 
     this.leaveBalances = new GenericApi<LeaveBalance>('leaveBalances', http, baseApi);
-    this.allLeaveBalances = new GenericApi<OrgLeaveBalance>('leaveBalances/my/organization', http, baseApi);
+    this.allLeaveBalances = new GenericApi<OrgLeaveBalance>('leaveBalances', http, baseApi);
     this.updateLeaveBlances = new GenericApi<LeaveBalance[]>('leaveBalances/multi', http, baseApi);
   }
 

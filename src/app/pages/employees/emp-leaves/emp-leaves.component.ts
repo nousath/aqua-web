@@ -8,6 +8,7 @@ import { ToastyService } from 'ng2-toasty';
 import { EmsAuthService } from '../../../services/ems/ems-auth.service';
 import { MdDialog } from '@angular/material';
 import { GetValueDialogComponent } from '../../../shared/components/get-value-dialog/get-value-dialog.component';
+import { JournalsComponent } from '../../../shared/components/journals/journals.component';
 
 @Component({
   selector: 'aqua-emp-leaves',
@@ -45,6 +46,12 @@ export class EmpLeavesComponent implements OnInit, OnChanges {
         this.leaveBalances = page.items;
       })
     }
+  }
+
+  explain(item: LeaveBalance) {
+    const dialogRef = this.dialog.open(JournalsComponent)
+    const component = dialogRef.componentInstance;
+    component.balance = item;
   }
 
   add(item: LeaveBalance) {

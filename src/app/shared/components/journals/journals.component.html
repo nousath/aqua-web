@@ -1,0 +1,52 @@
+<h1 md-dialog-title>{{balance.leaveType.name}}</h1>
+<div md-dialog-content>
+  <table class="secondary table table-condensed table-hover">
+    <thead>
+      <th>Date</th>
+      <th>Days</th>
+      <th>Reason/Comment</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of balance.journals">
+        <td>
+          {{item.date | date}}
+        </td>
+        <td>{{item.units / balance.leaveType.unitsPerDay}}</td>
+        <td>
+          <ng-container *ngIf="item.entity && item.entity.type">
+            <ng-container [ngSwitch]="item.entity.type">
+              <!-- overtime -->
+              <div *ngSwitchCase="'attendance'">
+                <div>Overtime:{{item.meta.overTime}} minutes</div>
+                <span class="sub-text">{{item.meta.date | date}}</span>
+              </div>
+              <!-- period -->
+              <div *ngSwitchCase="'month'">
+                <span>{{item.entity.type.id}}</span>
+              </div>
+              <div *ngSwitchCase="'year'">
+                <span>{{item.entity.type.id}}</span>
+              </div>
+            </ng-container>
+          </ng-container>
+
+          <ng-container *ngIf="!item.entity && item.meta">
+            <div *ngIf="item.meta.workDays">Days:{{item.meta.workDays}}</div>
+            <span class="sub-text" *ngIf="item.meta.from && item.meta.till">
+              {{item.meta.from | date}} - {{item.meta.till | date}}
+            </span>
+          </ng-container>
+          <span>{{item.comment}}</span>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<div md-dialog-actions class="controls-row">
+  <span class="spacer"></span>
+  <button md-button (click)="dialogRef.close(false)">Close</button>
+  <span class="spacer"></span>
+</div>

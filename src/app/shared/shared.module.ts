@@ -95,6 +95,7 @@ import { CalendarViewComponent } from './components/calendar-view/calendar-view.
 import { CheckInComponent } from './components/check-in/check-in.component';
 import { CheckOutComponent } from './components/check-out/check-out.component';
 import { WeekOffComponent } from './components/week-off/week-off.component';
+import { JournalsComponent } from './components/journals/journals.component';
 
 
 
@@ -153,7 +154,8 @@ export const MaterialModules = [
     CalendarViewComponent,
     CheckInComponent,
     CheckOutComponent,
-    WeekOffComponent
+    WeekOffComponent,
+    JournalsComponent
   ],
   providers: [
     EmsEmployeeService,
@@ -214,6 +216,7 @@ export const MaterialModules = [
     CheckInComponent,
     CheckOutComponent,
     WeekOffComponent,
+    JournalsComponent,
     ProcessingIndicatorComponent,
     NamePipe
   ],
@@ -224,7 +227,8 @@ export const MaterialModules = [
     GetDateDialogComponent,
     GetValueDialogComponent,
     ExtendShiftDialogComponent,
-    ImageEditorComponent
+    ImageEditorComponent,
+    JournalsComponent
   ],
 
 })

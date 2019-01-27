@@ -6,6 +6,8 @@ import { ToastyService } from 'ng2-toasty';
 import { Employee } from '../../../models/employee';
 import * as moment from 'moment';
 import { DatesService } from '../../../shared/services';
+import { MdDialog } from '@angular/material';
+import { JournalsComponent } from '../../../shared/components/journals/journals.component';
 
 @Component({
   selector: 'aqua-apply-leave-type',
@@ -67,6 +69,7 @@ export class ApplyLeaveTypeComponent implements OnInit {
 
   constructor(
     private toastyService: ToastyService,
+    public dialog: MdDialog,
     private dates: DatesService
   ) { }
 
@@ -330,5 +333,11 @@ export class ApplyLeaveTypeComponent implements OnInit {
     } else {
       this.onChange.emit(null);
     }
+  }
+
+  explain() {
+    const dialogRef = this.dialog.open(JournalsComponent)
+    const component = dialogRef.componentInstance;
+    component.balance = this.balance;
   }
 }
