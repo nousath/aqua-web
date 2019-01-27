@@ -26,22 +26,12 @@
         routerLinkActive="active-link" #rla1="routerLinkActive">
         <h5>Employees</h5>
       </a>
-      <a [routerLink]="['/employees/designations']" *ngIf="auth.hasPermission('superadmin')" md-list-item (click)="selectedTab()"
-        routerLinkActive="active-link" #rla2="routerLinkActive">
-        <h5>Designations</h5>
-      </a>
-      <a [routerLink]="['/employees/departments']" *ngIf="auth.hasPermission('superadmin')" md-list-item (click)="selectedTab()"
-        routerLinkActive="active-link" #rla15="routerLinkActive">
-        <h5>Departments</h5>
-      </a>
+
       <a [routerLink]="['/employees/contractors']" *ngIf="currentRole?.employee.type === 'superadmin'" md-list-item
         (click)="selectedTab()" routerLinkActive="active-link" #rla15="routerLinkActive">
         <h5>Contractors</h5>
       </a>
-      <a [routerLink]="['/employees/divisions']" *ngIf="currentRole?.employee.type === 'superadmin'" md-list-item
-        (click)="selectedTab()" routerLinkActive="active-link" #rla15="routerLinkActive">
-        <h5>Divisions</h5>
-      </a>
+
       <a [routerLink]="['/attendances/leave-balances']" *ngIf="auth.hasPermission('superadmin')" md-list-item (click)="selectedTab()"
         routerLinkActive="active-link" #rla6="routerLinkActive">
         <h5>Leave Balances</h5>
@@ -49,7 +39,7 @@
 
       <a [routerLink]="['/subAdmin/shifts']" *ngIf="currentRole?.employee?.type !== 'normal'" md-list-item (click)="selectedTab()"
         routerLinkActive="active-link" #rla17="routerLinkActive">
-        <h5>Roster Shift</h5>
+        <h5>Roster</h5>
       </a>
       <a [routerLink]="['/settings/holidays']" *ngIf="auth.hasPermission('superadmin')" md-list-item (click)="selectedTab()"
         routerLinkActive="active-link" #rla10="routerLinkActive">
@@ -83,12 +73,10 @@
         (click)="selectedTab()" routerLinkActive="active-link" #rla21="routerLinkActive">
         <h5>Attendance</h5>
       </a>
-
       <a [routerLink]="['/reports/leaves']" *ngIf="auth.hasPermission(['superadmin', 'hr.admin'])" md-list-item (click)="selectedTab()"
         routerLinkActive="active-link" #rla21="routerLinkActive">
         <h5>Leaves</h5>
       </a>
-
       <a [routerLink]="['/reports/employees']" *ngIf="auth.hasPermission(['superadmin', 'hr.admin'])" md-list-item
         (click)="selectedTab()" routerLinkActive="active-link" #rla21="routerLinkActive">
         <h5>Employees</h5>
@@ -99,7 +87,6 @@
       <i *ngIf="sections.settings" class="material-icons leftIcon">keyboard_arrow_down</i>
     </p>
     <div class="list-items" *ngIf="sections.settings">
-
       <a [routerLink]="['/attendances/manage-leaves']" *ngIf="auth.hasPermission('superadmin')" md-list-item (click)="selectedTab()"
         routerLinkActive="active-link" #rla7="routerLinkActive">
         <h5>Leave Rules</h5>
@@ -108,11 +95,22 @@
         routerLinkActive="active-link" #rla8="routerLinkActive">
         <h5>Shift Rules</h5>
       </a>
+      <a [routerLink]="['/employees/designations']" *ngIf="auth.hasPermission('superadmin')" md-list-item (click)="selectedTab()"
+        routerLinkActive="active-link" #rla2="routerLinkActive">
+        <h5>Designations</h5>
+      </a>
+      <a [routerLink]="['/employees/departments']" *ngIf="auth.hasPermission('superadmin')" md-list-item (click)="selectedTab()"
+        routerLinkActive="active-link" #rla15="routerLinkActive">
+        <h5>Departments</h5>
+      </a>
       <a [routerLink]="['/settings/devices']" *ngIf="auth.hasPermission('superadmin')" md-list-item (click)="selectedTab()"
         routerLinkActive="active-link" #rla12="routerLinkActive">
         <h5>Devices</h5>
       </a>
-
+      <a [routerLink]="['/employees/divisions']" *ngIf="currentRole?.employee.type === 'superadmin'" md-list-item
+        (click)="selectedTab()" routerLinkActive="active-link" #rla15="routerLinkActive">
+        <h5>Divisions</h5>
+      </a>
 
       <a routerLink="/settings/reportFormat" *ngIf="auth.hasPermission('superadmin')" md-list-item (click)="selectedTab()"
         routerLinkActive="active-link" #rla16="routerLinkActive">

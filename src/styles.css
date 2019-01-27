@@ -312,12 +312,20 @@ button.subtle:hover {
     color: #999;
 }
 
+th button.subtle {
+    color: #999;
+}
+
+th button.subtle:hover {
+    color: #eee;
+}
+
 button.phantom {
     opacity: 0;
 }
 
 .asterisk {
-    color: red;
+    color: var(--warn);
     /* position: absolute; */
     padding-left: 5px;
 }
@@ -336,7 +344,7 @@ button.phantom {
 
 .ng-invalid,
 .ng-invalid:focus {
-    border-color: red;
+    border-color: var(--warn);
 }
 
 .search {
@@ -373,7 +381,7 @@ button.phantom {
 }
 
 .reject {
-    color: red !important;
+    color: var(--warn) !important;
 }
 
 .datepicker-days>table>tbody>tr>td>.active>.day {
@@ -688,6 +696,10 @@ th .sub-text {
     color: inherit;
 }
 
+th.user-summary {
+    width: 150px;
+}
+
 .mini-control.mat-button-toggle-group {
     height: 25px;
 }
@@ -851,5 +863,5 @@ th .sub-text {
 }
 
 .status .error {
-    color: red;
+    color: var(--warn);
 }

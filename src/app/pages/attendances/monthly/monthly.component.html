@@ -52,8 +52,7 @@
           <tr *ngFor="let item of monthlyAttendance.items | paginate: { id: 'foo',
                                                       itemsPerPage: monthlyAttendance.pageSize,
                                                       currentPage: monthlyAttendance.pageNo,
-                                                      totalItems: monthlyAttendance.totalRecords };"
-            class="capitalize">
+                                                      totalItems: monthlyAttendance.totalRecords };">
             <td>
               <div class="cols">
                 <div>
