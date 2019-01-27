@@ -3,8 +3,8 @@
     <span class="spacer"></span>
     <h5>{{month | date:'MMMM y'}}</h5>
     <span class="spacer"></span>
-    <button *ngIf="auth.hasPermission('superadmin')" (click)="regenerate()" [mdTooltipPosition]="'above'" mdTooltip="Regenerate"
-      md-icon-button>
+    <button class="subtle" *ngIf="auth.hasPermission('superadmin')" (click)="regenerate()" [mdTooltipPosition]="'above'"
+      mdTooltip="Regenerate" md-icon-button>
       <md-icon>build</md-icon>
     </button>
   </div>

@@ -1,15 +1,13 @@
 <div class="tool-bar controls-row">
   <h5>Time Logs</h5>
   <span class="spacer"></span>
-  <h5>
-    <button md-icon-button (click)="showPreviousDate()">
-      <md-icon>arrow_back</md-icon>
-    </button>
-    <span [routerLink]="[ '/attendances/monthly', employee?.properties?.id ]">{{ofDate | date}}</span>
-    <button md-icon-button (click)="showNextDate()">
-      <md-icon>arrow_forward</md-icon>
-    </button>
-  </h5>
+  <button md-icon-button (click)="showPreviousDate()">
+    <md-icon>arrow_back</md-icon>
+  </button>
+  <button md-button [routerLink]="[ '/attendances/monthly', employee?.properties?.id ]">{{ofDate | date}}</button>
+  <button md-icon-button (click)="showNextDate()">
+    <md-icon>arrow_forward</md-icon>
+  </button>
   <span class="spacer"></span>
   <a md-icon-button (click)="backClicked()">
     <md-icon>close</md-icon>
@@ -59,35 +57,34 @@
                       <md-icon>play_arrow</md-icon> Overtime Rules
                     </button>
                   </md-menu>
-
                 </div>
               </td>
             </tr>
-            <tr class="capitalize">
-              <td> Shift Time: </td>
+            <tr>
+              <td>Shift Time:</td>
               <td> {{(attendance?.shift?.shiftType || employee?.properties?.shiftType)?.startTime | date:'shortTime'}}
                 - {{(attendance?.shift?.shiftType || employee?.properties?.shiftType)?.endTime | date:'shortTime'}}</td>
             </tr>
-            <tr class="capitalize">
-              <td> CheckIn : </td>
+            <tr>
+              <td>CheckIn:</td>
               <td>
                 <aqua-check-in *ngIf="attendance" [attendance]="attendance"></aqua-check-in>
               </td>
             </tr>
-            <tr class="capitalize">
-              <td> CheckOut : </td>
+            <tr>
+              <td>CheckOut:</td>
               <td>
                 <aqua-check-out *ngIf="attendance" [attendance]="attendance"></aqua-check-out>
                 <span *ngIf="attendance?.overTime" class="sub-text">{{attendance?.overTime}} minutes</span>
               </td>
             </tr>
-            <tr class="capitalize" *ngIf="logsSource">
-              <td> Shift Continued </td>
+            <tr *ngIf="logsSource">
+              <td>Shift Continued </td>
               <td></td>
             </tr>
             <tr class="capitalize" *ngIf="!logsSource">
-              <td> Shift Extended : </td>
-              <td> {{attendance?.checkOutExtend | date: 'shortTime'}}</td>
+              <td>Shift Extended: </td>
+              <td>{{attendance?.checkOutExtend | date: 'shortTime'}}</td>
             </tr>
           </table>
         </div>
@@ -114,8 +111,11 @@
               '--'}}</td>
             <td class="text-center" *ngIf="!item?.location?.show && item">{{item?.time | date: 'h:mm a' ||
               '--'}}</td>
-            <td class="text-center" *ngIf="!item?.location?.show && item.type =='checkIn' && (timeLogsLength != 1 || !item?.isComputed)">In</td>
-            <td class="text-center" *ngIf="!item?.location?.show && item.type =='checkOut' &&  (timeLogsLength != 1 || !item?.isComputed)">Out</td>
+            <td class="text-center" *ngIf="!item?.location?.show && (timeLogsLength != 1 || !item?.isComputed)">
+              <span *ngIf="item.type =='checkIn'">In</span>
+              <span *ngIf="item.type =='checkOut'">Out</span>
+              <span *ngIf="item.isComputed">*</span>
+            </td>
             <td class="text-center" *ngIf="!item?.location?.show">
               <div>{{item.device && item.device.name ? item.device.name:item.ipAddress}}</div>
               <span class="sub-text" *ngIf="item.source === 'system'">Continued</span>
@@ -150,6 +150,7 @@
         </tbody>
       </table>
     </md-card>
+    <span class="foot-note">* system calculated</span>
     <div class="controls-row footer">
       <span class="spacer"></span>
       <button *ngIf="auth.hasPermission('superadmin')" md-raised-button (click)="addLogs()">
