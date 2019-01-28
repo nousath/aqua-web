@@ -34,8 +34,9 @@
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <table class="table">
             <tr>
-              <td> Status : </td>
-              <td> {{attendance?.status| titlecase}}
+              <td>Status: </td>
+              <td>
+                <aqua-attendance-status *ngIf="attendance" [attendance]="attendance"></aqua-attendance-status>
               </td>
             </tr>
             <tr>

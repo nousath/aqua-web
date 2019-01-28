@@ -79,16 +79,7 @@
           <td class="tdWidth" (click)="updateDayEvent(item.employee.id)">{{item.shift.shiftType.name}}</td>
           <!-- <td class="tdWidth">{{item?.attendance?.hoursWorked || '--'}}</td> -->
           <td class="tdWidth" (click)="updateDayEvent(item.employee.id)">
-            <ng-template #elsePart>
-              <div class="badge shift-status" [class.warn]="item.status === 'absent'" [class.info]="item.status === 'present'"
-                [class.disabled]="item.firstHalfStatus === 'A' && item.secondHalfStatus === 'A'" [class.first]="item.firstHalfStatus === 'P' && item.secondHalfStatus === 'A'"
-                [class.second]="item.firstHalfStatus === 'A' && item.secondHalfStatus === 'P'">{{item.status
-                | titlecase}}
-              </div>
-              <aqua-shift-count *ngIf="this.isPast && item.status !== 'absent'" [count]="item.count"></aqua-shift-count>
-            </ng-template>
-            <span *ngIf="item.status == 'absent' && (item.shift.status === 'weekOff' || item.shift.status === 'holiday'); else elsePart">{{item.shift.status
-              | titlecase}}</span>
+            <aqua-attendance-status [attendance]="item"></aqua-attendance-status>
           </td>
           <!-- <td class="tdWidth">{{item?.department || '--'}}</td> -->
           <td class=" tdWidth" (click)="updateDayEvent(item.employee.id)">

@@ -16,7 +16,7 @@
       <div class="day {{item.style}}" *ngFor="let item of events;let i = index" (click)="updateDayEvent(item)"
         [mdTooltipPosition]="'above'" mdTooltip="{{item.needsAction}}">
         <div class="dayTab">
-          <h5>{{item.date| date: 'dd'}}</h5>
+          <h5>{{item.ofDate| date: 'dd'}}</h5>
           <!-- <p style="height: 10px;">
             <img *ngIf="item?.checkOutExtend" alt="img" src="assets/images/extend.png" width="60%" height="8px">
           </p> -->
@@ -28,11 +28,8 @@
               <span>Out</span> {{item.checkOut | date:'shortTime'}}
             </div>
           </div>
-          <div class="status">
-            {{item.status}}
-          </div>
+          <aqua-attendance-status [attendance]="item"></aqua-attendance-status>
         </div>
-        <aqua-shift-count [count]="item.count"></aqua-shift-count>
       </div>
     </div>
 

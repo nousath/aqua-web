@@ -96,6 +96,7 @@ import { CheckInComponent } from './components/check-in/check-in.component';
 import { CheckOutComponent } from './components/check-out/check-out.component';
 import { WeekOffComponent } from './components/week-off/week-off.component';
 import { JournalsComponent } from './components/journals/journals.component';
+import { AttendanceStatusComponent } from './components/attendance-status/attendance-status.component';
 
 
 
@@ -155,7 +156,8 @@ export const MaterialModules = [
     CheckInComponent,
     CheckOutComponent,
     WeekOffComponent,
-    JournalsComponent
+    JournalsComponent,
+    AttendanceStatusComponent
   ],
   providers: [
     EmsEmployeeService,
@@ -217,6 +219,7 @@ export const MaterialModules = [
     CheckOutComponent,
     WeekOffComponent,
     JournalsComponent,
+    AttendanceStatusComponent,
     ProcessingIndicatorComponent,
     NamePipe
   ],

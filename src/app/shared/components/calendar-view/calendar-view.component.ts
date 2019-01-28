@@ -58,7 +58,7 @@ export class CalendarViewComponent implements OnInit, OnChanges {
       const attendance = attendances.find(item => {
         return new Date(item.ofDate).getDate() === day + 1;
       });
-
+      const dayEvent = new DayEvent();
       if (attendance) {
         // if (!attendance.shift) {
         //   attendance['shift'] = new Shift();
@@ -67,12 +67,12 @@ export class CalendarViewComponent implements OnInit, OnChanges {
         // attendance.status = attendance.status ? attendance.status.toLowerCase() : '';
         // attendance.shift.status = attendance.shift.status ? attendance.shift.status.toLowerCase() : '';
 
-        let status = '';
+        const status = attendance.status;
         let action = '';
         let style = 'default';
         switch (attendance.status) {
           case 'onLeave':
-            status = 'Leave';
+            // status = 'Leave';
             style = 'info';
             // TODO: show leave type
             // switch (attendance.leave.type.category) {
@@ -82,42 +82,42 @@ export class CalendarViewComponent implements OnInit, OnChanges {
           case 'absent':
             switch (attendance.shift.status) {
               case 'working':
-                status = 'Absent';
+                // status = 'Absent';
                 action = 'Apply Leave'
                 style = 'error';
                 break;
               case 'weekOff':
-                status = 'Off';
+                // status = 'Off';
                 style = 'inactive';
 
                 break;
               case 'holiday':
-                status = attendance.shift.holiday.name || 'Holiday';
+                // status = attendance.shift.holiday.name || 'Holiday';
                 style = 'inactive';
                 break;
             }
             break;
           case 'weekOff':
-            status = 'Off';
+            // status = 'Off';
             style = 'inactive';
             break;
 
           case 'holiday':
-            status = attendance.shift.holiday.name || 'Holiday';
+            // status = attendance.shift.holiday.name || 'Holiday';
             style = 'inactive';
             break;
 
           case 'present':
-            status = 'Present';
+            // status = 'Present';
             style = 'active';
             break;
 
           case 'checkedIn':
-            status = 'Present';
+            // status = 'Present';
             style = 'active';
             break;
           case 'checked-in-again':
-            status = 'Present';
+            // status = 'Present';
             style = 'active';
             break;
         }
@@ -130,29 +130,28 @@ export class CalendarViewComponent implements OnInit, OnChanges {
           systemCheckOut = !!attendance.timeLogs.find(item => item.type === 'checkOut' && item.source === 'system')
         }
 
-        this.events.push(new DayEvent({
-          id: attendance.id,
-          date: attendance.ofDate,
-          status: status,
-          style: style,
-          action: action,
+        dayEvent.id = attendance.id
+        dayEvent.ofDate = attendance.ofDate
+        dayEvent.status = status
+        dayEvent.firstHalfStatus = attendance.firstHalfStatus
+        dayEvent.secondHalfStatus = attendance.secondHalfStatus
+        dayEvent.count = attendance.count
+        dayEvent.style = style
+        dayEvent.action = action
+        dayEvent.checkIn = attendance.checkIn
+        dayEvent.checkInStatus = attendance.checkInStatus
+        dayEvent.isCheckInExtend = systemCheckIn
 
-          checkIn: attendance.checkIn,
-          checkInStatus: attendance.checkInStatus,
-          checkInExtend: systemCheckIn,
+        dayEvent.checkOut = attendance.checkOut
+        dayEvent.checkOutStatus = attendance.checkOutStatus
+        dayEvent.isCheckOutExtend = !!attendance.checkOutExtend
+        dayEvent.isContinue = systemCheckOut
+        dayEvent.color = attendance.shift.shiftType.color
 
-          checkOut: attendance.checkOut,
-          checkOutStatus: attendance.checkOutStatus,
-          checkOutExtend: attendance.checkOutExtend,
-          isContinue: systemCheckOut,
-
-          count: attendance.count,
-          color: attendance.shift.shiftType.color
-        }))
+        this.events.push(dayEvent)
       } else {
-        this.events.push(new DayEvent({
-          date: new Date(year, monthInNumber, day + 1)
-        }));
+        dayEvent.ofDate = new Date(year, monthInNumber, day + 1)
+        this.events.push(dayEvent);
       }
     })
   }
@@ -178,9 +177,9 @@ export class CalendarViewComponent implements OnInit, OnChanges {
 
     this.events = [];
     this.monthDays.forEach(day => {
-      this.events.push(new DayEvent({
-        date: new Date(year, monthInNumber, day + 1)
-      }));
+      const dayEvent = new DayEvent();
+      dayEvent.ofDate = new Date(year, monthInNumber, day + 1)
+      this.events.push(dayEvent);
     });
   }
   fetch() {
@@ -201,7 +200,7 @@ export class CalendarViewComponent implements OnInit, OnChanges {
   }
 
   updateDayEvent(item: DayEvent) {
-    const date = this.dateService.date(item.date)
+    const date = this.dateService.date(item.ofDate)
     if (!date.isFuture()) {
       this.router.navigate([`/attendances/${this.employee.id}/logs`], {
         queryParams: {

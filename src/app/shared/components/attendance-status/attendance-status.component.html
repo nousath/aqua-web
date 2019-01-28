@@ -1,0 +1,22 @@
+<div *ngIf="attendance.status">
+  <ng-template #elsePart>
+    <div *ngIf="isPast" class="badge shift-status" [class.warn]="attendance.status === 'absent'" [class.info]="attendance.status === 'present'"
+      [class.disabled]="attendance.firstHalfStatus === 'A' && attendance.secondHalfStatus === 'A'" [class.first]="attendance.firstHalfStatus === 'P' && attendance.secondHalfStatus === 'A'"
+      [class.second]="attendance.firstHalfStatus === 'A' && attendance.secondHalfStatus === 'P'">{{attendance.status
+      | titlecase}}
+    </div>
+
+    <div *ngIf="!isPast && attendance.status == 'absent'" class="badge shift-status warn">{{attendance.status
+      | titlecase}}
+    </div>
+
+    <div *ngIf="!isPast && attendance.status !== 'absent'" class="badge shift-status" [class.info]="attendance.status === 'present'"
+      [class.second]="attendance.firstHalfStatus === 'A'">{{attendance.status
+      | titlecase}}
+    </div>
+
+    <aqua-shift-count *ngIf="isPast && attendance.status !== 'absent'" [count]="attendance.count"></aqua-shift-count>
+  </ng-template>
+  <span *ngIf="attendance.status == 'absent' && (attendance.shift.status === 'weekOff' || attendance.shift.status === 'holiday'); else elsePart">{{attendance.shift.status
+    | titlecase}}</span>
+</div>
