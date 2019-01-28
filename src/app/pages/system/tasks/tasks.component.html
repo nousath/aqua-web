@@ -108,7 +108,9 @@
             <div *ngIf="item.meta"><code>{{item.meta | json}}</code></div>
           </td>
           <td class="cellFormat">
-            <button class="btn btn-primary btn-sm" [disabled]="item.isProcessing" (click)="run(item)">Run</button>
+            <button *ngIf="item.status === 'new'" class="btn btn-primary btn-sm" [disabled]="item.isProcessing" (click)="run(item)">Run</button>
+            <button *ngIf="item.status === 'error'" class="btn btn-primary btn-sm" [disabled]="item.isProcessing"
+              (click)="run(item)">Retry</button>
           </td>
         </tr>
       </tbody>
