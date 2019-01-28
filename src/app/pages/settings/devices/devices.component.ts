@@ -82,7 +82,9 @@ export class DevicesComponent implements OnInit {
     }).catch(err => this.toastyService.error({ title: 'Error', msg: err }));
   }
 
-
+  add() {
+    this.edit();
+  }
   edit(device?: Device) {
     const dialogRef = this.dialog.open(DeviceDialogComponent, {
       width: '40%'

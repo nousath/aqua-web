@@ -22,7 +22,7 @@
       <md-icon>cloud_download</md-icon> Download
     </a>
     <button md-menu-item [disabled]="devices?.isLoading || isDownloading || device?.isProcessing || categories?.isLoading"
-      (click)="saveDevice()" mdTooltip="Add Devices" class="marginLetf" [mdTooltipPosition]="'above'">
+      (click)="add()" mdTooltip="Add Devices" class="marginLetf" [mdTooltipPosition]="'above'">
       <md-icon>add_circle_outline</md-icon> Add Devices
     </button>
 

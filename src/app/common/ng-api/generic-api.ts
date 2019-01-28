@@ -301,12 +301,12 @@ export class GenericApi<TModel> implements IApi<TModel> {
   }
 
   update(id: number | string, model: any, input?: PageOptions, path?: string): Promise<TModel> {
-    let parms: URLSearchParams;
+    let params: URLSearchParams;
     if (input) {
-      parms = this.getQueryParams(input);
+      params = this.getQueryParams(input);
     }
-    const url = path ? `${this.rootUrl}/${this.key}/${path}` : `${this.rootUrl}/${this.key}/${id}`;
-    return this.http.put(url, model, { headers: this.getHeaders(), search: parms })
+    const url = path ? `${this.rootUrl}/${this.key}/${id}/${path}` : `${this.rootUrl}/${this.key}/${id}`;
+    return this.http.put(url, model, { headers: this.getHeaders(), search: params })
       .toPromise()
       .then((response) => {
         const dataModel = response.json() as ServerData<TModel>;

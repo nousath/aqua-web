@@ -1,0 +1,24 @@
+<md-card>
+  <div class="controls-row">
+    <h5>{{job.name}}</h5>
+    <span class="spacer"></span>
+    <img class="icon" src="../../../../assets/jobs/{{job.type}}/{{job.icon}}">
+  </div>
+
+  <div class="form-group">
+    <label>Action</label>
+    <select class="form-control" [(ngModel)]="action">
+      <option [value]="item.code" *ngFor="let item of job.actions">{{item.name}}</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Date</label>
+    <input type="date" class="form-control" [(ngModel)]="date">
+  </div>
+
+  <div class="controls-row">
+    <span class="spacer"></span>
+    <button md-raised-button (click)="run()" color="primary">Run</button>
+  </div>
+</md-card>

@@ -8,6 +8,8 @@ import { DiagnosticsComponent } from './diagnostics/diagnostics.component';
 import { SystemRoutingModule } from './system-routing.module';
 import { SystemUsageComponent } from './system-usage/system-usage.component';
 import { TasksComponent } from './tasks/tasks.component';
+import { JobsComponent } from './jobs/jobs.component';
+import { JobCardComponent } from './components/job-card/job-card.component';
 
 
 @NgModule({
@@ -18,7 +20,9 @@ import { TasksComponent } from './tasks/tasks.component';
   declarations: [
     SystemUsageComponent,
     DiagnosticsComponent,
-    TasksComponent
+    TasksComponent,
+    JobsComponent,
+    JobCardComponent
   ],
   entryComponents: [
   ],

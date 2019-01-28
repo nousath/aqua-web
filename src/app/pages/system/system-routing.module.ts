@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { DiagnosticsComponent } from './diagnostics/diagnostics.component';
 import { SystemUsageComponent } from './system-usage/system-usage.component';
 import { TasksComponent } from './tasks/tasks.component';
+import { JobsComponent } from './jobs/jobs.component';
 
 const routes: Routes = [
   {
@@ -11,7 +12,8 @@ const routes: Routes = [
       { path: '', redirectTo: 'diagnostics', pathMatch: 'full' },
       { path: 'diagnostics', component: DiagnosticsComponent },
       { path: 'tasks', component: TasksComponent },
-      { path: 'usage', component: SystemUsageComponent },
+      { path: 'tasks/new', component: JobsComponent },
+      { path: 'usage', component: SystemUsageComponent }
     ]
   }
 ];

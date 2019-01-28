@@ -1,0 +1,13 @@
+<div class="tool-bar controls-row">
+  <h5>New Job</h5>
+  <span class="spacer"></span>
+  <a md-icon-button [routerLink]="['/system', 'tasks']">
+    <md-icon>close</md-icon>
+  </a>
+</div>
+
+<div class="flex-row three cards">
+  <div *ngFor="let item of jobs">
+    <aqua-job-card [job]="item"></aqua-job-card>
+  </div>
+</div>

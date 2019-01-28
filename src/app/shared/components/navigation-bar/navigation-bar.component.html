@@ -145,20 +145,20 @@
     <div class="list-items" *ngIf="sections.system">
 
       <a [routerLink]="['/system/diagnostics']" *ngIf="auth.hasPermission(['system.manage'])" md-list-item (click)="selectedTab()"
-        routerLinkActive="active-link" #rla20="routerLinkActive">
+        routerLinkActive="active-link" #rla60="routerLinkActive">
         <h5>Diagnostics</h5>
       </a>
 
       <a [routerLink]="['/system/tasks']" *ngIf="auth.hasPermission(['system.manage'])" md-list-item (click)="selectedTab()"
-        routerLinkActive="active-link" #rla20="routerLinkActive">
+        routerLinkActive="active-link" #rla61="routerLinkActive">
         <h5>Tasks</h5>
       </a>
       <a [routerLink]="['/settings/deviceLogs']" *ngIf="auth.hasPermission(['system.manage', 'superadmin'])"
-        md-list-item (click)="selectedTab()" routerLinkActive="active-link" #rla13="routerLinkActive">
+        md-list-item (click)="selectedTab()" routerLinkActive="active-link" #rla63="routerLinkActive">
         <h5>Devices Logs</h5>
       </a>
       <a [routerLink]="['/system/usage']" *ngIf="auth.hasPermission(['system.owner'])" md-list-item (click)="selectedTab()"
-        routerLinkActive="active-link" #rla20="routerLinkActive">
+        routerLinkActive="active-link" #rla64="routerLinkActive">
         <h5>Usage</h5>
       </a>
     </div>

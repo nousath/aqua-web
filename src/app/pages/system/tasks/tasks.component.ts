@@ -35,7 +35,7 @@ export class TasksComponent implements OnInit, AfterViewInit {
         value: 'any'
       }, {
         field: 'status',
-        value: this.activatedRoute.queryParams['value']['status']
+        value: 'any'
       }, {
         field: 'from',
         value: this.activatedRoute.queryParams['value']['from']
@@ -71,6 +71,21 @@ export class TasksComponent implements OnInit, AfterViewInit {
     this.tasks.fetch();
   }
 
+  run(item: Task) {
+    item.isProcessing = true;
+    this.systemService.tasks.update(item.id, {
+    }, null, 'run').then(() => {
+      item.isProcessing = false;
+      this.tasks.fetch();
+    }).catch(err => {
+      item.isProcessing = false;
+      this.toastyService.error({ title: 'Error', msg: err });
+    })
+  }
+
+  clear() {
+    this.toastyService.error({ title: 'Error', msg: 'not implemented' });
+  }
   reset() {
     this.tasks.filters.reset();
     this.tasks.fetch();
