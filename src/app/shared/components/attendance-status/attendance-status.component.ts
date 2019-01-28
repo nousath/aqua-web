@@ -13,8 +13,13 @@ export class AttendanceStatusComponent implements OnInit {
   attendance: Attendance
 
   isPast = false;
-  status: string;
+  status = 'absent';
   info: string;
+  secondHalfStatus = 'A'
+  firstHalfStatus = 'A'
+
+  shiftStatus = 'working';
+  count = 0
 
 
   constructor() { }
@@ -22,7 +27,15 @@ export class AttendanceStatusComponent implements OnInit {
   ngOnInit() {
 
     this.isPast = moment(this.attendance.ofDate).isBefore(new Date(), 'day');
-
+    if (this.attendance) {
+      this.status = this.attendance.status
+      this.firstHalfStatus = this.attendance.firstHalfStatus
+      this.secondHalfStatus = this.attendance.secondHalfStatus
+      this.count = this.attendance.count
+      if (this.attendance.shift) {
+        this.shiftStatus = this.attendance.shift.status
+      }
+    }
   }
 
 }
