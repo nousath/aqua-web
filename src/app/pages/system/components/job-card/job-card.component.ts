@@ -31,7 +31,7 @@ export class JobCardComponent implements OnInit {
       assignedTo: this.job.type,
       entity: this.job.code,
       action: this.action,
-      data: this.date,
+      meta: { date: this.date },
     }).then((task) => {
       this.isProcessing = false;
       this.created.emit(task)

@@ -17,7 +17,7 @@ export class AmsSystemUsageService {
 
   jobList: Job[] = [
     { code: 'work-day', name: 'Work Day', actions: [{ code: 'start', name: 'Start' }, { code: 'regenerate', name: 'Regenerate' }], type: 'processor', icon: 'daily.svg' },
-    { code: 'work-month', name: 'Work Month', actions: [{ code: 'start', name: 'Start' }, { code: 'end', name: 'End' }], type: 'processor', icon: 'daily.svg' },
+    { code: 'work-month', name: 'Work Month', actions: [{ code: 'start', name: 'Start' }, { code: 'end', name: 'End' }, { code: 'regenerate', name: 'Regenerate' }], type: 'processor', icon: 'daily.svg' },
     { code: 'work-day', name: 'Work Day Job', actions: [], type: 'job', icon: 'daily.svg' },
 
   ]

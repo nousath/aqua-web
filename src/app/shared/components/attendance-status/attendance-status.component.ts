@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Attendance } from '../../../models';
 import * as moment from 'moment';
 
@@ -7,7 +7,8 @@ import * as moment from 'moment';
   templateUrl: './attendance-status.component.html',
   styleUrls: ['./attendance-status.component.css']
 })
-export class AttendanceStatusComponent implements OnInit {
+export class AttendanceStatusComponent implements OnInit, OnChanges {
+
 
   @Input()
   attendance: Attendance
@@ -24,7 +25,7 @@ export class AttendanceStatusComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
+  setData() {
 
     this.isPast = moment(this.attendance.ofDate).isBefore(new Date(), 'day');
     if (this.attendance) {
@@ -36,6 +37,16 @@ export class AttendanceStatusComponent implements OnInit {
         this.shiftStatus = this.attendance.shift.status
       }
     }
+  }
+
+
+
+  ngOnInit() {
+    this.setData()
+  }
+
+  ngOnChanges() {
+    this.setData();
   }
 
 }
