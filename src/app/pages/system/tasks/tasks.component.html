@@ -34,6 +34,8 @@
       <select class="form-control" name="level" [(ngModel)]="tasks.filters.properties['status']['value']">
         <option value="any" [selected]>Any</option>
         <option value="new">New</option>
+        <option value="queued">Queued</option>
+        <option value="in-progress">In Progress</option>
         <option value="done">Done</option>
         <option value="error">Error</option>
       </select>
@@ -73,8 +75,6 @@
           <th class="cellFormat">Date</th>
           <th class="cellFormat">Assigned To</th>
           <th class="cellFormat">Entity</th>
-          <th class="cellFormat">Action</th>
-          <th class="cellFormat">Data</th>
           <th class="cellFormat">Meta</th>
           <th class="cellFormat">Action</th>
         </tr>
@@ -86,31 +86,40 @@
                                                     totalItems: tasks.totalRecords };"
           [ngClass]="{'bg-danger': item.status === 'Error'} ">
           <td class="cellFormat" [ngSwitch]="item.status">
-            <span mdTooltip="{{item.status}}">
-              <i *ngSwitchCase="'new'" class="fa fa-question" style="color: #a1a1a1;" aria-hidden="true"></i>
-              <i *ngSwitchCase="'queued'" class="fa fa-pause" style="color: #a1a1a1;" aria-hidden="true"></i>
-              <i *ngSwitchCase="'in-progress'" class="fa fa-clock-o" style="color: #38b6ff;" aria-hidden="true"></i>
-              <i *ngSwitchCase="'error'" class="fa fa-exclamation-triangle" style="color: #D8000C;" aria-hidden="true"></i>
-              <i *ngSwitchCase="'done'" class="fa fa-check" style="color: rgb(0, 155, 65);" aria-hidden="true"></i>
-            </span>
+            <button md-icon-button (click)="item.isSelected = !item.isSelected">
+              <md-icon mdTooltip="{{item.status}}">
+                <i *ngSwitchCase="'new'" class="fa fa-question" style="color: #a1a1a1;" aria-hidden="true"></i>
+                <i *ngSwitchCase="'queued'" class="fa fa-pause" style="color: #a1a1a1;" aria-hidden="true"></i>
+                <i *ngSwitchCase="'in-progress'" class="fa fa-clock-o" style="color: #38b6ff;" aria-hidden="true"></i>
+                <i *ngSwitchCase="'error'" class="fa fa-exclamation-triangle" style="color: #D8000C;" aria-hidden="true"></i>
+                <i *ngSwitchCase="'done'" class="fa fa-check" style="color: rgb(0, 155, 65);" aria-hidden="true"></i>
+              </md-icon>
+            </button>
+
           </td>
           <td class="cellFormat">
             <div>{{item?.date | date: "HH:mm dd-MM-yyyy"}}</div>
           </td>
           <td class="cellFormat">{{item.assignedTo}}</td>
-          <td class="cellFormat">{{item.entity}}</td>
-          <td class="cellFormat">{{item.action}}</td>
-          <td class="cellFormat"><code>{{item.data}}</code></td>
           <td class="cellFormat">
-            <div *ngIf="item.device && item.device.id" [routerLink]="[ '/settings','devices']" [queryParams]="{ id: item.device.id}">
-              Device: {{item.device.id}}</div>
-            <div *ngIf="item.employee && item.employee.code">Employee: {{item.employee.code}}</div>
-            <div *ngIf="item.meta"><code>{{item.meta | json}}</code></div>
+            <div>{{item.action}}</div>
+            <span class="sub-text">{{item.entity}}</span>
+          </td>
+          <td class="cellFormat">
+            <div *ngIf="!item.isSelected || !item.error">
+              <code *ngIf="item.data">{{item.data}}</code>
+              <div *ngIf="item.device && item.device.id" [routerLink]="[ '/settings','devices']" [queryParams]="{ id: item.device.id}">
+                Device: {{item.device.id}}</div>
+              <div *ngIf="item.employee && item.employee.code">Employee: {{item.employee.code}}</div>
+              <div *ngIf="item.meta"><code>{{item.meta | json}}</code></div>
+            </div>
+            <code *ngIf="item.isSelected && item.error" (click)="item.isSelected = !item.isSelected" class="cta">{{item.error | json}}</code>
           </td>
           <td class="cellFormat">
             <button *ngIf="item.status === 'new'" class="btn btn-primary btn-sm" [disabled]="item.isProcessing" (click)="run(item)">Run</button>
             <button *ngIf="item.status === 'error'" class="btn btn-primary btn-sm" [disabled]="item.isProcessing"
               (click)="run(item)">Retry</button>
+            <div *ngIf="item.progress">{{item.progress}} %</div>
           </td>
         </tr>
       </tbody>

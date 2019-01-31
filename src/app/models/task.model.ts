@@ -9,9 +9,11 @@ export class Task extends ModelBase {
 
   action: string;
   assignedTo: String;
+  progress: number;
   data: string;
+  meta: object;
+  error: object;
   date: Date;
-  status: string;
 }
 
 

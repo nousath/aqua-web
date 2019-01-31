@@ -3,6 +3,7 @@ import { Job } from '../../../../models/job.model';
 import { OuterSubscriber } from 'rxjs/OuterSubscriber';
 import { Task } from '../../../../models/task.model';
 import { AmsSystemUsageService } from '../../../../services';
+import { DatesService } from '../../../../shared/services/dates.service';
 
 @Component({
   selector: 'aqua-job-card',
@@ -22,7 +23,8 @@ export class JobCardComponent implements OnInit {
   date: Date;
 
   constructor(
-    private systemService: AmsSystemUsageService
+    private systemService: AmsSystemUsageService,
+    private dateService: DatesService
   ) { }
 
   run() {
@@ -31,7 +33,7 @@ export class JobCardComponent implements OnInit {
       assignedTo: this.job.type,
       entity: this.job.code,
       action: this.action,
-      meta: { date: this.date },
+      meta: { date: this.dateService.date(this.date).bod() },
     }).then((task) => {
       this.isProcessing = false;
       this.created.emit(task)
