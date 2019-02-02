@@ -8,7 +8,8 @@
       <h5>Roaster</h5>
       <span class="spacer"></span>
       <div class="input-group">
-        Auto <md-slide-toggle [checked]="employee.isDynamicShift" (change)="toggleDynamicShift(employee)"></md-slide-toggle>
+        Auto <md-slide-toggle [checked]="employee.isDynamicShift" (change)="toggleDynamicShift(employee)">
+        </md-slide-toggle>
       </div>
     </div>
 
@@ -32,11 +33,12 @@
         <td>
           <span *ngIf="currentShift">
             <button [matMenuTriggerFor]="moreMenu" md-icon-button>
-              <md-icon mdTooltip="Wrong Shift {{currentShift.shiftType.name}}" class="warn" *ngIf="employee.shiftType.id !== currentShift.shiftType.id">report_problem</md-icon>
+              <md-icon mdTooltip="Wrong Shift {{currentShift.shiftType.name}}" class="warn"
+                *ngIf="employee.shiftType.id !== currentShift.shiftType.id">report_problem</md-icon>
             </button>
             <md-menu #moreMenu="mdMenu">
               <button md-menu-item mdTooltip="Set" [mdTooltipPosition]="'above'" (click)="setRoasterShift()"
-                [style.color]="currentShift.shiftType.name.color">
+                [style.color]="currentShift.shiftType.color">
                 <md-icon>add_circle_outline</md-icon> {{currentShift.shiftType.name}}
               </button>
             </md-menu>
