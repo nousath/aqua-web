@@ -11,6 +11,7 @@ export class Employee {
   name = '';
   code = '';
   designation = '';
+  department = '';
   status = '';
   picData = '';
   picUrl = '';

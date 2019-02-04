@@ -57,7 +57,11 @@
             </tr>
             <tr class="capitalize">
               <td>Department:</td>
-              <td> </td>
+              <td>{{employee?.properties?.department ? employee?.properties?.department : '--'}} </td>
+            </tr>
+            <tr class="capitalize">
+              <td>Designation:</td>
+              <td>{{employee?.properties?.designation ? employee?.properties?.designation : '--'}} </td>
             </tr>
             <tr class="capitalize">
               <td colspan="2">

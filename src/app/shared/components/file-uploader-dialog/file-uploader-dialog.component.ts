@@ -28,6 +28,7 @@ export class FileUploaderDialogComponent implements OnInit {
   errorMessage: string;
 
   file: File;
+  isDisabled = false;
 
   constructor(
     public dialogRef: MdDialogRef<FileUploaderDialogComponent>,
@@ -43,6 +44,7 @@ export class FileUploaderDialogComponent implements OnInit {
   }
 
   upload() {
+    this.isDisabled = true;
     this.uploader.bulkUpload(this.file, this.selectedMapper)
       .then((message) => {
         message = message || 'Done';
@@ -51,6 +53,7 @@ export class FileUploaderDialogComponent implements OnInit {
       })
       .catch(err => {
         this.errorMessage = err;
+        this.isDisabled = false;
         this.toastyService.error({ title: 'Error', msg: err })
       });
   }

@@ -46,7 +46,10 @@ export class Address {
   district = '';
   pinCode = '';
 }
-
+export class Nominee {
+  name: string;
+  relation: string;
+}
 
 export class CustomFields {
   dom: Date;
@@ -64,6 +67,7 @@ export class CustomFields {
   uan: string;
   aadhaar: string;
   pan: string;
+  nominee: Nominee = new Nominee();
 }
 export class EmsEmployee {
   id = '';
@@ -76,7 +80,6 @@ export class EmsEmployee {
 
   profile: Profile = new Profile();
   address: Address = new Address();
-
   supervisor: EmsEmployee;
   designation: Designation;
   department: Department;

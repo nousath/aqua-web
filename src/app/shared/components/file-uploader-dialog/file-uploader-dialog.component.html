@@ -29,5 +29,5 @@
 <div md-dialog-actions class="controls-row">
     <span class="spacer"></span>
     <button md-button (click)="dialogRef.close(false)">Cancel</button>
-    <button md-raised-button color="primary" [disabled]="!file" (click)="upload()">Upload</button>
+    <button md-raised-button color="primary" [disabled]="!file || isDisabled" (click)="upload()">Upload</button>
 </div>
