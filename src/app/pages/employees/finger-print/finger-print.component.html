@@ -1,40 +1,52 @@
 <md-card>
-    <div class="dialog_Header text-center">
-      <h5>
-        <b>Biometric</b>
-      </h5>
-    </div>
-    <br>
-    <div class="from-group">
-      <label>Biometric Code:</label>
-      <input name="biometricCode" type="number" class="form-control small right" [ngModel]="employee.biometricCode"
-        (change)="setBiometricCode($event)">
-    </div>
-    <div>
-      <table class="table table-condensed table-responsive">
-        <thead>
-          <tr>
-            <td>Name</td>
-            <td>Type</td>
-            <td>Enabled</td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of biometrics">
-            <td>{{item.device.name}}</td>
-            <td>{{item.device.type === 'both'? 'In/Out': item.device.type}}</td>
-            <td>
-              <button *ngIf="!canEnable" md-raised-button (click)="mark(item, 'fetching')">Fetch</button>
-              <md-slide-toggle *ngIf="canEnable" [checked]="item.status === 'enabled'" (change)="mark(item, item.status === 'enabled'? 'disabled': 'enabled')"></md-slide-toggle>
-              <button class="subtle" *ngIf="canEnable" [disabled]="item.status !== 'enabled' && item.status !== 'disabled'" [class.phantom]="item.status !== 'enabled' && item.status !== 'disabled'"
-                md-icon-button (click)="mark(item, 'deleted')">
-                <md-icon>delete</md-icon>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <md-spinner class="custom_spinner" *ngIf="isLoading" mode="indeterminate"></md-spinner>
-  </md-card>
-  
+  <div class="mat-card-header controls-row">
+    <span class="spacer"></span>
+    <h5>Biometric</h5>
+    <span class="spacer"></span>
+    <button class="subtle" [matMenuTriggerFor]="moreMenu" md-icon-button>
+      <md-icon>more_vert</md-icon>
+    </button>
+    <md-menu #moreMenu="mdMenu">
+      <button md-menu-item (click)="canEnable = !canEnable">
+        <md-icon>edit</md-icon>
+        <span *ngIf="canEnable">Re-fetch</span>
+        <span *ngIf="!canEnable">Cancel Fetch</span>
+      </button>
+    </md-menu>
+  </div>
+  <br>
+  <div class="from-group">
+    <label>Biometric Code:</label>
+    <input name="biometricCode" type="number" class="form-control small right" [ngModel]="employee.biometricCode"
+      (change)="setBiometricCode($event)">
+  </div>
+  <div>
+    <table class="table table-condensed table-responsive">
+      <thead>
+        <tr>
+          <td>Name</td>
+          <td>Type</td>
+          <td>Enabled</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of biometrics">
+          <td>{{item.device.name}}</td>
+          <td>{{item.device.type === 'both'? 'In/Out': item.device.type}}</td>
+          <td>
+            <button *ngIf="!canEnable" md-raised-button (click)="mark(item, 'fetching')">Fetch</button>
+            <md-slide-toggle *ngIf="canEnable" [checked]="item.status === 'enabled'"
+              (change)="mark(item, item.status === 'enabled'? 'disabled': 'enabled')"></md-slide-toggle>
+            <button class="subtle" *ngIf="canEnable"
+              [disabled]="item.status !== 'enabled' && item.status !== 'disabled'"
+              [class.phantom]="item.status !== 'enabled' && item.status !== 'disabled'" md-icon-button
+              (click)="mark(item, 'deleted')">
+              <md-icon>delete</md-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <md-spinner class="custom_spinner" *ngIf="isLoading" mode="indeterminate"></md-spinner>
+</md-card>
