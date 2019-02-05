@@ -32,10 +32,13 @@ export class TasksComponent implements OnInit, AfterViewInit {
       api: systemService.tasks,
       filters: [{
         field: 'deviceId',
-        value: 'any'
+        value: this.activatedRoute.queryParams['value']['deviceId'] || 'any'
+      }, {
+        field: 'assignedTo',
+        value: this.activatedRoute.queryParams['value']['assignedTo'] || 'any'
       }, {
         field: 'status',
-        value: 'any'
+        value: this.activatedRoute.queryParams['value']['status'] || 'any'
       }, {
         field: 'from',
         value: this.activatedRoute.queryParams['value']['from']

@@ -42,8 +42,19 @@
     </div>
 
     <div class="form-group">
+      <label>Assigned To</label>
+      <select class="form-control" name="level" [(ngModel)]="tasks.filters.properties['assignedTo']['value']">
+        <option value="any" [selected]>Any</option>
+        <option value="sync-service">Sync Service</option>
+        <option value="processor">Processor</option>
+        <option value="job">Job</option>
+      </select>
+    </div>
+
+    <div class="form-group">
       <label>From</label>
-      <input type="date" class="form-control input-sm calendar no-spin" [(ngModel)]="tasks.filters.properties['from']['value']">
+      <input type="date" class="form-control input-sm calendar no-spin"
+        [(ngModel)]="tasks.filters.properties['from']['value']">
     </div>
     <div class="form-group">
       <label>Devices</label>
@@ -57,9 +68,10 @@
   <md-card-footer>
     <div class="flex-row">
       <div class="spacer"></div>
-      <button [disabled]="tasks.isLoading" md-button mdTooltip="Reset" [mdTooltipPosition]="'above'" (click)="reset()">Reset</button>
-      <button [disabled]="tasks.isLoading" md-raised-button color="primary" mdTooltip="Apply" [mdTooltipPosition]="'above'"
-        (click)="tasks.fetch()">Apply</button>
+      <button [disabled]="tasks.isLoading" md-button mdTooltip="Reset" [mdTooltipPosition]="'above'"
+        (click)="reset()">Reset</button>
+      <button [disabled]="tasks.isLoading" md-raised-button color="primary" mdTooltip="Apply"
+        [mdTooltipPosition]="'above'" (click)="tasks.fetch()">Apply</button>
       <div class="spacer"></div>
     </div>
   </md-card-footer>
@@ -91,7 +103,8 @@
                 <i *ngSwitchCase="'new'" class="fa fa-question" style="color: #a1a1a1;" aria-hidden="true"></i>
                 <i *ngSwitchCase="'queued'" class="fa fa-pause" style="color: #a1a1a1;" aria-hidden="true"></i>
                 <i *ngSwitchCase="'in-progress'" class="fa fa-clock-o" style="color: #38b6ff;" aria-hidden="true"></i>
-                <i *ngSwitchCase="'error'" class="fa fa-exclamation-triangle" style="color: #D8000C;" aria-hidden="true"></i>
+                <i *ngSwitchCase="'error'" class="fa fa-exclamation-triangle" style="color: #D8000C;"
+                  aria-hidden="true"></i>
                 <i *ngSwitchCase="'done'" class="fa fa-check" style="color: rgb(0, 155, 65);" aria-hidden="true"></i>
               </md-icon>
             </button>
@@ -108,15 +121,18 @@
           <td class="cellFormat">
             <div *ngIf="!item.isSelected || !item.error">
               <code *ngIf="item.data">{{item.data}}</code>
-              <div *ngIf="item.device && item.device.id" [routerLink]="[ '/settings','devices']" [queryParams]="{ id: item.device.id}">
+              <div *ngIf="item.device && item.device.id" [routerLink]="[ '/settings','devices']"
+                [queryParams]="{ id: item.device.id}">
                 Device: {{item.device.id}}</div>
               <div *ngIf="item.employee && item.employee.code">Employee: {{item.employee.code}}</div>
               <div *ngIf="item.meta"><code>{{item.meta | json}}</code></div>
             </div>
-            <code *ngIf="item.isSelected && item.error" (click)="item.isSelected = !item.isSelected" class="cta">{{item.error | json}}</code>
+            <code *ngIf="item.isSelected && item.error" (click)="item.isSelected = !item.isSelected"
+              class="cta">{{item.error | json}}</code>
           </td>
           <td class="cellFormat">
-            <button *ngIf="item.status === 'new'" class="btn btn-primary btn-sm" [disabled]="item.isProcessing" (click)="run(item)">Run</button>
+            <button *ngIf="item.status === 'new'" class="btn btn-primary btn-sm" [disabled]="item.isProcessing"
+              (click)="run(item)">Run</button>
             <button *ngIf="item.status === 'error'" class="btn btn-primary btn-sm" [disabled]="item.isProcessing"
               (click)="run(item)">Retry</button>
             <div *ngIf="item.progress">{{item.progress}} %</div>

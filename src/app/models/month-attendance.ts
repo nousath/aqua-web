@@ -8,6 +8,7 @@ export class MonthAttendance {
   picUrl = '';
   absentDays: number = null;
   presentDays: number = null;
-  totalLeaveBalance: number = null;
-  shiftType: ShiftType = new ShiftType();
+  leaveDays: number = null;
+  offDays: number = null;
+  holidayDays: number = null;
 }

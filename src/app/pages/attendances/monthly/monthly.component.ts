@@ -89,7 +89,7 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
 
   getAttendance() {
     this.isProcessing = true;
-    this.monthlyAttendance.filters.properties['ofDate']['value'] = this.date;
+    this.monthlyAttendance.filters.properties['ofDate']['value'] = this.date.toISOString();
     this.monthlyAttendance.fetch().then(() => {
       this.isProcessing = false;
     }).catch(err => {
