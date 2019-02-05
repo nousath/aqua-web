@@ -60,26 +60,27 @@
             <td>
               <div class="cols">
                 <div>
-                  <img *ngIf="item?.picUrl" class="img-circle img-profile" alt="img" [src]="item?.picUrl"
+                  <img *ngIf="item?.picUrl" class="img-circle img-profile" alt="img" [src]="item?.employee?.picUrl"
                     onError="this.src='/assets/images/blank.png'">
-                  <img *ngIf="!item?.picUrl" class="img-circle img-profile" alt="img" src="assets/images/blank.png">
+                  <img *ngIf="!item?.employee?.picUrl" class="img-circle img-profile" alt="img"
+                    src="assets/images/blank.png">
                 </div>
                 <div>
-                  <a *ngIf="auth.hasPermission('superadmin')" [routerLink]="[ '/', 'employees', item?.code]">{{item?.name
+                  <a *ngIf="auth.hasPermission('superadmin')" [routerLink]="[ '/', 'employees', item?.employee?.code]">{{item?.employee?.name
                     || '--'}}</a>
-                  <span *ngIf="!auth.hasPermission('superadmin')">{{item?.name || '--'}}</span>
-                  <p class="sub-text">{{item?.code || ''}}</p>
+                  <span *ngIf="!auth.hasPermission('superadmin')">{{item?.employee?.name || '--'}}</span>
+                  <p class="sub-text">{{item?.employee?.code || ''}}</p>
                 </div>
               </div>
             </td>
-            <td class="tdWidth">{{item?.designation || '--'}}</td>
-            <td class="tdWidth">{{item?.department || '--'}}</td>
+            <td class="tdWidth">{{item?.employee?.designation || '--'}}</td>
+            <td class="tdWidth">{{item?.employee?.department || '--'}}</td>
             <td class="tdWidth">{{item?.presentDays || '--'}}</td>
             <td class="tdWidth">{{item?.holidayDays || '--'}}</td>
             <td class="tdWidth">{{item?.leaveDays || '--'}}</td>
             <td class="tdWidth">{{item?.offDays || '--'}}</td>
             <td class="tdWidth">{{item?.absentDays || '--'}}</td>
-            <td><button class="subtle" md-icon-button [routerLink]="[item.id]"><i
+            <td><button class="subtle" md-icon-button [routerLink]="[item?.employee?.id]"><i
                   class="fa fa-chevron-right"></i></button></td>
           </tr>
         </tbody>

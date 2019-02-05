@@ -1,11 +1,7 @@
 import { ShiftType } from './shift-type';
+import { Employee } from './employee';
 export class MonthAttendance {
-  id = '';
-  name = '';
-  code = '';
-  designation = '';
-  picData = '';
-  picUrl = '';
+  employee: Employee;
   absentDays: number = null;
   presentDays: number = null;
   leaveDays: number = null;
