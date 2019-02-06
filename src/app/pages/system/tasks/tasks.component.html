@@ -5,7 +5,7 @@
   <button md-icon-button (click)="tasks.showPrevious()" [disabled]="!tasks.previousEnabled">
     <md-icon>chevron_left</md-icon>
   </button>
-  <button md-icon-button (click)="tasks.fetch()">
+  <button md-icon-button (click)="fetch()">
     <md-icon>loop</md-icon>
   </button>
   <button md-icon-button (click)="tasks.showNext()" [disabled]="!tasks.nextEnabled">
@@ -71,7 +71,7 @@
       <button [disabled]="tasks.isLoading" md-button mdTooltip="Reset" [mdTooltipPosition]="'above'"
         (click)="reset()">Reset</button>
       <button [disabled]="tasks.isLoading" md-raised-button color="primary" mdTooltip="Apply"
-        [mdTooltipPosition]="'above'" (click)="tasks.fetch()">Apply</button>
+        [mdTooltipPosition]="'above'" (click)="fetch()">Apply</button>
       <div class="spacer"></div>
     </div>
   </md-card-footer>
@@ -111,7 +111,8 @@
 
           </td>
           <td class="cellFormat">
-            <div>{{item?.date | date: "HH:mm dd-MM-yyyy"}}</div>
+            <div>{{item?.date | date: "HH:mm"}}</div>
+            <div class="sub-text">{{item?.date | date: "dd-MM-yyyy"}}</div>
           </td>
           <td class="cellFormat">{{item.assignedTo}}</td>
           <td class="cellFormat">
@@ -125,10 +126,12 @@
                 [queryParams]="{ id: item.device.id}">
                 Device: {{item.device.id}}</div>
               <div *ngIf="item.employee && item.employee.code">Employee: {{item.employee.code}}</div>
-              <div *ngIf="item.meta"><code>{{item.meta | json}}</code></div>
+              <div *ngIf="item.meta"><code>{{stripErrors(item.meta) | json}}</code></div>
             </div>
             <code *ngIf="item.isSelected && item.error" (click)="item.isSelected = !item.isSelected"
               class="cta">{{item.error | json}}</code>
+            <code *ngIf="item.isSelected && item.meta.errors && item.meta.errors.length"
+              (click)="item.isSelected = !item.isSelected" class="cta">{{item.meta.errors | json}}</code>
           </td>
           <td class="cellFormat">
             <button *ngIf="item.status === 'new'" class="btn btn-primary btn-sm" [disabled]="item.isProcessing"
@@ -143,10 +146,10 @@
   </div>
 </md-card>
 <label>Total: {{tasks.totalRecords}}</label>
-<pagination-controls id="foo" (pageChange)="tasks.pageNo = $event;tasks.fetch();"></pagination-controls>
+<pagination-controls id="foo" (pageChange)="tasks.pageNo = $event;fetch();"></pagination-controls>
 <div class="pageSize">
   <label>Page Size:</label>
-  <select [(ngModel)]="tasks.pageSize" (change)="tasks.pageNo = 1;tasks.fetch();">
+  <select [(ngModel)]="tasks.pageSize" (change)="tasks.pageNo = 1;fetch();">
     <option value="10">10</option>
     <option value="20">20</option>
     <option value="50">50</option>

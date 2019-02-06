@@ -6,6 +6,7 @@ import { Device } from '../../../models';
 import { ToastyService } from 'ng2-toasty';
 import { AmsSystemUsageService, AmsDeviceService } from '../../../services';
 import { ActivatedRoute } from '@angular/router';
+import * as moment from 'moment';
 declare var $: any;
 
 @Component({
@@ -71,7 +72,7 @@ export class TasksComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit() {
-    this.tasks.fetch();
+    this.fetch();
   }
 
   run(item: Task) {
@@ -79,7 +80,7 @@ export class TasksComponent implements OnInit, AfterViewInit {
     this.systemService.tasks.update(item.id, {
     }, null, 'run').then(() => {
       item.isProcessing = false;
-      this.tasks.fetch();
+      this.fetch();
     }).catch(err => {
       item.isProcessing = false;
       this.toastyService.error({ title: 'Error', msg: err });
@@ -91,7 +92,26 @@ export class TasksComponent implements OnInit, AfterViewInit {
   }
   reset() {
     this.tasks.filters.reset();
-    this.tasks.fetch();
+    this.fetch();
+  }
+
+  fetch() {
+    this.tasks.fetch().then(() => {
+      this.tasks.items = this.tasks.items.sort((a, b) => moment(a.date).isAfter(b.date) ? -1 : 1)
+    })
+  }
+
+  stripErrors(meta: any) {
+    const newMeta: any = {}
+
+    for (const key of Object.keys(meta)) {
+      if (key !== 'errors') {
+        newMeta[key] = meta[key]
+      }
+    }
+
+    return newMeta
+
   }
 
 }
