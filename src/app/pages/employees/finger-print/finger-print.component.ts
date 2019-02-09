@@ -1,34 +1,38 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { AmsEmployeeService, AmsDeviceService } from '../../../services';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { AmsEmployeeService, AmsDeviceService, AmsSystemUsageService } from '../../../services';
 import { Employee, Device, Category } from '../../../models';
-import { PagerModel } from '../../../common/ng-structures';
-import { DetailModel } from '../../../common/ng-structures';
-import { GenericApi } from '../../../common/ng-api/generic-api';
 import { Http } from '@angular/http';
-import { IApi, PageOptions } from '../../../common/ng-api';
+import { PageOptions } from '../../../common/ng-api';
 import { ToastyService } from 'ng2-toasty';
 import { Biometric } from '../../../models/biometric.model';
+import { Task } from '../../../models/task.model';
 
 @Component({
   selector: 'aqua-finger-print',
   templateUrl: './finger-print.component.html',
   styleUrls: ['./finger-print.component.css']
 })
-export class FingerPrintComponent implements OnInit {
-  @Input() code: string;
-  @Input() employee: Employee
+export class FingerPrintComponent implements OnInit, OnChanges {
+  @Input()
+  code: string;
+  @Input()
+  employee: Employee
 
   isLoading = false;
   biometrics: Biometric[] = [];
   canEnable = false;
 
+  hasPendingTasks = true;
+
+  pendingTasks: Task[] = [];
+
   constructor(
     private amsEmployeeService: AmsEmployeeService,
     private amsDeviceService: AmsDeviceService,
+    private systemService: AmsSystemUsageService,
     private http: Http,
     private toastyService: ToastyService
   ) {
-
   }
 
   ngOnInit() {
@@ -47,7 +51,23 @@ export class FingerPrintComponent implements OnInit {
     });
   }
 
+  checkPendingTasks() {
+    const ids = this.biometrics.map(i => i.id)
+
+    this.systemService.tasks.search(new PageOptions({
+      query: { biometricIds: ids, deviceId: 'any' }
+    })).then((page) => {
+      if (page.items && page.items.length) {
+        this.hasPendingTasks = true;
+        setTimeout(() => { this.checkPendingTasks() }, 5000)
+      } else {
+        this.hasPendingTasks = false;
+      }
+    })
+  }
+
   mark(biometric: Biometric, status: string) {
+
     const oldStatus = biometric.status
     biometric.status = status
     this.isLoading = true;
@@ -61,7 +81,6 @@ export class FingerPrintComponent implements OnInit {
         this.canEnable = true;
       } else {
         let canEnable = false
-
         this.biometrics.forEach(item => {
           switch (item.status) {
             case 'disabled':
@@ -73,6 +92,7 @@ export class FingerPrintComponent implements OnInit {
         });
         this.canEnable = canEnable;
       }
+      this.checkPendingTasks()
     }).catch(err => {
       this.isLoading = false;
       biometric.status = oldStatus
@@ -111,7 +131,10 @@ export class FingerPrintComponent implements OnInit {
           }
 
           this.biometrics.push(fingerPrint)
+
         });
+
+        this.checkPendingTasks();
       });
     });
   }

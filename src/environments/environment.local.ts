@@ -7,8 +7,8 @@ export const environment = {
   production: false,
   silent: false,
   apiUrls: {
-    ems: 'http://localhost:3035',
-    // ems: 'http://ems.aquateams.com',
+    // ems: 'http://localhost:3035',
+    ems: 'http://directory-api.mindfulsas.com',
     ams: 'http://localhost:3040',
     // ams: 'http://ams.aquateams.com',
     drive: 'http://docs-api-dev.m-sas.com',
