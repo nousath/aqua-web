@@ -212,24 +212,24 @@ export class EmployeeListComponent implements OnInit {
       {
         name: 'Add Employee',
         mapper: 'default',
-        url_csv: 'assets/formats/add-new-employee.csv',
+        // url_csv: 'assets/formats/add-new-employee.csv',
         url_xlsx: 'assets/formats/add-new-employee.xlsx'
       }, {
         name: 'Update Employee',
         mapper: 'default',
-        url_csv: 'assets/formats/update-employee.csv',
+        // url_csv: 'assets/formats/update-employee.csv',
         url_xlsx: 'assets/formats/update-employee.xlsx'
       },
       {
         name: 'Update Biometric',
         mapper: 'default',
-        url_csv: 'assets/formats/update-employee-biometricId.csv',
+        // url_csv: 'assets/formats/update-employee-biometricId.csv',
         url_xlsx: 'assets/formats/update-employee-biometricId.xlsx'
       },
       {
         name: 'Update Status',
         mapper: 'default',
-        url_csv: 'assets/formats/update-employee-status.csv',
+        // url_csv: 'assets/formats/update-employee-status.csv',
         url_xlsx: 'assets/formats/update-employee-status.xlsx'
 
       }];
