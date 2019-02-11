@@ -211,7 +211,7 @@ export class LeavesComponent implements OnInit, AfterViewInit {
     component.samples = [{
       name: 'CSV/Excel',
       mapper: 'default',
-      url_csv: 'assets/formats/leaves.csv',
+      // url_csv: 'assets/formats/leaves.csv',
       url_xlsx: 'assets/formats/leaves.xlsx'
       // }, {
       //   name: 'EXCEL',

@@ -142,7 +142,7 @@ export class RosterShiftsComponent implements OnInit {
     component.samples = [{
       name: 'CSV/Excel',
       mapper: 'default',
-      url_csv: 'assets/formats/weekly-roaster.csv',
+      // url_csv: 'assets/formats/weekly-roaster.csv',
       url_xlsx: 'assets/formats/weekly-roaster.xlsx'
     }];
     component.name = 'Weekly Roaster';

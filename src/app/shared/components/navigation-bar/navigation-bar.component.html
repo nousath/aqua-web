@@ -122,11 +122,6 @@
         <h5>Divisions</h5>
       </a>
 
-      <a routerLink="/settings/reportFormat" *ngIf="auth.hasPermission('superadmin')" md-list-item (click)="selectedTab()"
-        routerLinkActive="active-link" #rla16="routerLinkActive">
-        <h5>Report Format</h5>
-      </a>
-
       <a [routerLink]="['/settings/alerts']" *ngIf="auth.hasPermission('superadmin')" md-list-item (click)="selectedTab()"
         routerLinkActive="active-link" #rla11="routerLinkActive">
         <h5>Alerts</h5>

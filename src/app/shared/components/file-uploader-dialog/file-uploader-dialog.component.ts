@@ -14,7 +14,7 @@ export class FileUploaderDialogComponent implements OnInit {
   name: string;
 
   @Input()
-  samples: { name: string, mapper?: string, url_csv: string, url_xlsx: string }[];
+  samples: { name: string, mapper?: string, url_xlsx: string }[];
 
   @Input()
   mappers: { name: string, value: string }[];

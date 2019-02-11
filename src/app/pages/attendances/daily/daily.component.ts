@@ -283,7 +283,7 @@ export class DailyComponent {
     component.samples = [{
       name: 'Add-Timelogs',
       mapper: 'default',
-      url_csv: 'assets/formats/attendance.csv',
+      // url_csv: 'assets/formats/attendance.csv',
       url_xlsx: 'assets/formats/attendance.xlsx'
     }];
   }

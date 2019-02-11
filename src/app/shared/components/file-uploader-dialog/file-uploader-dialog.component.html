@@ -16,7 +16,8 @@
     <div *ngIf="samples && samples.length">
         <label>File Format Samples</label>
         <div class="sample" *ngFor="let sample of samples">
-            <label>{{sample.name}}</label> : <a [href]="sample.url_csv">csv</a>&ensp;<b>|</b>&ensp;<a [href]="sample.url_xlsx">excel</a>
+            <!-- <label>{{sample.name}}</label> : <a [href]="sample.url_csv">csv</a>&ensp;<b>|</b>&ensp;<a [href]="sample.url_xlsx">excel</a> -->
+            <a [href]="sample.url_xlsx">{{sample.name}}</a>
         </div>
     </div>
     <div *ngIf="errorMessage" class="error">

@@ -110,7 +110,7 @@ export class HolidaysComponent implements OnInit {
       component.samples = [{
         name: 'CSV/Excel',
         mapper: 'default',
-        url_csv: 'assets/formats/holiday.csv',
+        // url_csv: 'assets/formats/holiday.csv',
         url_xlsx: 'assets/formats/holiday.xlsx'
       }];
   }
