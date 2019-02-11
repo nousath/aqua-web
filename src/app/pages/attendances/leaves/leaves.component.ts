@@ -102,7 +102,6 @@ export class LeavesComponent implements OnInit, AfterViewInit {
 
   updateStatus(leave: Leave) {
     this.isProcessing = true;
-    debugger;
     this.amsLeaveService.leaves.update(leave.id, leave, null, `${leave.id}/action`).then(data => {
       this.isProcessing = false;
       this.fetchLeaves();
@@ -155,7 +154,6 @@ export class LeavesComponent implements OnInit, AfterViewInit {
   setStatus(leave: Leave, status: string) {
 
     if (status !== 'rejected') {
-      debugger;
       leave.status = status;
       this.updateStatus(leave);
       this.angulartics2.eventTrack.next({ action: 'approveLeaveClick', properties: { category: 'allLeave', label: 'myLabel' } });
