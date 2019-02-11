@@ -14,11 +14,12 @@ import * as moment from 'moment';
 import { Location } from '@angular/common';
 import { AmsShiftService } from '../../../services/ams/ams-shift.service';
 import { LocalStorageService } from '../../../services/local-storage.service';
-import { EmsEmployeeService } from '../../../services';
+import { EmsEmployeeService } from '../../../services/ems';
 import { ResetPasswordDialogComponent } from '../../../dialogs/reset-password-dialog/reset-password-dialog.component';
 import { EmsAuthService } from '../../../services/ems/ems-auth.service';
 import { DatesService } from '../../../shared/services/dates.service';
 import { PageOptions } from '../../../common/ng-api';
+import { EmsEmployee } from '../../../models/ems/employee';
 declare var $: any;
 
 
@@ -34,6 +35,7 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
   empId: string;
 
   // subscription: Subscription;
+  emsEmployee: EmsEmployee;
   employee: DetailModel<Employee>;
   user: string;
   shifTypes: PagerModel<ShiftType>;
@@ -295,26 +297,28 @@ export class AttendanceDetailsComponent implements OnInit, OnDestroy, AfterViewI
       });
     }
   }
+
+  errorHandler = (err) => {
+    this.isProcessing = false;
+    this.toastyService.error({ title: 'Error', msg: err });
+  }
+
   resetPassword() {
     const dialog = this.dialog.open(ResetPasswordDialogComponent, { width: '40%' });
-    dialog.afterClosed().subscribe(
-      (password: string) => {
-        if (password) {
-          this.employee.isProcessing = true;
-          let emsUserID: number;
-          const emp: any = {
-            password: password
-          };
-          emsUserID = this.store.getItem('emsUserId')
-          this.emsEmployeeService.employees.update(emsUserID, emp)
-            .then(data => {
-              this.employee.isProcessing = false;
-              this.toastyService.success({ title: 'Success', msg: 'Password updated successfully' });
-            })
-            .catch(err => { this.employee.isProcessing = false; this.toastyService.error({ title: 'Error', msg: err }) });
-        }
+    dialog.afterClosed().subscribe((password: string) => {
+      this.isProcessing = true;
+
+      if (password) {
+        const emp: any = {
+          password: password,
+          code: this.employee.properties.code
+        };
+        this.emsEmployeeService.employees.update(this.employee.id, emp).then(data => {
+          this.isProcessing = false;
+          this.toastyService.success({ title: 'Success', msg: 'Password updated successfully' });
+        }).catch(this.errorHandler);
       }
-    );
+    });
   }
   backClicked() {
     this._location.back();
