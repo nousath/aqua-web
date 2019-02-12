@@ -13,6 +13,8 @@ export class CheckOutComponent implements OnInit {
   attendance: Attendance
 
   isPast = false;
+  early: string;
+  overTime: string;
 
   constructor(
     private datesService: DatesService
@@ -20,6 +22,13 @@ export class CheckOutComponent implements OnInit {
 
   ngOnInit() {
     this.isPast = this.datesService.date(this.attendance.ofDate).isPast()
+    if (this.attendance.early) {
+      this.early = this.datesService.time(this.attendance.early).span();
+    }
+
+    if (this.attendance.overTime) {
+      this.overTime = this.datesService.time(this.attendance.overTime).span();
+    }
   }
 
 }

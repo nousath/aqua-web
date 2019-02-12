@@ -1,6 +1,7 @@
 <ng-container *ngIf="attendance.checkIn">
   <div>{{attendance.checkIn | date:'shortTime'}}</div>
-  <span class="sub-text" *ngIf="attendance.checkInStatus && (attendance.checkInStatus === 'late')">Came Late</span>
+  <span class="sub-text" *ngIf="attendance.checkInStatus && (attendance.checkInStatus === 'late')">{{late}} Late
+  </span>
   <span class="sub-text" *ngIf="attendance.checkInStatus && (attendance.checkInStatus === 'early')">Came Early</span>
   <span class="sub-text" *ngIf="attendance.checkInStatus && (attendance.checkInStatus === 'missed')">Missed</span>
 </ng-container>

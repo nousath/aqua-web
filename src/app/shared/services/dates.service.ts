@@ -42,22 +42,28 @@ export class DatesService {
         return value
       },
 
-      span: (time2) => {
-        const date = moment()
+      span: (time2?: any) => {
+        let value = 0;
 
-        const timeA = date
-          .set('hour', moment(time1).get('hour'))
-          .set('minute', moment(time1).get('minute'))
-          .set('second', moment(time1).get('second'))
-          .set('millisecond', moment(time1).get('millisecond')).toDate()
+        if (typeof time1 === 'number' && !time2) {
+          value = time1
+        } else {
+          const date = moment()
 
-        const timeB = date
-          .set('hour', moment(time2).get('hour'))
-          .set('minute', moment(time2).get('minute'))
-          .set('second', moment(time2).get('second'))
-          .set('millisecond', moment(time2).get('millisecond')).toDate()
+          const timeA = date
+            .set('hour', moment(time1).get('hour'))
+            .set('minute', moment(time1).get('minute'))
+            .set('second', moment(time1).get('second'))
+            .set('millisecond', moment(time1).get('millisecond')).toDate()
 
-        let value = moment(timeA).diff(moment(timeB), 'minutes')
+          const timeB = date
+            .set('hour', moment(time2).get('hour'))
+            .set('minute', moment(time2).get('minute'))
+            .set('second', moment(time2).get('second'))
+            .set('millisecond', moment(time2).get('millisecond')).toDate()
+
+          value = moment(timeA).diff(moment(timeB), 'minutes')
+        }
 
         if (value < 0) {
           value = -value

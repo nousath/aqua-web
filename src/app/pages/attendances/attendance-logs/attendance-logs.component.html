@@ -13,7 +13,8 @@
     <md-icon>close</md-icon>
   </a>
 </div>
-<md-spinner class="custom_spinner" *ngIf="employee?.isProcessing || logs?.isLoading || attendances?.isLoading || timeLog?.isProcessing || isProcessing"
+<md-spinner class="custom_spinner"
+  *ngIf="employee?.isProcessing || logs?.isLoading || attendances?.isLoading || timeLog?.isProcessing || isProcessing"
   mode="indeterminate"></md-spinner>
 <div class="row">
   <div class="col-sm-4 col-md-4 col-lg-4">
@@ -26,7 +27,8 @@
         </div>
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
           <div class="row profileImage">
-            <img *ngIf="employee?.properties?.picUrl" [src]="employee?.properties?.picUrl" width="100%" onError="this.src='/assets/images/blank.png'">
+            <img *ngIf="employee?.properties?.picUrl" [src]="employee?.properties?.picUrl" width="100%"
+              onError="this.src='/assets/images/blank.png'">
             <img *ngIf="!employee?.properties?.picUrl" alt="img" src="assets/images/blank.png" width="100%">
           </div>
         </div>
@@ -76,7 +78,6 @@
               <td>CheckOut:</td>
               <td>
                 <aqua-check-out *ngIf="attendance" [attendance]="attendance"></aqua-check-out>
-                <span *ngIf="attendance?.overTime" class="sub-text">{{attendance?.overTime}} minutes</span>
               </td>
             </tr>
             <tr *ngIf="logsSource">
@@ -131,10 +132,11 @@
                 </button>
               </div>
             </td>
-            <td *ngIf="item?.location && item?.location?.coordinates && (item?.location?.coordinates[0] && item?.location?.coordinates[1])">
+            <td
+              *ngIf="item?.location && item?.location?.coordinates && (item?.location?.coordinates[0] && item?.location?.coordinates[1])">
               <div class="text-center">
-                <button md-icon-button class="button_alignOff cursor" (click)="markTrue()" mdTooltip="On Location on Map"
-                  [mdTooltipPosition]="'above'">
+                <button md-icon-button class="button_alignOff cursor" (click)="markTrue()"
+                  mdTooltip="On Location on Map" [mdTooltipPosition]="'above'">
                   <md-icon>location_on</md-icon>
                 </button>
               </div>
@@ -148,14 +150,16 @@
 
                     </button>
                     <agm-map [latitude]="item?.location?.coordinates[1]" [longitude]="item?.location?.coordinates[0]">
-                      <agm-marker [latitude]="item?.location?.coordinates[1]" [longitude]="item?.location?.coordinates[0]"></agm-marker>
+                      <agm-marker [latitude]="item?.location?.coordinates[1]"
+                        [longitude]="item?.location?.coordinates[0]"></agm-marker>
                     </agm-map>
                   </div>
                 </div>
               </div>
             </td>
             <td class="text-center" *ngIf="!item?.location?.show">
-              <button [matMenuTriggerFor]="moreMenu" md-icon-button class="subtle" *ngIf="auth.hasPermission('superadmin')">
+              <button [matMenuTriggerFor]="moreMenu" md-icon-button class="subtle"
+                *ngIf="auth.hasPermission('superadmin')">
                 <md-icon>more_vert</md-icon>
               </button>
               <md-menu #moreMenu="mdMenu">
@@ -171,10 +175,12 @@
                 <button md-menu-item *ngIf="item.ignore" (click)="ignore(item, false)">
                   <md-icon>add_circle_outline</md-icon> Include
                 </button>
-                <button md-menu-item *ngIf="!item.ignore && item.type === 'checkIn'" (click)="setType(item, 'checkOut')">
+                <button md-menu-item *ngIf="!item.ignore && item.type === 'checkIn'"
+                  (click)="setType(item, 'checkOut')">
                   <md-icon>compare_arrows</md-icon> Set Check Out
                 </button>
-                <button md-menu-item *ngIf="!item.ignore && item.type === 'checkOut'" (click)="setType(item, 'checkIn')">
+                <button md-menu-item *ngIf="!item.ignore && item.type === 'checkOut'"
+                  (click)="setType(item, 'checkIn')">
                   <md-icon>compare_arrows</md-icon> Set Check In
                 </button>
               </md-menu>

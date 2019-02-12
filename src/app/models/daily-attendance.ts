@@ -41,6 +41,8 @@ export class Attendance {
 
   firstHalfStatus: string;
   secondHalfStatus: string;
+  early: number;
+  late: number;
 
   isContinue: boolean;
   hours: string;
