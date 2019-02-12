@@ -37,6 +37,7 @@ export class AttendanceLogsComponent implements OnInit {
   ofDate = new Date();
   attendance: Attendance;
   date: any;
+  isShow = false;
   isButton = true;
   checkTime: Date;
   logsSource = false;
@@ -136,6 +137,16 @@ export class AttendanceLogsComponent implements OnInit {
     });
   }
 
+  markTrue() {
+    if (!this.isShow) {
+      this.isShow = true
+    }
+  }
+markFalse() {
+  if (this.isShow) {
+    this.isShow = false
+  }
+}
   getAttendance() {
 
     this.isProcessing = true;
