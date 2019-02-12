@@ -7,9 +7,10 @@ export class Device {
   machine: Machine = new Machine();
   name = '';
   type = '';
-  mute: Mute[] = [{start: '12:00', end: '1:00'}];
+  mute: Mute[] = [{ start: '12:00', end: '1:00' }];
   ip = '';
   port = '';
   bssid = '';
   interval = ''
+  status: string;
 }

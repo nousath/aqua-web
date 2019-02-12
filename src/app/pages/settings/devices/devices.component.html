@@ -9,20 +9,23 @@
       <span>Activation Key :
         <input disabled id="activationKey" [value]="activationKey">
       </span>
-      <button md-menu-item [disabled]="devices?.isLoading || isDownloading || device?.isProcessing || categories?.isLoading"
+      <button md-menu-item
+        [disabled]="devices?.isLoading || isDownloading || device?.isProcessing || categories?.isLoading"
         (click)="copyKey()" mdTooltip="Copy Activation Key" class="marginLetf" [mdTooltipPosition]="'above'">
         <md-icon>content_copy</md-icon>
       </button>
     </span>
-    <button md-menu-item *ngIf="!activationKey" [disabled]="isDownloading" (click)="getActivationKey()" mdTooltip="Get Activation Key"
-      class="marginLetf" [mdTooltipPosition]="'above'">
+    <button md-menu-item *ngIf="!activationKey" [disabled]="isDownloading" (click)="getActivationKey()"
+      mdTooltip="Get Activation Key" class="marginLetf" [mdTooltipPosition]="'above'">
       <md-icon>vpn_key</md-icon>Activation Key
     </button>
-    <a md-menu-item mdTooltip="Download Sync App" class="marginLetf" [mdTooltipPosition]="'above'" href="https://s3.ap-south-1.amazonaws.com/aqua-setups/AquaSync.msi">
+    <a md-menu-item mdTooltip="Download Sync App" class="marginLetf" [mdTooltipPosition]="'above'"
+      href="https://s3.ap-south-1.amazonaws.com/aqua-setups/AquaSync.msi">
       <md-icon>cloud_download</md-icon> Download
     </a>
-    <button md-menu-item [disabled]="devices?.isLoading || isDownloading || device?.isProcessing || categories?.isLoading"
-      (click)="add()" mdTooltip="Add Devices" class="marginLetf" [mdTooltipPosition]="'above'">
+    <button md-menu-item
+      [disabled]="devices?.isLoading || isDownloading || device?.isProcessing || categories?.isLoading" (click)="add()"
+      mdTooltip="Add Devices" class="marginLetf" [mdTooltipPosition]="'above'">
       <md-icon>add_circle_outline</md-icon> Add Devices
     </button>
 
@@ -34,8 +37,9 @@
   </md-menu>
 </div>
 
-<md-spinner class="custom_spinner" *ngIf="devices?.isLoading || isDownloading || device?.isProcessing || categories?.isLoading"
-  mode="indeterminate"></md-spinner>
+<md-spinner class="custom_spinner"
+  *ngIf="devices?.isLoading || isDownloading || device?.isProcessing || categories?.isLoading" mode="indeterminate">
+</md-spinner>
 
 
 <md-card class="card">
@@ -55,21 +59,25 @@
         <tr *ngFor="let item of devices.items | paginate: { id: 'foo',
                                                       itemsPerPage: devices.pageSize,
                                                       currentPage: devices.pageNo,
-                                                      totalItems: devices.totalRecords };"
-          class="capitalize">
+                                                      totalItems: devices.totalRecords };" class="capitalize">
 
-          <td class="tdWidth">{{item?.name || '--'}}</td>
+          <td class="tdWidth">
+            <div class="available {{item?.status}}"></div>
+            {{item?.name || '--'}}
+          </td>
           <td class="tdWidth">{{(item?.type === 'both'? 'In/Out': item?.type) || '--'}}</td>
           <td class="tdWidth">{{item?.category?.name}}</td>
           <td class="tdWidth">{{item?.ip}}</td>
           <td class="tdWidth">{{item?.port || '--'}}</td>
           <td class="tdWidth">
-            <button class="subtle" md-icon-button [disabled]="devices?.isLoading || device?.isProcessing || categories?.isLoading"
-              mdTooltip="Edit" [mdTooltipPosition]="'above'" (click)="edit(item)">
+            <button class="subtle" md-icon-button
+              [disabled]="devices?.isLoading || device?.isProcessing || categories?.isLoading" mdTooltip="Edit"
+              [mdTooltipPosition]="'above'" (click)="edit(item)">
               <i class="fa fa-pencil-square-o  fa-lg" aria-hidden="true"></i>
             </button>
-            <button class="subtle" md-icon-button [disabled]="devices?.isLoading || device?.isProcessing || categories?.isLoading"
-              mdTooltip="Delete" [mdTooltipPosition]="'above'" (click)="remove(item)">
+            <button class="subtle" md-icon-button
+              [disabled]="devices?.isLoading || device?.isProcessing || categories?.isLoading" mdTooltip="Delete"
+              [mdTooltipPosition]="'above'" (click)="remove(item)">
               <md-icon>delete</md-icon>
             </button>
           </td>

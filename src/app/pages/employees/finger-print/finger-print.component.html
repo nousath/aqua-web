@@ -32,7 +32,10 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of biometrics">
-          <td>{{item.device.name}}</td>
+          <td>
+            <div class="available {{item.device.status}}"></div>
+            {{item.device.name}}
+          </td>
           <td>{{item.device.type === 'both'? 'In/Out': item.device.type}}</td>
           <td>
             <button *ngIf="!canEnable" md-raised-button (click)="mark(item, 'fetching')">Fetch</button>

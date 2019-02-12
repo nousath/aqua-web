@@ -2938,3 +2938,26 @@ th.user-summary {
 .status .error {
     color: var(--warn);
 }
+
+.available {
+    height: 15px;
+    width: 15px;
+    display: block;
+    background: var(--disabled);
+    border-radius: 50%;
+    float: left;
+    margin-right: 5px;
+    margin-top: 3px;
+}
+
+.available.online {
+    background: green;
+}
+
+.available.not-available {
+    background: var(--warn);
+}
+
+.available.offline {
+    background: var(--disabled);
+}
