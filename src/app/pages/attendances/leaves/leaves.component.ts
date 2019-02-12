@@ -102,7 +102,7 @@ export class LeavesComponent implements OnInit, AfterViewInit {
 
   updateStatus(leave: Leave) {
     this.isProcessing = true;
-    this.amsLeaveService.leaves.update(leave.id, leave, null, `${leave.id}/action`).then(data => {
+    this.amsLeaveService.leaves.update(leave.id, leave, null, `action`).then(data => {
       this.isProcessing = false;
       this.fetchLeaves();
     }).catch(err => {

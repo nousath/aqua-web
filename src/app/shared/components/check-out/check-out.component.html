@@ -3,11 +3,11 @@
   <ng-container *ngIf="isPast" [ngSwitch]="attendance.checkOutStatus">
     <ng-container class="sub-text" *ngSwitchCase="'late'">
       <span *ngIf="!overTime" class="sub-text">Went Late</span>
-      <span *ngIf="overTime" class="sub-text over-time">{{overTime}} Overtime</span>
     </ng-container>
     <span class="sub-text" *ngSwitchCase="'early'">{{early}} Early</span>
     <span class="sub-text" *ngSwitchCase="'missed'">Missed</span>
   </ng-container>
+  <span *ngIf="overTime" class="sub-text over-time">{{overTime}} Overtime</span>
 </div>
 <span class="cta" *ngIf="!attendance.checkOut && isPast && attendance.status === 'present'">Missed
   Check Out</span>
