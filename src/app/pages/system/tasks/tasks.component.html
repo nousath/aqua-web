@@ -100,8 +100,9 @@
           <td class="cellFormat" [ngSwitch]="item.status">
             <button md-icon-button (click)="item.isSelected = !item.isSelected">
               <md-icon mdTooltip="{{item.status}}">
-                <i *ngSwitchCase="'new'" class="fa fa-question" style="color: #a1a1a1;" aria-hidden="true"></i>
+                <i *ngSwitchCase="'new'" class="fa fa-play" style="color: #a1a1a1;" aria-hidden="true"></i>
                 <i *ngSwitchCase="'queued'" class="fa fa-pause" style="color: #a1a1a1;" aria-hidden="true"></i>
+                <i *ngSwitchCase="'canceled'" class="fa fa-ban" style="color: #D8000C;" aria-hidden="true"></i>
                 <i *ngSwitchCase="'in-progress'" class="fa fa-clock-o" style="color: #38b6ff;" aria-hidden="true"></i>
                 <i *ngSwitchCase="'error'" class="fa fa-exclamation-triangle" style="color: #D8000C;"
                   aria-hidden="true"></i>
@@ -134,7 +135,7 @@
               (click)="item.isSelected = !item.isSelected" class="cta">{{item.meta.errors | json}}</code>
           </td>
           <td class="cellFormat">
-            <button *ngIf="item.status === 'new'" class="btn btn-primary btn-sm" [disabled]="item.isProcessing"
+            <button *ngIf="item.status === 'new' && item.assignedTo !== 'sync-service'" class="btn btn-primary btn-sm" [disabled]="item.isProcessing"
               (click)="run(item)">Run</button>
             <button *ngIf="item.status === 'error'" class="btn btn-primary btn-sm" [disabled]="item.isProcessing"
               (click)="run(item)">Retry</button>

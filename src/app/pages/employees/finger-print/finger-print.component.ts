@@ -92,7 +92,7 @@ export class FingerPrintComponent implements OnInit, OnChanges {
         });
         this.canEnable = canEnable;
       }
-      this.checkPendingTasks()
+      // this.checkPendingTasks()
     }).catch(err => {
       this.isLoading = false;
       biometric.status = oldStatus
@@ -134,7 +134,7 @@ export class FingerPrintComponent implements OnInit, OnChanges {
 
         });
 
-        this.checkPendingTasks();
+        // this.checkPendingTasks();
       });
     });
   }
