@@ -102,6 +102,7 @@
             <th width="20%" class="text-center">Time</th>
             <th width="10%" class="text-center">Type</th>
             <th width="25%" class="text-center">Source</th>
+            <th width="25%" class="text-center">Location</th>
             <th width="20%" class="text-center"></th>
           </tr>
         </thead>
@@ -121,6 +122,37 @@
               <div>{{item.device && item.device.name ? item.device.name:item.ipAddress}}</div>
               <span class="sub-text" *ngIf="item.source === 'system'">Continued</span>
               <span class="sub-text" *ngIf="item.source !== 'system'">{{item.source}}</span>
+            </td>
+            <td *ngIf="!item?.location?.coordinates">
+              <div class="text-center">
+                <button md-icon-button class="button_alignOff cursor" mdTooltip="Off Location on Map"
+                  [mdTooltipPosition]="'above'">
+                  <md-icon>location_off</md-icon>
+                </button>
+              </div>
+            </td>
+            <td *ngIf="item?.location && item?.location?.coordinates && (item?.location?.coordinates[0] && item?.location?.coordinates[1])">
+              <div class="text-center">
+                <button md-icon-button class="button_alignOff cursor" (click)="markTrue()" mdTooltip="On Location on Map"
+                  [mdTooltipPosition]="'above'">
+                  <md-icon>location_on</md-icon>
+                </button>
+              </div>
+
+              <div class="popup" *ngIf="isShow">
+                <div class="backdrop"></div>
+                <div class="outer">
+                  <div class="row">
+                    <button md-icon-button class="button_alignOff popup-button cursor">
+                      <md-icon (click)="markFalse()">close</md-icon>
+
+                    </button>
+                    <agm-map [latitude]="item?.location?.coordinates[1]" [longitude]="item?.location?.coordinates[0]">
+                      <agm-marker [latitude]="item?.location?.coordinates[1]" [longitude]="item?.location?.coordinates[0]"></agm-marker>
+                    </agm-map>
+                  </div>
+                </div>
+              </div>
             </td>
             <td class="text-center" *ngIf="!item?.location?.show">
               <button [matMenuTriggerFor]="moreMenu" md-icon-button class="subtle" *ngIf="auth.hasPermission('superadmin')">
