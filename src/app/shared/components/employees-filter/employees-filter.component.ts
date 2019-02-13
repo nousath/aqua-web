@@ -187,7 +187,7 @@ export class EmployeesFilterComponent implements OnInit, OnChanges {
 
     this.userTypeList = [
       { id: 1, code: 'normal', itemName: 'Normal' },
-      { id: 2, code: 'admin', itemName: 'Admin' },
+      { id: 2, code: 'admin', itemName: 'Supervisor' },
       { id: 3, code: 'superadmin', itemName: 'Super Admin' }
     ]
 
