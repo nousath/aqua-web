@@ -71,18 +71,16 @@ export class MonthlyComponent implements OnInit, AfterViewInit {
   }
 
   applyFilters(result) {
-
     const filters = this.monthlyAttendance.filters.properties;
-    const values = result.values
-    filters['name']['value'] = values.employeeName;
-    filters['code']['value'] = values.employeeCode;
-    filters['departments']['value'] = values.departmentNames;
-    filters['designations']['value'] = values.designationNames;
-    filters['supervisorId']['value'] = values.supervisorId;
-    filters['userTypes']['value'] = values.userTypeIds;
-    filters['contractors']['value'] = values.contractorNames;
-    filters['divisions']['value'] = values.divisionNames;
-    filters['tagIds']['value'] = values.tagIds;
+    const values = result.params
+    filters['name']['value'] = values.employee && values.employee.name ? values.employee.name : '';
+    filters['code']['value'] = values.employee && values.employee.code ? values.employee.code : '';
+    filters['departments']['value'] = values.employee && values.employee.departments ? values.employee.departments.map(item => item.name) : '';
+    filters['designations']['value'] = values.employee && values.employee.designations ? values.employee.designations.map(item => item.name) : '';
+    filters['divisions']['value'] = values.employee && values.employee.divisions ? values.employee.divisions.map(item => item.name) : '';
+    filters['supervisorId']['value'] = values.employee && values.employee.supervisor ? values.employee.supervisor.id : '';
+    filters['contractors']['value'] = values.employee && values.employee.contractors ? values.employee.contractors.map(item => item.name) : '';
+    filters['userTypes']['value'] = values.employee && values.employee.userTypes ? values.employee.userTypes.map(item => item.code) : '';
 
     this.getAttendance();
   }

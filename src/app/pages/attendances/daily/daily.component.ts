@@ -109,7 +109,6 @@ export class DailyComponent {
     this.attendancePage.pageNo = 1;
     const filters = this.attendancePage.filters.properties;
     const values = result.values;
-
     filters['name']['value'] = values.employeeName;
     filters['code']['value'] = values.employeeCode;
     filters['departments']['value'] = values.departmentNames;
@@ -117,7 +116,7 @@ export class DailyComponent {
     filters['supervisorId']['value'] = values.supervisorId;
     filters['contractors']['value'] = values.contractorNames;
     filters['divisions']['value'] = values.divisionNames;
-    filters['userTypes']['value'] = values.userTypeIds;
+    filters['userTypes']['value'] = values.userTypes ? values.userTypes.map(item => item.code) : '';
     filters['shiftTypeId']['value'] = values.shiftTypeIds;
     // filters['shiftType-id']['value'] = values.shiftType.map(item => item.id) || null;
 
