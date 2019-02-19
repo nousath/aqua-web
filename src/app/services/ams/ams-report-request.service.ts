@@ -98,7 +98,7 @@ export class AmsReportRequestService {
     ]
   }, {
     code: 'balance',
-    icon: 'balance.svg',
+    icon: 'assignment.svg',
     type: 'leaves-balance',
     name: 'Leaves Balance',
     provider: 'ams',
@@ -133,6 +133,18 @@ export class AmsReportRequestService {
       'userTypes',
       'contractors',
       'divisions'
+      // 'supervisor'
+    ]
+  }, {
+    code: 'shifts',
+    icon: 'shifts.svg',
+    type: 'shift-types',
+    name: 'Shift Details',
+    provider: 'ams',
+    area: 'shifts',
+    filters: [
+      'departments',
+      // 'divisions'
       // 'supervisor'
     ]
   }]

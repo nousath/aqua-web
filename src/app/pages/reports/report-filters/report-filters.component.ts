@@ -83,7 +83,7 @@ export class ReportFiltersComponent implements OnInit, OnChanges {
         this.show.datePicker = true;
         this.show.employeeFilters = true;
         break;
-
+      case 'shift-details':
       case 'employees-details':
         this.show.monthPicker = false;
         this.show.datePicker = false;
