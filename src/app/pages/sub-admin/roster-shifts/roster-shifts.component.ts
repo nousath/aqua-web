@@ -102,7 +102,6 @@ export class RosterShiftsComponent implements OnInit {
     this.effectiveShifts.pageNo = 1;
     const values = result.params;
     const filters = this.effectiveShifts.filters.properties;
-
     filters['name']['value'] = values.employee && values.employee.name ? values.employee.name : '';
     filters['code']['value'] = values.employee && values.employee.code ? values.employee.code : '';
     filters['departments']['value'] = values.employee && values.employee.departments ? values.employee.departments.map(item => item.name) : '';
@@ -110,7 +109,7 @@ export class RosterShiftsComponent implements OnInit {
     filters['divisions']['value'] = values.employee && values.employee.divisions ? values.employee.divisions.map(item => item.name) : '';
     filters['supervisorId']['value'] = values.employee && values.employee.supervisor ? values.employee.supervisor.id : '';
     filters['contractors']['value'] = values.employee && values.employee.contractors ? values.employee.contractors.map(item => item.name) : '';
-    filters['userTypes']['value'] = values.employee && values.employee.userTypes ? values.employee.userTypes.map(item => item.id) : '';
+    filters['userTypes']['value'] = values.employee && values.employee.userTypes ? values.employee.userTypes.map(item => item.code) : '';
     filters['shiftType']['value'] = values.shiftType && values.shiftType.map(item => item.id) || null;
     this.getEffectiveShift(this.date)
   }

@@ -191,7 +191,6 @@ export class ContractorsComponent implements OnInit {
     component.samples = [{
       name: 'CSV/Excel',
       mapper: 'default',
-      // url_csv: 'assets/formats/contractor.csv',
       url_xlsx: 'assets/formats/contractor.xlsx'
     }];
   }

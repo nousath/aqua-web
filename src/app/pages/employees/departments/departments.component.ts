@@ -194,7 +194,6 @@ export class DepartmentsComponent implements OnInit {
     component.samples = [{
       name: 'CSV/Excel',
       mapper: 'default',
-      // url_csv: 'assets/formats/department.csv',
       url_xlsx: 'assets/formats/department.xlsx'
     }];
   }

@@ -89,6 +89,10 @@
         (click)="selectedTab()" routerLinkActive="active-link" #rla21="routerLinkActive">
         <h5>Employees</h5>
       </a>
+      <a [routerLink]="['/reports/shifts']" *ngIf="auth.hasPermission(['superadmin', 'hr.admin'])" md-list-item
+      (click)="selectedTab()" routerLinkActive="active-link" #rla21="routerLinkActive">
+      <h5>Shifts</h5>
+    </a>
     </div>
     <p class="list-header" *ngIf="auth.hasPermission('superadmin')" (click)="sections.select('settings')">
       <i class="main-menu-icon fa fa-gears"></i>

@@ -53,7 +53,8 @@ export class DailyComponent {
     'divisions',
     'supervisor',
     'shiftTypes',
-    { field: 'attendanceStates', value: 'present' },
+    // {field: 'attendanceStates', value: 'present'},
+  'attendanceStates',
     'clocked',
     'checkIn',
     'checkOut',
@@ -87,7 +88,7 @@ export class DailyComponent {
       api: amsAttendanceService.dailyAttendances,
       location: location,
       filters: ['ofDate', 'name', 'code', 'designations', 'departments', 'supervisorId', divisionFilter, 'contractors', 'userTypes',
-        'attendance-status', { field: 'status', value: 'present' }, 'shiftType-id', 'byShiftEnd', 'shiftTypeId', 'byShiftLength',
+        'attendance-status', 'status',  'shiftType-id', 'byShiftEnd', 'shiftTypeId', 'byShiftLength',
         'checkInStatus', 'checkIn-status', 'checkInAfter', 'checkInBefore',
         'checkOutStatus', 'checkOut-status', 'checkOutAfter', 'checkOutBefore',
         'hours', 'clocked-status', 'clockedGt', 'clockedLt']
@@ -282,7 +283,6 @@ export class DailyComponent {
     component.samples = [{
       name: 'Add-Timelogs',
       mapper: 'default',
-      // url_csv: 'assets/formats/attendance.csv',
       url_xlsx: 'assets/formats/attendance.xlsx'
     }];
   }

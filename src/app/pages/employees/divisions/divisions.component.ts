@@ -175,7 +175,6 @@ export class DivisionsComponent implements OnInit {
     component.samples = [{
       name: 'CSV/Excel',
       mapper: 'default',
-      // url_csv: 'assets/formats/division.csv',
       url_xlsx: 'assets/formats/division.xlsx'
     }];
   }

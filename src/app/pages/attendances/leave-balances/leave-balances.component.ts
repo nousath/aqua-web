@@ -75,7 +75,7 @@ export class LeaveBalancesComponent implements OnInit {
     filters['departments']['value'] = values.departmentNames;
     filters['designations']['value'] = values.designationNames;
     filters['supervisorId']['value'] = values.supervisorId;
-    filters['userTypes']['value'] = values.userTypeIds;
+    filters['userTypes']['value'] = values.userTypes ? values.userTypes.map(item => item.code) : '';
     filters['contractors']['value'] = values.contractorNames;
     filters['divisions']['value'] = values.divisionNames;
     this.fetchLeaveBalances();
